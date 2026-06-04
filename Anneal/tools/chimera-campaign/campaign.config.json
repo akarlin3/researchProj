@@ -1,0 +1,34 @@
+{
+  "name": "finite-N chimera collapse-time campaign",
+  "version": "1.0.0",
+  "description": "Time-to-collapse distributions vs oscillator count N for the two-population Sakaguchi-Kuramoto chimera (identical-omega, delta-omega=0), with right-censoring. Dynamics-only; no audio. Reproduces the shipped src/audio/chimera.ts integrator (verified bit-identical by integrator.crosscheck.test.ts).",
+  "model": {
+    "beta": 0.05,
+    "dt": 0.05,
+    "sampleStride": 0.1,
+    "t_max": 2000,
+    "_dt_note": "dt=0.05 is the shipped control-rate step (orchestrator DRIFT_DT). t_max=2000s chosen from pilot runs so N=4-16 collapse almost entirely uncensored (max observed lifetime ~223s); generous margin, early-exit makes it free for collapsing runs."
+  },
+  "criterion": {
+    "theta": 0.85,
+    "W": 5.0,
+    "_note": "Collapse = min(R1,R2) > theta sustained for W seconds. theta=0.85 is the shipped supervisor INCOH_LO, just above the ~0.83 healthy-breathing envelope; W=5s >> the breath's fast phase. Robustness shown in cp2_robustness."
+  },
+  "sweeps": [
+    {
+      "label": "primary",
+      "A": 0.5,
+      "Ns": [4, 8, 16, 24, 32, 48, 64],
+      "seeds": 200,
+      "seed0": 100000
+    },
+    {
+      "label": "secondary",
+      "A": 0.2,
+      "Ns": [4, 8, 16, 24, 32, 48, 64],
+      "seeds": 100,
+      "seed0": 200000
+    }
+  ],
+  "output": "campaign_results/collapse_campaign.jsonl"
+}

@@ -1,0 +1,118 @@
+{
+  "detector": {
+    "syncHi": 0.9,
+    "incohLo": 0.85,
+    "hold_s": 2,
+    "recThresh": 0.8,
+    "recWin": 5
+  },
+  "t_max": 2000,
+  "nSeeds": 100,
+  "rows": [
+    {
+      "N": 8,
+      "A": 0.5,
+      "n_runs": 100,
+      "firings": 718,
+      "over_triggers": 564,
+      "terminal_fires": 154,
+      "over_trigger_rate": 0.7855153203342619,
+      "median_wasted_s": 4.4,
+      "firings_per_run": 7.18,
+      "firings_per_runhour": 12.9233538323084,
+      "runs_with_any_fire_frac": 1
+    },
+    {
+      "N": 16,
+      "A": 0.5,
+      "n_runs": 100,
+      "firings": 520,
+      "over_triggers": 397,
+      "terminal_fires": 123,
+      "over_trigger_rate": 0.7634615384615384,
+      "median_wasted_s": 2.4000000000000004,
+      "firings_per_run": 5.2,
+      "firings_per_runhour": 9.359532023398842,
+      "runs_with_any_fire_frac": 1
+    },
+    {
+      "N": 32,
+      "A": 0.5,
+      "n_runs": 100,
+      "firings": 407,
+      "over_triggers": 296,
+      "terminal_fires": 111,
+      "over_trigger_rate": 0.7272727272727273,
+      "median_wasted_s": 3.8500000000000005,
+      "firings_per_run": 4.07,
+      "firings_per_runhour": 7.325633718314093,
+      "runs_with_any_fire_frac": 1
+    },
+    {
+      "N": 64,
+      "A": 0.5,
+      "n_runs": 100,
+      "firings": 327,
+      "over_triggers": 226,
+      "terminal_fires": 101,
+      "over_trigger_rate": 0.691131498470948,
+      "median_wasted_s": 5.300000000000001,
+      "firings_per_run": 3.27,
+      "firings_per_runhour": 5.8857057147142715,
+      "runs_with_any_fire_frac": 1
+    },
+    {
+      "N": 8,
+      "A": 0.2,
+      "n_runs": 100,
+      "firings": 1230,
+      "over_triggers": 1167,
+      "terminal_fires": 63,
+      "over_trigger_rate": 0.948780487804878,
+      "median_wasted_s": 2,
+      "firings_per_run": 12.3,
+      "firings_per_runhour": 22.13889305534726,
+      "runs_with_any_fire_frac": 0.98
+    },
+    {
+      "N": 16,
+      "A": 0.2,
+      "n_runs": 100,
+      "firings": 980,
+      "over_triggers": 951,
+      "terminal_fires": 29,
+      "over_trigger_rate": 0.9704081632653061,
+      "median_wasted_s": 1.8,
+      "firings_per_run": 9.8,
+      "firings_per_runhour": 17.639118044097817,
+      "runs_with_any_fire_frac": 1
+    },
+    {
+      "N": 32,
+      "A": 0.2,
+      "n_runs": 100,
+      "firings": 792,
+      "over_triggers": 757,
+      "terminal_fires": 35,
+      "over_trigger_rate": 0.9558080808080808,
+      "median_wasted_s": 1.7000000000000002,
+      "firings_per_run": 7.92,
+      "firings_per_runhour": 14.255287235638235,
+      "runs_with_any_fire_frac": 1
+    },
+    {
+      "N": 64,
+      "A": 0.2,
+      "n_runs": 100,
+      "firings": 471,
+      "over_triggers": 447,
+      "terminal_fires": 24,
+      "over_trigger_rate": 0.9490445859872612,
+      "median_wasted_s": 1.8,
+      "firings_per_run": 4.71,
+      "firings_per_runhour": 8.47757612119395,
+      "runs_with_any_fire_frac": 1
+    }
+  ],
+  "wall_s": 391.621
+}

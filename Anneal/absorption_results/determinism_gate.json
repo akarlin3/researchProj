@@ -1,0 +1,111 @@
+{
+  "passed": true,
+  "compared": 2100,
+  "mismatches": 0,
+  "worstAbsDev": 0,
+  "worstCase": null,
+  "tmaxMismatchCensoring": 0,
+  "rerun_t_max": 2000,
+  "orig_t_max": 2000,
+  "perPoint": [
+    {
+      "N": 4,
+      "A": 0.2,
+      "compared": 100,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 8,
+      "A": 0.2,
+      "compared": 100,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 16,
+      "A": 0.2,
+      "compared": 100,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 24,
+      "A": 0.2,
+      "compared": 100,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 32,
+      "A": 0.2,
+      "compared": 100,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 48,
+      "A": 0.2,
+      "compared": 100,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 64,
+      "A": 0.2,
+      "compared": 100,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 4,
+      "A": 0.5,
+      "compared": 200,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 8,
+      "A": 0.5,
+      "compared": 200,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 16,
+      "A": 0.5,
+      "compared": 200,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 24,
+      "A": 0.5,
+      "compared": 200,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 32,
+      "A": 0.5,
+      "compared": 200,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 48,
+      "A": 0.5,
+      "compared": 200,
+      "mismatches": 0,
+      "worst": 0
+    },
+    {
+      "N": 64,
+      "A": 0.5,
+      "compared": 200,
+      "mismatches": 0,
+      "worst": 0
+    }
+  ],
+  "_note": "Gate passes iff every (A,N,seed) shared with the published campaign reproduced its logged lifetime as t_graze to within 1e-9 s (and censoring flags agree at equal t_max). Same shipped RK4, same min(R1,R2)>θ sustained-for-W criterion, same stride."
+}

@@ -1,0 +1,73 @@
+{
+  "name": "absorption-grade re-measurement of the finite-N chimera collapse-time campaign",
+  "version": "1.0.0",
+  "description": "PR #41's absorption check refuted the original campaign's collapse criterion: theta-crossings sustained for W=5s recover up to 98% of the time (the chimera reforms), so the campaign's 'lifetimes' are first-long-graze times, not absorption times. This module defines an absorption-GRADE criterion (a theta-crossing NOT followed by recovery within a verification horizon T_v), re-measures the full campaign under it from one trace per run (so both the legacy graze label and the new absorption label come from the same integration), and re-runs the survival/aging/geometric analysis to determine which headline results survive. New code only; the shipped voice/supervisor/criterion and all prior results dirs are untouched/read-only.",
+  "model": {
+    "beta": 0.05,
+    "dt": 0.05,
+    "sampleStride": 0.1,
+    "t_max": 2000,
+    "_note": "beta/dt/sampleStride identical to campaign.config.json so t_graze reproduces the published campaign bit-for-bit (the determinism gate). sampleStride=0.1 is REQUIRED: both the graze criterion (need=round(W/sampleDt) consecutive samples) and the recovery test (round(recWin/sampleDt)) depend on the sample cadence. t_max is the baseline censoring horizon; pilot.mjs measures t_abs censoring at this value and the report records whether it was raised."
+  },
+  "graze_criterion": {
+    "theta": 0.85,
+    "W": 5.0,
+    "_note": "UNCHANGED from the published campaign (collapse.mjs DEFAULT_THETA/DEFAULT_W). t_graze = first t0 such that min(R1,R2) > theta sustained for W seconds, else right-censored at t_max. Kept verbatim for the determinism gate and old-vs-new comparability."
+  },
+  "absorption_criterion": {
+    "T_v": 120.0,
+    "recoveryThreshold": 0.8,
+    "recoveryWindowSec": 5.0,
+    "_note": "t_abs = the run-start time of the first W-sustained theta-crossing that is NOT followed by recovery within the verification horizon T_v. recovery = min(R1,R2) < recoveryThreshold sustained for >= recoveryWindowSec after the crossing's confirmation (PR #41's CP3 recovery definition). A crossing whose full T_v window is not yet available at t_max leaves the run right-censored for t_abs."
+  },
+  "sensitivity": {
+    "T_v_set": [60, 120, 240],
+    "recoveryThreshold_set": [0.75, 0.8],
+    "_note": "CP1 sensitivity knobs swept on the pilot subset; the report states whether tau_hat_abs is robust to these choices or quantifies the movement."
+  },
+  "breath": {
+    "smoothWindowSec": 2.0,
+    "minProminenceFrac": 0.1,
+    "minPeakSepFrac": 0.5,
+    "minCyclesForPhase": 2,
+    "autoPeriodFloorSec": 8.0,
+    "_note": "PR #41 breath-period estimator (phase.config.json cp2), ported to JS so per-run T_b can be written into every campaign row. T_b = median peak-to-peak interval of R_incoh maxima (smoothed smoothWindowSec, prominence >= minProminenceFrac of the pre-collapse range, min separation minPeakSepFrac * autocorrelation period) over the pre-absorption window EXCLUDING the final (collapsing) cycle. A breath.crosscheck against the Python estimator is reported."
+  },
+  "pilot": {
+    "points": [
+      { "Np": 8, "A": 0.5 },
+      { "Np": 32, "A": 0.5 },
+      { "Np": 8, "A": 0.2 },
+      { "Np": 32, "A": 0.2 }
+    ],
+    "seeds": 40,
+    "censorTargetFrac": 0.1,
+    "_note": "CP2 pilot: estimate t_abs censoring at the baseline t_max and sweep the CP1 sensitivity knobs. Pilot runs integrate to t_max WITHOUT early exit so the largest T_v (240s) verification window is fully available."
+  },
+  "phase_subset": {
+    "nSeedsPerPoint": 100,
+    "tailAfterAbsorptionSec": 5.0,
+    "_note": "CP3 phase-clustering + CP4 supervisor-replay subset: the 100 lowest-id seeds per point are re-traced recording R_incoh(t) and R_sync(t)=max(R1,R2) through and past absorption, so true-absorption phase phi_abs and the shipped supervisor's firings can both be computed from the same traces."
+  },
+  "sweeps": [
+    {
+      "label": "primary",
+      "A": 0.5,
+      "Ns": [4, 8, 16, 24, 32, 48, 64],
+      "seeds": 200,
+      "seed0": 100000
+    },
+    {
+      "label": "secondary",
+      "A": 0.2,
+      "Ns": [4, 8, 16, 24, 32, 48, 64],
+      "seeds": 100,
+      "seed0": 200000
+    }
+  ],
+  "inputs": {
+    "campaign_jsonl": "campaign_results/collapse_campaign.jsonl"
+  },
+  "output_dir": "absorption_results",
+  "output": "absorption_results/absorption_campaign.jsonl"
+}

@@ -1,0 +1,308 @@
+{
+  "config": {
+    "t_max": 2000,
+    "baseline_T_v": 120,
+    "baseline_recThresh": 0.8,
+    "censorTargetFrac": 0.1,
+    "seedsPerPoint": 40
+  },
+  "perPoint": {
+    "N8_A0.5": {
+      "Np": 8,
+      "A": 0.5,
+      "n": 40,
+      "grid": {
+        "Tv60_rec0.75": {
+          "T_v": 60,
+          "recThresh": 0.75,
+          "tau_abs": 126.155,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv60_rec0.8": {
+          "T_v": 60,
+          "recThresh": 0.8,
+          "tau_abs": 126.155,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv120_rec0.75": {
+          "T_v": 120,
+          "recThresh": 0.75,
+          "tau_abs": 146.30749999999998,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv120_rec0.8": {
+          "T_v": 120,
+          "recThresh": 0.8,
+          "tau_abs": 150.24749999999997,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv240_rec0.75": {
+          "T_v": 240,
+          "recThresh": 0.75,
+          "tau_abs": 157.3475,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv240_rec0.8": {
+          "T_v": 240,
+          "recThresh": 0.8,
+          "tau_abs": 159.58999999999997,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        }
+      }
+    },
+    "N32_A0.5": {
+      "Np": 32,
+      "A": 0.5,
+      "n": 40,
+      "grid": {
+        "Tv60_rec0.75": {
+          "T_v": 60,
+          "recThresh": 0.75,
+          "tau_abs": 119.71000000000004,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv60_rec0.8": {
+          "T_v": 60,
+          "recThresh": 0.8,
+          "tau_abs": 121.53000000000002,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv120_rec0.75": {
+          "T_v": 120,
+          "recThresh": 0.75,
+          "tau_abs": 138.55750000000006,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv120_rec0.8": {
+          "T_v": 120,
+          "recThresh": 0.8,
+          "tau_abs": 141.92750000000007,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv240_rec0.75": {
+          "T_v": 240,
+          "recThresh": 0.75,
+          "tau_abs": 158.38500000000008,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        },
+        "Tv240_rec0.8": {
+          "T_v": 240,
+          "recThresh": 0.8,
+          "tau_abs": 158.38500000000008,
+          "events": 40,
+          "censored": 0,
+          "censored_frac": 0,
+          "median_grazes": 1
+        }
+      }
+    },
+    "N8_A0.2": {
+      "Np": 8,
+      "A": 0.2,
+      "n": 40,
+      "grid": {
+        "Tv60_rec0.75": {
+          "T_v": 60,
+          "recThresh": 0.75,
+          "tau_abs": 2490.055555555556,
+          "events": 18,
+          "censored": 22,
+          "censored_frac": 0.55,
+          "median_grazes": 1
+        },
+        "Tv60_rec0.8": {
+          "T_v": 60,
+          "recThresh": 0.8,
+          "tau_abs": 2490.055555555556,
+          "events": 18,
+          "censored": 22,
+          "censored_frac": 0.55,
+          "median_grazes": 1
+        },
+        "Tv120_rec0.75": {
+          "T_v": 120,
+          "recThresh": 0.75,
+          "tau_abs": 4199.776923076923,
+          "events": 13,
+          "censored": 27,
+          "censored_frac": 0.675,
+          "median_grazes": 1.5
+        },
+        "Tv120_rec0.8": {
+          "T_v": 120,
+          "recThresh": 0.8,
+          "tau_abs": 4199.776923076923,
+          "events": 13,
+          "censored": 27,
+          "censored_frac": 0.675,
+          "median_grazes": 1.5
+        },
+        "Tv240_rec0.75": {
+          "T_v": 240,
+          "recThresh": 0.75,
+          "tau_abs": 4712.241666666667,
+          "events": 12,
+          "censored": 28,
+          "censored_frac": 0.7,
+          "median_grazes": 2
+        },
+        "Tv240_rec0.8": {
+          "T_v": 240,
+          "recThresh": 0.8,
+          "tau_abs": 4712.241666666667,
+          "events": 12,
+          "censored": 28,
+          "censored_frac": 0.7,
+          "median_grazes": 2
+        }
+      }
+    },
+    "N32_A0.2": {
+      "Np": 32,
+      "A": 0.2,
+      "n": 40,
+      "grid": {
+        "Tv60_rec0.75": {
+          "T_v": 60,
+          "recThresh": 0.75,
+          "tau_abs": 3383.3733333333334,
+          "events": 15,
+          "censored": 25,
+          "censored_frac": 0.625,
+          "median_grazes": 1.5
+        },
+        "Tv60_rec0.8": {
+          "T_v": 60,
+          "recThresh": 0.8,
+          "tau_abs": 3765.128571428571,
+          "events": 14,
+          "censored": 26,
+          "censored_frac": 0.65,
+          "median_grazes": 2
+        },
+        "Tv120_rec0.75": {
+          "T_v": 120,
+          "recThresh": 0.75,
+          "tau_abs": 6924.7,
+          "events": 9,
+          "censored": 31,
+          "censored_frac": 0.775,
+          "median_grazes": 2
+        },
+        "Tv120_rec0.8": {
+          "T_v": 120,
+          "recThresh": 0.8,
+          "tau_abs": 6924.7,
+          "events": 9,
+          "censored": 31,
+          "censored_frac": 0.775,
+          "median_grazes": 2
+        },
+        "Tv240_rec0.75": {
+          "T_v": 240,
+          "recThresh": 0.75,
+          "tau_abs": 8035.775,
+          "events": 8,
+          "censored": 32,
+          "censored_frac": 0.8,
+          "median_grazes": 2
+        },
+        "Tv240_rec0.8": {
+          "T_v": 240,
+          "recThresh": 0.8,
+          "tau_abs": 8035.775,
+          "events": 8,
+          "censored": 32,
+          "censored_frac": 0.8,
+          "median_grazes": 2
+        }
+      }
+    }
+  },
+  "robustness": {
+    "N8_A0.5": {
+      "Np": 8,
+      "A": 0.5,
+      "baseline_tau_abs": 150.24749999999997,
+      "baseline_censored_frac": 0,
+      "tau_abs_min": 126.155,
+      "tau_abs_max": 159.58999999999997,
+      "spread_frac_of_baseline": 0.2225328208456046
+    },
+    "N32_A0.5": {
+      "Np": 32,
+      "A": 0.5,
+      "baseline_tau_abs": 141.92750000000007,
+      "baseline_censored_frac": 0,
+      "tau_abs_min": 119.71000000000004,
+      "tau_abs_max": 158.38500000000008,
+      "spread_frac_of_baseline": 0.2724982825738495
+    },
+    "N8_A0.2": {
+      "Np": 8,
+      "A": 0.2,
+      "baseline_tau_abs": 4199.776923076923,
+      "baseline_censored_frac": 0.675,
+      "tau_abs_min": 2490.055555555556,
+      "tau_abs_max": 4712.241666666667,
+      "spread_frac_of_baseline": 0.5291200346619956
+    },
+    "N32_A0.2": {
+      "Np": 32,
+      "A": 0.2,
+      "baseline_tau_abs": 6924.7,
+      "baseline_censored_frac": 0.775,
+      "tau_abs_min": 3383.3733333333334,
+      "tau_abs_max": 8035.775,
+      "spread_frac_of_baseline": 0.6718560611530704
+    }
+  },
+  "t_max_decision": {
+    "target": 0.1,
+    "over_target_points": [
+      {
+        "point": "N8_A0.2",
+        "censored_frac": 0.675
+      },
+      {
+        "point": "N32_A0.2",
+        "censored_frac": 0.775
+      }
+    ],
+    "note": "Points exceeding 10% censoring: N8_A0.2=68%, N32_A0.2=78%. If these are stable-after-graze (churn that never absorbs), raising t_max will NOT reduce censoring — report as a finding."
+  },
+  "wall_s": 54.5
+}

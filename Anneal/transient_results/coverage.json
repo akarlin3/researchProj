@@ -1,0 +1,150 @@
+{
+  "generated": "2026-06-05T01:43:03.944Z",
+  "note": "CP0 light audit. with_full_trace = trace records carrying the R_incoh array. A=0.5 traces cover N in {8,16,32,64} (the phase subset, 100 lowest-id seeds each); A=0.2 only the absorbed members of that subset were trace-dumped, so persistent A=0.2 runs are re-traced for CP1.",
+  "trace_coverage": {
+    "N8_A0.5": {
+      "N": 8,
+      "A": 0.5,
+      "records": 100,
+      "with_full_trace": 100,
+      "absorbed_among_traced": 100
+    },
+    "N16_A0.5": {
+      "N": 16,
+      "A": 0.5,
+      "records": 100,
+      "with_full_trace": 100,
+      "absorbed_among_traced": 100
+    },
+    "N32_A0.5": {
+      "N": 32,
+      "A": 0.5,
+      "records": 100,
+      "with_full_trace": 100,
+      "absorbed_among_traced": 100
+    },
+    "N64_A0.5": {
+      "N": 64,
+      "A": 0.5,
+      "records": 100,
+      "with_full_trace": 100,
+      "absorbed_among_traced": 100
+    },
+    "N8_A0.2": {
+      "N": 8,
+      "A": 0.2,
+      "records": 100,
+      "with_full_trace": 25,
+      "absorbed_among_traced": 25
+    },
+    "N16_A0.2": {
+      "N": 16,
+      "A": 0.2,
+      "records": 100,
+      "with_full_trace": 22,
+      "absorbed_among_traced": 22
+    },
+    "N32_A0.2": {
+      "N": 32,
+      "A": 0.2,
+      "records": 100,
+      "with_full_trace": 29,
+      "absorbed_among_traced": 29
+    },
+    "N64_A0.2": {
+      "N": 64,
+      "A": 0.2,
+      "records": 100,
+      "with_full_trace": 27,
+      "absorbed_among_traced": 27
+    }
+  },
+  "campaign_counts": {
+    "N4_A0.5": {
+      "N": 4,
+      "A": 0.5,
+      "total": 200,
+      "persistent": 0
+    },
+    "N8_A0.5": {
+      "N": 8,
+      "A": 0.5,
+      "total": 200,
+      "persistent": 0
+    },
+    "N16_A0.5": {
+      "N": 16,
+      "A": 0.5,
+      "total": 200,
+      "persistent": 0
+    },
+    "N24_A0.5": {
+      "N": 24,
+      "A": 0.5,
+      "total": 200,
+      "persistent": 0
+    },
+    "N32_A0.5": {
+      "N": 32,
+      "A": 0.5,
+      "total": 200,
+      "persistent": 0
+    },
+    "N48_A0.5": {
+      "N": 48,
+      "A": 0.5,
+      "total": 200,
+      "persistent": 0
+    },
+    "N64_A0.5": {
+      "N": 64,
+      "A": 0.5,
+      "total": 200,
+      "persistent": 0
+    },
+    "N4_A0.2": {
+      "N": 4,
+      "A": 0.2,
+      "total": 100,
+      "persistent": 51
+    },
+    "N8_A0.2": {
+      "N": 8,
+      "A": 0.2,
+      "total": 100,
+      "persistent": 75
+    },
+    "N16_A0.2": {
+      "N": 16,
+      "A": 0.2,
+      "total": 100,
+      "persistent": 78
+    },
+    "N24_A0.2": {
+      "N": 24,
+      "A": 0.2,
+      "total": 100,
+      "persistent": 77
+    },
+    "N32_A0.2": {
+      "N": 32,
+      "A": 0.2,
+      "total": 100,
+      "persistent": 71
+    },
+    "N48_A0.2": {
+      "N": 48,
+      "A": 0.2,
+      "total": 100,
+      "persistent": 77
+    },
+    "N64_A0.2": {
+      "N": 64,
+      "A": 0.2,
+      "total": 100,
+      "persistent": 73
+    }
+  },
+  "ic_extraction": "IC for any logged seed = seedChimera(Np, mulberry32(seed)); R_incoh0=min(R1,R2), R_sync0=max(R1,R2), dphi0=Phi1-Phi2 at t=0. No integration required.",
+  "peak_detector": "tools/absorption-recampaign/breath.mjs detectPeaks (PR #41), on movingAverage(min(R1,R2), smoothWindowSec) over the pre-absorption prefix R_incoh[0:absIndex]."
+}

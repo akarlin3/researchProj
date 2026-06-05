@@ -1,0 +1,105 @@
+{
+  "note": "Re-traced A=0.2 persistent runs vs logged absorption_campaign rows. graze_match requires identical censor flag and (if uncensored) t_graze within 1e-6.",
+  "n": 160,
+  "graze_match": "160/160",
+  "abs_censor_match": "160/160",
+  "pass": true,
+  "sample": [
+    {
+      "N": 8,
+      "seed": 200001,
+      "logged_t_graze": 57.800000000000004,
+      "retrace_t_graze": 57.800000000000004,
+      "logged_graze_censored": false,
+      "retrace_graze_censored": false,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    },
+    {
+      "N": 8,
+      "seed": 200002,
+      "logged_t_graze": 71.5,
+      "retrace_t_graze": 71.5,
+      "logged_graze_censored": false,
+      "retrace_graze_censored": false,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    },
+    {
+      "N": 8,
+      "seed": 200004,
+      "logged_t_graze": 23.8,
+      "retrace_t_graze": 23.8,
+      "logged_graze_censored": false,
+      "retrace_graze_censored": false,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    },
+    {
+      "N": 8,
+      "seed": 200005,
+      "logged_t_graze": 2000,
+      "retrace_t_graze": 2000,
+      "logged_graze_censored": true,
+      "retrace_graze_censored": true,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    },
+    {
+      "N": 8,
+      "seed": 200007,
+      "logged_t_graze": 41.900000000000006,
+      "retrace_t_graze": 41.900000000000006,
+      "logged_graze_censored": false,
+      "retrace_graze_censored": false,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    },
+    {
+      "N": 8,
+      "seed": 200008,
+      "logged_t_graze": 9.5,
+      "retrace_t_graze": 9.5,
+      "logged_graze_censored": false,
+      "retrace_graze_censored": false,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    },
+    {
+      "N": 8,
+      "seed": 200010,
+      "logged_t_graze": 43.900000000000006,
+      "retrace_t_graze": 43.900000000000006,
+      "logged_graze_censored": false,
+      "retrace_graze_censored": false,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    },
+    {
+      "N": 8,
+      "seed": 200011,
+      "logged_t_graze": 2000,
+      "retrace_t_graze": 2000,
+      "logged_graze_censored": true,
+      "retrace_graze_censored": true,
+      "logged_abs_censored": true,
+      "retrace_abs_censored": true,
+      "graze_match": true,
+      "abs_match": true
+    }
+  ]
+}

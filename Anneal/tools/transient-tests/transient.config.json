@@ -1,0 +1,58 @@
+{
+  "name": "deterministic-transient tests of the A=0.5 chimera collapse",
+  "version": "1.0.0",
+  "description": "Tests Avery's deterministic-transient hypothesis for the A=0.5 finite-N chimera: that the breathing trajectory spirals OUTWARD toward sync capture, so (1) per-cycle breath maxima M_k = k-th local max of min(R1,R2) ratchet upward monotonically within a run, and (2) the absorption lifetime t_abs is (near-)deterministically predicted by the collective initial condition, far beyond the manifold probe's null on D0. New code only; all prior results dirs are read-only. Peak detection reuses PR #41's canonical breath detector verbatim (tools/absorption-recampaign/breath.mjs detectPeaks); initial conditions are recomputed from the logged seed via seedChimera (zero integration). The A=0.2 persistent-run contrast requires re-tracing (those runs were never trace-dumped), done deterministically with the shipped-identical tracer.",
+  "model": {
+    "beta": 0.05,
+    "dt": 0.05,
+    "sampleStride": 0.1,
+    "t_max": 2000,
+    "_note": "beta/dt/sampleStride/t_max identical to absorption.config.json so any re-trace reproduces the published campaign labels bit-for-bit (the determinism gate)."
+  },
+  "boundary": {
+    "theta": 0.85,
+    "_note": "Sync-capture boundary: min(R1,R2) sustained above theta for W seconds is a graze; the spiral-out hypothesis says M_k approaches theta from below. Used as the ceiling in the log(theta - M_k) spiral fit. theta == graze_criterion.theta from the campaign."
+  },
+  "graze_criterion": { "theta": 0.85, "W": 5.0 },
+  "absorption_criterion": {
+    "T_v": 120.0,
+    "recoveryThreshold": 0.8,
+    "recoveryWindowSec": 5.0,
+    "_note": "Labeler settings copied from absorption.config.json so re-traced t_graze/t_abs match the logged campaign (determinism gate)."
+  },
+  "breath": {
+    "smoothWindowSec": 2.0,
+    "minProminenceFrac": 0.1,
+    "minPeakSepFrac": 0.5,
+    "minCyclesForPhase": 2,
+    "autoPeriodFloorSec": 8.0,
+    "_note": "PR #41 breath detector defaults (breath.mjs BREATH_DEFAULTS); M_k are the detected peak heights of the smoothed pre-absorption min(R1,R2)."
+  },
+  "cp1": {
+    "a05_traced_Ns": [8, 16, 32, 64],
+    "monotone_allowed_inversions": 1,
+    "a02_persistent_per_point": 40,
+    "a02_Ns": [8, 16, 32, 64],
+    "a02_window_tmax": 2000,
+    "_note": "A=0.5 traces exist only for N in {8,16,32,64} (the phase subset). A=0.2 persistent runs were never trace-dumped, so >=40 right-censored (abs_censored) seeds per N are re-traced over the full t_max window. monotone_allowed_inversions: a run counts as 'ratcheting' if M_k is non-decreasing allowing this many single-step inversions (noise tolerance)."
+  },
+  "cp2": {
+    "predict_Ns": [4, 8, 16, 24, 32, 48, 64],
+    "t0_features": ["Rincoh0", "Rsync0", "absdphi0"],
+    "first_cycle_features": ["M1", "Tb1"],
+    "target": "log_t_abs",
+    "kfolds": 5,
+    "cv_seed": 12345,
+    "quadratic": true,
+    "_note": "Per-N: Spearman rho for each single t=0 feature; k-fold CV R^2 of OLS on t=0 features alone; and (on the traced subset, where M1/Tb1 exist) k-fold CV R^2 adding the first-cycle features. Models are OLS with optional quadratic+interaction terms only (no model zoo). t=0 features come from seedChimera for every run; M1/Tb1 come from the existing A=0.5 traces (N in {8,16,32,64})."
+  },
+  "benchmarks": {
+    "d0_null_csv": "manifold_results/cp2_correlation.csv",
+    "_note": "The manifold probe's D0 Spearman |rho| <= ~0.15 across all (A,N) is the null the collective-IC R^2 must beat. Printed alongside CP2."
+  },
+  "inputs": {
+    "phase_traces_jsonl": "absorption_results/phase_traces.jsonl",
+    "campaign_jsonl": "absorption_results/absorption_campaign.jsonl"
+  },
+  "output_dir": "transient_results"
+}

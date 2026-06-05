@@ -1,0 +1,50 @@
+{
+  "name": "breath-phase clustering + absorption check",
+  "version": "1.0.0",
+  "description": "Tests Avery's breath-synchronized-collapse hypothesis on the merged finite-N chimera collapse-time campaign: (CP2) do collapse times cluster at a specific phase of the incoherent population's breathing cycle, and (CP3) are the theta-crossings the criterion counts as collapse true absorptions (no recovery) rather than grazes? Dynamics-only; reuses the shipped-identical RK4 integrator and the campaign's collapse criterion verbatim. No audio path. Existing campaign data is read-only input; this module only adds new code.",
+  "model": {
+    "beta": 0.05,
+    "dt": 0.05,
+    "sampleStride": 0.1,
+    "t_max": 2000,
+    "theta": 0.85,
+    "W": 5.0,
+    "_note": "Identical to campaign.config.json / manifold.config.json. sampleStride=0.1 is REQUIRED for the determinism gate: the collapse criterion (need = round(W/sampleDt) consecutive samples above theta) depends on the sample cadence, so a coarser trace stride would not reproduce the logged lifetimes bit-for-bit. At 0.1s stride a ~25s breath is resolved by ~250 samples, far above the >=20 samples/cycle the phase test needs."
+  },
+  "cp1": {
+    "points": [
+      { "Np": 8, "A": 0.5 },
+      { "Np": 16, "A": 0.5 },
+      { "Np": 32, "A": 0.5 },
+      { "Np": 64, "A": 0.5 },
+      { "Np": 8, "A": 0.2 },
+      { "Np": 16, "A": 0.2 },
+      { "Np": 32, "A": 0.2 },
+      { "Np": 64, "A": 0.2 }
+    ],
+    "nSeedsPerPoint": 100,
+    "tailAfterCollapse": 60.0,
+    "M": 4,
+    "_seed_selection": "Per (N,A) point: the campaign logs seeds seed0+s for s=0..(nSeeds-1) (seed0=100000 for A=0.5, 200000 for A=0.2). The worker-pool output file is interleaved, so 'first 100 logged seeds' is taken deterministically as the 100 lowest seed ids present for the point (= seed0+0..99), skipping any right-censored run. This is reproducible from the committed campaign JSONL.",
+    "_tail_note": "tailAfterCollapse=60s gives CP3 its >=60s post-crossing window to test absorption-vs-recovery; collapses here are early (<<t_max) so the tail never truncates."
+  },
+  "cp2": {
+    "smoothWindowSec": 2.0,
+    "minProminenceFrac": 0.1,
+    "minPeakSepFrac": 0.5,
+    "minCyclesForPhase": 2,
+    "_note": "Breath period T_b from R_incoh(t) maxima over the pre-collapse window EXCLUDING the final (collapsing) cycle. Maxima are detected on R_incoh smoothed with a centered ~2s moving average (smoothWindowSec); a candidate is kept if its prominence exceeds minProminenceFrac of the pre-collapse R_incoh range and it is at least minPeakSepFrac * P_auto from the previous kept peak, where P_auto is the dominant period from the signal autocorrelation (self-tuning so no breath period is hard-coded). Runs that do not complete minCyclesForPhase=2 full breath cycles before collapse are EXCLUDED from the phase test and counted as the early-collapse fraction (itself informative). Collapse phase phi_c = 2*pi*(t_collapse - t_prevpeak)/T_b wrapped to [0,2pi); peak = phi 0."
+  },
+  "cp3": {
+    "recoveryThreshold": 0.8,
+    "recoveryWindowSec": 5.0,
+    "_note": "For every theta-crossing the criterion counted as collapse, track post-crossing min(R1,R2)=R_incoh over the >=60s tail. Recovery = R_incoh drops back below recoveryThreshold=0.80 sustained for >= recoveryWindowSec(=W) after the crossing. Also report the distribution of post-crossing minimum R_incoh, and (separately) the rate of sub-W grazes (R_incoh momentarily exceeds theta but the W-sustain criterion is not met) per run-hour over the pre-collapse window."
+  },
+  "rayleigh": {
+    "_formula": "Rayleigh test for circular non-uniformity: z = n * Rbar^2; p ~= exp(-z) * (1 + (2z - z^2)/(4n)). Mardia & Jupp, Directional Statistics (2000), eq. for the Rayleigh test of uniformity."
+  },
+  "inputs": {
+    "campaign_jsonl": "campaign_results/collapse_campaign.jsonl"
+  },
+  "output_dir": "phase_results"
+}

@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "worstAbsDev": 0,
+  "worstCase": null,
+  "totalTraced": 796,
+  "totalSkippedCensored": 4,
+  "sampleStride": 0.1,
+  "theta": 0.85,
+  "W": 5,
+  "perPoint": [
+    {
+      "N": 8,
+      "A": 0.5,
+      "traced": 100,
+      "skippedCensored": 0,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    },
+    {
+      "N": 16,
+      "A": 0.5,
+      "traced": 100,
+      "skippedCensored": 0,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    },
+    {
+      "N": 32,
+      "A": 0.5,
+      "traced": 100,
+      "skippedCensored": 0,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    },
+    {
+      "N": 64,
+      "A": 0.5,
+      "traced": 100,
+      "skippedCensored": 0,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    },
+    {
+      "N": 8,
+      "A": 0.2,
+      "traced": 96,
+      "skippedCensored": 4,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    },
+    {
+      "N": 16,
+      "A": 0.2,
+      "traced": 100,
+      "skippedCensored": 0,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    },
+    {
+      "N": 32,
+      "A": 0.2,
+      "traced": 100,
+      "skippedCensored": 0,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    },
+    {
+      "N": 64,
+      "A": 0.2,
+      "traced": 100,
+      "skippedCensored": 0,
+      "mismatches": 0,
+      "worstAbsDev": 0
+    }
+  ],
+  "_note": "Gate passes iff every traced re-run reproduced its logged campaign lifetime to within 1e-9 s. Same seed, same shipped RK4, same min(R1,R2)>theta sustained-for-W criterion at sampleStride=0.1."
+}

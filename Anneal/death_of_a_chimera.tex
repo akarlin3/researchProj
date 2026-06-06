@@ -1,0 +1,782 @@
+\documentclass[11pt]{article}
+% Port to the official AIP/Chaos template at task c10 (preamble swap only).
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{microtype}
+\graphicspath{{figures/}{paper_figures/}}
+
+\title{\bfseries Death of a chimera: breath-synchronized collapse of a\\ post-homoclinic transient in a two-population oscillator system}
+\author{Avery Karlin\\ \small ak5232@columbia.edu \quad github.com/akarlin3/annealMusic}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+We report a long-duration empirical study of chimera collapse in the two-population
+Sakaguchi--Kuramoto system with strictly identical natural frequencies, on the
+oscillator engine of a deployed additive synthesizer at small population sizes
+($N = 4$--$64$ per population). Its operational collapse detector --- and the
+first-passage criterion standard for chimera lifetimes --- measure the wrong
+observable: up to 98\% of sustained near-synchrony crossings recover as the chimera
+re-forms, and 69--97\% of detector firings are such self-healing \emph{grazes}.
+Under an absorption-grade label, true lifetimes at the operating corner ($A = 0.5$,
+$\beta = 0.05$) double, become $N$-independent ($\tau_{\mathrm{abs}} \approx 139$\,s
+over a $16\times$ range of $N$), and age (Weibull shape $2.3$--$3.0$). Deaths are
+breath-synchronized (pooled Rayleigh $p = 2.2\times10^{-6}$) and ratchet: per-cycle
+envelope maxima grow monotonically to capture. The reduced two-population model of
+Abrams \emph{et al.}, validated against its published bifurcations with no fitted
+parameters, explains the inversion: the operating corner lies beyond the homoclinic
+($A_{hc}(0.05) = 0.4096 < 0.5$), so the deployed ``chimera'' is a transient
+spiraling out along a destroyed limit cycle's ghost, while the nominally unreliable
+corner ($A = 0.2$) holds the system's only true attractor ($r^* = 0.678$; 51--78\%
+of seeds never absorb). It matches the breath period (25.0 vs.\ 21--25\,s) and
+spiral rates and predicts individual lifetimes beyond any static feature, yet
+captures $3.2\times$ faster than the finite-$N$ system dies. Finite-size
+fluctuations \emph{prolong} the transient --- an inversion of the usual
+noise-kills-metastability intuition; a direct test rules out additive collective
+noise, leaving the mechanism open.
+\end{abstract}
+
+\noindent\textit{Chimera states, in which a population of identical oscillators
+spontaneously splits into one synchronized group and one disordered group, are
+usually studied as a question in pure mathematics. Here the same phenomenon appears
+inside a working music synthesizer, where two coupled oscillator banks shape the
+sound and the software periodically judges the pattern ``dead'' and restarts it.
+Asking why it dies so often reveals that the restart trigger was watching the wrong
+quantity: most apparent deaths are momentary lapses that heal on their own. Once the
+genuine deaths are isolated, they prove regular, rhythmic, and no more frequent in
+large populations than small ones --- and a simple reduced model explains where and
+why they occur, while underpredicting how long the pattern survives, a discrepancy
+the paper leaves as an open problem.}
+
+\section{Introduction}\label{sec:intro}
+
+Chimera states --- the coexistence of synchronized and desynchronized populations in
+systems of identical coupled oscillators --- have been a central object of nonlinear
+dynamics since their discovery by Kuramoto and Battogtokh~\cite{kb2002} and naming by
+Abrams and Strogatz~\cite{as2004}. The two-population model of Abrams, Mirollo,
+Strogatz, and Wiley~\cite{abrams2008} made the phenomenon solvable: two identical
+populations with stronger intra- than inter-population coupling support stable
+chimeras, breathing chimeras born in a Hopf bifurcation, and a homoclinic boundary
+beyond which no chimera attractor survives. At finite size the picture is enriched by
+transience: on nonlocally coupled rings, chimeras are chaotic transients whose
+lifetimes grow with oscillator count~\cite{wo2011}, and the finite-$N$ fate of
+chimeras has remained a recurring theme of the literature
+since~\cite{pa2015,om2018}, including for two small populations of the kind
+studied here~\cite{panaggio2016}.
+
+This paper studies chimera collapse in an unusual arena: the oscillator engine of a
+deployed real-time additive synthesizer, in which a two-population
+Sakaguchi--Kuramoto bank with \emph{strictly identical} natural frequencies drives
+the partial amplitudes of a musical voice, and a supervisor process re-seeds the
+chimera whenever an engineering detector declares it dead. Coupled-oscillator
+networks have an established history as sound-synthesis drivers~\cite{lem2019,lemsmc};
+here the synthesis application matters to the dynamics only in that it fixes the
+regime of interest --- small populations ($N = 4$--$64$ per side), long unattended
+runtimes, and a specific operating corner chosen, as it turns out, for the wrong
+reason. The deployment prompts a question the theory literature rarely needs to ask
+operationally: \emph{what exactly is the death of a chimera, and what does a detector
+of it actually detect?}
+
+We answer with a chain of measurements, each gating the next, on a bit-reproducible
+integrator (2{,}100 baseline runs plus targeted re-campaigns; every figure
+regenerable from committed configurations). The contributions are:
+
+\begin{enumerate}
+\item \textbf{Graze versus absorption.} The operational collapse criterion ---
+sustained near-synchrony of the incoherent population --- overwhelmingly fires on
+events the chimera survives: up to 98\% of criterion-satisfying crossings recover,
+and 69--97\% of the deployed detector's firings are such grazes. We introduce a
+two-timescale, absorption-grade labeling and show first-passage ``lifetimes'' are
+roughly half the true absorption times (Sec.~\ref{sec:graze}).
+\item \textbf{An inverted stability picture.} Under absorption labeling, lifetimes at
+the operating corner are $N$-independent ($\approx 139$\,s, $N = 4$--$64$, every seed
+absorbing), while at the nominally unreliable high-morph corner the majority of seeds
+\emph{never} absorb: the operating corner has no chimera attractor at all, and the
+discarded corner holds the only persistent chimera in the system
+(Sec.~\ref{sec:stats}).
+\item \textbf{The death mechanism.} Collapse is a breath-synchronized ratchet:
+collapse attempts and true deaths lock to a phase of the breathing cycle, successive
+per-cycle envelope maxima grow monotonically (spiraling out exponentially toward the
+synchronization boundary), and hazard rises with cycle index. Transverse escape from
+the Poisson submanifold is ruled out by a validated observable and a null
+interventional test; lifetime is instead organized by the collective initial
+condition, dominantly the inter-population phase offset (Sec.~\ref{sec:mechanism}).
+\item \textbf{Closure by the reduced model --- and a clean open problem.} The reduced
+equations of Ref.~\cite{abrams2008}, validated against that paper's own published
+results and applied with a literal 1:1 timescale and zero fitted parameters, place
+the operating corner beyond the homoclinic ($A_{hc}(\beta{=}0.05) = 0.4096$),
+reproduce the breath period and per-cycle spiral rates, identify the never-absorbers'
+level with the stable chimera's $r^*$, and predict individual run lifetimes beyond
+any static feature of the seed. They also fail in one instructive way: mean-field
+capture is $3.2\times$ faster than finite-$N$ death, and the flat
+$\tau_{\mathrm{abs}}(N)$ is absent from the $N$-free collective flow --- finite-size
+fluctuations \emph{extend} the transient (Sec.~\ref{sec:reduced},
+Sec.~\ref{sec:discussion}).
+\end{enumerate}
+
+\section{System}\label{sec:system}
+
+The voice integrates two populations $\sigma \in \{1, 2\}$ of $N$ phase oscillators
+each,
+\begin{equation}
+\dot\theta_i^\sigma \;=\; \omega \;+\; \sum_{\sigma'} \frac{K_{\sigma\sigma'}}{N}
+\sum_{j=1}^{N} \sin\!\big(\theta_j^{\sigma'} - \theta_i^{\sigma} - \alpha\big),
+\label{eq:model}
+\end{equation}
+with intra-population coupling $K_{\sigma\sigma} = \mu = (1+A)/2$, inter-population
+coupling $K_{\sigma\sigma'} = \nu = (1-A)/2$ ($\mu + \nu = 1$, $A = \mu - \nu$), and
+phase lag $\beta = \pi/2 - \alpha$~\cite{kuramoto1984,sk1986}, matching the
+conventions of Ref.~\cite{abrams2008}. A code audit confirms the natural frequencies are identical
+\emph{exactly} ($\delta\omega = 0$: no per-oscillator frequency term, detuning
+explicitly zeroed on this path), so the dynamics is deterministic given the initial
+condition and collapse cannot be attributed to frequency disorder; we work in the
+$\omega = 0$ rotating frame. Integration is fourth-order Runge--Kutta with
+$dt = 0.05$ at a documented one-model-unit-per-second clock, so all times below are
+seconds with no conversion; halving and quartering $dt$ leaves lifetime
+distributions statistically indistinguishable (two-sample KS $p = 1.0$). All runs are
+bit-reproducible from logged (seed, parameters, $dt$); every re-analysis below begins
+by reproducing the upstream labels exactly.
+
+In the application, the incoherent population's per-oscillator coherences modulate
+the gains of an additive partial bank, $g_i' = g_i\,[\,1 + d\,a\,(c_i - \tfrac12)\,]$
+with $c_i = \tfrac12(1 + \cos(\theta_i - \psi))$, turning the chimera's collective
+dynamics into a slowly self-morphing spectrum; the synthesis layer plays no further
+role in the dynamics studied here. Runs are initialized with the canonical chimera
+seed (one population tightly clustered, the other spread), since spontaneous chimera
+formation from random phases is negligible in this regime. The deployed supervisor
+declares the state alive while $\max_\sigma R_\sigma > 0.9$ and
+$\min_\sigma R_\sigma < 0.85$, fires after 2\,s of sustained violation, and re-seeds
+the incoherent population. The baseline campaign comprises 200 seeds per population
+size at the operating corner ($A = 0.5$) and 100 at the high-morph corner
+($A = 0.2$), $N \in \{4, 8, 16, 24, 32, 48, 64\}$, $\beta = 0.05$ throughout,
+integrated unsupervised to $t_{\max} = 2000$\,s.
+
+\section{Graze versus absorption}\label{sec:graze}
+
+What counts as the death of a chimera? In a deployed system the answer is
+operational: the supervisor's aliveness condition fails continuously for 2\,s, and
+our initial lifetime campaign used the closely related first-passage criterion that
+$\min(R_1, R_2)$ exceed a threshold $\theta = 0.85$ sustained for $W = 5$\,s. Both
+definitions encode the same assumption: that a sustained excursion of the incoherent
+population to near-synchrony \emph{is} the death of the chimera. This section shows
+that assumption is wrong, and replaces it.
+
+\subsection{Threshold crossings overwhelmingly recover}
+
+Extending the recorded trajectories past their first criterion-satisfying crossing,
+rather than terminating there, reveals that the crossing is usually not absorbing. At
+the operating corner and across $N = 8$--$64$, up to 98\% of first crossings ---
+excursions exceeding $\theta$ for longer than the full 5\,s sustain window --- are
+followed by recovery: the incoherent population desynchronizes again, with
+post-crossing minima of $\min(R_1, R_2)$ clustering at 0.2--0.45, a fully re-formed
+chimera. About two-thirds of these recovered trajectories are later absorbed for
+good; the remainder churn through further graze--recover cycles. The first sustained
+crossing is therefore a \emph{graze} of the synchronization boundary, not a death,
+and first-passage lifetimes computed from it measure time-to-first-long-graze.
+
+Figure~\ref{fig:trace} shows a representative trajectory ($N = 16$, $A = 0.5$; seed
+pinned in the released configuration). The run grazes twice --- each time exceeding
+$\theta$ for more than 5\,s before the chimera re-forms --- and is absorbed on its
+third approach at $t_{\mathrm{abs}} = 221.9$\,s, having first ``collapsed'' by the
+engineering criterion at $t_{\mathrm{graze}} = 83.2$\,s. The shipped supervisor's
+detector fires \emph{six times} on this trajectory before the single event that is
+irreversible: six firings, two reforms, one death.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{fig1}
+\caption{A graze is not a death. $\min(R_1, R_2)$ for a single run ($N = 16$,
+$A = 0.5$, $\beta = 0.05$; breath period $T_b = 20.5$\,s). The trajectory crosses
+$\theta = 0.85$ (upper line) in sustained excursions twice, recovering below the
+0.80 recovery threshold (lower line) each time as the chimera re-forms, before the
+absorbing crossing at $t_{\mathrm{abs}} = 221.9$\,s. The engineering first-passage
+label $t_{\mathrm{graze}} = 83.2$\,s and the six firings of the deployed 2-s detector
+are marked.}
+\label{fig:trace}
+\end{figure}
+
+\subsection{An absorption-grade label}
+
+We therefore assign every run two timescales from a single trace. The first,
+$t_{\mathrm{graze}}$, is the unmodified first-passage label, retained for
+comparability. The second, $t_{\mathrm{abs}}$, is the time of the first crossing
+\emph{not} followed by recovery --- $\min(R_1, R_2) < 0.80$ sustained at least
+5\,s --- within a verification horizon $T_v = 120$\,s; runs still alternating
+between grazes and recoveries at the integration horizon are right-censored.
+
+The absorption label is robust to its own knobs where it matters. Sweeping
+$T_v \in \{60, 120, 240\}$\,s against recovery thresholds $\{0.75, 0.80\}$ moves
+$\hat\tau_{\mathrm{abs}}$ by 22--27\% at $A = 0.5$, monotonically in $T_v$ and
+negligibly in the recovery threshold --- comparable to or better than the
+$\sim$52\% $(\theta, W)$-sensitivity of the graze criterion itself. At $A = 0.2$
+the apparent sensitivity is dominated by censoring rather than the labeling
+parameters, for a reason Sec.~\ref{sec:stats} shows is dynamical: most $A = 0.2$
+trajectories never absorb at all.
+
+The quantitative consequence at the operating corner is a factor of two:
+$\hat\tau_{\mathrm{graze}} \approx 63$--$67$\,s against
+$\hat\tau_{\mathrm{abs}} \approx 139$\,s (Fig.~\ref{fig:tau}). First-passage chimera
+lifetimes computed with engineering-style criteria systematically measure the wrong,
+and roughly halved, quantity.
+
+\subsection{The deployed detector is a graze detector}
+
+Replaying the shipped detector over the same unsupervised trajectories and
+classifying each firing by whether the underlying event self-recovers gives
+Table~\ref{tab:overtrigger}: 69--79\% of firings at $A = 0.5$, and 95--97\% at
+$A = 0.2$, occur on grazes the chimera survives on its own. The deployed system has
+been re-seeding a state that was mostly not dead --- harmless in practice, since
+re-seeding lands near where the trajectory already was, but diagnostic of the
+conceptual gap this section closes: engineering collapse detection and dynamical
+absorption are different observables. All statistics below are computed on
+$t_{\mathrm{abs}}$ unless noted.
+
+\begin{table}[t]
+\centering
+\caption{Supervisor over-trigger: fraction of the deployed 2-s detector's firings,
+replayed over unsupervised traces, occurring on self-recovering grazes.}
+\label{tab:overtrigger}
+\begin{tabular}{ccccc}
+\toprule
+$A$ & $N$ & firings/run & over-trigger & median wasted (s) \\
+\midrule
+0.5 & 8  & 7.2  & 79\% & 4.4 \\
+0.5 & 16 & 5.2  & 76\% & 2.4 \\
+0.5 & 32 & 4.1  & 73\% & 3.9 \\
+0.5 & 64 & 3.3  & 69\% & 5.3 \\
+0.2 & 8  & 12.3 & 95\% & 2.0 \\
+0.2 & 16 & 9.8  & 97\% & 1.8 \\
+0.2 & 32 & 7.9  & 96\% & 1.7 \\
+0.2 & 64 & 4.7  & 95\% & 1.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig2}
+\caption{Graze versus absorption lifetimes. Exponential-MLE
+$\hat\tau_{\mathrm{graze}}$ and $\hat\tau_{\mathrm{abs}}$ versus $N$ at both
+coupling disparities. At $A = 0.5$ absorption lifetimes are $\approx 2.2\times$ the
+first-passage values and flat in $N$; at $A = 0.2$ no absorption lifetime is
+defined for the majority of seeds (Sec.~\ref{sec:stats}).}
+\label{fig:tau}
+\end{figure}
+
+\section{Absorption statistics at finite $N$}\label{sec:stats}
+
+\subsection{A flat plateau at the operating corner}
+
+At $A = 0.5$, every one of the 1{,}400 seeds absorbs within the horizon (0\%
+censored at every $N$), and the absorption lifetime is $N$-independent:
+$\hat\tau_{\mathrm{abs}} = 139, 152, 143, 131, 136, 136, 135$\,s for
+$N = 4$--$64$, a ratio $\tau(64)/\tau(4) = 0.97$ over a sixteen-fold range of
+population size, with fitted exponential rate in $N$ indistinguishable from zero.
+The weak rise from $N = 4$ to $16$ visible in the graze times
+($39 \to 72$\,s) does not survive absorption labeling --- it was a graze artifact.
+The published-style picture of a lifetime that grows with oscillator count, familiar
+from ring-topology chimeras~\cite{wo2011}, is absent here in both label and shape:
+adding partials does not buy persistence at this corner, at any tested $N$.
+
+\subsection{The inversion: the high-morph corner never lets go}
+
+The corner the application had classified as unreliable behaves in the opposite way.
+At $A = 0.2$, between 51\% and 78\% of seeds (rising with $N$) \emph{never absorb}:
+extending the horizon eightfold to $t_{\max} = 16{,}000$\,s leaves the censored
+fraction essentially unchanged, so the censoring is irreducible --- a dynamical
+finding, not a horizon artifact. The minority that does absorb does so promptly and
+increasingly on the first approach: the zero-graze fraction among absorbers rises
+from 0.08 at $N = 4$ to 0.96 at $N = 64$. Capture at $A = 0.2$ is bimodal ---
+absorb almost immediately, or settle into a persistent, intermittently grazing
+chimera~\cite{sudaokuda2015} with no defined absorption time. The stability folklore of the deployment is
+therefore inverted: the ``reliable'' corner always dies, and the ``risky'' corner
+contains the only immortal chimeras in the system. Section~\ref{sec:reduced} shows
+both facts are exactly where the bifurcation diagram says they should be.
+
+\subsection{Aging: hazard rises with every breath}
+
+Absorption at $A = 0.5$ is not memoryless. Censored-Weibull fits give shape
+parameters $k_{\mathrm{abs}}$ of $2.27$, $2.22$, $2.49$, $2.67$, $2.44$, $2.72$, and
+$3.03$ for the seven sizes $N = 4$--$64$, all confidence intervals well above 1 (Fig.~\ref{fig:weibull}) ---
+stronger aging than in the graze times ($k_{\mathrm{graze}} = 0.82$--$2.19$), so the
+survival shoulder is not a labeling artifact. The natural per-breath Bernoulli model
+--- a constant absorption probability per high-$R$ pass --- is rejected at every
+$A = 0.5$ point ($\chi^2$ $p < 0.001$ against geometric cycles-to-absorption;
+Weibull-in-cycles shape $k_{\mathrm{cyc}} \approx 2.1$--$2.9$): the per-pass hazard
+\emph{rises} with cycle index. The average per-pass absorption probability
+$\hat p$ nonetheless tracks the plateau, rising from 0.28 at $N = 4$ to 0.44 by
+$N = 24$ and flattening (Fig.~\ref{fig:geometric}), while the mean number of
+recovered grazes before death falls from 2.5 to 1.25. At $A = 0.2$ the strong
+apparent aging in the graze statistics ($k_{\mathrm{graze}}$ up to 5.3) is retired:
+on the few true absorptions $k_{\mathrm{abs}} \approx 0.3 < 1$, a fast, front-loaded
+minority rather than aging. The never-absorbers hold a mean incoherent-population
+level $\overline{R}_{\mathrm{incoh}} \approx 0.66$--$0.68$, sitting at the stable
+fixed point $r^* = 0.678$ identified in Sec.~\ref{sec:reduced}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{fig3}
+\caption{Absorption survival and aging. Kaplan--Meier survival curves by $N$
+(left, $A = 0.5$) develop a shoulder with increasing $N$; censored-Weibull shape
+$k_{\mathrm{abs}}(N)$ (right) rises from 2.3 to 3.0 with all confidence intervals
+above the memoryless value $k = 1$.}
+\label{fig:weibull}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig4}
+\caption{Per-pass absorption statistics at $A = 0.5$. Mean per-pass absorption
+probability $\hat p(N)$ rises then plateaus, mirroring $\tau_{\mathrm{abs}}(N)$;
+the geometric (constant-$p$) model is rejected at every point --- hazard rises with
+cycle index ($k_{\mathrm{cyc}} > 1$).}
+\label{fig:geometric}
+\end{figure}
+
+\section{Mechanism: the breath-synchronized ratchet}\label{sec:mechanism}
+
+\subsection{Deaths lock to the breathing phase}
+
+The chimera at $A = 0.5$ breathes: $\min(R_1, R_2)$ oscillates with period
+$T_b \approx 21$--$25$\,s, its envelope reaching $\approx 0.83$ against the
+$\theta = 0.85$ boundary --- the cycle passes within a hair of near-synchrony once
+per breath. Collapse \emph{attempts} (long grazes) lock to this cycle: their phases
+relative to the preceding envelope peak cluster at 0.13--0.20 of the cycle, with
+resultant length tightening from 0.43 to 0.69 as $N$ grows and pooled Rayleigh
+$p \approx 0$. True absorptions inherit the lock: pooled over $A = 0.5$,
+$\bar R = 0.21$ with Rayleigh $p = 2.2\times10^{-6}$ (three of six individually
+testable points significant; clustering weakens at large $N$, where capture
+completes within 2--3 cycles and leaves few phases to test). Mean absorption takes
+roughly six breaths ($\tau_{\mathrm{abs}}/T_b \approx 6$). Death, when it comes,
+comes at a particular moment of the breath (Fig.~\ref{fig:rose}).
+
+\subsection{The envelope ratchets monotonically to capture}
+
+Within individual runs, successive breathing maxima $M_k$ of $\min(R_1, R_2)$ do not
+fluctuate about a level --- they climb. The mean per-cycle increment
+$\langle \Delta M \rangle$ is $+0.031, +0.052, +0.078, +0.091$ for
+$N = 8, 16, 32, 64$, with cluster-bootstrap confidence intervals strictly positive
+at every point; the fraction of runs with monotone (allowing one inversion) maxima
+reaches 1.00 by $N = 32$. Where enough sub-threshold approach peaks exist to fit,
+$\log(\theta - M_k)$ falls linearly in cycle index with median slopes $-0.55$ to
+$-0.77$ and a negative slope in 100\% of fittable runs: the approach to the
+synchronization boundary is an exponential spiral-out (Fig.~\ref{fig:ratchet}). The
+control rules out artifacts: the same detector and windowing applied to the
+$A = 0.2$ never-absorbers over a median of $\sim$200 cycles gives
+$\langle \Delta M \rangle \approx -0.001$ and a ratchet fraction of exactly zero ---
+stationary, with a slight \emph{relaxation} consistent with settling onto an
+attractor.
+
+\subsection{What collapse is not, and what organizes it}
+
+Because the oscillators are strictly identical, a natural mechanism would be escape
+transverse to the Poisson (Ott--Antonsen) submanifold~\cite{ott2008,ott2009} on
+which the reduced chimera solutions live. We tested this directly with the moment observable
+$D = \sum_{m=2}^{4} |Z_m - Z_1^m|^2$, validated in three stages (the Poisson
+identity $Z_m = Z_1^m$ to machine precision on M\"obius-constructed states;
+dynamical invariance of on-manifold initial conditions under the shipped integrator;
+a clustered-state contrast), and the hypothesis fails comprehensively: initial
+distance $D_0$ does not predict lifetime ($|\rho| \le 0.15$ at all fourteen
+parameter points), event-aligned $\langle D \rangle$ shows no ramp preceding
+collapse, and a paired interventional experiment injecting controlled $D_0$ levels
+leaves lifetimes flat. Collapse is not transverse escape.
+
+It is instead organized in the collective coordinates. Among static features of the
+seed, the initial inter-population phase offset dominates: $|\Delta\phi_0|$
+anticorrelates with lifetime at $\rho \approx -0.43$ to $-0.59$ for $N \ge 8$
+(median magnitude 0.52), versus the $D_0$ null's $\le 0.08$, and a cross-validated
+regression on the $t = 0$ collective features reaches $R^2 \approx 0.2$
+(quadratic up to 0.44). Larger initial phase separation between the populations
+means earlier death --- a fact Sec.~\ref{sec:reduced} converts from regression to
+dynamics.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig5}
+\caption{Breath-phase locking. Circular histograms of collapse-attempt phases
+(left) and true-absorption phases (right) relative to the preceding breathing-envelope
+peak, $A = 0.5$. Attempts cluster at 0.13--0.20 of the cycle (pooled Rayleigh
+$p \approx 0$); absorptions inherit the lock (pooled $p = 2.2\times10^{-6}$).}
+\label{fig:rose}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{fig6}
+\caption{The ratchet. Ensemble-averaged breathing maxima $\langle M_k \rangle$
+versus cycle index $k$ at $A = 0.5$ for several $N$, with the $A = 0.2$
+never-absorber band (stationary, $\langle \Delta M \rangle \approx -0.001$) for
+contrast. Per-cycle increments are strictly positive at every $N$;
+$\log(\theta - M_k)$ falls linearly (median slopes $-0.55$ to $-0.77$).}
+\label{fig:ratchet}
+\end{figure}
+
+\section{Reduced dynamics: the post-homoclinic ghost}\label{sec:reduced}
+
+\subsection{The reduced system, validated against its source}
+
+In the $N \to \infty$ mean-field, the two-population system closes in the
+per-population order parameters. Writing $\rho_\sigma e^{-i\phi_\sigma}$ for
+population $\sigma$'s centroid, the reduced flow is~\cite{abrams2008}
+\begin{equation}
+\dot\rho_1 = -\frac{\rho_1^2 - 1}{2}\Big[\mu \rho_1 \cos\alpha
++ \nu \rho_2 \cos(\phi_2 - \phi_1 - \alpha)\Big],
+\label{eq:threeD}
+\end{equation}
+together with the corresponding $\dot\phi_1$ equation and the $1 \leftrightarrow 2$
+images; rotational symmetry reduces this to three variables
+$(\rho_1, \rho_2, \psi = \phi_1 - \phi_2)$. On the invariant manifold $\rho_1 = 1$
+(synchronized population exactly locked) the flow further reduces to two variables
+$(r = \rho_2, \psi)$, Eq.~(12) of Ref.~\cite{abrams2008}, whose stationary chimeras,
+saddle-node curve $A_{SN}(\beta)$, and Hopf curve $A_H(\beta)$ are known in closed or
+series form, with the linear stability of these two-population chimeras
+characterized in detail by Laing~\cite{laing_twopop}.
+
+Before applying any of this to our system, the implementation was gated against the
+source paper itself: the parametrized stationary chimeras zero the reduced
+right-hand side to $4\times10^{-16}$; integration reproduces the published regimes
+at $\beta = 0.1$ (stationary at $A = 0.2$; breathing at $A = 0.28$ and $0.35$, with
+the longer period at the larger $A$); and numerically located saddle-node and Hopf
+points match the published series to $5\times10^{-5}$. Every number below is
+parameter-free and, by the integrator's documented clock, in literal seconds.
+
+\subsection{The two corners straddle the bifurcation set}
+
+At $\beta = 0.05$: $A_{SN} = 0.0948$, $A_H = 0.2703$, and the homoclinic --- located
+by bisection on the divergence of the breathing cycle's period --- at
+$A_{hc} = 0.4096$ (bracket width $8.8\times10^{-5}$). Traced over
+$\beta \in [0.03, 0.20]$, the homoclinic curve descends, turns, and rises into the
+Takens--Bogdanov point at $(0.2239, 0.3372)$ where it meets the saddle-node and Hopf
+curves --- the non-monotone approach is demanded by the termination and serves as an
+internal consistency check (Fig.~\ref{fig:diagram}).
+
+The verdicts follow immediately. $A = 0.2$ lies in the stable-chimera band
+($A_{SN} < 0.2 < A_H$): the reduced system has a stable stationary chimera at
+$r^* = 0.6781$ (integration amplitude decaying to $10^{-9}$), with weak relaxation
+$\sigma = -0.0054$\,s$^{-1}$ --- matching the never-absorbers, whose mean
+incoherent level sits at $r^*$ and whose envelope drifts slightly \emph{down}, and
+explaining the bimodal capture as a basin question: seeds either fall to
+synchrony on the first approach or onto the chimera attractor forever. $A = 0.5$
+lies beyond the homoclinic ($0.5 > A_{hc} = 0.4096$): \emph{no chimera attractor
+exists at the operating corner}. The chimera fixed point is an unstable spiral
+($\sigma = +0.01243$\,s$^{-1}$, $\omega = 0.3277$\,s$^{-1}$), the breathing limit
+cycle that once surrounded it is destroyed, and sync is globally attracting. What
+the deployed voice has been operating is a transient spiraling outward along the
+ghost of that destroyed cycle (Fig.~\ref{fig:portraits}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig7}
+\caption{Stability diagram of the two-population system in the $(\beta, A)$ plane:
+saddle-node (Eq.~17 of Ref.~\cite{abrams2008}) and Hopf (Eq.~18) curves with numeric
+checks, the numerically traced homoclinic curve terminating at the Takens--Bogdanov
+point $(0.2239, 0.3372)$, and the two operating corners of the deployed system. The
+nominally stable corner ($A = 0.5$) is post-homoclinic --- no chimera attractor ---
+while the nominally unreliable corner ($A = 0.2$) sits inside the stable-chimera
+band.}
+\label{fig:diagram}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{fig8}
+\caption{Reduced-system phase portraits at $\beta = 0.05$. Left ($A = 0.2$): stable
+chimera spiral at $r^* = 0.678$ with the saddle and its manifolds organizing the
+basin. Right ($A = 0.5$): the chimera fixed point is an unstable spiral
+($\sigma = +0.0124$\,s$^{-1}$); canonical-seed trajectories spiral out to
+synchronization.}
+\label{fig:portraits}
+\end{figure}
+
+\subsection{Quantitative match with no fitted parameters}
+
+Table~\ref{tab:match} compares the reduced flow to the finite-$N$ measurements. The
+spiral's rotation gives a linear breath period $2\pi/\omega = 19.2$\,s and a
+nonlinear period of 25.0\,s for trajectories at canonical-seed amplitudes ---
+bracketing the measured 21--25\,s. The reduced per-cycle approach slopes,
+computed identically to the measurement from each run's seed-mapped initial
+condition, are $-0.62, -0.66, -0.66, -0.73$ for $N = 8$--$64$ against measured
+$-0.55, -0.50, -0.59, -0.77$: the trend with $N$ is reproduced even though the
+reduced flow is $N$-free, because the seed ensembles at different $N$ occupy
+different collective initial conditions (mean $R_{\mathrm{incoh},0}$ falls
+$\sim 1/\sqrt N$). The single substantial mismatch is the absolute capture time:
+the reduced median is 43\,s against the measured 139\,s --- the mean-field flow
+dies $3.2\times$ faster than the finite-$N$ system (Sec.~\ref{sec:discussion}).
+(A single trajectory started near the focus, by contrast, escapes only at
+$\approx 726$\,s: at $\sigma = 0.0124$\,s$^{-1}$ the $\sim$9 e-folds from a
+near-focus deviation take exactly that long, while the seed ensemble starts at
+finite amplitude --- the two timescales are the same spiral read from different
+starting radii.)
+
+\begin{table}[t]
+\centering
+\caption{Reduced flow versus finite-$N$ measurement at the operating corner
+($A = 0.5$, $\beta = 0.05$). No fitted parameters; times in seconds at the
+integrator's documented 1:1 clock. The ratio is reduced$/$measured throughout; the
+final row reports the $A = 0.2$ chimera level for comparison.}
+\label{tab:match}
+\begin{tabular}{lccc}
+\toprule
+quantity & reduced & measured & ratio (reduced/measured) \\
+\midrule
+breath period $T_b$ & 25.0 (linear 19.2) & 21--25 & $\approx 1.1$ \\
+per-cycle spiral slope (pooled) & $-0.67$ & $-0.55$ to $-0.77$ & $\approx 1.0$ \\
+median capture time & 43 & 139 & 0.31 \\
+$A{=}0.2$: chimera level & $r^* = 0.678$ & $\overline{R}_{\mathrm{incoh}} = 0.66$--$0.68$ & $\approx 1.0$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Individual lifetimes from a three-variable model}
+
+Finally, the reduced system predicts \emph{individual} deaths. Mapping every
+$A = 0.5$ seed to its collective coordinates
+$(\rho_1, \rho_2, \psi)_0 = (R_{\mathrm{sync}}, R_{\mathrm{incoh}},
+\Delta\phi)_0$ and integrating the three-variable flow to capture yields a
+predicted lifetime whose Spearman correlation with the measured
+$t_{\mathrm{abs}}$ is 0.445 pooled (up to 0.60 per $N$) --- comparable to the best
+fitted static feature --- and, crucially, carries a \emph{positive partial
+correlation of $+0.20$--$0.32$ beyond $|\Delta\phi_0|$ at every $N$}: the
+parameter-free dynamics predicts lifetime variance no static regression on the
+same inputs captures (Fig.~\ref{fig:scatter}). The transverse coordinate stays
+quiet throughout ($\rho_1$ deviating from 1 by $\le 0.003$ median), justifying the
+manifold picture a posteriori. This $N$-independence is not merely a mean-field
+artifact: for identical oscillators under global sinusoidal coupling,
+Watanabe--Strogatz theory~\cite{ws1993,ws1994} confines each population to a
+three-parameter manifold at \emph{every} $N$ --- as the group-theoretic~\cite{mms2009}
+and hierarchical-population~\cite{pr2008} formulations make explicit --- so the
+three-variable flow integrated here is the exact collective dynamics, not a
+large-$N$ approximation.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{fig9}
+\caption{Run-by-run lifetime prediction. Reduced-model capture time from each
+seed's collective initial condition versus measured $t_{\mathrm{abs}}$, colored by
+$N$ ($A = 0.5$; pooled Spearman $\rho = 0.445$; partial correlation beyond
+$|\Delta\phi_0|$ positive at every $N$).}
+\label{fig:scatter}
+\end{figure}
+
+\section{Discussion}\label{sec:discussion}
+
+\textbf{The inversion, operationally.} The deployed voice's celebrated reliability
+--- $\approx 96\%$ in-state over half-hour renders --- is revealed as 100\%
+supervisor-maintained: at the operating corner there is nothing to be reliable,
+since every unsupervised trajectory dies in $\approx 139$\,s regardless of how many
+oscillators are added. Conversely the corner discarded as unreliable holds the
+system's only genuine attractor. For applications, two consequences follow. First,
+supervision is \emph{intrinsic} to post-homoclinic operation at any $N$ ---
+re-seeding is not a finite-size patch but the entire persistence mechanism. Second,
+collapse detection should be absorption-grade: a detector with a recovery window
+(rather than the 2-s sustain rule, which over-triggers on 69--97\% of firings)
+would intervene an order of magnitude less often for the same uptime.
+
+\textbf{The open problem: noise that prolongs.} The reduced flow explains the
+geometry of death --- where the corners sit, the breath period, the spiral rate,
+even individual lifetimes' ordering --- but captures $3.2\times$ too fast, and the
+flat $\tau_{\mathrm{abs}}(N)$ plateau has no analog in an $N$-free collective flow.
+Both point the same direction: finite-$N$ fluctuations \emph{extend} the transient's
+life relative to mean-field, the opposite of the usual intuition in which noise
+destroys metastable states. At the operating corner this prolongation is $N$-independent --- the same factor of
+$3.2$ across the full $16\times$ range of $N$ --- though that independence is itself
+a property of the corner's depth beyond the homoclinic, not of every post-homoclinic
+parameter: at $\beta = 0.10$ it survives at the depth-matched point (coefficient of
+variation $0.14$ across $N$) but weakens at the deeper $A = 0.5$, where the factor
+falls from $2.0$ to $1.1$ (Appendix~\ref{app:beta}). A natural candidate for the
+prolongation is fluctuation-induced re-injection --- finite-size kicks scattering the
+trajectory back toward the ghost region the deterministic spiral is leaving. We
+tested the simplest version directly (Appendix~\ref{app:noise}): additive Gaussian
+noise of amplitude $c/\sqrt N$ on the collective variables of the reduced flow. It
+does produce re-injection and prolongation, but the prolongation is
+$N$-\emph{dependent} --- strong at small $N$ and absent by $N = 64$ --- because the
+noise amplitude is. The observed $N$-independent factor of $3.2$ at the operating
+corner therefore rules out additive collective noise and points to a mechanism whose
+effective re-injection strength does not scale away as $1/\sqrt N$ (for example
+structured or multiplicative fluctuations tied to the breath cycle). We report the
+puzzle as measured and leave the responsible mechanism open; the rising-hazard
+(aging-in-cycles) structure and the breath-locked phase distribution remain sharp
+constraints any such theory must satisfy.
+
+\textbf{Relation to ring-topology transients.} On nonlocally coupled rings,
+finite-size chimeras are chaotic transients with lifetimes growing rapidly in
+$N$~\cite{wo2011}. The two-population mean-field case is qualitatively different:
+its collective flow is $N$-free, the $N$-dependence entering only through the
+initial-condition ensemble --- and correspondingly we find no lifetime growth at
+all. The contrast suggests the $N$-scaling of chimera transience is a property of
+coupling topology rather than of chimeras per se.
+
+\textbf{Scope.} All results are at strictly identical frequencies, equal population
+sizes, the shipped phase lag ($\beta = 0.05$, with the phenomenology reproduced at
+$\beta = 0.10$; Appendix~\ref{app:beta}), and one canonical seed family; the absolute
+$\tau_{\mathrm{abs}}$ carries the documented 22--27\% labeling sensitivity; and the
+collective-coordinate summaries are a lossy projection of the $2N$-phase state
+(weakest at $N = 4$, where they predict little). Within that scope, every headline
+claim is criterion-robust, bit-reproducible, and regenerable from committed
+configurations.
+
+\section{Conclusion}\label{sec:conclusion}
+
+An engineering question --- why does a synthesizer's chimera need so much
+re-seeding? --- unwound into a dynamical one. The collapse detector turns out to
+detect grazes, not deaths: most sustained near-synchrony excursions heal, and true
+absorption takes twice as long as first passage suggests. Corrected lifetimes are
+$N$-independent and aging, deaths lock to the breathing phase and arrive by a
+monotone ratchet of the envelope, and the bifurcation structure of the reduced
+two-population model explains why: the operating corner lies beyond the homoclinic,
+so the deployed state is a transient on a destroyed cycle's ghost, while the
+discarded corner holds the true chimera attractor. A three-variable, parameter-free
+flow predicts the period, the spiral rate, and the ordering of individual deaths
+--- and underestimates their timing by $3.2\times$, leaving one clean open problem:
+at finite $N$, fluctuations make this chimera live longer, not die faster.
+
+\section*{Acknowledgments}
+No external funding supported this work. Generative AI tools (Anthropic Claude and
+Claude Code) were used to implement the analysis code and experiment harnesses and
+to assist in drafting the manuscript text; all results, derivations, and citations
+were verified by the author, who takes full responsibility for the content.
+
+\section*{Author Declarations}
+
+\subsection*{Conflict of Interest}
+The author has no conflicts to disclose.
+
+\subsection*{Author Contributions}
+\textbf{Avery Karlin:} Conceptualization (lead); Methodology (lead); Software
+(lead); Formal analysis (lead); Investigation (lead); Data curation (lead);
+Visualization (lead); Writing -- original draft (lead); Writing -- review \&
+editing (lead).
+
+\section*{Data Availability}
+The data and code that support the findings of this study --- the integrator,
+experiment harnesses, campaign records (JSONL), committed configurations, and
+figure-generation scripts --- are available in the annealMusic repository at
+github.com/akarlin3/annealMusic and will be deposited, with a citable archival DOI,
+upon submission; python3 tools/paper-figures/run\_all.py regenerates all figures.
+
+\appendix
+
+\section{Robustness of the phenomenology at $\beta = 0.10$}\label{app:beta}
+
+To show the operating-corner phenomenology is not an artifact of the shipped phase
+lag $\beta = 0.05$, we repeated the finite-$N$ campaign at $\beta = 0.10$, the value
+at which the reduced model is validated against the published
+regimes~\cite{abrams2008}. Reduced-model placement gives a saddle-node at
+$A_{SN} = 0.178$, a Hopf at $A_H = 0.278$, and a homoclinic at
+$A_{hc}(0.10) = 0.354$ (bisection bracket width $9\times10^{-5}$). We sampled the
+post-homoclinic corner $A = 0.5$ (parallel to the operating corner) and, to match its
+distance beyond the homoclinic, a depth-matched point
+$A = A_{hc} + 0.090 = 0.444$; $A = 0.2$ and a cleaner mid-band point $A = 0.24$ sit
+in the stable-chimera band as never-absorber controls.
+
+Every headline result survives (Fig.~\ref{fig:appA}). The absorption lifetime is flat
+in $N$ ($\hat\tau_{\mathrm{abs}}(64)/\hat\tau_{\mathrm{abs}}(8) = 0.93$ at $A = 0.5$;
+$0.87$ at $A = 0.444$; fitted exponential rate $\approx -1\times10^{-3}$ per
+oscillator, zero censoring). The censored-Weibull shape stays above one
+($k_{\mathrm{abs}} = 1.8$--$2.8$ at $A = 0.5$, $1.4$--$1.6$ at $A = 0.444$), so hazard
+still rises. The per-cycle ratchet is positive
+($\langle\Delta M\rangle = +0.06$ to $+0.19$, bootstrap CIs excluding zero), and true
+absorptions remain breath-phase-locked (pooled Rayleigh $p = 6.5\times10^{-5}$). The
+reduced flow reproduces the breath period ($\approx 23$--$25$\,s, measured
+$20$--$25$\,s) and spiral rate. The stable-band controls behave as expected: the
+mid-band $A = 0.24$ holds a near-$N$-independent persistent fraction ($44\%$ at
+$N = 8$, $52\%$ at $N = 64$; 50 seeds each), a cleaner never-absorber control than
+$A = 0.2$, whose persistent fraction swings more widely ($28\%$ to $60\%$) as it sits
+close to $A_{SN}$.
+
+One caveat refines a body-text claim. The transient is shallower at $\beta = 0.10$
+($\approx 2$ breath cycles to absorption vs $\approx 6$ at the operating corner), and
+correspondingly the reduced-to-measured capture ratio --- the $3.2\times$ prolongation
+of Sec.~\ref{sec:discussion} --- is $N$-independent only at comparable post-homoclinic
+depth. At the depth-matched $A = 0.444$ it stays flat (coefficient of variation $0.14$
+across $N$), but at the deeper $A = 0.5$ it falls from $2.0$ to $1.1$ across $N$. The
+$N$-independence of the prolongation is thus a property of the operating corner's
+depth beyond the homoclinic, not of every post-homoclinic parameter.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{figA}
+\caption{Robustness at $\beta = 0.10$. (a)~Absorption lifetime
+$\hat\tau_{\mathrm{abs}}(N)$ is flat in $N$ at both the post-homoclinic corner
+$A = 0.5$ and the depth-matched $A = 0.444$. (b)~Censored-Weibull shape
+$k_{\mathrm{abs}}(N)$ stays above the memoryless value $k = 1$ (aging persists).
+(c)~True-absorption breath phases remain clustered (pooled $\bar R = 0.34$, Rayleigh
+$p = 6.5\times10^{-5}$, $n = 79$).}
+\label{fig:appA}
+\end{figure}
+
+\section{A finite-size noise test of fluctuation re-injection}\label{app:noise}
+
+The reduced flow captures $\approx 3.2\times$ faster than the finite-$N$ system, and at
+the operating corner that prolongation is $N$-independent
+(Sec.~\ref{sec:discussion}). The natural candidate --- fluctuation-induced
+re-injection --- predicts that adding finite-size noise to the collective flow should
+reproduce both facts. We tested this directly, integrating the three-variable reduced
+flow at the operating corner ($A = 0.5$, $\beta = 0.05$) with the Euler--Maruyama
+scheme and adding Gaussian noise of amplitude $\sigma_{\mathrm{noise}} = c/\sqrt N$ to
+the collective variables $(\rho_1, \rho_2, \psi)$, with reflection keeping $\rho$ in
+$[0,1]$. At $c = 0$ the scheme reproduces the deterministic capture times to a median
+$0.25\%$ per initial condition. The physical scale, estimated from the measured
+high-frequency fluctuation of $R_{\mathrm{incoh}}$ in the baseline data, is
+$c \approx 0.05$. We swept $N \in \{8,16,32,64\}$, $c \in \{0, 0.025, 0.05, 0.1,
+0.2\}$, $200$ realizations each, from the Sec.~\ref{sec:reduced} seed-mapped initial
+conditions.
+
+The result is a clean negative (Fig.~\ref{fig:appB}). At the physical scale
+$c \approx 0.05$ the noise barely perturbs capture (prolongation factor
+$\approx 0.97$, $N$-independent). Larger amplitudes do prolong --- at $c = 0.2$ the
+trajectory is repeatedly re-injected, accumulating up to ${\sim}240$ breath cycles
+before capture --- but the prolongation is strongly $N$-\emph{dependent} (factor
+$2.4$ at $N = 8$ falling to $0.7$ at $N = 64$; coefficient of variation $0.40$ across
+$N$), and never reaches the measured $\approx 3.2$ at any cell where it is
+$N$-independent. The rising-hazard constraint holds only at small $c$ ($k > 1$ for
+$c \le 0.05$, $k \approx 1$ for $c \ge 0.1$), while breath-phase locking survives
+throughout. Thus additive $1/\sqrt N$ noise on the collective flow reproduces the
+mechanism (re-injection) but with the wrong $N$-scaling: because its amplitude is
+$N$-dependent, so is the prolongation it produces. The $N$-independent $3.2\times$
+factor requires a different mechanism.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{figB}
+\caption{Finite-size noise test. Prolongation factor (median capture relative to the
+deterministic reduced flow) versus additive-noise amplitude $c$
+($\sigma_{\mathrm{noise}} = c/\sqrt N$) at $A = 0.5$, $\beta = 0.05$. At the physical
+scale $c \approx 0.05$ the curves sit near unity; at larger $c$ they fan out with $N$,
+so the prolongation is $N$-dependent and never reaches the measured $\approx 3.2$
+(dotted) where it is $N$-independent.}
+\label{fig:appB}
+\end{figure}
+
+\begin{thebibliography}{99}
+\small
+\bibitem{kb2002} Y.~Kuramoto and D.~Battogtokh, ``Coexistence of coherence and incoherence in nonlocally coupled phase oscillators,'' Nonlinear Phenom.\ Complex Syst.\ \textbf{5}, 380 (2002).
+\bibitem{as2004} D.~M.~Abrams and S.~H.~Strogatz, ``Chimera states for coupled oscillators,'' Phys.\ Rev.\ Lett.\ \textbf{93}, 174102 (2004).
+\bibitem{abrams2008} D.~M.~Abrams, R.~Mirollo, S.~H.~Strogatz, and D.~A.~Wiley, ``Solvable model for chimera states of coupled oscillators,'' Phys.\ Rev.\ Lett.\ \textbf{101}, 084103 (2008); erratum \textbf{101}, 129902 (2008).
+\bibitem{wo2011} M.~Wolfrum and O.~E.~Omel'chenko, ``Chimera states are chaotic transients,'' Phys.\ Rev.\ E \textbf{84}, 015201(R) (2011).
+\bibitem{pa2015} M.~J.~Panaggio and D.~M.~Abrams, ``Chimera states: coexistence of coherence and incoherence in networks of coupled oscillators,'' Nonlinearity \textbf{28}, R67 (2015).
+\bibitem{om2018} O.~E.~Omel'chenko, ``The mathematics behind chimera states,'' Nonlinearity \textbf{31}, R121 (2018).
+\bibitem{panaggio2016} M.~J.~Panaggio, D.~M.~Abrams, P.~Ashwin, and C.~R.~Laing, ``Chimera states in networks of phase oscillators: The case of two small populations,'' Phys.\ Rev.\ E \textbf{93}, 012218 (2016).
+\bibitem{lem2019} N.~Lem and Y.~Orlarey, ``Kuroscillator: a Max-MSP object for sound synthesis using coupled-oscillator networks,'' in \emph{Proceedings of the 14th International Symposium on Computer Music Multidisciplinary Research (CMMR)} (Marseille, France, 2019).
+\bibitem{lemsmc} N.~Lem, ``Sound in multiples: synchrony and interaction design using coupled-oscillator networks,'' in \emph{Proceedings of the 16th Sound and Music Computing Conference (SMC)} (M\'alaga, Spain, 2019), pp.\ 470--475.
+\bibitem{kuramoto1984} Y.~Kuramoto, \emph{Chemical Oscillations, Waves, and Turbulence} (Springer-Verlag, Berlin, 1984).
+\bibitem{sk1986} H.~Sakaguchi and Y.~Kuramoto, ``A soluble active rotator model showing phase transitions via mutual entrainment,'' Prog.\ Theor.\ Phys.\ \textbf{76}, 576 (1986).
+\bibitem{sudaokuda2015} Y.~Suda and K.~Okuda, ``Persistent chimera states in nonlocally coupled phase oscillators,'' Phys.\ Rev.\ E \textbf{92}, 060901(R) (2015).
+\bibitem{ott2008} E.~Ott and T.~M.~Antonsen, ``Low dimensional behavior of large systems of globally coupled oscillators,'' Chaos \textbf{18}, 037113 (2008).
+\bibitem{ott2009} E.~Ott and T.~M.~Antonsen, ``Long time evolution of phase oscillator systems,'' Chaos \textbf{19}, 023117 (2009).
+\bibitem{laing_twopop} C.~R.~Laing, ``Dynamics and stability of chimera states in two coupled populations of oscillators,'' Phys.\ Rev.\ E \textbf{100}, 042211 (2019).
+\bibitem{pr2008} A.~Pikovsky and M.~Rosenblum, ``Partially integrable dynamics of hierarchical populations of coupled oscillators,'' Phys.\ Rev.\ Lett.\ \textbf{101}, 264103 (2008).
+\bibitem{mms2009} S.~A.~Marvel, R.~E.~Mirollo, and S.~H.~Strogatz, ``Identical phase oscillators with global sinusoidal coupling evolve by M\"obius group action,'' Chaos \textbf{19}, 043104 (2009).
+\bibitem{ws1993} S.~Watanabe and S.~H.~Strogatz, ``Integrability of a globally coupled oscillator array,'' Phys.\ Rev.\ Lett.\ \textbf{70}, 2391 (1993).
+\bibitem{ws1994} S.~Watanabe and S.~H.~Strogatz, ``Constants of motion for superconducting Josephson arrays,'' Physica D \textbf{74}, 197 (1994).
+\end{thebibliography}
+
+\end{document}

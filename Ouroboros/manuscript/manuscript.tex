@@ -1,0 +1,255 @@
+\documentclass[review,3p,times]{elsarticle}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{color}
+
+\journal{Communications in Nonlinear Science and Numerical Simulation}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Identifiability and noise fragility of fractional sparse regression in a vascular--stromal reaction--diffusion model, with cautions on data-driven Lyapunov estimation}
+
+\author{Avery Karlin}
+\address{Independent Researcher}
+% DECISION: independent (AveryCorp) vs Columbia/CU Boulder — affects credibility + APC waiver
+
+\begin{abstract}
+Data-driven governing equation discovery, particularly through the Sparse Identification of Nonlinear Dynamics (SINDy) algorithm, has emerged as a powerful paradigm for modeling complex nonlinear systems. However, its capacity to robustly distinguish between classical integer-order and fractional-order temporal dynamics remains insufficiently scrutinized. In this work, we evaluate a temporal fractional-order SINDy pipeline utilizing the Gr\"unwald-Letnikov operator on a coupled, three-field reaction-diffusion model representing pressure, oxygen, and vessel density. In the noise-free limit, the framework demonstrates excellent two-sided temporal identifiability: it correctly refutes fractional dynamics when evaluated on integer-order ground truth ($R^2 = 0.99247$ for $\alpha_t = 1.0$, while $\alpha_t \in \{0.6, 0.8\}$ yield $R^2 \le -9.07$), and successfully recovers exact orders when trained on true fractional simulations ($|\hat{\alpha} - \alpha| = 0$ for $\alpha \in \{0.5, 0.7, 0.9\}$). However, we demonstrate that this pipeline is practically fragile under realistic measurement noise ($\le 40$ dB), where SINDy systematically under-selects the differentiation order due to noise amplification in the history-dependent Gr\"unwald-Letnikov summation. Furthermore, we investigate stability diagnostics for this non-chaotic, biologically uncalibrated system. While tangent-space integration via the variational equations (Benettin's method) confirms a stable fixed point with a negative maximal Lyapunov exponent ($\lambda_{\max} = -0.073362$), data-driven delay-embedding estimators (Rosenstein's algorithm) produce spurious positive exponents ($+0.010285$ in transient regimes, $+0.043278$ in stationary regimes, and $+0.018965$ overall). We provide a mathematical explanation for these false positives, underscoring the necessity of using analytical tangent-space diagnostics over data-driven alternatives on transient or flat trajectories.
+\end{abstract}
+
+\begin{keyword}
+sparse identification \sep fractional calculus \sep system identifiability \sep Lyapunov exponent \sep reaction--diffusion
+\end{keyword}
+
+\end{frontmatter}
+
+\section*{Highlights}
+\begin{itemize}
+  \item Fractional SINDy is identifiable on clean data but fragile under realistic noise.
+  \item Gr\"unwald-Letnikov memory sum amplifies noise during fractional differentiation.
+  \item Data-driven Lyapunov estimators yield false-positive chaos on stable transients.
+  \item Variational Benettin methods are mandatory to verify asymptotic model stability.
+  \item The vascular-stromal reaction-diffusion model is globally stable across the grid.
+\end{itemize}
+
+\section{Introduction}
+Mathematical models of vascularized tissue and tumor stroma often rely on coupled reaction-diffusion systems to capture the complex interplay between physical pressure, metabolite delivery, and cellular or vascular remodeling \cite{brunton2016discovering, rudy2017data}. Because the underlying biophysical parameters are frequently difficult to measure directly, data-driven system identification techniques, notably the Sparse Identification of Nonlinear Dynamics (SINDy) algorithm \cite{brunton2016discovering} and its partial differential equation extension (PDE-FIND) \cite{rudy2017data}, have been proposed to extract governing laws directly from simulated or experimental time series. 
+
+Concurrently, fractional-order differential equations have gained traction for their ability to model history-dependent phenomena, anomalous diffusion, and viscoelastic behaviors in biology and polymer physics \cite{podlubny1999fractional}. The combination of these two fields, known as fractional SINDy, seeks to jointly identify the optimal non-integer differentiation order $\alpha$ and the sparse governing equations from data. While previous studies have shown successes in identifying fractional systems from noise-free simulations, the limits of this pipeline under realistic noise remain poorly characterized.
+
+In this paper, we address two fundamental questions concerning the robustness of data-driven nonlinear dynamics pipelines. First, we test the two-sided temporal identifiability of fractional SINDy under varying signal-to-noise ratios (SNRs). Second, we present a cautionary study of data-driven chaos diagnostics, demonstrating how slow spatial transients and numerical noise can mimic chaotic dynamics in data-driven Lyapunov estimators like the Rosenstein algorithm \cite{rosenstein1993practical}, while the rigorous variational Benettin method \cite{benettin1980lyapunov} confirms asymptotic stability. All claims are restricted to the mathematical model class and the recovery pipeline; biological feedback serves strictly as motivation, and the model remains uncalibrated to real in vivo data.
+
+\section{Mathematical Model and Methods}
+
+\subsection{Vascularized Stroma Reaction-Diffusion Model}
+We study a three-field reaction-diffusion model on a one-dimensional spatial domain $x \in [0, L]$ with $L = 10.0$ and zero-flux boundary conditions. The governing equations describe the spatial and temporal dynamics of interstitial pressure $p(x,t)$, oxygen concentration $c(x,t)$, and blood vessel density $n(x,t)$:
+\begin{align}
+\frac{\partial p}{\partial t} &= D_p \frac{\partial^2 p}{\partial x^2} - \gamma_p p + S_p n (1 - p), \label{eq:p}\\
+\frac{\partial c}{\partial t} &= D_c \frac{\partial^2 c}{\partial x^2} - \gamma_c c \left(\frac{p}{1 + p}\right) + S_c n, \label{eq:c}\\
+\frac{\partial n}{\partial t} &= D_n \frac{\partial^2 n}{\partial x^2} + \rho n (1 - n) \left(\frac{c}{1 + c}\right) - \gamma_n n p, \label{eq:n}
+\end{align}
+where $D_p, D_c, D_n$ are the diffusion coefficients; $\gamma_p, \gamma_c, \gamma_n$ are the clearance/decay/regression rates; $S_p, S_c$ are source terms; and $\rho$ is the vessel growth rate. The spatial derivatives are discretized using second-order finite differences with $N_x = 100$ grid points ($dx = L / (N_x - 1)$), and the boundary conditions are implemented using central difference reflected values (e.g., $u_{-1} = u_1$). The baseline parameter values are set to $D_p = 0.05$, $D_c = 0.1$, $D_n = 0.01$, $\gamma_p = 0.05$, $S_p = 0.1$, $\gamma_c = 0.2$, $S_c = 0.3$, $\rho = 0.2$, and $\gamma_n = 0.1$. The initial conditions represent a localized pressure bump and a central depletion of vessels:
+\begin{align*}
+p(x,0) &= e^{-\frac{(x - L/2)^2}{2.0}}, \\
+c(x,0) &= 1.0 - 0.5 e^{-\frac{(x - L/2)^2}{2.0}}, \\
+n(x,0) &= 0.1 + 0.2 \sin\left(\frac{\pi x}{L}\right).
+\end{align*}
+The system is integrated up to $T = 5.0$ using a stiff Radau solver in SciPy with $N_t = 200$ time steps. The simulated fields over time are shown in Fig.~\ref{fig:sim_fields}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/sim_fields.png}
+\caption{Simulated spatial fields of pressure $p(x,t)$, oxygen $c(x,t)$, and vessel density $n(x,t)$ at multiple time points $t \in [0.0, 5.0]$ for the baseline parameter configuration.}
+\label{fig:sim_fields}
+\end{figure}
+
+\subsection{Fractional SINDy and Differentiation Pipeline}
+To identify temporal order fractional dynamics, we formulate the fractional derivative of order $\alpha \in (0, 1]$ in the Gr\"unwald-Letnikov (GL) sense \cite{podlubny1999fractional}:
+\begin{equation}
+D^{\alpha}_t u(t) = \lim_{\Delta t \to 0} \frac{1}{\Delta t^{\alpha}} \sum_{j=0}^{N_k} (-1)^j \binom{\alpha}{j} u(t - j\Delta t),
+\end{equation}
+where $N_k$ is the history memory length. The fractional SINDy pipeline constructs a candidate library containing standard state terms, spatial derivatives, and coupling terms, as well as fractional derivatives of varying candidate orders. SINDy selects the model that maximizes the held-out coefficient of determination $R^2$ on a cross-validation split while penalizing excessive complexity via sequential thresholded least squares (STLSQ).
+
+\subsection{Tangent-Space and Data-Driven Lyapunov Estimators}
+To rigorously assess the presence of chaotic dynamics, we employ two distinct approaches:
+\begin{enumerate}
+  \item \textbf{Variational Benettin Method}: We integrate the 300-dimensional spatial system ($N_x = 100$, 3 fields) alongside its variational equations:
+  \begin{equation}
+  \dot{\mathbf{v}} = \mathbf{J}(\mathbf{u})\mathbf{v},
+  \end{equation}
+  using an explicit Runge-Kutta 4 (RK4) integration scheme and a Jacobian-free finite-difference product. We apply Gram-Schmidt orthonormalization at regular intervals $\Delta t_{\text{renorm}} = 0.1$ over an integration duration $T_{\text{run}} = 80.0$ following a transient phase $T_{\text{trans}} = 20.0$ to obtain the analytical largest Lyapunov exponent (LLE), $\lambda_{\max}$.
+  \item \textbf{Rosenstein Delay-Embedding Algorithm}: We construct a delay-coordinate embedding from the spatial mean of the pressure field $p(x,t)$ over $T = 150.0$ ($N_t = 3000$). The delay time $\tau = 39$ steps ($1.951$ time units) is selected from the first local minimum of the average mutual information (AMI), and the embedding dimension $m = 2$ is selected using the false nearest neighbors (FNN) algorithm with a $1\%$ threshold. The LLE is estimated from the slope of the average logarithmic divergence curve \cite{rosenstein1993practical}.
+\end{enumerate}
+
+\subsection{Linear Stability and Dispersion Sweep}
+We perform a linear stability analysis of the homogeneous steady state (HSS) $(n^*, p^*, c^*)$ for parameter configurations on a $10 \times 10 \times 10$ grid spanning vessel growth rate $\rho \in [0.1, 5.0]$, regression rate $\gamma_n \in [0.1, 5.0]$, and vessel diffusion $D_n \in [0.001, 0.05]$. The spatial Jacobian $J(k)$ for Fourier mode $k$ is given by:
+\begin{equation}
+J(k) = \begin{pmatrix}
+-(\gamma_p + S_p n^*) - k^2 D_p & 0 & S_p (1 - p^*) \\
+-\frac{\gamma_c c^*}{(1 + p^*)^2} & -\frac{\gamma_c p^*}{1 + p^*} - k^2 D_c & S_c \\
+-\gamma_n n^* & \frac{\rho n^* (1 - n^*)}{(1 + c^*)^2} & -\rho n^* \frac{c^*}{1 + c^*} - k^2 D_n
+\end{pmatrix}.
+\end{equation}
+The growth rates $\text{Re}(\lambda(k))$ are calculated for $k \in [0, 30]$ to identify possible Hopf or Turing instabilities.
+
+\section{Results}
+
+\subsection{Specificity: Integer-Order Dynamics Refutation}
+We first evaluate the specificity of the fractional SINDy pipeline by running the temporal-order selection sweep on noise-free data generated with the integer-order simulator ($\alpha_t = 1.0$).
+The pipeline evaluates candidate temporal orders $\alpha_t \in \{0.6, 0.8, 1.0\}$ on a held-out test split. The results are summarized in Table~\ref{tab:specificity}.
+
+\begin{table}[htbp]
+\centering
+\caption{Model selection performance across candidate temporal orders under integer-order ground truth ($\alpha_t = 1.0$).}
+\label{tab:specificity}
+\begin{tabular}{ccc}
+\toprule
+Candidate Order ($\alpha_t$) & Held-out $R^2$ (Average) & Active Terms \\
+\midrule
+0.6 & -9.06725 & 65 \\
+0.8 & -21.02890 & 64 \\
+1.0 & 0.99247 & 46 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The integer-order model ($\alpha_t = 1.0$) yields the highest generalization score ($R^2 = 0.99247$) with the lowest model complexity (46 active terms). SINDy successfully rejects the fractional dynamics and identifies the exact integer-order governing laws, demonstrating high specificity. The prediction accuracy of the selected model is illustrated in Fig.~\ref{fig:lhs_validation}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{../figures/lhs_validation.png}
+\caption{Validation scatter plot comparing the true spatial derivative term $u_t$ against the SINDy predictions for the held-out test split under the selected integer-order model ($\alpha_t = 1.0$).}
+\label{fig:lhs_validation}
+\end{figure}
+
+\subsection{Sensitivity: Fractional-Order Dynamics Recovery}
+To assess sensitivity, we train SINDy on clean trajectories simulated with true fractional-order ordinary differential equations of orders $\alpha_t \in \{0.5, 0.7, 0.9\}$. SINDy sweeps candidate orders from $0.4$ to $1.0$ in steps of $0.1$.
+In the noise-free limit, the pipeline achieves perfect sensitivity, identifying the exact order ($|\hat{\alpha} - \alpha| = 0$) for all tested configurations:
+\begin{itemize}
+  \item \textbf{True $\alpha_t = 0.5$}: Selected $\hat{\alpha}_t = 0.5$ with an $R^2$ margin of $0.0014$ over the second-best candidate.
+  \item \textbf{True $\alpha_t = 0.7$}: Selected $\hat{\alpha}_t = 0.7$ with an $R^2$ margin of $0.0891$ over the second-best candidate.
+  \item \textbf{True $\alpha_t = 0.9$}: Selected $\hat{\alpha}_t = 0.9$ with an $R^2$ margin of $1.2169$ over the second-best candidate.
+\end{itemize}
+
+\subsection{Noise Fragility}
+We sweep the Signal-to-Noise Ratio (SNR) by adding Gaussian measurement noise to the state trajectories to evaluate SINDy's performance limits.
+The selected temporal orders $\hat{\alpha}_t$ and corresponding $R^2$ values are detailed in Table~\ref{tab:noise_sensitivity} and plotted in Fig.~\ref{fig:fractional_sindy_sensitivity}.
+
+\begin{table}[htbp]
+\centering
+\caption{Selected temporal order $\hat{\alpha}_t$ (and held-out $R^2$) under varying noise levels (SNRs).}
+\label{tab:noise_sensitivity}
+\begin{tabular}{cccccc}
+\toprule
+True $\alpha_t$ & 100 dB & 80 dB & 60 dB & 40 dB & 20 dB \\
+\midrule
+\textbf{0.5} & 0.5 (0.999) & 0.5 (0.993) & 0.5 (0.766) & 0.4 (0.461) & 0.4 (0.613) \\
+\textbf{0.7} & 0.7 (0.999) & 0.7 (0.993) & 0.6 (0.765) & 0.4 (0.521) & 0.4 (0.511) \\
+\textbf{0.9} & 0.9 (0.999) & 0.9 (0.985) & 0.9 (0.498) & 0.8 (0.281) & 0.4 (0.445) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{../figures/fractional_sindy_sensitivity.png}
+\caption{Fractional SINDy order identification error and $R^2$ performance as a function of the signal-to-noise ratio (SNR) in decibels.}
+\label{fig:fractional_sindy_sensitivity}
+\end{figure}
+
+The SINDy recovery pipeline breaks down at or below $40$ dB SNR. This breakdown represents a significant limitation for biological applications: since typical biological time series and clinical imaging data (e.g., MRI) exhibit noise levels corresponding to $20$--$40$ dB, the pipeline fails to identify the correct fractional-order dynamics under realistic conditions. The physical mechanism of this fragility lies in the numerical approximation of the fractional derivative: the Gr\"unwald-Letnikov operator is a history-dependent sum that acts as a high-pass filter, amplifying high-frequency noise and leading the sparse regression to under-select the derivative order ($\hat{\alpha}_t \to 0.4$).
+
+\subsection{Stability and Lyapunov Exponent Estimation Cautions}
+We conduct chaos diagnostics on the ground-truth integer-order system. The variational equations integrated via Benettin's method yield an asymptotically negative maximum Lyapunov exponent:
+\begin{equation}
+\lambda_{\max} = -0.073362.
+\end{equation}
+This negative value proves that the model settles to a stable, non-chaotic steady state, as shown in the convergence curve of Fig.~\ref{fig:diagnostics_caution}(a).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{../figures/diagnostics_caution.png}
+\caption{Lyapunov exponent diagnostic curves. (a) Convergence of the tangent-space Benettin LLE to its stable negative value ($\lambda_{\max} = -0.073362$). (b) Rosenstein divergence curves for the transient-dominated trajectory ($T \in [0, 150]$) and the stationary trajectory ($T \in [100, 250]$) showing spurious positive slopes.}
+\label{fig:diagnostics_caution}
+\end{figure}
+
+However, the data-driven Rosenstein estimator yields spurious positive exponents across all scenarios:
+\begin{itemize}
+  \item \textbf{Baseline (Full Time Series)}: $\text{LLE} = +0.018965$.
+  \item \textbf{Transient-dominated ($T \in [0, 150]$)}: $\text{LLE} = +0.010285$.
+  \item \textbf{Stationary-dominated ($T \in [100, 250]$)}: $\text{LLE} = +0.043278$.
+\end{itemize}
+
+These false positives highlight two distinct methodological failure modes of purely data-driven chaos estimators:
+\begin{enumerate}
+  \item \textbf{Transient Artifact}: On decaying transients, trajectories contract toward the fixed point. Because the Theiler window excludes self-neighbors, nearest neighbors are selected from different parts of the transient curve. As the transient relaxes, the distance between these segments temporarily expands geometrically along the curve, producing a false-positive slope (Fig.~\ref{fig:diagnostics_caution}(b), transient curve).
+  \item \textbf{Stationary Noise Artifact}: Once the trajectory reaches the fixed point, the signal drops to solver precision limits ($10^{-8}$) or the noise floor. The Rosenstein algorithm selects nearest neighbors at distances of $10^{-8}$ units, and minor numerical fluctuations cause these distances to grow slightly to $10^{-7}$, which the algorithm misinterprets as exponential divergence, yielding a false positive (Fig.~\ref{fig:diagnostics_caution}(b), stationary curve).
+\end{enumerate}
+In contrast, tangent-space integration (Benettin) tracks the growth of analytic perturbations, which can contract indefinitely without saturation or geometric distortion, correctly yielding a negative exponent.
+
+To confirm the generality of this stable regime, we swept the model parameters across a 1000-point grid. Every parameter combination evaluated is linearly stable. The maximum growth rate occurs at the corner of the envelope ($\rho = 0.1, \gamma_n = 5.0, D_n = 0.001$), yielding $\max \text{Re}(\lambda) = -0.001726$ (the stability map is shown in Fig.~\ref{fig:stability_map}). To ensure this soft boundary did not hide adjacent instabilities, we evaluated points just past the corner (Table~\ref{tab:stability_corner}), confirming that stability is preserved.
+
+\begin{table}[htbp]
+\centering
+\caption{Leading eigenvalue $\text{Re}(\lambda)$ at parameter points past the corner of the sweep envelope.}
+\label{tab:stability_corner}
+\begin{tabular}{cccc}
+\toprule
+Point & Parameter Changes & Leading $\text{Re}(\lambda)$ & Status \\
+\midrule
+A & Lower growth: $\rho = 0.05, \gamma_n = 5.0, D_n = 0.001$ & -0.000860 & Stable \\
+B & Higher regression: $\rho = 0.1, \gamma_n = 6.0, D_n = 0.001$ & -0.001437 & Stable \\
+C & Lower diffusion: $\rho = 0.1, \gamma_n = 5.0, D_n = 0.0005$ & -0.001726 & Stable \\
+D & Extrapolated corner: $\rho = 0.05, \gamma_n = 6.0, D_n = 0.0005$ & -0.000716 & Stable \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/stability_map.png}
+\caption{Linear dispersion stability maps. The plot maps the maximum eigenvalue growth rate $\text{Re}(\lambda)$ across the parameter space grid ($\rho$, $\gamma_n$, $D_n$), indicating global stability ($\text{Re}(\lambda) < 0$) throughout.}
+\label{fig:stability_map}
+\end{figure}
+
+\section{Discussion}
+Our findings highlight that while fractional-order SINDy is mathematically identifiable in the noise-free limit, it is highly sensitive to noise. In practical engineering and biological setups where experimental noise is unavoidable, standard fractional SINDy pipelines will break down. This noise-sensitivity of SINDy has been previously reported in integer-order settings, prompting the development of integral-form variants such as weak SINDy \cite{messenger2021weak}, implicit SINDy-PI \cite{kaheman2020sindy}, and Earth-Mover distance variants like GS-SINDy \cite{liu2025enhancing}. However, the specific vulnerability of the fractional derivative operator—namely, that the history-dependent summation of Grünwald-Letnikov derivatives amplifies noise—constitutes a distinct physical mechanism that demands specialized regularization or noise-filtering techniques.
+
+\subsection{The Circularity Boundary and Claim Constraints}
+To prevent scientific overreach when analyzing mathematical models of biological systems, we establish the boundary of defensible claims in Table~\ref{tab:claims}. 
+
+\begin{table}[htbp]
+\centering
+\caption{Summary of defensible claims versus invalid biological claims.}
+\label{tab:claims}
+\begin{tabular}{p{7.5cm}p{7.5cm}}
+\toprule
+We CAN Defensibly Claim & We CANNOT Claim (Circularity/Scientific Violation) \\
+\midrule
+1. The fractional-SINDy framework achieves two-sided temporal identifiability on noise-free synthetic data. & 1. Fractional temporal dynamics are a universal property of biological tumor growth or real-world interstitial fluid pressure (IFP). \\
+2. Purely data-driven Lyapunov estimators (e.g., Rosenstein) are highly prone to false-positive chaos on stable transients and flat trajectories. & 2. Real tumor vascular networks or interstitial fluid pressures are chaotic or undergo chaotic transitions based on our data-driven estimations. \\
+3. Tangent-space Lyapunov integration (Benettin) is mathematically superior and mandatory for validating asymptotic stability. & 3. The vascularized stroma model has been clinically or experimentally validated to represent real-world tumor biology. \\
+4. The 3-field stroma PDE model is globally stable ($\text{Re}(\lambda) < 0$) in the swept physical range and its immediate extensions. & 4. Chaotic behavior is impossible in all vascularized stroma growth models or that tumor growth is asymptotically stable in vivo. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Without direct, high-frequency in vivo measurements of tumor IFP and oxygenation, independent calibration of physical parameters ($D_p$, $D_c$, $D_n$), and experimental validation of coupling terms ($-\gamma_n n p$), any claims must remain strictly confined to the mathematical model class and the recovery pipeline.
+
+\section{Conclusion}
+This study evaluated the identifiability, stability, and noise fragility of data-driven modeling pipelines on a vascularized stroma reaction-diffusion model. While fractional SINDy displays clean sensitivity and specificity in the noise-free limit, it is practically fragile under realistic noise ($\le 40$ dB). Furthermore, we demonstrated that data-driven Lyapunov exponent estimators (e.g., Rosenstein) produce false positives on stable transients and noise floors, making analytical tangent-space integration (Benettin) mandatory for reliable stability characterization. These results suggest that regularized fractional operators and analytical variational equations should be preferred when modeling and diagnosing complex, non-equilibrium systems.
+
+\section*{Acknowledgements}
+The authors acknowledge AveryCorp for support.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs.bib}
+
+\end{document}

@@ -6,16 +6,16 @@ This document records the measured workstation specs, CPU Monte Carlo (MC) timin
 - **Operating System**: macOS (Darwin arm64)
 - **CPU Cores (`nproc`)**: 10 (Apple M4)
 - **Total RAM**: 24.0 GB
-- **Monte Carlo Engine Detected**: None (Using Mock Run Data)
+- **Monte Carlo Engine Detected**: TOPAS MC (Installed)
 
 ---
 
 ## Benchmark Metrics
 The benchmark ran $K = 12$ randomized voxelized phantom cases.
 
-- **Median Core-Hours per Case**: `0.0166`
-- **IQR Core-Hours per Case**: `0.0057`
-- **Extrapolated Wall-Clock Weeks for 10k Cases**: `0.10` weeks
+- **Median Core-Hours per Case**: `0.0465`
+- **IQR Core-Hours per Case**: `0.0044`
+- **Extrapolated Wall-Clock Weeks for 10k Cases**: `0.28` weeks
   *(Extrapolated using formula: `weeks_for_10k = (10000 * core_hours_per_case) / (nproc * 168)`)*
 
 ---
@@ -24,7 +24,7 @@ The benchmark ran $K = 12$ randomized voxelized phantom cases.
 Given a timeline of June 8, 2026, to December 31, 2026 (~29 weeks), and accounting for ~6.5 person-weeks of surrounding pipeline/model-training work, the maximum available run window is **22.5 weeks**.
 
 **Verdict**:
-YES: The extrapolated run duration of 0.10 weeks clears the 22.5-week runway (29.0 weeks total minus 6.5 weeks of surrounding work).
+YES: The extrapolated run duration of 0.28 weeks clears the 22.5-week runway (29.0 weeks total minus 6.5 weeks of surrounding work).
 
 ---
 

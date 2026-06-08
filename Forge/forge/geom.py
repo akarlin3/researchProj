@@ -99,7 +99,7 @@ def generate_case_deck(case_id, seed, output_dir="cases"):
     # Statistical uncertainty target: controls histories
     # Let's set a baseline of 5000 histories for benchmarking, 
     # which is standard for a quick run.
-    histories = 5000
+    histories = 50000
     
     # Topas Deck Generation
     deck_filename = f"case_{case_id}.txt"
@@ -157,12 +157,14 @@ s:So/Beam/Type = "Beam"
 s:So/Beam/Component = "World"
 s:So/Beam/BeamParticle = "{particle}"
 d:So/Beam/BeamEnergy = {energy:.4f} MeV
-d:So/Beam/BeamEnergySpread = 0.0 %
+u:So/Beam/BeamEnergySpread = 0.0
 s:So/Beam/BeamPositionDistribution = "Gaussian"
+s:So/Beam/BeamPositionCutoffShape = "Rectangle"
+d:So/Beam/BeamPositionCutoffX = 10.0 cm
+d:So/Beam/BeamPositionCutoffY = 10.0 cm
 d:So/Beam/BeamPositionSpreadX = 5.0 mm
 d:So/Beam/BeamPositionSpreadY = 5.0 mm
-s:So/Beam/BeamAngularDistribution = "Flat"
-d:So/Beam/BeamAngularCutoff = 0.0 deg
+s:So/Beam/BeamAngularDistribution = "None"
 d:So/Beam/TransX = 0.0 cm
 d:So/Beam/TransY = 0.0 cm
 d:So/Beam/TransZ = -25.0 cm
@@ -178,12 +180,13 @@ s:Sc/Dose/Quantity = "DoseToMedium"
 s:Sc/Dose/Component = "Patient"
 s:Sc/Dose/OutputFile = "dose_case_{case_id}"
 s:Sc/Dose/OutputType = "csv"
+s:Sc/Dose/IfOutputFileAlreadyExists = "Overwrite"
 
 # ====================================================================
 # TIMING & CONTROLS
 # ====================================================================
-s:Gr/View/Type = "OpenGL"
-b:Gr/View/Active = "False"
+# s:Gr/View/Type = "OpenGL"
+# b:Gr/View/Active = "False"
 i:Ts/ShowHistoryCountAtInterval = 1000
 i:Ts/Seed = {seed}
 """

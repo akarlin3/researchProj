@@ -40,9 +40,10 @@ def run_case_wrapper(case_info, output_dir, mock=False):
         
     try:
         res = run_case(deck_path, output_dir)
+        wall_time = res["wall_time_s"]
         cpu_time = res["cpu_time_s"]
         threads = res["threads"]
-        core_hours = (cpu_time / 3600.0) * threads
+        core_hours = (wall_time / 3600.0) * threads
         return {
             "case_id": case_id,
             "success": True,

@@ -10,6 +10,7 @@ import time
 import subprocess
 import shutil
 import numpy as np
+import resource
 
 def is_topas_available():
     """Checks if topas executable is available on the system path."""
@@ -95,14 +96,16 @@ def run_case(deck_path, output_dir="cases"):
     cmd = ["topas", deck_name]
     
     t0_wall = time.perf_counter()
-    t0_cpu = time.process_time()
+    usage_start = resource.getrusage(resource.RUSAGE_CHILDREN)
+    t0_cpu_children = usage_start.ru_utime + usage_start.ru_stime
     
     # Run the simulation
     # TOPAS output files are written to the current working directory (output_dir)
     result = subprocess.run(cmd, cwd=output_dir, capture_output=True, text=True)
     
     t1_wall = time.perf_counter()
-    t1_cpu = time.process_time()
+    usage_end = resource.getrusage(resource.RUSAGE_CHILDREN)
+    t1_cpu_children = usage_end.ru_utime + usage_end.ru_stime
     
     if result.returncode != 0:
         raise RuntimeError(
@@ -112,7 +115,7 @@ def run_case(deck_path, output_dir="cases"):
         )
         
     wall_time = t1_wall - t0_wall
-    cpu_time = t1_cpu - t0_cpu
+    cpu_time = t1_cpu_children - t0_cpu_children
     
     # Locate dose output CSV
     csv_filename = f"dose_{case_name}.csv"

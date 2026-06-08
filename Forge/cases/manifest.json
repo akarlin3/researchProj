@@ -31,7 +31,7 @@
       "source": {
         "particle": "gamma",
         "energy_mev": 4.094202806921989,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -73,7 +73,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 141.4313602602568,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -115,7 +115,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 135.40234861312933,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -157,7 +157,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 127.80907872765789,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -199,7 +199,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 175.8337225433162,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -241,7 +241,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 156.05141662797928,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -283,7 +283,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 168.9588207106766,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -325,7 +325,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 168.78304486372676,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -367,7 +367,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 139.6149352603717,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -409,7 +409,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 152.1483438742106,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -451,7 +451,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 153.79941213056372,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,
@@ -493,7 +493,7 @@
       "source": {
         "particle": "proton",
         "energy_mev": 166.83880106267955,
-        "histories": 5000
+        "histories": 50000
       },
       "dimensions": [
         60,

@@ -1,5 +1,10 @@
 # Forge Monte Carlo Training-Fidelity Benchmark Report
 
+> **SUPERSEDED — proton-contaminated.** The timings below are dominated by
+> 120–180 MeV protons (7/8 cases), but the target machine is a 1.5 T MR-Linac
+> **photon** source. The modality bug is fixed in `forge/geom.py`; see
+> **`RESULTS_mc_floor_photon.md`** for the corrected photon analysis.
+
 This report documents the re-measured per-case simulation costs at **clinical/training-grade fidelity** (1% statistical uncertainty in the high-dose region) and reports the **Electron Return Effect (ERE) physics correctness gate**.
 
 ## Workstation Specifications

@@ -12,12 +12,13 @@ import sys
 import json
 import time
 import shutil
+import platform
 import numpy as np
 import resource
 import subprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-sys.path.append("/Users/averykarlin/projForge")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from forge.geom import generate_case_deck
 from forge.run_case import run_case, is_topas_available
 
@@ -28,8 +29,11 @@ def run_case_wrapper(case_info, output_dir, histories):
     energy = case_info["source"]["energy_mev"]
     
     # Re-generate the parameter deck with custom histories and Mean+StdDev reporting
-    generate_case_deck(case_id, seed, output_dir, histories=histories)
+    case_meta = generate_case_deck(case_id, seed, output_dir, histories=histories)
     deck_path = os.path.join(output_dir, f"case_{case_id}.txt")
+    dims = case_meta["dimensions"]
+    voxel_mm = case_meta["voxel_sizes_mm"]
+    field_half_cm = case_meta["source"].get("field_half_cm")
     
     try:
         t0 = time.perf_counter()
@@ -83,6 +87,9 @@ def run_case_wrapper(case_info, output_dir, histories):
             "success": True,
             "particle": particle,
             "energy_mev": energy,
+            "grid_dims": dims,
+            "voxel_mm": voxel_mm,
+            "field_half_cm": field_half_cm,
             "primaries_run": histories,
             "achieved_median_sigma": median_unc,
             "achieved_p90_sigma": p90_unc,
@@ -157,14 +164,46 @@ def run_ere_fidelity(histories=500000):
             
     profile_with_b = dose_with_b[Nx//2, Ny//2, :]
     profile_no_b = dose_no_b[Nx//2, Ny//2, :]
-    
-    interface_slice = z_air_end
-    dose_diff = profile_with_b[interface_slice] - profile_no_b[interface_slice]
+
+    # ------------------------------------------------------------------
+    # Reference ERE magnitude (CITED, not fabricated):
+    # Geant4 Monte Carlo of a 1.5 T transverse field reports an exit-dose
+    # enhancement at the air-tissue interface due to the Electron Return
+    # Effect of ~15.4% (10x10 cm field) to ~17.9% (22x22 cm field).
+    # (Magnetic-field effect on dose in low-density regions, Geant4, 1.5 T.)
+    # NOTE: this is a literature magnitude, NOT an in-repo validated reference
+    # dose profile. Per the gate spec, PASS requires comparison against an
+    # in-repo reference; absent one the gate is reported UNCALIBRATED.
+    # ------------------------------------------------------------------
+    REFERENCE_ERE_PCT = (15.4, 17.9)   # (10x10, 22x22) Geant4, 1.5 T transverse
+    TOLERANCE_PCT = 3.0                 # absolute dose-difference tolerance (pp)
+    HAS_INREPO_REFERENCE = False        # no commissioned reference profile in repo
+
+    # Scan a small window around the distal (downstream) interface for the peak
+    # enhancement rather than a single voxel (the ERE peak is localized).
+    win = slice(max(z_air_end - 1, 0), min(z_air_end + 4, Nz))
     max_dose_no_b = profile_no_b.max()
+    local_diff = profile_with_b[win] - profile_no_b[win]
+    peak_diff = float(np.max(local_diff)) if local_diff.size else 0.0
+    interface_slice = z_air_end
+    dose_diff = float(profile_with_b[interface_slice] - profile_no_b[interface_slice])
     rel_diff_pct = (dose_diff / max_dose_no_b) * 100 if max_dose_no_b > 0 else 0.0
-    
-    is_pass = dose_diff > 0
-    verdict = "PASS" if is_pass else "FAIL"
+    peak_rel_diff_pct = (peak_diff / max_dose_no_b) * 100 if max_dose_no_b > 0 else 0.0
+
+    # Agreement vs the cited reference band (using the peak enhancement).
+    ref_lo, ref_hi = REFERENCE_ERE_PCT
+    within_ref = (ref_lo - TOLERANCE_PCT) <= peak_rel_diff_pct <= (ref_hi + TOLERANCE_PCT)
+
+    if not HAS_INREPO_REFERENCE:
+        # No in-repo commissioned reference -> cannot certify PASS.
+        verdict = "UNCALIBRATED"
+        is_pass = False
+    elif within_ref:
+        verdict = "PASS"
+        is_pass = True
+    else:
+        verdict = "FAIL"
+        is_pass = False
     
     # Generate overlay plot for ERE
     import matplotlib.pyplot as plt
@@ -188,13 +227,20 @@ def run_ere_fidelity(histories=500000):
     plt.savefig("ere_check.png", bbox_inches='tight')
     plt.close()
     
-    print(f"ERE Check complete: Diff = {dose_diff:+.4e} ({rel_diff_pct:+.3f}% of max), Verdict = {verdict}")
+    print(f"ERE Check complete: interface diff = {dose_diff:+.4e} ({rel_diff_pct:+.3f}% of max), "
+          f"peak enhancement = {peak_rel_diff_pct:+.3f}% of max, "
+          f"reference band = {REFERENCE_ERE_PCT} +/- {TOLERANCE_PCT}pp, Verdict = {verdict}")
     return {
         "is_pass": is_pass,
         "dose_no_b": float(profile_no_b[interface_slice]),
         "dose_with_b": float(profile_with_b[interface_slice]),
         "dose_diff": float(dose_diff),
         "rel_diff_pct": float(rel_diff_pct),
+        "peak_rel_diff_pct": float(peak_rel_diff_pct),
+        "reference_ere_pct": REFERENCE_ERE_PCT,
+        "tolerance_pct": TOLERANCE_PCT,
+        "has_inrepo_reference": HAS_INREPO_REFERENCE,
+        "within_reference": bool(within_ref),
         "verdict": verdict
     }
 
@@ -262,90 +308,114 @@ def main():
     weeks_min = (10000 * min_ch) / (10 * 168)
     weeks_max = (10000 * max_ch) / (10 * 168)
     
-    # Compare with old 0.0465 core-h/case figure
-    old_ch = 0.0465
-    fidelity_multiplier = median_ch / old_ch
-    
-    # Verdict
-    runway_weeks = 22.5
-    if weeks_median <= runway_weeks:
-        verdict = f"YES: The extrapolated duration of {weeks_median:.2f} weeks fits within the {runway_weeks} weeks runway."
-    else:
-        verdict = f"NO: The extrapolated duration of {weeks_median:.2f} weeks EXCEEDS the {runway_weeks} weeks runway."
-        
-    one_liner_verdict = ""
-    total_hours = (10000 * median_ch) / 10
-    if total_hours <= 48:
-        one_liner_verdict = "A weekend"
-    elif total_hours <= 168 * 3:
+    # Compare with the two prior figures: 0.0465 (smoke test) and 0.326
+    # (proton-contaminated training-fidelity median).
+    smoke_ch = 0.0465
+    proton_contaminated_ch = 0.326
+    mult_vs_smoke = median_ch / smoke_ch
+    ratio_vs_proton = median_ch / proton_contaminated_ch
+
+    total_core_hours = 10000 * median_ch
+    total_hours_10cores = total_core_hours / 10
+    if total_hours_10cores <= 48:
+        one_liner_verdict = "About a weekend"
+    elif weeks_median <= 3:
         one_liner_verdict = "A few weeks"
     else:
-        one_liner_verdict = "Longer than a few weeks (needs cluster resources)"
-        
-    # Write RESULTS_mc_floor_fidelity.md
-    md_content = f"""# Forge Monte Carlo Training-Fidelity Benchmark Report
+        one_liner_verdict = "Longer than a few weeks (cluster-scale)"
 
-This report documents the re-measured per-case simulation costs at **clinical/training-grade fidelity** (1% statistical uncertainty in the high-dose region) and reports the **Electron Return Effect (ERE) physics correctness gate**.
+    # Voxel grid (uniform across the randomized distribution)
+    gd = results[0]["grid_dims"]
+    vm = results[0]["voxel_mm"]
+    grid_extent_mm = [gd[i] * vm[i] for i in range(3)]
+
+    # ERE gate text
+    ref_lo, ref_hi = ere_res["reference_ere_pct"]
+    ere_gate_line = (
+        f"{ere_res['verdict']} (peak enhancement {ere_res['peak_rel_diff_pct']:+.3f}% of max "
+        f"vs reference band {ref_lo:.1f}-{ref_hi:.1f}% +/- {ere_res['tolerance_pct']:.1f}pp)"
+    )
+
+    # Write RESULTS_mc_floor_photon.md
+    md_content = f"""# Forge Monte Carlo Training-Fidelity Benchmark Report (PHOTON)
+
+Per-case simulation costs at **training-grade fidelity** (1% 1-sigma uncertainty in the
+high-dose region) for the corrected **Elekta Unity-class 7 MV FFF photon** beam at 1.5 T,
+plus the **Electron Return Effect (ERE)** physics gate against a cited reference magnitude.
 
 ## Workstation Specifications
-- **Operating System**: macOS (Darwin arm64)
-- **CPU Cores (`nproc`)**: {nproc} (Apple M4)
-- **Monte Carlo Engine**: OpenTOPAS v4.2.3 + Geant4 11.3.2 (native build)
+- **Operating System**: {platform.system()} ({platform.machine()})
+- **CPU Cores (`os.cpu_count`)**: {nproc}
+- **Monte Carlo Engine**: OpenTOPAS v4.2.3 + Geant4 11.3.2
+
+## Voxel Grid (REPORTED)
+- **Dimensions**: {gd[0]} x {gd[1]} x {gd[2]} voxels
+- **Resolution**: {vm[0]} x {vm[1]} x {vm[2]} mm
+- **Physical extent**: {grid_extent_mm[0]:.0f} x {grid_extent_mm[1]:.0f} x {grid_extent_mm[2]:.0f} mm
+- Note: 2.5 mm is coarse for penumbra/ERE structure; 1% sigma is comparatively cheap on
+  this grid. The grid was NOT coarsened for speed; it is the documented dataset grid.
 
 ---
 
-## 1. Re-Timing Benchmark Results (N = {N} Representative Cases)
-Cases were run at $N = {histories_per_case:,}$ histories. The achieved relative statistical uncertainty ($1\sigma$) in the high-dose region ($\ge 50\%$ isodose) was computed. The histories count and true core-hours were then scaled to the **1% target uncertainty**.
+## 1. Re-Timing Benchmark Results (N = {len(results)} Photon Cases)
+Cases run at {histories_per_case:,} histories; achieved 1-sigma uncertainty in the
+high-dose region (>=50% isodose) scaled to the 1% target. Core-hours are true CPU time.
 
-| Case ID | Particle | Energy (MeV) | Primaries Run | Achieved $\sigma$ (Median) | Achieved $\sigma$ (Max) | Target Primaries for 1% | Measured CPU (s) | Target Core-Hours |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Case | Particle | Field (cm) | Grid | Primaries | Achieved sigma (med) | sigma (max) | Target prim. for 1% | CPU (s) | Target core-h |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 """
     for r in results:
-        md_content += (f"| {r['case_id']} | {r['particle']} | {r['energy_mev']:.2f} | {r['primaries_run']:,} "
+        field_cm = (r.get("field_half_cm") or 0) * 2.0
+        grid_s = f"{r['grid_dims'][0]}x{r['grid_dims'][1]}x{r['grid_dims'][2]}@{r['voxel_mm'][0]}mm"
+        md_content += (f"| {r['case_id']} | {r['particle']} | {field_cm:.1f} | {grid_s} | {r['primaries_run']:,} "
                        f"| {r['achieved_median_sigma']*100:.3f}% | {r['achieved_max_sigma']*100:.3f}% | {r['target_primaries']:,} "
                        f"| {r['measured_cpu_s']:.2f} | `{r['projected_ch_cpu']:.4f}` |\n")
-                       
+
     md_content += f"""
-### Core-Hours per Case Distribution Statistics
+### Core-Hours per Case Distribution
 - **Median**: `{median_ch:.4f}` core-hours/case
 - **IQR**: `{iqr_ch:.4f}` core-hours/case
-- **Minimum**: `{min_ch:.4f}` core-hours/case
-- **Maximum**: `{max_ch:.4f}` core-hours/case
-
-*Note: The spread in core-hours is wide because of the randomized geometry distribution (varying anatomy, field sizes, and beam types). A wide spread confirms that the geometries are indeed varying as expected.*
+- **Min / Max**: `{min_ch:.4f}` / `{max_ch:.4f}` core-hours/case
 
 ---
 
-## 2. Electron Return Effect (ERE) Physics Gate Check
-The ERE check was executed with 1.5 T transverse B-field on vs. off at **{histories_per_case:,} histories** on a layered slab phantom (Water-Air-Water). ERE causes a dose hotspot at the tissue entry interface downstream of the air gap ($z = 30$, index 30).
+## 2. Electron Return Effect (ERE) Gate vs Reference (Photon, 1.5 T)
+Water-air-water interface, B-field 1.5 T transverse on vs off, {histories_per_case:,} histories.
+Peak distal-interface enhancement compared to a **cited Geant4 reference band**.
 
-- **Dose at exit interface (No B-field)**: `{ere_res['dose_no_b']:.6e}` Gy/history
-- **Dose at exit interface (1.5 T B-field)**: `{ere_res['dose_with_b']:.6e}` Gy/history
-- **Dose Difference**: `{ere_res['dose_diff']:+.6e}` Gy/history
-- **Relative Difference**: `{ere_res['rel_diff_pct']:+.3f}%` of max dose
-- **ERE Physics Gate Verdict**: **{ere_res['verdict']}**
+- **Reference ERE magnitude**: {ref_lo:.1f}% (10x10 cm) - {ref_hi:.1f}% (22x22 cm) exit-dose
+  enhancement at 1.5 T transverse (Geant4 MC, magnetic-field effect in low-density regions).
+  This is a *literature magnitude*, not an in-repo validated reference profile.
+- **In-repo reference profile available**: {ere_res['has_inrepo_reference']}
+- **Tolerance**: +/- {ere_res['tolerance_pct']:.1f} percentage points
+- **Measured peak enhancement**: `{ere_res['peak_rel_diff_pct']:+.3f}%` of max dose
+- **Single-voxel interface diff**: `{ere_res['rel_diff_pct']:+.3f}%` of max dose
+- **ERE Gate Verdict**: **{ere_gate_line}**
+
+Because there is no in-repo commissioned reference profile, the gate is reported
+**UNCALIBRATED** rather than PASS even if the magnitude lands in-band.
 
 ---
 
-## 3. Extrapolation & Reconciliation to 10k Dataset
-Using the median training-fidelity core-hours per case, we extrapolate the wall-clock execution time for the full 10,000-case dataset running on 10 cores (`weeks = (10000 * ch_per_case) / (10 * 168)`).
+## 3. Extrapolation to 10k (Photon)
+`weeks = (10000 * core_h_per_case) / (10 * 168)`
 
-- **Wall-Clock Weeks (at Median)**: `{weeks_median:.2f}` weeks
-- **Wall-Clock Range (Min - Max)**: `{weeks_min:.2f}` to `{weeks_max:.2f}` weeks
+- **Median**: `{weeks_median:.2f}` weeks  |  **Min-Max**: `{weeks_min:.2f}` - `{weeks_max:.2f}` weeks
 
-### Comparison with Prior Smoke-Test Benchmark
-- **Prior Benchmark Median**: `0.0465` core-hours/case
-- **New Training-Fidelity Median**: `{median_ch:.4f}` core-hours/case
-- **Fidelity Multiplier**: `{fidelity_multiplier:.2f}x` increase in compute cost
-- **Verdict Explanation**: The prior benchmark of `0.0465` was indeed a sub-fidelity smoke-test floor with under-converged histories (50k histories, no standard error analysis). The true training-grade target requires a much higher history count.
+### Reconciliation with prior figures
+- **0.0465** core-h/case (smoke test, 50k histories, no sigma analysis) -> photon is `{mult_vs_smoke:.1f}x` this.
+- **0.326** core-h/case (prior "training-fidelity" median) was **proton-contaminated**: 7/8
+  timed cases were 120-180 MeV protons (~1100 s CPU each) which do not belong in a photon
+  MR-Linac dataset. The corrected photon median is `{median_ch:.4f}` core-h/case
+  (`{ratio_vs_proton:.2f}x` the contaminated figure).
 
 ### One-Line Verdict
-**{one_liner_verdict}** (Extrapolated run duration on M4 is **{weeks_median:.2f} weeks**).
+**{one_liner_verdict}** - corrected photon estimate is **{weeks_median:.2f} weeks** (median) for the 10k set.
 """
 
-    with open("RESULTS_mc_floor_fidelity.md", "w") as f:
+    with open("RESULTS_mc_floor_photon.md", "w") as f:
         f.write(md_content)
-    print("Wrote results to RESULTS_mc_floor_fidelity.md")
+    print("Wrote results to RESULTS_mc_floor_photon.md")
 
 if __name__ == "__main__":
     main()

@@ -106,8 +106,8 @@ def validate_schema():
     dose_1 = rng1.exponential(1.0, (Nx, Ny, Nz))
     meta_1 = {
         "case_id": 1,
-        "particle": "proton",
-        "beam_energy_mev": 150.0,
+        "particle": "gamma",
+        "beam_energy_mev": 2.09,  # fluence-mean of 7 MV FFF spectrum
         "seed": 1001,
         "histories": 5000,
         "core_hours": 0.45
@@ -143,8 +143,8 @@ def validate_schema():
     np.testing.assert_array_almost_equal(d1, density_1)
     np.testing.assert_array_almost_equal(m1, magnetic_1)
     np.testing.assert_array_almost_equal(ds1, dose_1)
-    assert mt1["particle"] == "proton"
-    assert mt1["beam_energy_mev"] == 150.0
+    assert mt1["particle"] == "gamma"
+    assert mt1["beam_energy_mev"] == 2.09
     assert mt1["core_hours"] == 0.45
     print("  - Case 1 readback validation: PASS")
     

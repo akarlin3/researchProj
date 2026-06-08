@@ -9,6 +9,46 @@ import os
 import json
 import numpy as np
 
+# ----------------------------------------------------------------------------
+# Beam modality: Elekta Unity-class 1.5 T MR-Linac is a PHOTON machine with a
+# single 7 MV FFF (flattening-filter-free) bremsstrahlung x-ray source.
+# The dataset must therefore be photon, NOT proton and NOT a monoenergetic gamma.
+# ----------------------------------------------------------------------------
+
+def photon_fff_spectrum(Emax_MV=7.0, Elow_MeV=0.25, n_bins=40, hardening_k=0.65):
+    """
+    Synthesized APPROXIMATE 7 MV FFF bremsstrahlung photon spectrum for an
+    Elekta Unity-class MR-Linac source.
+
+    *** This is a synthesized analytical approximation, NOT a measured Unity
+    phase-space file. *** It is flagged as approximate throughout the dataset
+    metadata so it can be swapped for a commissioned phase space / spectrum.
+
+    Basis (cited, not fabricated):
+      - Shape: Kramers thick-target bremsstrahlung ~ (Emax - E)/E, modified by an
+        empirical low-energy hardening factor E**k to emulate beam hardening
+        through the target/primary collimator of an FFF head (no flattening
+        filter is present on Unity, so the raw spectrum is intentionally soft).
+      - Normalization target: the fluence-mean photon energy is tuned to
+        ~2.1 MeV, matching the published Unity 7 MV FFF mean photon energy of
+        ~2.11 MeV at isocenter reported in Monte Carlo commissioning literature
+        (BEAMnrc/EGSnrc head models of the Elekta Unity Agility head).
+
+    Returns (energies_MeV, weights) suitable for a TOPAS continuous spectrum.
+    """
+    edges = np.linspace(Elow_MeV, Emax_MV, n_bins + 1)
+    centers = 0.5 * (edges[:-1] + edges[1:])
+    weights = (Emax_MV - centers) / centers * centers ** hardening_k
+    weights = np.clip(weights, 0.0, None)
+    weights = weights / weights.sum()
+    return centers, weights
+
+
+def _format_topas_vector(values, fmt="{:.4f}"):
+    """Format a numpy array into a space-separated TOPAS vector body."""
+    return " ".join(fmt.format(v) for v in values)
+
+
 def generate_layered_phantom(Nx=60, Ny=60, Nz=60, seed=42):
     """
     Generates a 3D voxelized phantom with randomized layers and an air gap.
@@ -80,22 +120,33 @@ def generate_case_deck(case_id, seed, output_dir="cases", histories=500000):
     bin_filepath = os.path.join(output_dir, bin_filename)
     phantom.tofile(bin_filepath)
     
-    # B-field: transverse field (either in X or Y direction, or slightly angled)
-    # Default 1.5 T transverse (MRI-Linac)
+    # B-field: 1.5 T transverse dipole (Elekta Unity geometry).
+    # The beam travels along +Z, so a field in X or Y is PERPENDICULAR to the
+    # beam axis (B 'tab' beam), which is the correct Unity orientation. Bz = 0.
     b_strength = 1.5 # Tesla
     b_dir = rng.choice(["X", "Y"])
     bx_dir = 1.0 if b_dir == "X" else 0.0
     by_dir = 1.0 if b_dir == "Y" else 0.0
     bz_dir = 0.0
-    
-    # Source / Beam configuration
-    # 150 MeV protons or 6 MV photons
-    particle = rng.choice(["proton", "gamma"])
-    if particle == "proton":
-        energy = rng.uniform(120.0, 180.0) # MeV
-    else:
-        energy = rng.uniform(4.0, 10.0) # MeV
-        
+
+    # Source / Beam configuration: Elekta Unity-class 7 MV FFF PHOTON source.
+    # The machine is a photon MR-Linac; we sample a 7 MV FFF bremsstrahlung
+    # spectrum (synthesized, ~2.1 MeV mean) rather than protons or a single
+    # monoenergetic gamma. Energy is delivered as a TOPAS continuous spectrum.
+    particle = "gamma"
+    spec_energies, spec_weights = photon_fff_spectrum()
+    spectrum_mean_mev = float(np.sum(spec_energies * spec_weights))
+    energy = spectrum_mean_mev  # reported as the fluence-mean of the spectrum
+    n_spec = len(spec_energies)
+    spec_energy_str = _format_topas_vector(spec_energies, "{:.4f}")
+    spec_weight_str = _format_topas_vector(spec_weights, "{:.6e}")
+
+    # Randomized field size and isocenter so the geometry distribution truly
+    # varies (anatomy + field size + isocenter), matching Unity field sizes.
+    field_half_cm = float(rng.uniform(1.5, 11.0))   # 3x3 cm up to 22x22 cm fields
+    iso_x_cm = float(rng.uniform(-3.0, 3.0))         # isocenter lateral offset
+    iso_y_cm = float(rng.uniform(-3.0, 3.0))
+
     # Topas Deck Generation
     deck_filename = f"case_{case_id}.txt"
     deck_filepath = os.path.join(output_dir, deck_filename)
@@ -146,22 +197,26 @@ u:Ge/Patient/MagneticFieldDirectionZ = {bz_dir}
 d:Ge/Patient/MagneticFieldStrength = {b_strength} tesla
 
 # ====================================================================
-# BEAM SOURCE (Proton or Photon)
+# BEAM SOURCE (Elekta Unity-class 7 MV FFF photon spectrum)
+# Particle: gamma (photon). Energy: continuous 7 MV FFF bremsstrahlung
+# spectrum (synthesized analytical approximation, fluence-mean ~{energy:.3f} MeV).
+# NOTE: This is an APPROXIMATE spectrum, not a measured Unity phase space.
 # ====================================================================
 s:So/Beam/Type = "Beam"
 s:So/Beam/Component = "World"
-s:So/Beam/BeamParticle = "{particle}"
-d:So/Beam/BeamEnergy = {energy:.4f} MeV
-u:So/Beam/BeamEnergySpread = 0.0
+s:So/Beam/BeamParticle = "gamma"
+s:So/Beam/BeamEnergySpectrumType = "Continuous"
+dv:So/Beam/BeamEnergySpectrumValues = {n_spec} {spec_energy_str} MeV
+uv:So/Beam/BeamEnergySpectrumWeights = {n_spec} {spec_weight_str}
 s:So/Beam/BeamPositionDistribution = "Gaussian"
 s:So/Beam/BeamPositionCutoffShape = "Rectangle"
-d:So/Beam/BeamPositionCutoffX = 10.0 cm
-d:So/Beam/BeamPositionCutoffY = 10.0 cm
+d:So/Beam/BeamPositionCutoffX = {field_half_cm:.3f} cm
+d:So/Beam/BeamPositionCutoffY = {field_half_cm:.3f} cm
 d:So/Beam/BeamPositionSpreadX = 5.0 mm
 d:So/Beam/BeamPositionSpreadY = 5.0 mm
 s:So/Beam/BeamAngularDistribution = "None"
-d:So/Beam/TransX = 0.0 cm
-d:So/Beam/TransY = 0.0 cm
+d:So/Beam/TransX = {iso_x_cm:.3f} cm
+d:So/Beam/TransY = {iso_y_cm:.3f} cm
 d:So/Beam/TransZ = -25.0 cm
 d:So/Beam/RotX = 0.0 deg
 d:So/Beam/RotY = 0.0 deg
@@ -201,7 +256,13 @@ i:Ts/Seed = {seed}
         },
         "source": {
             "particle": particle,
+            "modality": "photon",
+            "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+            "spectrum_mean_mev": float(spectrum_mean_mev),
+            "spectrum_endpoint_mv": 7.0,
             "energy_mev": float(energy),
+            "field_half_cm": field_half_cm,
+            "isocenter_offset_cm": [iso_x_cm, iso_y_cm],
             "histories": histories
         },
         "dimensions": [Nx, Ny, Nz],

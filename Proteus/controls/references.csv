@@ -1,0 +1,7 @@
+id,role,type,accession,note
+IsPETase,positive,structure,6EQE,apo 0.92A; alt 5XJH/5XG0; triad S160/H237/D206
+LCC_WT,reference,structure,4EB0,wild-type leaf-branch compost cutinase; catalytic S165
+LCC_ICCG,positive,structure,6THS,S165A inactivated — revert A165S in silico for docking
+GuaPA,recovery,sequence,marcottelab/GuaPA,archaeal PETase (Acosta 2025); fetch seq from GitHub repo
+MG8,recovery,sequence,EIAMTHONG_2022_SI,saliva-metagenome PETase; locate accession in Angew Chem 2022 SI
+CalB,negative,structure,1TCA,Candida antarctica lipase B — VERIFY PDB; lid-bearing lipase

@@ -1,0 +1,54 @@
+# Proteus — local conda/mamba environment (CPU + RTX 4080 folding env).
+#
+# Build with:  mamba env create -f environment.yml   (or conda)
+#
+# IMPORTANT — versions are intentionally NOT hard-pinned here. Resolve the
+# CUDA-matched PyTorch build against the host's actual CUDA/driver (see
+# envlog/recon-report.md), then capture the resolved set into:
+#   - requirements-lock.txt          (pip freeze)
+#   - envlog/conda-env-resolved.yml  (conda env export)
+#
+# The pytorch-cuda line below MUST match the recon CUDA version. It is left as
+# a TODO marker rather than a guessed number — do not invent a CUDA version.
+name: proteus
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+
+  # --- Core scientific stack ---
+  - numpy
+  - pandas
+  - biopython
+  - biotite
+  - pyyaml
+  - tqdm
+  - pytest
+
+  # --- PyTorch + CUDA (RESOLVE against recon CUDA; do not guess) ---
+  - pytorch
+  - pytorch-cuda=__SET_TO_RECON_CUDA__   # e.g. 12.1 / 12.4 — set from `nvcc`/driver
+  # NOTE: on this scaffold host there is NO GPU/CUDA, so this line cannot resolve.
+  #       On the RTX 4080 host, set the value and uncomment cleanly.
+
+  # --- Structure search / clustering (bioconda) ---
+  - foldseek
+  - mmseqs2
+  - fpocket
+
+  # --- CPU docking (P4) ---
+  - vina            # AutoDock Vina
+  - openbabel       # ligand/receptor prep helper for Meeko/ADFR flows
+
+  # --- pip-only deps ---
+  - pip
+  - pip:
+      - fair-esm                 # ESMFold / ESM-2 (GPU in practice)
+      - transformers             # ProstT5 (Rostlab/ProstT5) seq -> 3Di
+      - sentencepiece            # ProstT5 tokenizer dependency
+      - meeko                    # AutoDock ligand prep
+      # ADFR suite (receptor prep) is installed separately from the Scripps
+      # distribution; it is not pip/conda installable. See README.

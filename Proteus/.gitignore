@@ -1,0 +1,43 @@
+# --- Proteus data & artifacts (large / regenerable) ---
+# Ignore data/ contents but keep the dir structure via .gitkeep markers.
+data/**
+!data/**/
+!data/**/.gitkeep
+structures/
+models/
+*.pdb
+*.cif
+*.fasta.gz
+*.a3m
+*.m8
+
+# keep dir markers even though parents are ignored
+!**/.gitkeep
+!controls/MANIFEST.json
+
+# --- envlog: ignore machine-specific JSON snapshots, keep curated reports ---
+envlog/*.json
+!envlog/recon-report.md
+!envlog/conda-env-resolved.yml
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.Python
+
+# --- conda/mamba ---
+.conda/
+
+# --- tooling / OS ---
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.DS_Store
+*.log

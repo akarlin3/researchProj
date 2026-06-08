@@ -1,0 +1,34 @@
+# Vast.ai burst image — Chai-1 cofolding + GNINA GPU docking (P3/P4).
+# This is a STUB with a pinned CUDA base. Build/push only when bursting; it is
+# NOT part of the local env. Pin Chai-1 / GNINA versions when first built and
+# capture them alongside the local lockfiles.
+
+# Pinned CUDA runtime base (matches a Vast P4-class GPU; verify against the
+# instance's driver at launch).
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PIP_NO_CACHE_DIR=1 \
+    PYTHONUNBUFFERED=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python3.11 python3-pip git wget ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/proteus
+
+# --- Chai-1 (cofolding) ---
+# TODO(P3): pin a release, e.g.  pip install "chai_lab==<RESOLVED>"
+#           Chai-1 pulls its own torch build; do not mix with the local lock.
+RUN pip3 install --upgrade pip
+# RUN pip3 install "chai_lab==__PIN_ON_FIRST_BUILD__"
+
+# --- GNINA (GPU docking) ---
+# TODO(P4): GNINA ships as a static binary; pin a release tag.
+# RUN wget -O /usr/local/bin/gnina \
+#       https://github.com/gnina/gnina/releases/download/v__PIN__/gnina \
+#  && chmod +x /usr/local/bin/gnina
+
+# Entry: receive a candidate batch, cofold + dock, return scores.
+# TODO(P3/P4): copy the burst runner and set ENTRYPOINT.
+CMD ["python3", "-c", "print('proteus vast burst image — fill in chai_lab + gnina pins, see vast/README.md')"]

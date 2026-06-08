@@ -1,0 +1,71 @@
+{
+  "generated": "2026-06-08T14:07:14.089915+00:00",
+  "source": "RCSB files.rcsb.org",
+  "format": "pdb",
+  "structures": [
+    {
+      "id": "IsPETase",
+      "role": "positive",
+      "note": "apo 0.92A; alt 5XJH/5XG0; triad S160/H237/D206",
+      "accession": "6EQE",
+      "format": "pdb",
+      "url": "https://files.rcsb.org/download/6EQE.pdb",
+      "status": "ok",
+      "path": "../structures/6EQE.pdb",
+      "bytes": 614952,
+      "sha256": "08f76ad84526d2050c2f91f002374fb82a6a76e6a5fc7c2df1e691b096daf363"
+    },
+    {
+      "id": "LCC_WT",
+      "role": "reference",
+      "note": "wild-type leaf-branch compost cutinase; catalytic S165",
+      "accession": "4EB0",
+      "format": "pdb",
+      "url": "https://files.rcsb.org/download/4EB0.pdb",
+      "status": "ok",
+      "path": "../structures/4EB0.pdb",
+      "bytes": 217647,
+      "sha256": "952288d4a49893ee259638bc72e17868b6903f0027c4bd4d207f76b9ddf85718"
+    },
+    {
+      "id": "LCC_ICCG",
+      "role": "positive",
+      "note": "S165A inactivated \u2014 revert A165S in silico for docking",
+      "accession": "6THS",
+      "format": "pdb",
+      "url": "https://files.rcsb.org/download/6THS.pdb",
+      "status": "ok",
+      "path": "../structures/6THS.pdb",
+      "bytes": 404676,
+      "sha256": "cee37883ac411cc7cdf9f1481d2b51b71f78b186304a112ac38fb29653549270"
+    },
+    {
+      "id": "CalB",
+      "role": "negative",
+      "note": "Candida antarctica lipase B \u2014 VERIFY PDB; lid-bearing lipase",
+      "accession": "1TCA",
+      "format": "pdb",
+      "url": "https://files.rcsb.org/download/1TCA.pdb",
+      "status": "ok",
+      "path": "../structures/1TCA.pdb",
+      "bytes": 244863,
+      "sha256": "8950b5f7a08c6e8be8506de6af728ec7c28583aa28362cb7886726f757d70d56"
+    }
+  ],
+  "sequences": [
+    {
+      "id": "GuaPA",
+      "type": "sequence",
+      "accession": "marcottelab/GuaPA",
+      "status": "manual",
+      "note": "archaeal PETase (Acosta 2025); fetch seq from GitHub repo"
+    },
+    {
+      "id": "MG8",
+      "type": "sequence",
+      "accession": "EIAMTHONG_2022_SI",
+      "status": "manual",
+      "note": "saliva-metagenome PETase; locate accession in Angew Chem 2022 SI"
+    }
+  ]
+}

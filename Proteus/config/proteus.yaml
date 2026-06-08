@@ -1,0 +1,91 @@
+# Proteus — central config
+# Structure-first dark-proteome mining for divergent PET-hydrolase candidates.
+# Every stochastic step (MMseqs2, ESMFold, docking) MUST read random_seed from here.
+
+# ---------------------------------------------------------------------------
+# Global reproducibility
+# ---------------------------------------------------------------------------
+random_seed: 1729            # referenced by every stochastic stage (S0, S3, docking)
+
+# ---------------------------------------------------------------------------
+# Paths (relative to repo root unless absolute)
+# ---------------------------------------------------------------------------
+paths:
+  data_raw:        data/raw
+  data_interim:    data/interim
+  data_processed:  data/processed
+  structures:      structures          # gitignored; fetched/folded PDBs
+  models:          models              # gitignored; downloaded weights (ESMFold, ProstT5)
+  controls:        controls
+  envlog:          envlog
+  # external weight locations (populated when downloaded; left blank to avoid guessing)
+  prostt5_weights: ""                  # e.g. Rostlab/ProstT5 (HF) or local path
+  esmfold_weights: ""                  # e.g. facebook/esmfold_v1 cache dir
+
+# ---------------------------------------------------------------------------
+# Corpus selection — which dark-proteome sources to mine
+# ---------------------------------------------------------------------------
+corpus:
+  sources: []                          # e.g. ["mgnify_peptide_db", "gtdb_reps"] — fill per run
+  min_length: 80                       # residues; below this, skip
+  max_length: 1000                     # length-chunk threshold handled in S3
+  fasta_glob: "data/raw/*.fasta.gz"
+
+# ---------------------------------------------------------------------------
+# Stage thresholds
+# ---------------------------------------------------------------------------
+# S0 — dereplicate (MMseqs2). This is dereplication, NOT a homology gate:
+#      we collapse near-identical sequences only; we do NOT filter by similarity
+#      to known PETases (that would defeat dark-tail mining).
+s0_dereplicate:
+  min_seq_id: 0.95                     # cluster members at >=95% identity collapse
+  coverage: 0.90
+  cov_mode: 1
+
+# S1 — ProstT5 sequence -> 3Di tokenization
+s1_tokenize:
+  batch_size: 16
+  device: auto                         # cpu | cuda | auto
+
+# S2 — Foldseek fold-CLASS triage against alpha/beta-hydrolase fold (UNSEEDED:
+#      we match the fold class, not specific PETase templates)
+s2_foldclass_triage:
+  target_fold: alpha_beta_hydrolase
+  evalue: 0.01
+  min_bits: 50
+
+# S3 — ESMFold batch (LOCAL GPU). pLDDT filter + length chunking.
+s3_fold:
+  device: cuda                         # GPU-only in practice; see envlog/recon-report.md
+  plddt_min: 70.0                      # mean pLDDT cutoff to keep a model
+  chunk_size: 400                      # residue chunk for long sequences
+  max_recycles: 3
+
+# S4 — catalytic geometry gate: Ser-His-Asp triad + oxyanion hole
+s4_geometry:
+  triad_serine_resname: SER
+  triad_his_resname: HIS
+  triad_acid_resnames: [ASP, GLU]
+  # distance windows (Angstrom) — catalytic triad hydrogen-bonding geometry
+  ser_og_his_ne2_max: 3.5              # Ser OG -- His NE2
+  his_nd1_acid_max: 3.5                # His ND1 -- Asp/Glu carboxylate O
+  oxyanion_hole_max: 3.5               # backbone-NH donors to oxyanion position
+
+# S5 — cleft metrics A-E, control-anchored scoring (scored relative to the
+#      positive controls in controls/references.csv, not to absolute cutoffs)
+s5_cleft_filter:
+  fpocket_min_pockets: 1
+  metrics: [volume, hydrophobicity, depth, polarity, druggability]   # A-E
+  control_anchor: IsPETase             # reference for relative cleft scoring
+
+# ---------------------------------------------------------------------------
+# Compute split
+# ---------------------------------------------------------------------------
+compute:
+  local:
+    description: "CPU + single RTX 4080 (16GB). ESMFold, Foldseek, MMseqs2, fpocket, Vina."
+    cuda_device: 0
+  vast_burst:
+    description: "Vast.ai P3/P4 burst for Chai-1 cofolding + GPU docking (GNINA/DiffDock)."
+    image: vast/Dockerfile.chai1
+    instance_pref: interruptible        # prefer interruptible; fall back to on-demand

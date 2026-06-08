@@ -1,0 +1,36 @@
+# Proteus — resolved environment snapshot.
+#
+# NOTE: This is NOT a real `conda env export`. The scaffold host has no conda/mamba
+# and no GPU/CUDA (Checkpoint 0 BLOCKER — see recon-report.md), so the LOCAL stack
+# was resolved CPU-best-effort in a pip venv + static bioconda-equivalent binaries.
+# Regenerate a true conda export on the RTX 4080 host:  conda env export > this file.
+#
+# Generated: 2026-06-08T14:16:13Z
+name: proteus
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - bioconda
+resolved:
+  python: "3.11.15"
+  # --- GPU stack: NOT validated here (no CUDA). torch is the CPU wheel. ---
+  pytorch: "2.12.0+cpu"          # CPU build; on 4080 host this becomes a +cuXXX build
+  pytorch_cuda: "n/a (no GPU on scaffold host)"
+  esmfold_fair_esm: "installed (import OK); inference SKIPPED — requires CUDA GPU"
+  # --- Structure search / clustering (static binaries, mmseqs.com) ---
+  foldseek: "718d42176d2f67d36a60866fedfb881f8d5a7ebf (linux-avx2 static)"
+  mmseqs2: "11933403321b1a062d5d82fecd5a1d823d0d3bf6 (linux-avx2 static)"
+  fpocket: "4.2.2 (built from source)"
+  # --- Docking (CPU, P4) ---
+  vina: "1.2.7"
+  meeko: "0.7.1"
+  adfr: "NOT installed (Scripps distribution; manual install on real host)"
+  # --- ProstT5 ---
+  transformers: "5.10.2"
+  prostt5_tokenizer: "Rostlab/ProstT5 spiece.model (vocab 28) loads via sentencepiece"
+  # --- Standard scientific stack ---
+  numpy: "2.4.6"
+  pandas: "3.0.3"
+  biopython: "1.87"
+  biotite: "1.6.0"

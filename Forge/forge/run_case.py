@@ -13,8 +13,10 @@ import numpy as np
 import resource
 
 def is_topas_available():
-    """Checks if topas executable is available on the system path."""
-    return shutil.which("topas") is not None
+    """Checks if topas executable is available on the system path or custom path."""
+    if shutil.which("topas") is not None:
+        return True
+    return os.path.exists("/Users/averykarlin/Applications/bin/topas")
 
 def parse_topas_csv(csv_path):
     """
@@ -22,6 +24,7 @@ def parse_topas_csv(csv_path):
     The file format consists of comment header lines starting with '#' 
     followed by the voxel index and binned value columns:
     BinX, BinY, BinZ, Value, ...
+    Returns (dose_grid, std_grid)
     """
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"TOPAS output file not found: {csv_path}")
@@ -67,11 +70,17 @@ def parse_topas_csv(csv_path):
             
             dose_grid = np.zeros((Nx, Ny, Nz), dtype=np.float32)
             dose_grid[ix, iy, iz] = val
-            return dose_grid
+            
+            std_grid = None
+            if data.shape[1] >= 5:
+                std_grid = np.zeros((Nx, Ny, Nz), dtype=np.float32)
+                std_grid[ix, iy, iz] = data[:, 4]
+                
+            return dose_grid, std_grid
             
         elif len(data.shape) == 1:
             # Flat list of values - reshape using the detected/fallback dimensions
-            return data.reshape(dims).astype(np.float32)
+            return data.reshape(dims).astype(np.float32), None
         else:
             raise ValueError(f"Unexpected data shape: {data.shape}")
             
@@ -93,7 +102,14 @@ def run_case(deck_path, output_dir="cases"):
     case_name = os.path.splitext(deck_name)[0]
     
     # Command to run TOPAS
-    cmd = ["topas", deck_name]
+    topas_path = shutil.which("topas")
+    if topas_path is None:
+        topas_path = "/Users/averykarlin/Applications/bin/topas"
+    cmd = [topas_path, deck_name]
+    
+    # Ensure environment variables are propagated
+    env = os.environ.copy()
+    env["PATH"] = "/Users/averykarlin/Applications/bin:" + env.get("PATH", "")
     
     t0_wall = time.perf_counter()
     usage_start = resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -101,7 +117,7 @@ def run_case(deck_path, output_dir="cases"):
     
     # Run the simulation
     # TOPAS output files are written to the current working directory (output_dir)
-    result = subprocess.run(cmd, cwd=output_dir, capture_output=True, text=True)
+    result = subprocess.run(cmd, cwd=output_dir, capture_output=True, text=True, env=env)
     
     t1_wall = time.perf_counter()
     usage_end = resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -121,7 +137,7 @@ def run_case(deck_path, output_dir="cases"):
     csv_filename = f"dose_{case_name}.csv"
     csv_filepath = os.path.join(output_dir, csv_filename)
     
-    dose_grid = parse_topas_csv(csv_filepath)
+    dose_grid, std_grid = parse_topas_csv(csv_filepath)
     
     # Extract number of threads from the deck if possible, default to 1
     threads = 1
@@ -136,6 +152,7 @@ def run_case(deck_path, output_dir="cases"):
         
     return {
         "dose_grid": dose_grid,
+        "std_grid": std_grid,
         "wall_time_s": wall_time,
         "cpu_time_s": cpu_time,
         "threads": threads
@@ -144,6 +161,7 @@ def run_case(deck_path, output_dir="cases"):
 if __name__ == "__main__":
     # Self-test checks if TOPAS is present and alerts the user
     if is_topas_available():
-        print("TOPAS Monte Carlo engine is available on PATH.")
+        print("TOPAS Monte Carlo engine is available.")
     else:
-        print("TOPAS Monte Carlo engine is NOT available on PATH. (This is expected for this workspace)")
+        print("TOPAS Monte Carlo engine is NOT available.")
+

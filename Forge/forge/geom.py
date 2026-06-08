@@ -60,7 +60,7 @@ def generate_layered_phantom(Nx=60, Ny=60, Nz=60, seed=42):
                       "G4_LUNG_ICRP" if slab4_material == 1 else "G4_BONE_COMPACT_ICRU"]
     }
 
-def generate_case_deck(case_id, seed, output_dir="cases"):
+def generate_case_deck(case_id, seed, output_dir="cases", histories=500000):
     """
     Generates a single randomized MC case, writes the binary voxel grid 
     and the TOPAS parameter text deck.
@@ -96,11 +96,6 @@ def generate_case_deck(case_id, seed, output_dir="cases"):
     else:
         energy = rng.uniform(4.0, 10.0) # MeV
         
-    # Statistical uncertainty target: controls histories
-    # Let's set a baseline of 5000 histories for benchmarking, 
-    # which is standard for a quick run.
-    histories = 50000
-    
     # Topas Deck Generation
     deck_filename = f"case_{case_id}.txt"
     deck_filepath = os.path.join(output_dir, deck_filename)
@@ -181,6 +176,7 @@ s:Sc/Dose/Component = "Patient"
 s:Sc/Dose/OutputFile = "dose_case_{case_id}"
 s:Sc/Dose/OutputType = "csv"
 s:Sc/Dose/IfOutputFileAlreadyExists = "Overwrite"
+sv:Sc/Dose/Report = 2 "Mean" "Standard_Deviation"
 
 # ====================================================================
 # TIMING & CONTROLS
@@ -211,6 +207,7 @@ i:Ts/Seed = {seed}
         "dimensions": [Nx, Ny, Nz],
         "voxel_sizes_mm": [dx, dy, dz]
     }
+
 
 def main():
     K = 12

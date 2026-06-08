@@ -64,7 +64,7 @@ d:So/Beam/TransZ = -25.0 cm
 d:So/Beam/RotX = 0.0 deg
 d:So/Beam/RotY = 0.0 deg
 d:So/Beam/RotZ = 0.0 deg
-i:So/Beam/NumberOfHistoriesInRun = 50000
+i:So/Beam/NumberOfHistoriesInRun = 500000
 
 # ====================================================================
 # SCORING (3D Dose to Medium)
@@ -74,6 +74,7 @@ s:Sc/Dose/Component = "Patient"
 s:Sc/Dose/OutputFile = "dose_case_1"
 s:Sc/Dose/OutputType = "csv"
 s:Sc/Dose/IfOutputFileAlreadyExists = "Overwrite"
+sv:Sc/Dose/Report = 2 "Mean" "Standard_Deviation"
 
 # ====================================================================
 # TIMING & CONTROLS

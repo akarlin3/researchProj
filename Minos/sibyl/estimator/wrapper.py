@@ -3,6 +3,7 @@ import torch.nn.functional as F
 from pathlib import Path
 from typing import Dict, Tuple
 
+import uGUIDE.training as _ug_training
 from uGUIDE.config_utils import create_config_uGUIDE, save_config_uGUIDE, load_config_uGUIDE
 from uGUIDE.training import run_training
 from uGUIDE.estimation import estimate_microstructure
@@ -10,6 +11,37 @@ from uGUIDE.embedded_net import get_embedded_net
 from uGUIDE.normalization import load_normalizer
 
 from sibyl.data.synthetic import PRIOR_BOUNDS
+
+# --- Compatibility shim (vendored uGUIDE vs torch >= 2.x) -------------------
+# uGUIDE's training.py builds DataLoaders with persistent_workers=True even when
+# num_workers=0 (the CPU path), which torch>=2 rejects with a ValueError. We patch
+# the DataLoader symbol *as referenced inside uGUIDE.training* (leaving the vendored
+# upstream file untouched) to drop persistent_workers when there are no workers.
+_orig_DataLoader = _ug_training.DataLoader
+
+
+def _compat_DataLoader(*args, **kwargs):
+    if kwargs.get("num_workers", 0) == 0:
+        kwargs.pop("persistent_workers", None)
+    return _orig_DataLoader(*args, **kwargs)
+
+
+_ug_training.DataLoader = _compat_DataLoader
+
+# torch>=2.x dropped the `verbose` kwarg from ReduceLROnPlateau, which uGUIDE still
+# passes. Subclass to swallow it.
+import torch.optim.lr_scheduler as _lrs
+
+_orig_RLROP = _lrs.ReduceLROnPlateau
+
+
+class _CompatReduceLROnPlateau(_orig_RLROP):
+    def __init__(self, *args, **kwargs):
+        kwargs.pop("verbose", None)
+        super().__init__(*args, **kwargs)
+
+
+_lrs.ReduceLROnPlateau = _CompatReduceLROnPlateau
 
 def create_and_train_estimator(
     theta_train: torch.Tensor,
@@ -92,20 +124,21 @@ def test_embedding_matches_uguide(x: torch.Tensor, config: Dict):
     Smoke test to verify that our get_embedding function identically matches 
     what uGUIDE's estimation module does internally.
     """
-    import sys
     from unittest.mock import patch
-    
-    # We will patch torch.distributions.ConditionalTransformedDistribution.condition 
-    # to intercept the embedding passed to the flow inside estimate_microstructure.
+    import pyro.distributions as dist
+
+    # Intercept the embedding passed to the flow inside estimate_microstructure.
+    # uGUIDE conditions a *pyro* ConditionalTransformedDistribution (see
+    # uGUIDE/estimation.py), so we patch that class -- not torch.distributions.
     intercepted_embedding = [None]
-    
-    original_condition = torch.distributions.ConditionalTransformedDistribution.condition
-    
+
+    original_condition = dist.ConditionalTransformedDistribution.condition
+
     def mock_condition(self, context):
         intercepted_embedding[0] = context.clone()
         return original_condition(self, context)
-    
-    with patch('torch.distributions.ConditionalTransformedDistribution.condition', mock_condition):
+
+    with patch.object(dist.ConditionalTransformedDistribution, 'condition', mock_condition):
         _ = estimate_microstructure(x[:2], config, verbose=False, plot=False)
         
     internal_embedding = intercepted_embedding[0]

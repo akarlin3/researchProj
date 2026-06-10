@@ -1,0 +1,313 @@
+{
+  "label": "NULL additive 1/sqrt(N) noise, c=0.05",
+  "pre_committed_conditions": {
+    "cond1": "median per-N prolongation factor in [2.9, 3.5]",
+    "cond2": "CV of per-N factor across N in [8, 16, 32, 64] < 0.15",
+    "cond3": "Rayleigh p < 0.05 of capture phases at every N",
+    "cond4": "censored-Weibull k_cyc > 1, 95% profile CI excluding 1, every N",
+    "verdict_convention": "pass = all four; partial = cond1 only-ish (cond1 holds, not all four); fail = cond1 fails"
+  },
+  "per_N_factor": {
+    "8": 0.921968787515006,
+    "16": 0.9928656361474434,
+    "32": 0.9721254355400698,
+    "64": 0.85859375
+  },
+  "median_factor": 0.9470471115275378,
+  "cv_factor": 0.055302910874857225,
+  "cond1_prolong_2p9_3p5": false,
+  "cond2_cv_lt_0p15": true,
+  "cond3_rayleigh_all_N": true,
+  "cond4_kcyc_gt1_all_N": true,
+  "all_pass": false,
+  "verdict": "fail",
+  "secondary_pattern_match": {
+    "pre_registered": "2026-06-10, before any CP2 input (human-approved)",
+    "S1": "per-N factor within 20% of measured at every N",
+    "S2": "Rayleigh p < 0.05 at N in [8, 16] and Rbar(8) > Rbar(64)",
+    "S3": "k_cyc 95% CI overlaps measured k_cyc 95% CI at every N",
+    "S1_factor_pattern": {
+      "per_N": {
+        "8": {
+          "factor": 0.921968787515006,
+          "measured": 3.4441776710684264,
+          "rel_dev": 0.7323109097246427,
+          "within_tol": false
+        },
+        "16": {
+          "factor": 0.9928656361474434,
+          "measured": 3.1581450653983354,
+          "rel_dev": 0.6856174698795181,
+          "within_tol": false
+        },
+        "32": {
+          "factor": 0.9721254355400698,
+          "measured": 3.027874564459931,
+          "rel_dev": 0.6789413118527042,
+          "within_tol": false
+        },
+        "64": {
+          "factor": 0.85859375,
+          "measured": 1.98359375,
+          "rel_dev": 0.5671524222134698,
+          "within_tol": false
+        }
+      },
+      "passes": false
+    },
+    "S2_phase_pattern": {
+      "per_N": {
+        "8": {
+          "rayleigh_p": 0.00043625707981274437,
+          "rayleigh_Rbar": 0.36995390775636927,
+          "measured_p": 6.680299721533941e-08,
+          "measured_Rbar": 0.3105514803260527
+        },
+        "16": {
+          "rayleigh_p": 0.0,
+          "rayleigh_Rbar": 0.5845870146576947,
+          "measured_p": 0.026810530018280137,
+          "measured_Rbar": 0.1566884230878801
+        },
+        "32": {
+          "rayleigh_p": 0.0,
+          "rayleigh_Rbar": 0.6722192593494872,
+          "measured_p": 0.16466796133042466,
+          "measured_Rbar": 0.12015088528394718
+        },
+        "64": {
+          "rayleigh_p": 0.0,
+          "rayleigh_Rbar": 0.6923992580459667,
+          "measured_p": 0.09909645914299162,
+          "measured_Rbar": 0.12666709628273784
+        }
+      },
+      "passes": false
+    },
+    "S3_kcyc_pattern": {
+      "per_N": {
+        "8": {
+          "k_cyc": 2.551879325516763,
+          "k_cyc_ci": [
+            2.114182245252094,
+            3.011260419105768
+          ],
+          "measured_k_cyc": 2.1294906347327265,
+          "measured_ci": [
+            1.9057175549995489,
+            2.3619361243769466
+          ],
+          "ci_overlap": true
+        },
+        "16": {
+          "k_cyc": 2.6159490395869756,
+          "k_cyc_ci": [
+            2.0944426141969434,
+            3.1810590187599157
+          ],
+          "measured_k_cyc": 2.1546976037528913,
+          "measured_ci": [
+            1.9155243791746799,
+            2.403273273484815
+          ],
+          "ci_overlap": true
+        },
+        "32": {
+          "k_cyc": 2.742870179233024,
+          "k_cyc_ci": [
+            2.1947604387850497,
+            3.3358729153106395
+          ],
+          "measured_k_cyc": 2.1105389879106538,
+          "measured_ci": [
+            1.85890736029414,
+            2.372984451582536
+          ],
+          "ci_overlap": true
+        },
+        "64": {
+          "k_cyc": 3.7878102661564457,
+          "k_cyc_ci": [
+            3.0320691712382537,
+            4.584578202445863
+          ],
+          "measured_k_cyc": 2.88691223456861,
+          "measured_ci": [
+            2.5521667871056612,
+            3.2392174288848343
+          ],
+          "ci_overlap": true
+        }
+      },
+      "passes": true
+    },
+    "matches_measured_pattern": false
+  },
+  "cells": {
+    "8": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 38.400000000000006,
+      "median_is_censored": false,
+      "det_ref": 41.650000000000006,
+      "prolongation": 0.921968787515006,
+      "rayleigh_n": 55,
+      "rayleigh_Rbar": 0.36995390775636927,
+      "rayleigh_p": 0.00043625707981274437,
+      "weibull_k": 0.9910307006914411,
+      "weibull_k_ci": [
+        0.887048674989496,
+        1.1012145400665483
+      ],
+      "k_cyc": 2.551879325516763,
+      "k_cyc_ci": [
+        2.114182245252094,
+        3.011260419105768
+      ],
+      "n_no_Tb": 145,
+      "median_cycles": 4.003134796238244,
+      "median_Tb": 26.25,
+      "m_lo_min": 0.0012429747071299407,
+      "m_hi_max": 0.9806689574985865
+    },
+    "16": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 41.75,
+      "median_is_censored": false,
+      "det_ref": 42.050000000000004,
+      "prolongation": 0.9928656361474434,
+      "rayleigh_n": 43,
+      "rayleigh_Rbar": 0.5845870146576947,
+      "rayleigh_p": 0.0,
+      "weibull_k": 1.1392099102422917,
+      "weibull_k_ci": [
+        1.0203178956888501,
+        1.2647828642093137
+      ],
+      "k_cyc": 2.6159490395869756,
+      "k_cyc_ci": [
+        2.0944426141969434,
+        3.1810590187599157
+      ],
+      "n_no_Tb": 157,
+      "median_cycles": 4.189368770764119,
+      "median_Tb": 25.9,
+      "m_lo_min": 0.0005895965867906911,
+      "m_hi_max": 0.979172297959484
+    },
+    "32": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 41.85,
+      "median_is_censored": false,
+      "det_ref": 43.05,
+      "prolongation": 0.9721254355400698,
+      "rayleigh_n": 43,
+      "rayleigh_Rbar": 0.6722192593494872,
+      "rayleigh_p": 0.0,
+      "weibull_k": 1.306109321373342,
+      "weibull_k_ci": [
+        1.1698857448637856,
+        1.449739436896303
+      ],
+      "k_cyc": 2.742870179233024,
+      "k_cyc_ci": [
+        2.1947604387850497,
+        3.3358729153106395
+      ],
+      "n_no_Tb": 157,
+      "median_cycles": 3.657841140529532,
+      "median_Tb": 24.450000000000003,
+      "m_lo_min": 0.0017583796905794949,
+      "m_hi_max": 0.9773003289950792
+    },
+    "64": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 54.95,
+      "median_is_censored": false,
+      "det_ref": 64.0,
+      "prolongation": 0.85859375,
+      "rayleigh_n": 39,
+      "rayleigh_Rbar": 0.6923992580459667,
+      "rayleigh_p": 0.0,
+      "weibull_k": 2.017853211490704,
+      "weibull_k_ci": [
+        1.8056914720866015,
+        2.2408890259517804
+      ],
+      "k_cyc": 3.7878102661564457,
+      "k_cyc_ci": [
+        3.0320691712382537,
+        4.584578202445863
+      ],
+      "n_no_Tb": 161,
+      "median_cycles": 3.6601307189542487,
+      "median_Tb": 24.85,
+      "m_lo_min": 2.9478726841131652e-05,
+      "m_hi_max": 0.9754965041368082
+    }
+  },
+  "deterministic_ref": {
+    "8": 41.650000000000006,
+    "16": 42.050000000000004,
+    "32": 43.05,
+    "64": 64.0
+  },
+  "diagnostics": {
+    "pooled_det_reference_s": 60.550000000000004,
+    "factor_vs_pooled_ref": {
+      "8": 0.6341866226259291,
+      "16": 0.6895127993393889,
+      "32": 0.6911643270024773,
+      "64": 0.907514450867052
+    },
+    "factor_vs_pooled_ref_median": 0.6903385631709331,
+    "factor_vs_pooled_ref_cv": 0.14329034351917874,
+    "cv_factor_N8_16_32_only": 0.03092776781508209,
+    "measured_system_context": {
+      "per_N_factor": {
+        "8": 3.4441776710684264,
+        "16": 3.1581450653983354,
+        "32": 3.027874564459931,
+        "64": 1.98359375
+      },
+      "median_factor": 3.0930098149291334,
+      "cv_factor": 0.1901232427195897
+    }
+  },
+  "mechanism": "Appendix B additive collective noise (already excluded)",
+  "c": 0.05,
+  "seed_cell_index": 1,
+  "committed_appendixB_comparison": {
+    "8": {
+      "harness_factor": 0.921968787515006,
+      "committed_appendixB": 0.9723889555822327,
+      "rel_dev": 0.05185185185185168
+    },
+    "16": {
+      "harness_factor": 0.9928656361474434,
+      "committed_appendixB": 0.9667063020214032,
+      "rel_dev": 0.027060270602705803
+    },
+    "32": {
+      "harness_factor": 0.9721254355400698,
+      "committed_appendixB": 0.994192799070848,
+      "rel_dev": 0.022196261682243028
+    },
+    "64": {
+      "harness_factor": 0.85859375,
+      "committed_appendixB": 0.71640625,
+      "rel_dev": 0.19847328244274812
+    }
+  }
+}

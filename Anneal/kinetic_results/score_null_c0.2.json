@@ -1,0 +1,313 @@
+{
+  "label": "NULL additive 1/sqrt(N) noise, c=0.2",
+  "pre_committed_conditions": {
+    "cond1": "median per-N prolongation factor in [2.9, 3.5]",
+    "cond2": "CV of per-N factor across N in [8, 16, 32, 64] < 0.15",
+    "cond3": "Rayleigh p < 0.05 of capture phases at every N",
+    "cond4": "censored-Weibull k_cyc > 1, 95% profile CI excluding 1, every N",
+    "verdict_convention": "pass = all four; partial = cond1 only-ish (cond1 holds, not all four); fail = cond1 fails"
+  },
+  "per_N_factor": {
+    "8": 2.183673469387755,
+    "16": 1.892984542211653,
+    "32": 1.5900116144018586,
+    "64": 0.8625
+  },
+  "median_factor": 1.7414980783067557,
+  "cv_factor": 0.30111968875462003,
+  "cond1_prolong_2p9_3p5": false,
+  "cond2_cv_lt_0p15": false,
+  "cond3_rayleigh_all_N": false,
+  "cond4_kcyc_gt1_all_N": true,
+  "all_pass": false,
+  "verdict": "fail",
+  "secondary_pattern_match": {
+    "pre_registered": "2026-06-10, before any CP2 input (human-approved)",
+    "S1": "per-N factor within 20% of measured at every N",
+    "S2": "Rayleigh p < 0.05 at N in [8, 16] and Rbar(8) > Rbar(64)",
+    "S3": "k_cyc 95% CI overlaps measured k_cyc 95% CI at every N",
+    "S1_factor_pattern": {
+      "per_N": {
+        "8": {
+          "factor": 2.183673469387755,
+          "measured": 3.4441776710684264,
+          "rel_dev": 0.36598117811083986,
+          "within_tol": false
+        },
+        "16": {
+          "factor": 1.892984542211653,
+          "measured": 3.1581450653983354,
+          "rel_dev": 0.4006024096385542,
+          "within_tol": false
+        },
+        "32": {
+          "factor": 1.5900116144018586,
+          "measured": 3.027874564459931,
+          "rel_dev": 0.4748753356348293,
+          "within_tol": false
+        },
+        "64": {
+          "factor": 0.8625,
+          "measured": 1.98359375,
+          "rel_dev": 0.5651831429696731,
+          "within_tol": false
+        }
+      },
+      "passes": false
+    },
+    "S2_phase_pattern": {
+      "per_N": {
+        "8": {
+          "rayleigh_p": 0.6599597219854684,
+          "rayleigh_Rbar": 0.06048220683355715,
+          "measured_p": 6.680299721533941e-08,
+          "measured_Rbar": 0.3105514803260527
+        },
+        "16": {
+          "rayleigh_p": 0.18595665450431031,
+          "rayleigh_Rbar": 0.12847318386163242,
+          "measured_p": 0.026810530018280137,
+          "measured_Rbar": 0.1566884230878801
+        },
+        "32": {
+          "rayleigh_p": 0.02459419470786607,
+          "rayleigh_Rbar": 0.2002221795238856,
+          "measured_p": 0.16466796133042466,
+          "measured_Rbar": 0.12015088528394718
+        },
+        "64": {
+          "rayleigh_p": 2.18426486861749e-09,
+          "rayleigh_Rbar": 0.5135944681661369,
+          "measured_p": 0.09909645914299162,
+          "measured_Rbar": 0.12666709628273784
+        }
+      },
+      "passes": false
+    },
+    "S3_kcyc_pattern": {
+      "per_N": {
+        "8": {
+          "k_cyc": 1.4002795216309964,
+          "k_cyc_ci": [
+            1.2204646763792089,
+            1.5905272671759438
+          ],
+          "measured_k_cyc": 2.1294906347327265,
+          "measured_ci": [
+            1.9057175549995489,
+            2.3619361243769466
+          ],
+          "ci_overlap": false
+        },
+        "16": {
+          "k_cyc": 1.728304076331173,
+          "k_cyc_ci": [
+            1.4905534428610774,
+            1.9820570032708862
+          ],
+          "measured_k_cyc": 2.1546976037528913,
+          "measured_ci": [
+            1.9155243791746799,
+            2.403273273484815
+          ],
+          "ci_overlap": true
+        },
+        "32": {
+          "k_cyc": 2.0083205551852377,
+          "k_cyc_ci": [
+            1.7287520776067562,
+            2.3018290394649346
+          ],
+          "measured_k_cyc": 2.1105389879106538,
+          "measured_ci": [
+            1.85890736029414,
+            2.372984451582536
+          ],
+          "ci_overlap": true
+        },
+        "64": {
+          "k_cyc": 2.6669371098481314,
+          "k_cyc_ci": [
+            2.204758740669114,
+            3.1685879103742214
+          ],
+          "measured_k_cyc": 2.88691223456861,
+          "measured_ci": [
+            2.5521667871056612,
+            3.2392174288848343
+          ],
+          "ci_overlap": true
+        }
+      },
+      "passes": false
+    },
+    "matches_measured_pattern": false
+  },
+  "cells": {
+    "8": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 90.95,
+      "median_is_censored": false,
+      "det_ref": 41.650000000000006,
+      "prolongation": 2.183673469387755,
+      "rayleigh_n": 114,
+      "rayleigh_Rbar": 0.06048220683355715,
+      "rayleigh_p": 0.6599597219854684,
+      "weibull_k": 0.9452898566789529,
+      "weibull_k_ci": [
+        0.8461954692826086,
+        1.0498959087420774
+      ],
+      "k_cyc": 1.4002795216309964,
+      "k_cyc_ci": [
+        1.2204646763792089,
+        1.5905272671759438
+      ],
+      "n_no_Tb": 86,
+      "median_cycles": 7.038832282063723,
+      "median_Tb": 20.725,
+      "m_lo_min": 4.670952816150653e-06,
+      "m_hi_max": 0.9972247670870362
+    },
+    "16": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 79.60000000000001,
+      "median_is_censored": false,
+      "det_ref": 42.050000000000004,
+      "prolongation": 1.892984542211653,
+      "rayleigh_n": 102,
+      "rayleigh_Rbar": 0.12847318386163242,
+      "rayleigh_p": 0.18595665450431031,
+      "weibull_k": 1.0078844353687313,
+      "weibull_k_ci": [
+        0.9024795130675293,
+        1.1192409496725901
+      ],
+      "k_cyc": 1.728304076331173,
+      "k_cyc_ci": [
+        1.4905534428610774,
+        1.9820570032708862
+      ],
+      "n_no_Tb": 98,
+      "median_cycles": 5.854698254296648,
+      "median_Tb": 23.975,
+      "m_lo_min": 1.2139531156345022e-06,
+      "m_hi_max": 0.9991614216049161
+    },
+    "32": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 68.45,
+      "median_is_censored": false,
+      "det_ref": 43.05,
+      "prolongation": 1.5900116144018586,
+      "rayleigh_n": 92,
+      "rayleigh_Rbar": 0.2002221795238856,
+      "rayleigh_p": 0.02459419470786607,
+      "weibull_k": 1.093505588608815,
+      "weibull_k_ci": [
+        0.9790872624243091,
+        1.214274469723979
+      ],
+      "k_cyc": 2.0083205551852377,
+      "k_cyc_ci": [
+        1.7287520776067562,
+        2.3018290394649346
+      ],
+      "n_no_Tb": 108,
+      "median_cycles": 5.502073190744488,
+      "median_Tb": 24.750000000000004,
+      "m_lo_min": 4.225030726991239e-05,
+      "m_hi_max": 0.9940109973655595
+    },
+    "64": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 55.2,
+      "median_is_censored": false,
+      "det_ref": 64.0,
+      "prolongation": 0.8625,
+      "rayleigh_n": 63,
+      "rayleigh_Rbar": 0.5135944681661369,
+      "rayleigh_p": 2.18426486861749e-09,
+      "weibull_k": 1.2244696512536977,
+      "weibull_k_ci": [
+        1.0968552639927303,
+        1.3591505940377004
+      ],
+      "k_cyc": 2.6669371098481314,
+      "k_cyc_ci": [
+        2.204758740669114,
+        3.1685879103742214
+      ],
+      "n_no_Tb": 137,
+      "median_cycles": 4.538461538461538,
+      "median_Tb": 26.300000000000004,
+      "m_lo_min": 1.2400066635773373e-05,
+      "m_hi_max": 0.991096837844923
+    }
+  },
+  "deterministic_ref": {
+    "8": 41.650000000000006,
+    "16": 42.050000000000004,
+    "32": 43.05,
+    "64": 64.0
+  },
+  "diagnostics": {
+    "pooled_det_reference_s": 60.550000000000004,
+    "factor_vs_pooled_ref": {
+      "8": 1.5020644095788604,
+      "16": 1.314616019818332,
+      "32": 1.13047068538398,
+      "64": 0.9116432700247729
+    },
+    "factor_vs_pooled_ref_median": 1.2225433526011562,
+    "factor_vs_pooled_ref_cv": 0.18012967580085304,
+    "cv_factor_N8_16_32_only": 0.12831808496825112,
+    "measured_system_context": {
+      "per_N_factor": {
+        "8": 3.4441776710684264,
+        "16": 3.1581450653983354,
+        "32": 3.027874564459931,
+        "64": 1.98359375
+      },
+      "median_factor": 3.0930098149291334,
+      "cv_factor": 0.1901232427195897
+    }
+  },
+  "mechanism": "Appendix B additive collective noise (already excluded)",
+  "c": 0.2,
+  "seed_cell_index": 2,
+  "committed_appendixB_comparison": {
+    "8": {
+      "harness_factor": 2.183673469387755,
+      "committed_appendixB": 2.3625450180072027,
+      "rel_dev": 0.07571138211382109
+    },
+    "16": {
+      "harness_factor": 1.892984542211653,
+      "committed_appendixB": 1.8596908442330558,
+      "rel_dev": 0.01790281329923287
+    },
+    "32": {
+      "harness_factor": 1.5900116144018586,
+      "committed_appendixB": 1.3031358885017423,
+      "rel_dev": 0.2201426024955437
+    },
+    "64": {
+      "harness_factor": 0.8625,
+      "committed_appendixB": 0.6820312500000001,
+      "rel_dev": 0.26460481099656347
+    }
+  }
+}

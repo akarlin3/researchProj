@@ -1,0 +1,301 @@
+{
+  "label": "EXPLORATORY agent-derived TGKP [V4_perN_measured]",
+  "pre_committed_conditions": {
+    "cond1": "median per-N prolongation factor in [2.9, 3.5]",
+    "cond2": "CV of per-N factor across N in [8, 16, 32, 64] < 0.15",
+    "cond3": "Rayleigh p < 0.05 of capture phases at every N",
+    "cond4": "censored-Weibull k_cyc > 1, 95% profile CI excluding 1, every N",
+    "verdict_convention": "pass = all four; partial = cond1 only-ish (cond1 holds, not all four); fail = cond1 fails"
+  },
+  "per_N_factor": {
+    "8": 1.0228091236494599,
+    "16": 1.0285374554102258,
+    "32": 1.0127758420441348,
+    "64": 1.05078125
+  },
+  "median_factor": 1.0256732895298428,
+  "cv_factor": 0.0135384653870922,
+  "cond1_prolong_2p9_3p5": false,
+  "cond2_cv_lt_0p15": true,
+  "cond3_rayleigh_all_N": true,
+  "cond4_kcyc_gt1_all_N": true,
+  "all_pass": false,
+  "verdict": "fail",
+  "secondary_pattern_match": {
+    "pre_registered": "2026-06-10, before any CP2 input (human-approved)",
+    "S1": "per-N factor within 20% of measured at every N",
+    "S2": "Rayleigh p < 0.05 at N in [8, 16] and Rbar(8) > Rbar(64)",
+    "S3": "k_cyc 95% CI overlaps measured k_cyc 95% CI at every N",
+    "S1_factor_pattern": {
+      "per_N": {
+        "8": {
+          "factor": 1.0228091236494599,
+          "measured": 3.4441776710684264,
+          "rel_dev": 0.7030324154757753,
+          "within_tol": false
+        },
+        "16": {
+          "factor": 1.0285374554102258,
+          "measured": 3.1581450653983354,
+          "rel_dev": 0.6743222891566266,
+          "within_tol": false
+        },
+        "32": {
+          "factor": 1.0127758420441348,
+          "measured": 3.027874564459931,
+          "rel_dev": 0.6655159186804757,
+          "within_tol": false
+        },
+        "64": {
+          "factor": 1.05078125,
+          "measured": 1.98359375,
+          "rel_dev": 0.47026388341866876,
+          "within_tol": false
+        }
+      },
+      "passes": false
+    },
+    "S2_phase_pattern": {
+      "per_N": {
+        "8": {
+          "rayleigh_p": 0.0,
+          "rayleigh_Rbar": 0.8548946018988224,
+          "measured_p": 6.680299721533941e-08,
+          "measured_Rbar": 0.3105514803260527
+        },
+        "16": {
+          "rayleigh_p": 0.0,
+          "rayleigh_Rbar": 0.8215343934197343,
+          "measured_p": 0.026810530018280137,
+          "measured_Rbar": 0.1566884230878801
+        },
+        "32": {
+          "rayleigh_p": 0.0,
+          "rayleigh_Rbar": 0.8568179092309439,
+          "measured_p": 0.16466796133042466,
+          "measured_Rbar": 0.12015088528394718
+        },
+        "64": {
+          "rayleigh_p": 0.0,
+          "rayleigh_Rbar": 0.8796363654694442,
+          "measured_p": 0.09909645914299162,
+          "measured_Rbar": 0.12666709628273784
+        }
+      },
+      "passes": false
+    },
+    "S3_kcyc_pattern": {
+      "per_N": {
+        "8": {
+          "k_cyc": 2.2545715636066683,
+          "k_cyc_ci": [
+            1.8816402688169167,
+            2.6470596752113575
+          ],
+          "measured_k_cyc": 2.1294906347327265,
+          "measured_ci": [
+            1.9057175549995489,
+            2.3619361243769466
+          ],
+          "ci_overlap": true
+        },
+        "16": {
+          "k_cyc": 2.980173276527175,
+          "k_cyc_ci": [
+            2.3950171008312857,
+            3.6237540767094454
+          ],
+          "measured_k_cyc": 2.1546976037528913,
+          "measured_ci": [
+            1.9155243791746799,
+            2.403273273484815
+          ],
+          "ci_overlap": true
+        },
+        "32": {
+          "k_cyc": 2.9613912644604157,
+          "k_cyc_ci": [
+            2.45925324538249,
+            3.4935172821942095
+          ],
+          "measured_k_cyc": 2.1105389879106538,
+          "measured_ci": [
+            1.85890736029414,
+            2.372984451582536
+          ],
+          "ci_overlap": false
+        },
+        "64": {
+          "k_cyc": 3.7869263003209133,
+          "k_cyc_ci": [
+            3.190703817578128,
+            4.409996063846081
+          ],
+          "measured_k_cyc": 2.88691223456861,
+          "measured_ci": [
+            2.5521667871056612,
+            3.2392174288848343
+          ],
+          "ci_overlap": true
+        }
+      },
+      "passes": false
+    },
+    "matches_measured_pattern": false
+  },
+  "cells": {
+    "8": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 42.60000000000001,
+      "median_is_censored": false,
+      "det_ref": 41.650000000000006,
+      "prolongation": 1.0228091236494599,
+      "rayleigh_n": 60,
+      "rayleigh_Rbar": 0.8548946018988224,
+      "rayleigh_p": 0.0,
+      "weibull_k": 1.0023758647793009,
+      "weibull_k_ci": [
+        0.8954415931787895,
+        1.115990078738304
+      ],
+      "k_cyc": 2.2545715636066683,
+      "k_cyc_ci": [
+        1.8816402688169167,
+        2.6470596752113575
+      ],
+      "n_no_Tb": 140,
+      "median_cycles": 4.6333997013439525,
+      "median_Tb": 24.075000000000003,
+      "m_lo_min": 0.0010970827533612754,
+      "m_hi_max": 0.9703989144439852
+    },
+    "16": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 43.25,
+      "median_is_censored": false,
+      "det_ref": 42.050000000000004,
+      "prolongation": 1.0285374554102258,
+      "rayleigh_n": 49,
+      "rayleigh_Rbar": 0.8215343934197343,
+      "rayleigh_p": 0.0,
+      "weibull_k": 1.254056866241464,
+      "weibull_k_ci": [
+        1.1198819084072136,
+        1.396333009850896
+      ],
+      "k_cyc": 2.980173276527175,
+      "k_cyc_ci": [
+        2.3950171008312857,
+        3.6237540767094454
+      ],
+      "n_no_Tb": 151,
+      "median_cycles": 4.719827586206896,
+      "median_Tb": 24.250000000000004,
+      "m_lo_min": 0.0016135199961731903,
+      "m_hi_max": 0.9701871583647563
+    },
+    "32": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 43.6,
+      "median_is_censored": false,
+      "det_ref": 43.05,
+      "prolongation": 1.0127758420441348,
+      "rayleigh_n": 59,
+      "rayleigh_Rbar": 0.8568179092309439,
+      "rayleigh_p": 0.0,
+      "weibull_k": 1.3972347672912406,
+      "weibull_k_ci": [
+        1.247911085388047,
+        1.555435812911671
+      ],
+      "k_cyc": 2.9613912644604157,
+      "k_cyc_ci": [
+        2.45925324538249,
+        3.4935172821942095
+      ],
+      "n_no_Tb": 141,
+      "median_cycles": 4.618257261410789,
+      "median_Tb": 24.4,
+      "m_lo_min": 6.242521309109193e-05,
+      "m_hi_max": 0.9701143003222811
+    },
+    "64": {
+      "n": 200,
+      "n_captured": 200,
+      "n_censored": 0,
+      "capture_frac": 1.0,
+      "median_capture": 67.25,
+      "median_is_censored": false,
+      "det_ref": 64.0,
+      "prolongation": 1.05078125,
+      "rayleigh_n": 64,
+      "rayleigh_Rbar": 0.8796363654694442,
+      "rayleigh_p": 0.0,
+      "weibull_k": 2.19117405860966,
+      "weibull_k_ci": [
+        1.9594669019785085,
+        2.4350287934802077
+      ],
+      "k_cyc": 3.7869263003209133,
+      "k_cyc_ci": [
+        3.190703817578128,
+        4.409996063846081
+      ],
+      "n_no_Tb": 136,
+      "median_cycles": 3.5258709308966303,
+      "median_Tb": 25.575000000000003,
+      "m_lo_min": 0.000823509528427513,
+      "m_hi_max": 0.9700512906976222
+    }
+  },
+  "deterministic_ref": {
+    "8": 41.650000000000006,
+    "16": 42.050000000000004,
+    "32": 43.05,
+    "64": 64.0
+  },
+  "diagnostics": {
+    "pooled_det_reference_s": 60.550000000000004,
+    "factor_vs_pooled_ref": {
+      "8": 0.70355078447564,
+      "16": 0.7142857142857142,
+      "32": 0.7200660611065235,
+      "64": 1.11065235342692
+    },
+    "factor_vs_pooled_ref_median": 0.7171758876961188,
+    "factor_vs_pooled_ref_cv": 0.2123390559716126,
+    "cv_factor_N8_16_32_only": 0.0063778429769471194,
+    "measured_system_context": {
+      "per_N_factor": {
+        "8": 3.4441776710684264,
+        "16": 3.1581450653983354,
+        "32": 3.027874564459931,
+        "64": 1.98359375
+      },
+      "median_factor": 3.0930098149291334,
+      "cv_factor": 0.1901232427195897
+    }
+  },
+  "exploratory": true,
+  "provenance": "agent-derived closure, authorized downgrade 2026-06-10; NOT the pre-committed CP3 test",
+  "variant": "V4_perN_measured",
+  "spec": {
+    "kind": "perN",
+    "sigma2_per_N": {
+      "8": 0.000969624,
+      "16": 0.001236696,
+      "32": 0.0013423740000000001,
+      "64": 0.0017756159999999998
+    }
+  },
+  "seed_cell_index": 23
+}

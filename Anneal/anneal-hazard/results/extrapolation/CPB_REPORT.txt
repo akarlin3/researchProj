@@ -1,0 +1,55 @@
+============================================================================================
+CHECKPOINT B — n=4 {32,64,128,256} extrapolation (2-param forms; AICc valid, n−k−1=1)
+============================================================================================
+All models k=2 ⇒ AICc = χ²_w + 16; AICc-gap = χ²-gap. gap>0 ⇒ bounded better.
+
+--------------------------------------------------------------------------------------------
+β = 0.110   k̂(32,64,128,256) = 1.128, 1.342, 1.354, 1.220   [non-monotonic (peak at N=128)]
+  bounded  k_∞=1.325  a=4.86   χ²=7.185  AICc=23.185
+  log      a=0.036  b=1.092        χ²=9.502  AICc=25.502
+  power    a=1.109  γ=+0.027      χ²=9.553  AICc=25.553
+  better divergent = log;  AICc(bounded)=23.19 vs AICc(div)=25.50  → gap=+2.32
+  bootstrap k_∞ = 1.326  95% CI [1.235, 1.414]  (excludes 1: True)
+  WINNER: bounded   →   CALL: SATURATING
+--------------------------------------------------------------------------------------------
+β = 0.115   k̂(32,64,128,256) = 1.152, 1.519, 1.418, 1.371   [non-monotonic (peak at N=64)]
+  bounded  k_∞=1.486  a=9.17   χ²=10.102  AICc=26.102
+  log      a=0.095  b=0.917        χ²=15.490  AICc=31.490
+  power    a=0.992  γ=+0.067      χ²=15.855  AICc=31.855
+  better divergent = log;  AICc(bounded)=26.10 vs AICc(div)=31.49  → gap=+5.39
+  bootstrap k_∞ = 1.487  95% CI [1.391, 1.579]  (excludes 1: True)
+  WINNER: bounded   →   CALL: SATURATING
+--------------------------------------------------------------------------------------------
+β = 0.120   k̂(32,64,128,256) = 1.152, 1.358, 1.494, 1.525   [levelling (concave)]
+  bounded  k_∞=1.587  a=14.00   χ²=0.113  AICc=16.113
+  log      a=0.190  b=0.525        χ²=2.214  AICc=18.214
+  power    a=0.747  γ=+0.135      χ²=2.887  AICc=18.887
+  better divergent = log;  AICc(bounded)=16.11 vs AICc(div)=18.21  → gap=+2.10
+  bootstrap k_∞ = 1.587  95% CI [1.485, 1.686]  (excludes 1: True)
+  WINNER: bounded   →   CALL: SATURATING
+--------------------------------------------------------------------------------------------
+β = 0.125   k̂(32,64,128,256) = 1.258, 1.637, 1.418, 1.605   [non-monotonic (peak at N=64)]
+  bounded  k_∞=1.615  a=10.37   χ²=11.379  AICc=27.379
+  log      a=0.133  b=0.861        χ²=13.888  AICc=29.888
+  power    a=0.972  γ=+0.090      χ²=14.129  AICc=30.129
+  better divergent = log;  AICc(bounded)=27.38 vs AICc(div)=29.89  → gap=+2.51
+  bootstrap k_∞ = 1.616  95% CI [1.511, 1.716]  (excludes 1: True)
+  WINNER: bounded   →   CALL: SATURATING
+--------------------------------------------------------------------------------------------
+β = 0.130  [near β_c]   k̂(32,64,128,256) = 1.331, 1.554, 1.681, 1.466   [non-monotonic (peak at N=128)]
+  bounded  k_∞=1.612  a=7.84   χ²=8.691  AICc=24.691
+  log      a=0.075  b=1.157        χ²=12.564  AICc=28.564
+  power    a=1.205  γ=+0.047      χ²=12.753  AICc=28.753
+  better divergent = log;  AICc(bounded)=24.69 vs AICc(div)=28.56  → gap=+3.87
+  bootstrap k_∞ = 1.612  95% CI [1.509, 1.712]  (excludes 1: True)
+  WINNER: bounded   →   CALL: SATURATING
+
+============================================================================================
+OVERALL READ
+============================================================================================
+  cells AICc-underdetermined (|gap|<2): 0/5
+  cells saturating: 5/5  ['0.110', '0.115', '0.120', '0.125', '0.130']
+  cells divergent:  0/5  []
+  bootstrap k_∞ unstable (CI width > 1.5): none
+
+  OVERALL: SATURATING

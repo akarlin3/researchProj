@@ -1,0 +1,56 @@
+==========================================================================
+CHECKPOINT 1 -- assembled k-hat(N) per beta  (profile-likelihood 95% CI)
+==========================================================================
+
+beta = 0.110   (N values: [32, 64, 128])
+      N    k_hat              95% CI    sigma     lambda  cens
+     32   1.1276  [ 1.0199, 1.2416]   0.0566     5685.6    28
+     64   1.3419  [ 1.2300, 1.4584]   0.0583     1401.3     0
+    128   1.3539  [ 1.2403, 1.4721]   0.0591     1060.3     0
+
+beta = 0.115   (N values: [32, 64, 128])
+      N    k_hat              95% CI    sigma     lambda  cens
+     32   1.1519  [ 1.0527, 1.2554]   0.0517     3192.1     5
+     64   1.5185  [ 1.3935, 1.6483]   0.0650      979.3     0
+    128   1.4179  [ 1.3019, 1.5381]   0.0603      882.3     0
+
+beta = 0.120   (N values: [32, 64, 128])
+      N    k_hat              95% CI    sigma     lambda  cens
+     32   1.1517  [ 1.0559, 1.2513]   0.0498     2406.2     1
+     64   1.3583  [ 1.2485, 1.4720]   0.0570      840.3     0
+    128   1.4940  [ 1.3738, 1.6182]   0.0623      743.7     0
+
+beta = 0.125   (N values: [32, 64, 128])
+      N    k_hat              95% CI    sigma     lambda  cens
+     32   1.2584  [ 1.1557, 1.3646]   0.0533     1561.5     0
+     64   1.6365  [ 1.5028, 1.7752]   0.0695      722.3     0
+    128   1.4184  [ 1.3046, 1.5362]   0.0591      674.3     0
+
+beta = 0.130  <-- near beta_c   (N values: [32, 64, 128])
+      N    k_hat              95% CI    sigma     lambda  cens
+     32   1.3307  [ 1.2203, 1.4456]   0.0575     1266.8     0
+     64   1.5537  [ 1.4321, 1.6785]   0.0628      574.6     0
+    128   1.6813  [ 1.5466, 1.8204]   0.0698      551.8     0
+
+--------------------------------------------------------------------------
+Per-beta shape read  (k diffs over N=32->64->128; equal ln-N steps)
+--------------------------------------------------------------------------
+  beta=0.110                 diffs=(+0.214, +0.012)   -> levelling (concave / sub-logarithmic)
+  beta=0.115                 diffs=(+0.367, -0.101)   -> non-monotonic (interior peak)
+  beta=0.120                 diffs=(+0.207, +0.136)   -> levelling (concave / sub-logarithmic)
+  beta=0.125                 diffs=(+0.378, -0.218)   -> non-monotonic (interior peak)
+  beta=0.130  [near beta_c]  diffs=(+0.223, +0.128)   -> levelling (concave / sub-logarithmic)
+
+--------------------------------------------------------------------------
+DISTINCT N PER BETA: 3  (N in [32, 64, 128])
+  *** WARNING: <= 3 N values per beta. Any saturate-vs-diverge
+      extrapolation is WEAK and likely UNDERDETERMINED before we
+      fit anything: the saturating and power models each have 3
+      free parameters for 3 points (exact interpolation, zero
+      residual d.o.f.), and the small-sample AICc the spec
+      requires needs k < n-1 = 2 free params -- which NONE of the
+      three candidate models satisfy. See CHECKPOINT 2.
+  *** 2/5 beta cells are NON-MONOTONIC in N (k peaks at
+      N=64 then drops at N=128) -- the 'k grows with N' trend is
+      itself noisy at 3 points; a monotone limit model cannot even
+      represent these cells.

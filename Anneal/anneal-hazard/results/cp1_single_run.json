@@ -1,0 +1,45 @@
+{
+  "A": 0.5,
+  "N": 128,
+  "seed": 20260609,
+  "dt": 0.05,
+  "eps": 0.03,
+  "dt_hold": 50.0,
+  "T_max": 2000.0,
+  "t_skip": 50.0,
+  "primary": {
+    "tau": 115.5,
+    "event": 1,
+    "n_samples_stored": 4001,
+    "precollapse": {
+      "n_samples": 131,
+      "r_coh_mean": 0.9999999943574688,
+      "r_coh_min": 0.9999998851883705,
+      "r_incoh_mean": 0.8404300458631979,
+      "r_incoh_std": 0.164337983081573,
+      "r_incoh_min": 0.334075505461425,
+      "r_incoh_max": 0.9702537878542333
+    }
+  },
+  "half_dt": {
+    "tau": 115.25,
+    "event": 1,
+    "precollapse": {
+      "n_samples": 261,
+      "r_coh_mean": 0.9999999945646268,
+      "r_coh_min": 0.999999885188373,
+      "r_incoh_mean": 0.8400015843853732,
+      "r_incoh_std": 0.16450371742992564,
+      "r_incoh_min": 0.3340709056420546,
+      "r_incoh_max": 0.9702538042655658
+    }
+  },
+  "common_window": {
+    "t_end": 115.25,
+    "mean_r_incoh_dt": 0.8404300458631979,
+    "mean_r_incoh_dt_half": 0.8400015843853732,
+    "abs_change": 0.00042846147782471533,
+    "rel_change": 0.0005098121847662484
+  },
+  "figure": "/Users/averykarlin/annealMusic/.claude/worktrees/anneal-hazard/anneal-hazard/results/cp1_single_run.png"
+}

@@ -1,0 +1,7 @@
+# Regenerable decimated traces (87 MB) — fully reproducible from the logged seeds in
+# results/ensemble.csv via `python3 -m src.cp3_ensemble`. Not committed.
+results/traces/
+
+__pycache__/
+*.pyc
+.numba_cache/

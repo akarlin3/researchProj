@@ -1,0 +1,42 @@
+{
+  "beta": 0.11,
+  "N": 32,
+  "P": 5,
+  "M": 30,
+  "r": 0.15,
+  "T_max": 12000.0,
+  "eps_primary": 0.04,
+  "dt_hold": 50.0,
+  "n_died": 28,
+  "n_censored": 2,
+  "median_all": 3930.0,
+  "median_died": 3655.25,
+  "chimera_rho_std": 0.15974620059276584,
+  "eps_sensitivity": [
+    {
+      "eps": 0.03,
+      "n_died": 28,
+      "median_died": 3669.0,
+      "median_all": 3939.75
+    },
+    {
+      "eps": 0.04,
+      "n_died": 28,
+      "median_died": 3655.25,
+      "median_all": 3930.0
+    },
+    {
+      "eps": 0.05,
+      "n_died": 28,
+      "median_died": 3643.5,
+      "median_all": 3922.25
+    },
+    {
+      "eps": 0.06,
+      "n_died": 28,
+      "median_died": 3634.5,
+      "median_all": 3916.75
+    }
+  ],
+  "figure": "/Users/averykarlin/annealMusic/.claude/worktrees/anneal-hazard/anneal-hazard/results/cp2_pilot_b0.11_N32.png"
+}

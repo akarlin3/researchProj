@@ -1,0 +1,62 @@
+# =====================================================================
+# Project Anneal — chimera-death hazard experiment
+# Resolved configuration  (CP0-REDO for the NONLOCAL-RING model — pending your confirm)
+# =====================================================================
+#
+# Model PIVOT (you approved): the two-population mean-field chimera is a stable
+# attractor with no finite-N death hazard. We use the canonical chimera-death system:
+# the nonlocally-coupled ring (Wolfrum & Omel'chenko 2011), where chimeras are finite-N
+# chaotic transients that genuinely collapse.
+#
+#   dtheta_k/dt = -(1/(2P+1)) * sum_{|j-k|<=P, ring} sin(theta_k - theta_j + alpha)
+#   alpha = pi/2 - beta ,  omega = 0 (rotating frame) ,  P = round(r*N) neighbours each side
+# Integrated O(N)/step (circular running-sum mean field) with fixed-step RK4 (numba).
+
+model: nonlocal_ring
+
+# --- Phase lag --------------------------------------------------------
+beta: 0.12               # alpha = pi/2 - beta = 1.4508
+
+# --- Coupling range ---------------------------------------------------
+r: 0.15                  # coupling radius fraction; P = round(r*N)
+
+# --- Death (event) definition -----------------------------------------
+# Death = chimera collapses to the spatially-coherent (synchronized) state:
+# rho_std(t) = spatial std of the local order parameter rho_k=|local mean field|
+# drops below eps_std and stays below for the whole hold window.
+eps_std: 0.04            # chimera rho_std ~ 0.15 ; sync floor ~ 0.018  (clean separation)
+dt_hold: 50.0
+
+# --- Integrator -------------------------------------------------------
+dt: 0.05
+T_max: 12000.0           # controls censoring at the long-lived (small-beta, small-N) corner
+
+# --- System sizes -----------------------------------------------------
+N_candidates: [32, 64, 128]
+
+# --- Ensemble sizes ---------------------------------------------------
+M_pilot: 30
+M_full: 300
+
+# --- Criticality axis  (the A-sweep analog) ---------------------------
+# Increasing beta drives the chimera toward its existence/stability boundary
+# (beta_c ~ 0.13-0.14: chimera dissolves above it). Sweep approaches beta_c from below;
+# 'structure emerges as control -> critical' becomes 'as beta -> beta_c^-'.
+# CP2 pilot outcome: beta<=0.10 censors heavily at N=32 (0.10/N32 = 63% censored at T=12000).
+# Sweep tightened to beta in [0.11, 0.13]; all 15 (beta,N) cells are now <=7% censored.
+beta_sweep:   [0.110, 0.115, 0.120, 0.125, 0.130]
+beta_corners: [0.110, 0.130]    # 0.11 = longer-lived end ; 0.13 = near-boundary, short-lived
+
+# --- Reproducibility --------------------------------------------------
+seed_base: 20260609      # per-run: rng = np.random.default_rng(seed_base + run_index)
+
+# --- Initial conditions (i.i.d. per run) ------------------------------
+# Coherent base ring (small noise) + a contiguous incoherent arc -> seeds a chimera.
+ic:
+  incoherent_frac: 0.5   # fraction of the ring initialised incoherent (uniform)
+  coherent_scale: 0.05   # std of the coherent base (Normal(0, scale))
+
+# --- Output / storage -------------------------------------------------
+output:
+  decimate: 10           # store rho summaries every 10th step (0.5 t.u.) for eps re-sweep
+  results_dir: results

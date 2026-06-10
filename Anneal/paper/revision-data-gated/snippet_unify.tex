@@ -1,0 +1,73 @@
+% ===========================================================================
+% CP-unify snippet -- the cross-system account, to the extent it survived its
+% falsification pass.  Verdict: PARTIAL (see
+% paper/revision-data-gated/results_unify.json; every number below is
+% computed deterministically by tools/unify_checks.py from committed
+% run-level records and committed fits -- no new simulation).
+%
+% What survived:  aging transfers across topology AT THE HAZARD LEVEL, with a
+%                 measured monotone carrier (the envelope ratchet) in the mean
+%                 field only; the scaling half survives in boundary-side-aware
+%                 form (flat where the collective flow is N-free, genuinely
+%                 size-dependent -- of either sign -- where it is not).
+% What failed:    (i) aging as a monotone OBSERVABLE approach on the ring (no
+%                 committed observable ramps with age; the plateau-level
+%                 correlation is a window artifact); (ii) monotone approach as
+%                 SUFFICIENT for aging (sigma > 0 everywhere post-homoclinic,
+%                 yet k ~ 1 within ~0.02 of the homoclinic at beta <= 0.10).
+%
+% INSERTION POINT: Discussion (Sec.~\ref{sec:discussion}), immediately AFTER
+% the figure environment of Fig.~\ref{fig:crosssystem} -- i.e., directly
+% following the paragraph "\textbf{Topology: aging transfers, scaling does
+% not.}" and its figure -- as a free-standing paragraph extending that block.
+%
+% Fig.~12 gains a panel (c) (regenerated paper_figures/fig12_crosssystem.*).
+% Suggested caption addition, appended to the existing \caption of
+% fig:crosssystem:
+%
+%   (c)~Nelson--Aalen cumulative hazard versus normalized age
+%   $t/\tilde\tau(N)$ (lifetimes median-normalized per cell, pooled within
+%   each system; zero censoring in both campaigns): both curves are convex
+%   against the memoryless reference $H = u \ln 2$ --- the hazard rises with
+%   age in both systems --- with the ring's late bend back toward slope one
+%   marking its front-loaded rise.
+% ===========================================================================
+
+\textbf{What unifies, and at what level.} The comparison supports one
+mechanism-level statement, provided it is made at the level of the hazard. In
+both systems the collapse hazard rises along the trajectory: model-free, the
+death rate after the median age exceeds the rate before it by factors of
+$3.5$--$5.1$ across the mean-field sizes and $1.4$--$2.2$ across the
+$\beta = 0.130$ ring cells (Fig.~\ref{fig:crosssystem}c) --- though the two
+systems expose that rising hazard very differently. In the mean field it has
+a measured monotone carrier: the per-cycle envelope ratchet of
+Sec.~\ref{sec:mechanism}, climbing the unstable spiral that the reduced flow
+guarantees everywhere in the post-homoclinic wedge ($\sigma > 0$ at all $592$
+grid points; Appendix~\ref{app:corner}). On the ring we find no such
+observable, and not for lack of looking: the terminal descent is stereotyped
+and age-uncorrelated (Sec.~\ref{sec:ring}), and the one per-run statistic
+that does track lifetime --- the structure level averaged over the run's
+life, Spearman $\rho = 0.69$--$0.81$ --- does so mechanically, because its
+averaging window contains the terminal descent, which drags down short runs'
+averages; restricted to runs beyond twice the median lifetime, where the
+descent occupies at most ${\sim}10\%$ of the window, the correlation collapses
+to $|\rho| \le 0.23$ (all $p > 0.13$). Aging as a monotone
+\emph{observable} approach to the absorbing boundary is therefore
+mean-field-specific; what transfers across topology is only the rising
+hazard. Nor is a monotone approach sufficient even where it exists:
+$\sigma > 0$ holds at every post-homoclinic point, yet within ${\approx}0.02$
+of the homoclinic at $\beta \le 0.10$ the capture-time distribution is
+memoryless --- two of the three failing points put $12$--$28\%$ of captures
+beyond five median lifetimes (no aging point exceeds $2\%$) and the third
+sits at exponential-level relative dispersion, the long ghost-cycle passages
+near the saddle dispersing the waiting times the drift would otherwise order
+(Appendix~\ref{app:corner}). Where collapse ages, then, it
+ages because monotone drift toward absorption dominates the dispersal of
+passage times; where that drift surfaces in a collective observable, deaths
+ratchet. The scaling half never transfers, and for a stateable reason: it is
+set by how $N$ enters the collective flow --- not at all in the mean field
+(the flat plateau, ${\le}14\%$ variation over a $16\times$ range of $N$),
+structurally on the ring, where even the sign is boundary-side dependent
+(the near-boundary median falls $2.5\times$ while the deep-stable regime
+grows~\cite{wo2011}). The aging belongs to the trajectory's drift toward the
+absorbing state; the scaling belongs to how the network enters the flow.

@@ -1,0 +1,585 @@
+{
+ "script": "tools/reduced-ode/depth_aging_fit.py",
+ "seed": 20260610,
+ "n_boot": 1000,
+ "question": "Is the Weibull aging (k > 1) of the reduced-flow capture times controlled by depth beyond the homoclinic, and is there a resolvable onset depth d*?",
+ "inputs": {
+  "results_corner": "paper/revision-data-gated/results_corner.json",
+  "n_aging_points": 8,
+  "n_per_point": 1200,
+  "n_censored": 0
+ },
+ "crosschecks": {
+  "max_abs_dev_A_hc_point_vs_cached_curve": 0.0,
+  "max_abs_dev_refit_k_vs_committed_k_boot": 0.0,
+  "note": "refit uses the corner_map_data.py censored-Weibull MLE verbatim"
+ },
+ "table": [
+  {
+   "beta": 0.03,
+   "A": 0.461,
+   "tag": "near-hc, low beta",
+   "depth_beyond_hc": 0.02047977342419599,
+   "A_hc_at_beta": 0.44052022657580403,
+   "A_H_interp": 0.26878863446534834,
+   "band_width": 0.1717315921104557,
+   "rel_depth": 0.11925454817319604,
+   "sigma": 0.0048118965126274695,
+   "omega": 0.20836391990939482,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 1.0234824075994364,
+   "k_ci_primary": [
+    0.978141726276043,
+    1.0699240918809785
+   ],
+   "se_primary": 0.023414299020008293,
+   "k_boot": 1.0234826757285616,
+   "k_ci_boot": [
+    0.9847588547106931,
+    1.0676929118686176
+   ],
+   "k_gt_1_primary_ci": false,
+   "k_gt_1_boot_ci": false,
+   "fitter_agreement_dk": 2.681291251249718e-07,
+   "refit_k_this_script": 1.0234826757285616
+  },
+  {
+   "beta": 0.03,
+   "A": 0.5,
+   "tag": "deep, low beta",
+   "depth_beyond_hc": 0.05947977342419597,
+   "A_hc_at_beta": 0.44052022657580403,
+   "A_H_interp": 0.26878863446534834,
+   "band_width": 0.1717315921104557,
+   "rel_depth": 0.3463531240421931,
+   "sigma": 0.005313014024655874,
+   "omega": 0.18445480300597097,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 1.300534573885886,
+   "k_ci_primary": [
+    1.2417050158081884,
+    1.3607905030328984
+   ],
+   "se_primary": 0.030379509053238007,
+   "k_boot": 1.3005356883389916,
+   "k_ci_boot": [
+    1.2400558099381394,
+    1.3731416872999396
+   ],
+   "k_gt_1_primary_ci": true,
+   "k_gt_1_boot_ci": true,
+   "fitter_agreement_dk": 1.11445310557734e-06,
+   "refit_k_this_script": 1.3005356883389916
+  },
+  {
+   "beta": 0.05,
+   "A": 0.43,
+   "tag": "near-hc, operating beta",
+   "depth_beyond_hc": 0.020400955244361696,
+   "A_hc_at_beta": 0.4095990447556383,
+   "A_H_interp": 0.2703011983169119,
+   "band_width": 0.1392978464387264,
+   "rel_depth": 0.14645563995374158,
+   "sigma": 0.009253265001449438,
+   "omega": 0.294479464384991,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 0.9671578551724864,
+   "k_ci_primary": [
+    0.9265124279757354,
+    1.0086632617460622
+   ],
+   "se_primary": 0.020957230443600528,
+   "k_boot": 0.9671575954742714,
+   "k_ci_boot": [
+    0.9374517659217135,
+    0.9986957675969567
+   ],
+   "k_gt_1_primary_ci": false,
+   "k_gt_1_boot_ci": false,
+   "fitter_agreement_dk": 2.59698215043791e-07,
+   "refit_k_this_script": 0.9671575954742714
+  },
+  {
+   "beta": 0.05,
+   "A": 0.5,
+   "tag": "OPERATING CORNER (anchor)",
+   "depth_beyond_hc": 0.0904009552443617,
+   "A_hc_at_beta": 0.4095990447556383,
+   "A_H_interp": 0.2703011983169119,
+   "band_width": 0.1392978464387264,
+   "rel_depth": 0.6489759716718004,
+   "sigma": 0.012428143694635211,
+   "omega": 0.3276754767514011,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 1.3969741745635322,
+   "k_ci_primary": [
+    1.3348221485865575,
+    1.4605623243573425
+   ],
+   "se_primary": 0.03207716487716292,
+   "k_boot": 1.3969742264385487,
+   "k_ci_boot": [
+    1.3279135716792574,
+    1.4731030371584932
+   ],
+   "k_gt_1_primary_ci": true,
+   "k_gt_1_boot_ci": true,
+   "fitter_agreement_dk": 5.1875016504610016e-08,
+   "refit_k_this_script": 1.3969742264385487
+  },
+  {
+   "beta": 0.1,
+   "A": 0.374,
+   "tag": "near-hc, mid beta",
+   "depth_beyond_hc": 0.02030730479695475,
+   "A_hc_at_beta": 0.35369269520304525,
+   "A_H_interp": 0.2777324011095137,
+   "band_width": 0.07596029409353156,
+   "rel_depth": 0.2673410502064398,
+   "sigma": 0.01260000746985612,
+   "omega": 0.2568177689193935,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 1.0207185457875285,
+   "k_ci_primary": [
+    0.9832936453585893,
+    1.0585151179170296
+   ],
+   "se_primary": 0.019189503774502396,
+   "k_boot": 1.020718360958114,
+   "k_ci_boot": [
+    0.9786088596616882,
+    1.0772501164615365
+   ],
+   "k_gt_1_primary_ci": false,
+   "k_gt_1_boot_ci": false,
+   "fitter_agreement_dk": 1.8482941444020184e-07,
+   "refit_k_this_script": 1.020718360958114
+  },
+  {
+   "beta": 0.1,
+   "A": 0.5,
+   "tag": "deep, mid beta",
+   "depth_beyond_hc": 0.14630730479695475,
+   "A_hc_at_beta": 0.35369269520304525,
+   "A_H_interp": 0.2777324011095137,
+   "band_width": 0.07596029409353156,
+   "rel_depth": 1.9261024005094478,
+   "sigma": 0.024955976733942925,
+   "omega": 0.3251823521232827,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 1.5137733919548806,
+   "k_ci_primary": [
+    1.44733581554431,
+    1.5817168332858964
+   ],
+   "se_primary": 0.034281501803494055,
+   "k_boot": 1.5137731874728912,
+   "k_ci_boot": [
+    1.447940570145156,
+    1.5874565708515362
+   ],
+   "k_gt_1_primary_ci": true,
+   "k_gt_1_boot_ci": true,
+   "fitter_agreement_dk": 2.044819893409766e-07,
+   "refit_k_this_script": 1.5137731874728912
+  },
+  {
+   "beta": 0.18,
+   "A": 0.339,
+   "tag": "near-hc, high beta",
+   "depth_beyond_hc": 0.020418662212733973,
+   "A_hc_at_beta": 0.31858133778726605,
+   "A_H_interp": 0.3032839418318356,
+   "band_width": 0.015297395955430448,
+   "rel_depth": 1.3347802640543875,
+   "sigma": 0.011658447981355468,
+   "omega": 0.17935032330456635,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 1.3311496518600532,
+   "k_ci_primary": [
+    1.290252107096327,
+    1.3718476108966227
+   ],
+   "se_primary": 0.02081556203172877,
+   "k_boot": 1.331150624150207,
+   "k_ci_boot": [
+    1.2175471267520723,
+    1.5323734351616378
+   ],
+   "k_gt_1_primary_ci": true,
+   "k_gt_1_boot_ci": true,
+   "fitter_agreement_dk": 9.72290153722355e-07,
+   "refit_k_this_script": 1.331150624150207
+  },
+  {
+   "beta": 0.16,
+   "A": 0.5,
+   "tag": "deep, high beta",
+   "depth_beyond_hc": 0.17916072928272975,
+   "A_hc_at_beta": 0.32083927071727025,
+   "A_H_interp": 0.2949955599035966,
+   "band_width": 0.025843710813673648,
+   "rel_depth": 6.932469202059698,
+   "sigma": 0.03982913136660461,
+   "omega": 0.3123570240557862,
+   "n": 1200,
+   "n_captured": 1200,
+   "n_censored": 0,
+   "k_primary": 1.4331558578350756,
+   "k_ci_primary": [
+    1.372687123490724,
+    1.4949399657369875
+   ],
+   "se_primary": 0.03118752263066522,
+   "k_boot": 1.433155915030472,
+   "k_ci_boot": [
+    1.393199170972681,
+    1.4757802563171667
+   ],
+   "k_gt_1_primary_ci": true,
+   "k_gt_1_boot_ci": true,
+   "fitter_agreement_dk": 5.719539641901861e-08,
+   "refit_k_this_script": 1.433155915030472
+  }
+ ],
+ "paired_deltas_within_beta": [
+  {
+   "beta": 0.03,
+   "depth_shallow": 0.02047977342419599,
+   "depth_deep": 0.05947977342419597,
+   "k_shallow": 1.0234824075994364,
+   "k_deep": 1.300534573885886,
+   "delta_k": 0.2770521662864496,
+   "se_delta_k": 0.03835549463784989,
+   "z": 7.2232718910903975
+  },
+  {
+   "beta": 0.05,
+   "depth_shallow": 0.020400955244361696,
+   "depth_deep": 0.0904009552443617,
+   "k_shallow": 0.9671578551724864,
+   "k_deep": 1.3969741745635322,
+   "delta_k": 0.4298163193910458,
+   "se_delta_k": 0.0383164457436082,
+   "z": 11.217541477284492
+  },
+  {
+   "beta": 0.1,
+   "depth_shallow": 0.02030730479695475,
+   "depth_deep": 0.14630730479695475,
+   "k_shallow": 1.0207185457875285,
+   "k_deep": 1.5137733919548806,
+   "delta_k": 0.49305484616735207,
+   "se_delta_k": 0.039286873393216314,
+   "z": 12.550116707747177
+  }
+ ],
+ "anchor_all1400": {
+  "beta": 0.05,
+  "A": 0.5,
+  "n": 1400,
+  "n_captured": 1400,
+  "k_boot": 1.2179479281923502,
+  "k_ci_boot": [
+   1.1654649039236489,
+   1.2791753802860182
+  ],
+  "note": "all 1400 rows incl. degenerate N=4; disjoint fitter (t clamped >=0.05)",
+  "depth_beyond_hc": 0.0904009552443617,
+  "excluded_from_fits": true,
+  "exclusion_reason": "same (beta, A) location as the n=1200 operating-corner point; sensitivity row including the degenerate N=4 rows, not an independent depth sample"
+ },
+ "weighted_regressions": {
+  "linear_depth_all8": {
+   "x": "depth_beyond_hc",
+   "n": 8,
+   "intercept": 1.0453982648780398,
+   "slope": 2.765818840043785,
+   "se_intercept": 0.012136159316861895,
+   "se_slope": 0.16970422786375103,
+   "chi2_lof": 225.93549426167542,
+   "dof_lof": 6,
+   "p_lof": 5.640247404511735e-46,
+   "aicc": 188.5992897175875
+  },
+  "linear_depth_beta_le_0p10": {
+   "x": "depth_beyond_hc",
+   "n": 6,
+   "intercept": 0.9258150347413312,
+   "slope": 4.556135565885732,
+   "se_intercept": 0.014979449802885446,
+   "se_slope": 0.25781342605317303,
+   "chi2_lof": 26.447733128591008,
+   "dof_lof": 4,
+   "p_lof": 2.5701909567312832e-05,
+   "aicc": 1.7153576061918683
+  },
+  "saturating_depth_all8": {
+   "x": "depth_beyond_hc",
+   "form": "k = 1 + c*(1 - exp(-depth/d0))",
+   "n": 8,
+   "c": 0.6066092705385306,
+   "d0": 0.10584628483612933,
+   "chi2_lof": 203.94064703191836,
+   "dof_lof": 6,
+   "p_lof": 2.749706219615697e-41,
+   "aicc": 166.60444248783048
+  },
+  "linear_rel_depth_all8": {
+   "x": "rel_depth = depth / (A_hc - A_H)",
+   "n": 8,
+   "intercept": 1.1120905596202126,
+   "slope": 0.06502293113187735,
+   "se_intercept": 0.010213728078081945,
+   "se_slope": 0.004868030910861263,
+   "chi2_lof": 313.1433554244835,
+   "dof_lof": 6,
+   "p_lof": 1.2466029806495876e-64,
+   "aicc": 275.80715088039557
+  },
+  "saturating_rel_depth_all8": {
+   "x": "rel_depth = depth / (A_hc - A_H)",
+   "form": "k = 1 + c*(1 - exp(-rel/r0))",
+   "n": 8,
+   "c": 0.4756750479774317,
+   "r0": 0.9374176759152605,
+   "chi2_lof": 113.75975330973725,
+   "dof_lof": 6,
+   "p_lof": 3.323060539871328e-22,
+   "aicc": 76.42354876564934
+  },
+  "constant_all8": {
+   "x": "(none)",
+   "n": 8,
+   "mean": 1.1824459619880419,
+   "chi2_lof": 491.55632890873005,
+   "dof_lof": 7,
+   "p_lof": 5.237251258944457e-102,
+   "aicc": 450.4867910313089
+  }
+ },
+ "regression_notes": "Gaussian likelihood with known per-point sigma from the profile CI half-width (CI width / 3.92); AICc with n = 8 (n = 6 for the subset) is descriptive only. chi2_lof is the weighted residual sum of squares (lack of fit) with its chi-square tail probability p_lof.",
+ "slope_bootstrap": {
+  "linear_depth_all8_ci": [
+   2.280071628611205,
+   3.127077676950391
+  ],
+  "linear_depth_beta_le_0p10_ci": [
+   4.0495683301941625,
+   5.047158566627486
+  ],
+  "linear_rel_depth_all8_ci": [
+   0.05797505946193154,
+   0.07272858593697719
+  ],
+  "note": "resampled raw t_capture per point (B = 1000, fixed seed), refit k with the corner_map_data.py MLE, refit WLS; fixed CI-derived weights; captures within-point fit uncertainty only"
+ },
+ "logistic": {
+  "outcomes": "k_gt_1_primary_ci (== k_gt_1_boot_ci at all 8 points)",
+  "depth": {
+   "separable": false,
+   "intercept": -129.70948918608855,
+   "slope": 6302.078476590207,
+   "loglik": -2.1971499537787826,
+   "x_at_p50": 0.020582017451529572
+  },
+  "rel_depth": {
+   "separable": true,
+   "intercept": NaN,
+   "slope": NaN,
+   "loglik": -0.0,
+   "x_at_p50": NaN,
+   "note": "perfect separation: MLE diverges; only a threshold bracket is identified",
+   "threshold_bracket": [
+    0.2673410502064398,
+    0.3463531240421931
+   ]
+  },
+  "note": "n = 8 binaries; descriptive. In raw depth the beta = 0.18 point breaks monotone separation (a 1 inside the shallow cluster of 0s), so the finite MLE reflects that overlap; in rel_depth the outcomes are perfectly separated and only a threshold bracket is identified."
+ },
+ "changepoint": {
+  "model": "k = 1 for x < d*, free weighted level for x >= d*; d* scanned over the x-ordering; bracket = [max lower x, min upper x]",
+  "raw_depth_all8": {
+   "split_index": 2,
+   "bracket": [
+    0.020400955244361696,
+    0.020418662212733973
+   ],
+   "mu_lo": 1.0,
+   "mu_hi": 1.2976610185009714,
+   "chi2_lower": 3.6215241466773973,
+   "chi2_upper": 207.92012376800423,
+   "chi2_total": 211.54164791468162,
+   "loglik": -83.90272168529687,
+   "n_params": 2,
+   "dof_lower": 2,
+   "p_lower_vs_model": 0.16352946785775205
+  },
+  "raw_depth_all8_free_lower": {
+   "split_index": 2,
+   "bracket": [
+    0.020400955244361696,
+    0.020418662212733973
+   ],
+   "mu_lo": 0.9962920021717311,
+   "mu_hi": 1.2976610185009714,
+   "chi2_lower": 3.5528812954576265,
+   "chi2_upper": 207.92012376800423,
+   "chi2_total": 211.47300506346187,
+   "loglik": -83.86840025968698,
+   "n_params": 3,
+   "dof_lower": 1,
+   "p_lower_vs_model": 0.059442147837758606
+  },
+  "raw_depth_beta_le_0p10": {
+   "split_index": 3,
+   "bracket": [
+    0.02047977342419599,
+    0.05947977342419597
+   ],
+   "mu_lo": 1.0,
+   "mu_hi": 1.3952160104620495,
+   "chi2_lower": 4.627350299152756,
+   "chi2_upper": 21.67650946942926,
+   "chi2_total": 26.303859768582015,
+   "loglik": 3.2142578769085604,
+   "n_params": 2,
+   "dof_lower": 3,
+   "p_lower_vs_model": 0.20120835182652302
+  },
+  "rel_depth_all8": {
+   "split_index": 3,
+   "bracket": [
+    0.2673410502064398,
+    0.3463531240421931
+   ],
+   "mu_lo": 1.0,
+   "mu_hi": 1.3777778656738406,
+   "chi2_lower": 4.627350299152756,
+   "chi2_upper": 30.731091600232805,
+   "chi2_total": 35.35844189938556,
+   "loglik": 4.188881322351167,
+   "n_params": 2,
+   "dof_lower": 3,
+   "p_lower_vs_model": 0.20120835182652302
+  },
+  "bootstrap": {
+   "raw_depth_beta_le_0p10": {
+    "split_index_distribution": {
+     "3": 1000
+    },
+    "modal_split_index": 3,
+    "frac_in_modal_gap": 1.0,
+    "bracket_lo_q025_q975": [
+     0.02047977342419599,
+     0.02047977342419599
+    ],
+    "bracket_hi_q025_q975": [
+     0.05947977342419597,
+     0.05947977342419597
+    ],
+    "midpoint_q025_q975": [
+     0.03997977342419598,
+     0.03997977342419598
+    ],
+    "note": "the bootstrap can only move the changepoint between gaps in the fixed point design; its position WITHIN a gap is a convention (bracket midpoint), not a measurement"
+   },
+   "raw_depth_all8": {
+    "split_index_distribution": {
+     "2": 769,
+     "4": 231
+    },
+    "modal_split_index": 2,
+    "frac_in_modal_gap": 0.769,
+    "bracket_lo_q025_q975": [
+     0.020400955244361696,
+     0.02047977342419599
+    ],
+    "bracket_hi_q025_q975": [
+     0.020418662212733973,
+     0.05947977342419597
+    ],
+    "midpoint_q025_q975": [
+     0.020409808728547835,
+     0.03997977342419598
+    ],
+    "note": "the bootstrap can only move the changepoint between gaps in the fixed point design; its position WITHIN a gap is a convention (bracket midpoint), not a measurement"
+   },
+   "rel_depth_all8": {
+    "split_index_distribution": {
+     "3": 998,
+     "4": 2
+    },
+    "modal_split_index": 3,
+    "frac_in_modal_gap": 0.998,
+    "bracket_lo_q025_q975": [
+     0.2673410502064398,
+     0.2673410502064398
+    ],
+    "bracket_hi_q025_q975": [
+     0.3463531240421931,
+     0.3463531240421931
+    ],
+    "midpoint_q025_q975": [
+     0.3068470871243164,
+     0.3068470871243164
+    ],
+    "note": "the bootstrap can only move the changepoint between gaps in the fixed point design; its position WITHIN a gap is a convention (bracket midpoint), not a measurement"
+   }
+  },
+  "honesty": "There is NO coverage between depth 0.0205 and 0.0595, so for beta <= 0.10 the onset is only BRACKETED in [0.0205, 0.0595]; any single number quoted for d* inside that interval would be spurious precision. On all 8 points NO depth threshold works: the best two-level split lands INSIDE the shallow cluster (bracket width 2e-5 in depth, separating points at different beta) and is rejected overall (chi2_total = 212 for 8 points; the two memoryless shallow points are forced into the aging level), while splitting after the cluster instead puts the beta = 0.18 point (k = 1.33, ~16 standard errors above 1) into the k = 1 level; the bootstrap flips between these two gaps (769/1000 vs 231/1000 at the committed seed), i.e. raw depth admits no coherent global threshold."
+ },
+ "confounds": {
+  "pearson": {
+   "k_vs_depth": 0.7957941389304263,
+   "k_vs_omega": 0.3100643209370323,
+   "k_vs_sigma": 0.5993294091869227,
+   "k_vs_band_width": -0.42207611114808213,
+   "k_vs_rel_depth": 0.5505825542095338,
+   "k_vs_log_rel_depth": 0.8458610953767401
+  },
+  "spearman": {
+   "k_vs_depth": 0.880952380952381,
+   "k_vs_omega": 0.4523809523809524,
+   "k_vs_sigma": 0.6190476190476191,
+   "k_vs_band_width": -0.4121893482235412,
+   "k_vs_rel_depth": 0.880952380952381
+  },
+  "partial_pearson": {
+   "k_vs_depth_given_omega": 0.8183061032387572,
+   "k_vs_omega_given_depth": -0.4309305955554135,
+   "k_vs_sigma_given_depth": -0.35128286681620874,
+   "k_vs_band_width_given_depth": -0.23840265609718364,
+   "k_vs_log_rel_depth_given_depth": 0.5460421598704939
+  },
+  "beta18_point": {
+   "beta": 0.18,
+   "A": 0.339,
+   "depth_beyond_hc": 0.020418662212733973,
+   "rel_depth": 1.3347802640543875,
+   "band_width": 0.015297395955430448,
+   "omega": 0.17935032330456635,
+   "sigma": 0.011658447981355468,
+   "k": 1.3311496518600532,
+   "reading": "at raw depth 0.0204 this point ages (k = 1.33, both CIs > 1) while the three beta <= 0.10 points at the same raw depth do not; its omega (0.179) is the LOWEST of all 8 points and its sigma (0.0117) is indistinguishable from the non-aging (0.10, 0.374) point's 0.0126, so neither omega nor sigma explains the exception; its breathing band has narrowed to W = 0.0153 (vs 0.076-0.172 at beta <= 0.10), so in band-relative units it sits at depth/W = 1.33 -- deeper than the (0.03, 0.500) aging point at 0.35 -- which is the quantitative form of the manuscript's Takens-Bogdanov band-narrowing attribution"
+  },
+  "caveat": "n = 8; all correlations, partials and AICc comparisons are descriptive; rel_depth quantifies the band-narrowing explanation already committed in Appendix C rather than a post-hoc search, but with a single exceptional point it cannot be confirmed against alternatives that also single out beta = 0.18"
+ },
+ "verdict": "(b) monotone trend with onset bracketed-but-unresolved",
+ "verdict_statement": "At every phase lag with paired coverage the aging shape k rises with depth beyond the homoclinic (model-free shallow-to-deep contrasts +0.28 (7 se) at beta = 0.03, +0.43 (11 se) at beta = 0.05, +0.49 (13 se) at beta = 0.10; descriptive weighted linear slope 4.56 +/- 0.26 per unit depth on the beta <= 0.10 points, bootstrap CI [4.05, 5.05], with residual lack of fit -- no simple two-parameter form fits within the tight per-point errors), and for beta <= 0.10 the aging onset is bracketed in depth in [0.0205, 0.0595] -- a gap with no coverage, so the onset depth itself is unresolved; the shallow beta = 0.18 point (k = 1.33 at depth 0.0204) shows raw depth is not the controlling variable globally: the onset moves with the local breathing-band width, and depth/(A_hc - A_H) separates all 8 points with a single threshold in [0.27, 0.35] band-widths (descriptive, n = 8).",
+ "runtime_s": 32.4
+}

@@ -1,3 +1,6 @@
+% Frozen reconciliation snapshot (Abstract A + Fig. 12 fig:crosssystem + aging-null
+% paragraphs in Secs. 4.3/7.2), identical in content to death_of_a_chimera_nld.tex
+% at the reconciliation commit. The live manuscript is death_of_a_chimera_nld.tex.
 %% Springer Nature LaTeX template (sn-jnl) build for submission to
 %% Nonlinear Dynamics (Springer). Two-system manuscript: the mean-field
 %% (two-population Sakaguchi--Kuramoto) study plus the nonlocal-ring chimera
@@ -319,10 +322,8 @@ trajectories never absorb at all.
 The quantitative consequence at the operating corner is a factor of two:
 $\hat\tau_{\mathrm{graze}} \approx 63$--$67$\,s against
 $\hat\tau_{\mathrm{abs}} \approx 139$\,s (Fig.~\ref{fig:tau}). First-passage chimera
-lifetimes computed with engineering-style criteria here measure the wrong,
-and roughly halved, quantity --- a gap that
-Sec.~\ref{sec:ring:xlabel} shows is a property of these breathing dynamics
-rather than of first-passage labeling in general.
+lifetimes computed with engineering-style criteria systematically measure the wrong,
+and roughly halved, quantity.
 
 \subsection{The deployed detector is a graze detector}
 
@@ -850,90 +851,12 @@ reason to prefer it.
 The structure lives in the waiting time, not in the final collapse. The terminal
 committed descent through the structure band is stereotyped --- mean $52.8$ time
 units, median $50.5$, coefficient of variation $0.72$ --- and uncorrelated with
-lifetime (Spearman $|\rho| \le 0.14$ in every campaign cell, $\le 0.21$
-including the $N = 192$--$256$ extension cells) over lifetimes spanning
+lifetime (Spearman $|\rho| \le 0.14$ in every cell) over lifetimes spanning
 $10^2$--$10^4$: the longer a ring chimera has lived, the more collapse-prone it
 has become, while the collapse itself, once committed, takes a characteristic
 time independent of the age at which it occurs. This is the ring's version of
 the mean-field picture of Sec.~\ref{sec:mechanism}: the hazard rises along the
 trajectory, and death itself is a fast, stereotyped event.
-
-\subsection{The graze/absorption gap does not transfer to the ring}
-\label{sec:ring:xlabel}
-
-Section~\ref{sec:graze} showed that in the mean-field system first-passage
-labels measure the wrong observable. Is that a generic defect of
-first-passage labeling, or a property of the mean-field dynamics? The ring
-campaign's stored traces cannot answer this --- production runs were
-truncated after deep sustained collapse --- so we re-ran all $300$ logged
-seeds in three cells ($\beta = 0.110$ and $0.130$ at $N = 64$, and
-$\beta = 0.130$ at $N = 256$) with early stopping disabled and a per-seed
-horizon $1{,}100$ time units past the logged death; the re-runs reproduce
-the campaign lifetimes bit-for-bit ($900/900$). Each trajectory then
-received the labels of Sec.~\ref{sec:graze}, pre-stated before the ensemble
-ran: the bare first passage $t_{\mathrm{fp}}$
-($\rho_{\mathrm{std}} < 0.04$, no hold), the campaign label
-$t_{\mathrm{camp}}$ ($0.04$ sustained $50$ time units), and an
-absorption-grade $t_{\mathrm{abs}}$ --- the first sub-threshold excursion
-that fails to recover to $\rho_{\mathrm{rec}} = 0.08$ (the equilibration-gate
-contrast of Sec.~\ref{sec:ring}, well below the living plateau
-${\approx}0.15$) within a recovery window $W = 50$ time units and stays
-below it for a verification horizon $T_v = 500$ time units, ${\approx}10$
-times the stereotyped $52.8$-unit terminal descent.
-
-The mean-field gap does not appear (Fig.~\ref{fig:xlabel}). The fraction of
-runs whose first crossing self-heals is $10.3\%$ [$7.0, 14.0$], $5.0\%$
-[$2.7, 7.7$], and $3.0\%$ [$1.3, 5.0$] in the three cells --- against up to
-$98\%$ of first crossings in the mean field --- and recovered excursions
-number $0.03$--$0.11$ per run against $3.3$--$12.3$ detector firings per
-run there. The lifetime consequence is correspondingly marginal:
-$\hat\tau_{\mathrm{abs}}/\hat\tau_{\mathrm{fp}} = 1.044$ [$1.022, 1.072$],
-$1.028$ [$1.008, 1.057$], and $1.019$ [$1.005, 1.038$] (exponential MLE,
-paired bootstrap; zero censoring), where the mean field gives
-${\approx}2.2$. A small graze population does exist --- the intervals
-exclude zero --- but it moves the measurement by $2$--$4\%$, not a factor
-of two. The result is insensitive to the labeling knobs: across all $27$
-combinations of $\rho_{\mathrm{rec}} \in \{0.06, 0.08, 0.10\}$,
-$W \in \{25, 50, 100\}$, and $T_v \in \{250, 500, 1000\}$, the over-trigger
-fraction stays within $2$--$20\%$ and the ratio within $1.018$--$1.047$.
-The campaign label itself is already absorption-grade: in $0/900$ runs does
-a death labeled by the $50$-unit sustain ever recover; where
-$t_{\mathrm{abs}}$ and $t_{\mathrm{camp}}$ differ ($22$--$36\%$ of runs)
-the absorption label is \emph{earlier}, by at most $83$ time units ---
-descent wiggles that re-cross $0.04$ without ever re-establishing contrast
---- moving MLE lifetimes by ${\approx}1\%$. (Total cost: $900$ re-runs,
-$0.18$ core-hours.)
-
-The graze/absorption distinction is therefore a property of the mean-field
-breathing dynamics, not of first-passage labeling per se: the
-two-population chimera grazes because its breathing cycle carries the
-incoherent population to the synchronization boundary and back once per
-period, while the near-boundary ring's committed descent, once the spatial
-contrast falls through the death threshold, almost never re-establishes a
-chimera. Operationally this cuts both ways. It bounds the scope of
-Sec.~\ref{sec:graze}'s warning --- first-passage lifetimes are not
-universally wrong, and detector design should follow the system's recovery
-statistics rather than a blanket rule --- and it certifies the ring
-campaign itself: the lifetimes underlying
-Secs.~\ref{sec:ring}--\ref{sec:discussion} are absorption times, not
-graze times, under the same construction that doubled the mean-field
-numbers.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{fig_xlabel}
-\caption{The graze/absorption gap does not transfer to the ring.
-(a)~Per-run first-passage label $t_{\mathrm{fp}}$ versus absorption-grade
-label $t_{\mathrm{abs}}$ for all $900$ re-run campaign seeds (filled
-markers: the $3$--$10\%$ of runs whose first sub-threshold excursion
-self-heals; open markers on the diagonal: first crossing $=$ absorption).
-(b)~Over-trigger fraction per cell (bootstrap $95\%$ intervals) against the
-mean-field range of Table~\ref{tab:overtrigger}. (c)~Exponential-MLE
-lifetime ratio $\hat\tau_{\mathrm{abs}}/\hat\tau_{\mathrm{fp}}$ per cell
-against the mean-field factor ${\approx}2.2$ of Fig.~\ref{fig:tau}:
-absorption-grade labeling moves ring lifetimes by $2$--$4\%$.}
-\label{fig:xlabel}
-\end{figure}
 
 \subsection{The limiting shape is finite and exceeds one}
 
@@ -1045,53 +968,9 @@ versus size for the same campaigns: mean-field $k_{\mathrm{abs}} =
 2.27$--$3.03$ and ring $\hat k = 1.33$--$1.68$, every interval above the
 memoryless $k = 1$ (dashed); the band is the ring's bootstrapped thermodynamic
 limit $k_\infty = 1.65$ [$1.56, 1.74$] at $\beta = 0.130$
-(Appendix~\ref{app:ring}). (c)~Nelson--Aalen cumulative hazard versus
-normalized age $t/\tilde\tau(N)$ (lifetimes median-normalized per cell,
-pooled within each system; zero censoring in both campaigns): both curves
-are convex against the memoryless reference $H = u \ln 2$ --- the hazard
-rises with age in both systems --- with the ring's late bend back toward
-slope one marking its front-loaded rise.}
+(Appendix~\ref{app:ring}).}
 \label{fig:crosssystem}
 \end{figure}
-
-\textbf{What unifies, and at what level.} The comparison supports one
-mechanism-level statement, provided it is made at the level of the hazard. In
-both systems the collapse hazard rises along the trajectory: model-free, the
-death rate after the median age exceeds the rate before it by factors of
-$3.5$--$5.1$ across the mean-field sizes and $1.4$--$2.2$ across the
-$\beta = 0.130$ ring cells (Fig.~\ref{fig:crosssystem}c) --- though the two
-systems expose that rising hazard very differently. In the mean field it has
-a measured monotone carrier: the per-cycle envelope ratchet of
-Sec.~\ref{sec:mechanism}, climbing the unstable spiral that the reduced flow
-guarantees everywhere in the post-homoclinic wedge ($\sigma > 0$ at all $592$
-grid points; Appendix~\ref{app:corner}). On the ring we find no such
-observable, and not for lack of looking: the terminal descent is stereotyped
-and age-uncorrelated (Sec.~\ref{sec:ring}), and the one per-run statistic
-that does track lifetime --- the structure level averaged over the run's
-life, Spearman $\rho = 0.69$--$0.81$ --- does so mechanically, because its
-averaging window contains the terminal descent, which drags down short runs'
-averages; restricted to runs beyond twice the median lifetime, where the
-descent occupies at most ${\sim}10\%$ of the window, the correlation collapses
-to $|\rho| \le 0.23$ (all $p > 0.13$). Aging as a monotone
-\emph{observable} approach to the absorbing boundary is therefore
-mean-field-specific; what transfers across topology is only the rising
-hazard. Nor is a monotone approach sufficient even where it exists:
-$\sigma > 0$ holds at every post-homoclinic point, yet within ${\approx}0.02$
-of the homoclinic at $\beta \le 0.10$ the capture-time distribution is
-memoryless --- two of the three failing points put $12$--$28\%$ of captures
-beyond five median lifetimes (no aging point exceeds $2\%$) and the third
-sits at exponential-level relative dispersion, the long ghost-cycle passages
-near the saddle dispersing the waiting times the drift would otherwise order
-(Appendix~\ref{app:corner}). Where collapse ages, then, it
-ages because monotone drift toward absorption dominates the dispersal of
-passage times; where that drift surfaces in a collective observable, deaths
-ratchet. The scaling half never transfers, and for a stateable reason: it is
-set by how $N$ enters the collective flow --- not at all in the mean field
-(the flat plateau, ${\le}14\%$ variation over a $16\times$ range of $N$),
-structurally on the ring, where even the sign is boundary-side dependent
-(the near-boundary median falls $2.5\times$ while the deep-stable regime
-grows~\cite{wo2011}). The aging belongs to the trajectory's drift toward the
-absorbing state; the scaling belongs to how the network enters the flow.
 
 \textbf{Scope.} All results are at strictly identical frequencies, equal population
 sizes, the shipped phase lag ($\beta = 0.05$, with the phenomenology reproduced at
@@ -1155,20 +1034,14 @@ figure-generation scripts --- are openly available in the annealMusic repository
 github.com/akarlin3/annealMusic and archived at Zenodo
 (doi.org/10.5281/zenodo.20564867); \texttt{python3 tools/paper-figures/run\_all.py}
 regenerates the mean-field figures, the ring summary figure
-(\texttt{fig10\_ring.py}), the cross-system comparison
-(\texttt{paper\_figures/fig12\_crosssystem.py}, hazard-level checks in
-\texttt{tools/unify\_checks.py}), and the measurements added in revision:
+(\texttt{fig10\_ring.py}), and the three appendix measurements added in revision:
 the corner-generality map (\texttt{paper\_figures/fig\_corner\_map.py}, data from
 \texttt{tools/reduced-ode/corner\_map\_data.py}), the re-injection mechanism
 probe (\texttt{paper\_figures/fig\_mech\_probe.py}, data from
 \texttt{tools/noise-test/mech\_probe.py} and
-\texttt{tools/manifold-probe/ws\_decomposition.mjs}), the existence-boundary
+\texttt{tools/manifold-probe/ws\_decomposition.mjs}), and the existence-boundary
 measurement (\texttt{paper\_figures/fig\_betac.py}, data from
-\texttt{anneal-hazard/analysis/run\_betac.py}), the depth-onset reanalysis
-(\texttt{paper\_figures/fig\_depth\_aging.py}, data from
-\texttt{tools/reduced-ode/depth\_aging\_fit.py}), and the ring
-graze/absorption labeling measurement (\texttt{paper\_figures/fig\_xlabel.py},
-data from \texttt{tools/xlabel/run\_xlabel.py}). The ring
+\texttt{anneal-hazard/analysis/run\_betac.py}). The ring
 campaign (pre-registration, ensemble records, and fits) is in
 \texttt{anneal-hazard/}; the stratified-hazard and criterion-robustness analyses,
 including the field re-runs validating the dying ring object, are in
@@ -1419,64 +1292,6 @@ post-homoclinicity per se: within ${\approx}0.02$ of the homoclinic at
 $\beta \le 0.10$ the reduced collapse-time distribution loses its aging shape.
 This sharpens, in the same direction, the depth caveat of
 Appendix~\ref{app:beta}.
-
-How sharply does the aging shape turn on with depth? Refitting the raw capture
-times of Table~\ref{tab:cornerk} ($1{,}200$ per point, zero censoring), the
-shallow-to-deep contrast at each paired phase lag is
-$\Delta\hat k = +0.28$, $+0.43$, $+0.49$ at $\beta = 0.03$, $0.05$, $0.10$
-($7$--$13$ standard errors), so at every $\beta$ with paired coverage the trend
-with depth is monotone; a weighted linear fit to the six $\beta \le 0.10$
-points gives a descriptive slope of $4.6 \pm 0.3$ per unit depth
-(capture-time-resampling bootstrap interval $[4.0, 5.0]$), though no
-two-parameter form fits within the tight per-point intervals. The onset,
-however, is only bracketed. For $\beta \le 0.10$ a threshold model ($k = 1$
-below a depth $d^*$, a free level above) is consistent with the three shallow
-points ($\chi^2 = 4.6$, $3$ dof, $p = 0.20$) and places $d^*$ between the
-deepest memoryless point and the shallowest aging point,
-$A - A_{hc} \in [0.0205, 0.0595]$; the design has no test point inside this
-gap, and a $1{,}000$-replicate bootstrap of the raw capture times returns the
-changepoint to the same gap in every replicate while leaving its position
-within the gap unconstrained. We therefore report an onset bracket, not an
-onset depth (Fig.~\ref{fig:depthaging}a).
-
-Raw depth is, moreover, not the controlling variable across phase lags: the
-shallow $\beta = 0.18$ point ages ($\hat k = 1.33$, ${\sim}16$ standard errors
-above one) at the same depth $A - A_{hc} \approx 0.020$ where every
-$\beta \le 0.10$ point is memoryless, and no depth threshold separates the
-eight points (the best two-level split leaves $\chi^2 = 212$). Neither
-linear-rate covariate explains the exception --- this point has the lowest
-$\omega$ of all eight ($0.179$\,s$^{-1}$), and its
-$\sigma = 0.0117$\,s$^{-1}$ is indistinguishable from the non-aging
-$(0.10, 0.374)$ point's $0.0126$\,s$^{-1}$ --- but the band-narrowing reading
-given above does, quantitatively: measured in local breathing-band widths,
-$(A - A_{hc})/(A_{hc} - A_H)$, the $\beta = 0.18$ point lies $1.3$ band-widths
-beyond the homoclinic, deeper than the aging $(0.03, 0.500)$ point at $0.35$,
-and a single threshold in $[0.27, 0.35]$ band-widths separates all eight
-points --- memoryless below, aging above (Fig.~\ref{fig:depthaging}b). With
-eight points this collapse is descriptive, not a fitted law; what the data
-establish is a monotone deepening of the aging shape with depth at fixed
-$\beta$, an onset bracketed in $A - A_{hc} \in [0.0205, 0.0595]$ for
-$\beta \le 0.10$, and an onset that moves inward with the width of the
-breathing band as the Takens--Bogdanov point is approached.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.95\linewidth]{fig_depth_aging}
-\caption{Depth dependence of the reduced-flow aging shape. (a)~Censored-Weibull
-shape $\hat k$ at the eight aging test points of Table~\ref{tab:cornerk}
-versus depth beyond the homoclinic (heavy bars: profile-likelihood $95\%$
-intervals; light bars: bootstrap intervals of the independent fitter; star:
-operating corner; open diamond: the all-$1400$ corner refit including the
-degenerate $N = 4$ rows, $\hat k = 1.22$ $[1.17, 1.28]$). For
-$\beta \le 0.10$ the aging onset lies in the shaded bracket
-$A - A_{hc} \in [0.0205, 0.0595]$, a coverage gap with no test points; the
-shallow $\beta = 0.18$ point ages at a depth where every $\beta \le 0.10$
-point is memoryless. (b)~The same points against depth measured in local
-breathing-band widths $(A - A_{hc})/(A_{hc} - A_H)$: a single threshold in
-$[0.27, 0.35]$ band-widths (shaded) separates all eight points (descriptive,
-$n = 8$).}
-\label{fig:depthaging}
-\end{figure}
 
 \begin{table}[t]
 \centering

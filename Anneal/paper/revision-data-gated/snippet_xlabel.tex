@@ -1,0 +1,113 @@
+% ============================================================================
+% snippet_xlabel.tex — patch-ready subsection: does the graze/absorption gap
+% of Sec. 3 (sec:graze) exist on the independent nonlocal ring? (Honest null:
+% it does not.)
+%
+% Source of every number: paper/revision-data-gated/results_xlabel.json and
+% tools/xlabel/results/xlabel_{runs.jsonl,summary.json}, produced by
+% tools/xlabel/run_xlabel.py — 900 re-runs of the logged campaign seeds
+% (300 each at (beta, N) = (0.110, 64), (0.130, 64), (0.130, 256)) with early
+% stopping disabled, label definitions and windows pre-stated before the
+% ensemble ran. Validation: campaign tau reproduced bit-for-bit in 900/900
+% re-runs (and 9/9 in the pre-ensemble gate). Cost: 0.18 core-hours.
+% Figure: paper_figures/fig_xlabel.{pdf,png} (paper_figures/fig_xlabel.py).
+%
+% Headline numbers used below (bootstrap 95% intervals, B = 2000, paired):
+%   over-trigger (first sub-eps excursion recovers):
+%     b0.110_N64  10.3% [7.0, 14.0]   b0.130_N64  5.0% [2.7, 7.7]
+%     b0.130_N256  3.0% [1.3, 5.0]
+%   exponential-MLE ratio tau_abs / tau_fp:
+%     1.044 [1.022, 1.072]   1.028 [1.008, 1.057]   1.019 [1.005, 1.038]
+%   recovered excursions per run: 0.11 / 0.06 / 0.03 (mean field: 3.3-12.3
+%     firings per run; up to 98% of first crossings recover)
+%   campaign-vs-absorption: t_abs == t_camp in 64-78% of runs; t_abs NEVER
+%     later than t_camp (0/900 campaign deaths recover); where different,
+%     t_abs earlier by <= 83 t.u.; MLE ratio tau_abs/tau_camp = 0.99
+%   robustness (27 combos rho_rec x W x T_v): over-trigger 2-20%,
+%     ratio 1.018-1.047, zero ambiguous labels
+%
+% INSERTION POINT: Sec. 7 (sec:ring), as a new subsection AFTER
+% "Aging in the waiting time, not the descent" (sec. 7.5, ends ~line 856 with
+% "...death itself is a fast, stereotyped event.") and BEFORE "The limiting
+% shape is finite and exceeds one" — it uses the 52.8 t.u. stereotyped-descent
+% number defined in 7.5, and 7.6 then closes the section with the cross-system
+% summary as before. (Alternative, if Sec. 7 length is a concern: an appendix
+% subsection inside app:ring; the text below works unchanged either way.)
+% ============================================================================
+
+\subsection{The graze/absorption gap does not transfer to the ring}
+\label{sec:ring:xlabel}
+
+Section~\ref{sec:graze} showed that in the mean-field system first-passage
+labels measure the wrong observable. Is that a generic defect of
+first-passage labeling, or a property of the mean-field dynamics? The ring
+campaign's stored traces cannot answer this --- production runs were
+truncated after deep sustained collapse --- so we re-ran all $300$ logged
+seeds in three cells ($\beta = 0.110$ and $0.130$ at $N = 64$, and
+$\beta = 0.130$ at $N = 256$) with early stopping disabled and a per-seed
+horizon $1{,}100$ time units past the logged death; the re-runs reproduce
+the campaign lifetimes bit-for-bit ($900/900$). Each trajectory then
+received the labels of Sec.~\ref{sec:graze}, pre-stated before the ensemble
+ran: the bare first passage $t_{\mathrm{fp}}$
+($\rho_{\mathrm{std}} < 0.04$, no hold), the campaign label
+$t_{\mathrm{camp}}$ ($0.04$ sustained $50$ time units), and an
+absorption-grade $t_{\mathrm{abs}}$ --- the first sub-threshold excursion
+that fails to recover to $\rho_{\mathrm{rec}} = 0.08$ (the equilibration-gate
+contrast of Sec.~\ref{sec:ring}, well below the living plateau
+${\approx}0.15$) within a recovery window $W = 50$ time units and stays
+below it for a verification horizon $T_v = 500$ time units, ${\approx}10$
+times the stereotyped $52.8$-unit terminal descent.
+
+The mean-field gap does not appear (Fig.~\ref{fig:xlabel}). The fraction of
+runs whose first crossing self-heals is $10.3\%$ [$7.0, 14.0$], $5.0\%$
+[$2.7, 7.7$], and $3.0\%$ [$1.3, 5.0$] in the three cells --- against up to
+$98\%$ of first crossings in the mean field --- and recovered excursions
+number $0.03$--$0.11$ per run against $3.3$--$12.3$ detector firings per
+run there. The lifetime consequence is correspondingly marginal:
+$\hat\tau_{\mathrm{abs}}/\hat\tau_{\mathrm{fp}} = 1.044$ [$1.022, 1.072$],
+$1.028$ [$1.008, 1.057$], and $1.019$ [$1.005, 1.038$] (exponential MLE,
+paired bootstrap; zero censoring), where the mean field gives
+${\approx}2.2$. A small graze population does exist --- the intervals
+exclude zero --- but it moves the measurement by $2$--$4\%$, not a factor
+of two. The result is insensitive to the labeling knobs: across all $27$
+combinations of $\rho_{\mathrm{rec}} \in \{0.06, 0.08, 0.10\}$,
+$W \in \{25, 50, 100\}$, and $T_v \in \{250, 500, 1000\}$, the over-trigger
+fraction stays within $2$--$20\%$ and the ratio within $1.018$--$1.047$.
+The campaign label itself is already absorption-grade: in $0/900$ runs does
+a death labeled by the $50$-unit sustain ever recover; where
+$t_{\mathrm{abs}}$ and $t_{\mathrm{camp}}$ differ ($22$--$36\%$ of runs)
+the absorption label is \emph{earlier}, by at most $83$ time units ---
+descent wiggles that re-cross $0.04$ without ever re-establishing contrast
+--- moving MLE lifetimes by ${\approx}1\%$. (Total cost: $900$ re-runs,
+$0.18$ core-hours.)
+
+The graze/absorption distinction is therefore a property of the mean-field
+breathing dynamics, not of first-passage labeling per se: the
+two-population chimera grazes because its breathing cycle carries the
+incoherent population to the synchronization boundary and back once per
+period, while the near-boundary ring's committed descent, once the spatial
+contrast falls through the death threshold, almost never re-establishes a
+chimera. Operationally this cuts both ways. It bounds the scope of
+Sec.~\ref{sec:graze}'s warning --- first-passage lifetimes are not
+universally wrong, and detector design should follow the system's recovery
+statistics rather than a blanket rule --- and it certifies the ring
+campaign itself: the lifetimes underlying
+Secs.~\ref{sec:ring}--\ref{sec:discussion} are absorption times, not
+graze times, under the same construction that doubled the mean-field
+numbers.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_xlabel}
+\caption{The graze/absorption gap does not transfer to the ring.
+(a)~Per-run first-passage label $t_{\mathrm{fp}}$ versus absorption-grade
+label $t_{\mathrm{abs}}$ for all $900$ re-run campaign seeds (filled
+markers: the $3$--$10\%$ of runs whose first sub-threshold excursion
+self-heals; open markers on the diagonal: first crossing $=$ absorption).
+(b)~Over-trigger fraction per cell (bootstrap $95\%$ intervals) against the
+mean-field range of Table~\ref{tab:overtrigger}. (c)~Exponential-MLE
+lifetime ratio $\hat\tau_{\mathrm{abs}}/\hat\tau_{\mathrm{fp}}$ per cell
+against the mean-field factor ${\approx}2.2$ of Fig.~\ref{fig:tau}:
+absorption-grade labeling moves ring lifetimes by $2$--$4\%$.}
+\label{fig:xlabel}
+\end{figure}

@@ -1,0 +1,72 @@
+% ---------------------------------------------------------------------------
+% Patch-ready continuation for death_of_a_chimera_nld.tex, Appendix
+% \label{app:corner} ("Generality of the post-homoclinic regime across the
+% $(\beta, A)$ plane").
+% INSERT: directly after the paragraph ending "...This sharpens, in the same
+% direction, the depth caveat of Appendix~\ref{app:beta}." (immediately before
+% the tab:cornerk table environment), keeping the figure environment below
+% with it.
+% All numbers are from the committed reanalysis
+% paper/revision-data-gated/results_depth.json (raw capture times of
+% results_corner.json refit; no new integration); regenerate with
+%   python3 tools/reduced-ode/depth_aging_fit.py
+%   python3 paper_figures/fig_depth_aging.py
+% ---------------------------------------------------------------------------
+
+How sharply does the aging shape turn on with depth? Refitting the raw capture
+times of Table~\ref{tab:cornerk} ($1{,}200$ per point, zero censoring), the
+shallow-to-deep contrast at each paired phase lag is
+$\Delta\hat k = +0.28$, $+0.43$, $+0.49$ at $\beta = 0.03$, $0.05$, $0.10$
+($7$--$13$ standard errors), so at every $\beta$ with paired coverage the trend
+with depth is monotone; a weighted linear fit to the six $\beta \le 0.10$
+points gives a descriptive slope of $4.6 \pm 0.3$ per unit depth
+(capture-time-resampling bootstrap interval $[4.0, 5.0]$), though no
+two-parameter form fits within the tight per-point intervals. The onset,
+however, is only bracketed. For $\beta \le 0.10$ a threshold model ($k = 1$
+below a depth $d^*$, a free level above) is consistent with the three shallow
+points ($\chi^2 = 4.6$, $3$ dof, $p = 0.20$) and places $d^*$ between the
+deepest memoryless point and the shallowest aging point,
+$A - A_{hc} \in [0.0205, 0.0595]$; the design has no test point inside this
+gap, and a $1{,}000$-replicate bootstrap of the raw capture times returns the
+changepoint to the same gap in every replicate while leaving its position
+within the gap unconstrained. We therefore report an onset bracket, not an
+onset depth (Fig.~\ref{fig:depthaging}a).
+
+Raw depth is, moreover, not the controlling variable across phase lags: the
+shallow $\beta = 0.18$ point ages ($\hat k = 1.33$, ${\sim}16$ standard errors
+above one) at the same depth $A - A_{hc} \approx 0.020$ where every
+$\beta \le 0.10$ point is memoryless, and no depth threshold separates the
+eight points (the best two-level split leaves $\chi^2 = 212$). Neither
+linear-rate covariate explains the exception --- this point has the lowest
+$\omega$ of all eight ($0.179$\,s$^{-1}$), and its
+$\sigma = 0.0117$\,s$^{-1}$ is indistinguishable from the non-aging
+$(0.10, 0.374)$ point's $0.0126$\,s$^{-1}$ --- but the band-narrowing reading
+given above does, quantitatively: measured in local breathing-band widths,
+$(A - A_{hc})/(A_{hc} - A_H)$, the $\beta = 0.18$ point lies $1.3$ band-widths
+beyond the homoclinic, deeper than the aging $(0.03, 0.500)$ point at $0.35$,
+and a single threshold in $[0.27, 0.35]$ band-widths separates all eight
+points --- memoryless below, aging above (Fig.~\ref{fig:depthaging}b). With
+eight points this collapse is descriptive, not a fitted law; what the data
+establish is a monotone deepening of the aging shape with depth at fixed
+$\beta$, an onset bracketed in $A - A_{hc} \in [0.0205, 0.0595]$ for
+$\beta \le 0.10$, and an onset that moves inward with the width of the
+breathing band as the Takens--Bogdanov point is approached.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_depth_aging}
+\caption{Depth dependence of the reduced-flow aging shape. (a)~Censored-Weibull
+shape $\hat k$ at the eight aging test points of Table~\ref{tab:cornerk}
+versus depth beyond the homoclinic (heavy bars: profile-likelihood $95\%$
+intervals; light bars: bootstrap intervals of the independent fitter; star:
+operating corner; open diamond: the all-$1400$ corner refit including the
+degenerate $N = 4$ rows, $\hat k = 1.22$ $[1.17, 1.28]$). For
+$\beta \le 0.10$ the aging onset lies in the shaded bracket
+$A - A_{hc} \in [0.0205, 0.0595]$, a coverage gap with no test points; the
+shallow $\beta = 0.18$ point ages at a depth where every $\beta \le 0.10$
+point is memoryless. (b)~The same points against depth measured in local
+breathing-band widths $(A - A_{hc})/(A_{hc} - A_H)$: a single threshold in
+$[0.27, 0.35]$ band-widths (shaded) separates all eight points (descriptive,
+$n = 8$).}
+\label{fig:depthaging}
+\end{figure}

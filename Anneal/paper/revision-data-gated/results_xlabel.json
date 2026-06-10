@@ -1,0 +1,208 @@
+{
+ "item": "CP3 cross-system label experiment (graze vs absorption on the nonlocal ring)",
+ "design_prestated": {
+  "prestated": "labels/windows frozen before the ensemble (module docstring)",
+  "eps": 0.04,
+  "rho_rec": 0.08,
+  "W": 50.0,
+  "T_v": 500.0,
+  "margin": 600.0,
+  "rho_floor": 0.02,
+  "dt_hold_campaign": 50.0,
+  "grid_tu": 0.5,
+  "stop_eps": null,
+  "horizon": "min(tau_logged + T_v + margin, 12000)",
+  "sweep": {
+   "rho_rec": [
+    0.06,
+    0.08,
+    0.1
+   ],
+   "W": [
+    25.0,
+    50.0,
+    100.0
+   ],
+   "T_v": [
+    250.0,
+    500.0,
+    1000.0
+   ]
+  },
+  "bootstrap": {
+   "B": 2000,
+   "seed": 20280001,
+   "scheme": "paired percentile, resample runs within cell"
+  }
+ },
+ "validation": {
+  "gate_3_seeds_per_cell": "9/9 logged tau reproduced bit-for-bit with stop_eps disabled",
+  "full_ensemble_anchor": "900/900 runs reproduce logged tau bit-for-bit (t_camp == tau)"
+ },
+ "mean_field_comparators_sec3": {
+  "first_crossing_recovery": "up to 98% of first crossings recover (A=0.5, N=8-64)",
+  "detector_over_trigger": "69-97% of firings",
+  "lifetime_ratio": "tau_abs/tau_graze ~ 2.2 at the operating corner (63-67 s -> 139 s)",
+  "firings_per_run": "3.3-12.3"
+ },
+ "cells": {
+  "b0.110_N64": {
+   "n_runs": 300,
+   "n_tau_mismatch": 0,
+   "n_ambiguous": 0,
+   "over_trigger_fraction": 0.1033,
+   "over_trigger_ci95": [
+    0.07,
+    0.1401
+   ],
+   "n_over_trigger": 31,
+   "recovered_excursions_per_run_mean": 0.11,
+   "tau_fp_mle": 1215.955,
+   "tau_fp_mle_ci95": [
+    1113.8604,
+    1327.1707
+   ],
+   "tau_abs_mle": 1269.13,
+   "tau_abs_mle_ci95": [
+    1164.6026,
+    1385.3017
+   ],
+   "tau_fp_median": 922.0,
+   "tau_abs_median": 991.75,
+   "ratio_abs_fp_mle": 1.0437,
+   "ratio_abs_fp_mle_ci95": [
+    1.0215,
+    1.0715
+   ],
+   "ratio_abs_fp_median": 1.0757,
+   "ratio_abs_fp_median_ci95": [
+    1.0116,
+    1.1517
+   ],
+   "camp_vs_abs": {
+    "frac_equal": 0.6367,
+    "frac_abs_earlier": 0.3633,
+    "frac_abs_later": 0.0,
+    "max_abs_gap_tu": 83.0,
+    "ratio_abs_camp_mle": 0.993
+   }
+  },
+  "b0.130_N64": {
+   "n_runs": 300,
+   "n_tau_mismatch": 0,
+   "n_ambiguous": 0,
+   "over_trigger_fraction": 0.05,
+   "over_trigger_ci95": [
+    0.0267,
+    0.0767
+   ],
+   "n_over_trigger": 15,
+   "recovered_excursions_per_run_mean": 0.0567,
+   "tau_fp_mle": 493.7817,
+   "tau_fp_mle_ci95": [
+    454.4435,
+    537.0157
+   ],
+   "tau_abs_mle": 507.7867,
+   "tau_abs_mle_ci95": [
+    467.847,
+    551.1563
+   ],
+   "tau_fp_median": 412.0,
+   "tau_abs_median": 421.25,
+   "ratio_abs_fp_mle": 1.0284,
+   "ratio_abs_fp_mle_ci95": [
+    1.0083,
+    1.057
+   ],
+   "ratio_abs_fp_median": 1.0225,
+   "ratio_abs_fp_median_ci95": [
+    1.0005,
+    1.0933
+   ],
+   "camp_vs_abs": {
+    "frac_equal": 0.78,
+    "frac_abs_earlier": 0.22,
+    "frac_abs_later": 0.0,
+    "max_abs_gap_tu": 69.0,
+    "ratio_abs_camp_mle": 0.9919
+   }
+  },
+  "b0.130_N256": {
+   "n_runs": 300,
+   "n_tau_mismatch": 0,
+   "n_ambiguous": 0,
+   "over_trigger_fraction": 0.03,
+   "over_trigger_ci95": [
+    0.0133,
+    0.05
+   ],
+   "n_over_trigger": 9,
+   "recovered_excursions_per_run_mean": 0.03,
+   "tau_fp_mle": 461.1583,
+   "tau_fp_mle_ci95": [
+    421.7726,
+    504.7548
+   ],
+   "tau_abs_mle": 469.9583,
+   "tau_abs_mle_ci95": [
+    429.3465,
+    515.2034
+   ],
+   "tau_fp_median": 341.25,
+   "tau_abs_median": 343.5,
+   "ratio_abs_fp_mle": 1.0191,
+   "ratio_abs_fp_mle_ci95": [
+    1.0051,
+    1.0384
+   ],
+   "ratio_abs_fp_median": 1.0066,
+   "ratio_abs_fp_median_ci95": [
+    1.0,
+    1.0386
+   ],
+   "camp_vs_abs": {
+    "frac_equal": 0.7467,
+    "frac_abs_earlier": 0.2533,
+    "frac_abs_later": 0.0,
+    "max_abs_gap_tu": 65.5,
+    "ratio_abs_camp_mle": 0.9899
+   }
+  }
+ },
+ "robustness_sweep": {
+  "grid": {
+   "rho_rec": [
+    0.06,
+    0.08,
+    0.1
+   ],
+   "W": [
+    25.0,
+    50.0,
+    100.0
+   ],
+   "T_v": [
+    250.0,
+    500.0,
+    1000.0
+   ]
+  },
+  "over_trigger_range_all_cells_combos": [
+   0.02,
+   0.2
+  ],
+  "ratio_abs_fp_mle_range_all_cells_combos": [
+   1.0181,
+   1.0466
+  ],
+  "n_ambiguous_total": 0,
+  "one_liner": "across all 27 (rho_rec, W, T_v) combinations and all three cells the over-trigger fraction stays within 2-20% and the MLE lifetime ratio within 1.018-1.047; no combination approaches the mean-field gap."
+ },
+ "runtime": {
+  "wall_s": 90.2,
+  "core_hours": 0.183,
+  "workers": 8
+ },
+ "verdict": "NULL TRANSFER: the graze/absorption gap does not appear on the ring. First-passage and absorption-grade labels essentially coincide: over-trigger 3.0-10.3% of runs (vs 69-97% of firings / up to 98% of first crossings in the mean field), exponential-MLE lifetime ratio tau_abs/tau_fp = 1.019-1.044 (CIs exclude 1 but the shift is 2-4%, vs ~2.2x in the mean field), and 0.03-0.11 recovered excursions per run (vs 3.3-12.3 firings per run). The campaign 50-t.u. sustain label is already absorption-grade: in 0/900 runs does a campaign-labeled death later recover (t_abs is never after t_camp); where the two differ (22-36% of runs) absorption starts at most 83 t.u. EARLIER (sub-threshold descent wiggles that never re-establish contrast), moving MLE lifetimes by ~1%. The graze phenomenon is a property of the mean-field breathing dynamics, not of first-passage labeling per se."
+}

@@ -129,9 +129,9 @@ their classic regimes --- ring chimera lifetimes grow with oscillator
 count~\cite{wo2011}, while Sec.~\ref{sec:stats} shows the mean-field lifetimes are
 flat in $N$. We therefore close the paper by carrying the same survival methodology
 to the ring near its existence boundary (Sec.~\ref{sec:ring}), where lifetimes are
-finite at feasible compute, asking whether the aging structure of collapse --- the
-rising hazard --- transfers across topology even where the lifetime scaling does
-not.
+finite at feasible compute, asking whether the aging structure of collapse --- a
+rising hazard, i.e., an instantaneous death rate that grows with the age of the
+state --- transfers across topology even where the lifetime scaling does not.
 
 We answer with a chain of measurements, each gating the next, on bit-reproducible
 integrators (2{,}100 baseline mean-field runs plus targeted re-campaigns, and
@@ -171,7 +171,10 @@ fluctuations \emph{extend} the transient (Sec.~\ref{sec:reduced},
 Sec.~\ref{sec:discussion}).
 \item \textbf{Topology comparison: aging transfers, scaling does not.} On the
 nonlocally coupled ring near its existence boundary, collapse is also an aging
-process: the censored-Weibull shape exceeds one, with confidence intervals
+process: the censored-Weibull shape --- the exponent $k$ that separates a
+memoryless collapse ($k = 1$: exponential waiting times, an age-independent
+hazard) from an aging one ($k > 1$: a death rate that rises as the state grows
+older) --- exceeds one, with confidence intervals
 excluding one, in all 15 pre-registered $(\beta, N)$ cells, and rises with $N$
 before saturating to a finite $k_\infty \approx 1.35$--$1.65 > 1$ that grows toward
 criticality (Appendix~\ref{app:ring}). The dying object is validated as a genuine
@@ -241,7 +244,9 @@ coherent arc ($\rho_k \approx 1$) from its incoherent arc (low $\rho_k$). Death 
 the ring chimera is the loss of this spatial structure: the event criterion is the
 spatial standard deviation $\rho_{\mathrm{std}}(t)$ of the $\rho_k$ field falling
 below $\varepsilon_{\mathrm{std}} = 0.04$ and staying below for $50$ time units,
-with right-censoring at $T_{\max} = 12{,}000$; Sec.~\ref{sec:ring} validates this
+with right-censoring at $T_{\max} = 12{,}000$ --- a run still alive at the horizon
+is not discarded or counted as a death, but enters every likelihood below only
+through the fact that it survived to $T_{\max}$; Sec.~\ref{sec:ring} validates this
 criterion against alternatives and against the identity of the dying object. The
 ring campaign --- design, event definition, primary endpoint (the censored-Weibull
 shape $k$ with profile-likelihood intervals), and decision rule all pre-registered
@@ -1100,10 +1105,15 @@ slope one marking its front-loaded rise.}
 
 \textbf{What unifies, and at what level.} The comparison supports one
 mechanism-level statement, provided it is made at the level of the hazard. In
-both systems the collapse hazard rises along the trajectory: model-free, the
-death rate after the median age exceeds the rate before it by factors of
-$3.5$--$5.1$ across the mean-field sizes and $1.4$--$2.2$ across the
-$\beta = 0.130$ ring cells (Fig.~\ref{fig:crosssystem}c) --- though the two
+both systems the collapse hazard rises along the trajectory. The model-free
+witness is the Nelson--Aalen cumulative hazard of Fig.~\ref{fig:crosssystem}c
+--- the nonparametric estimator $\hat H(t) = \sum_{t_i \le t} d_i / n_i$,
+accumulating deaths $d_i$ over the $n_i$ runs still at risk at each event time
+$t_i$, whose local slope is the death rate itself, so a memoryless process
+traces a straight line and an aging one a convex curve. Both systems' curves
+are convex: the death rate after the median age exceeds the rate before it by
+factors of $3.5$--$5.1$ across the mean-field sizes and $1.4$--$2.2$ across the
+$\beta = 0.130$ ring cells --- though the two
 systems expose that rising hazard very differently. In the mean field it has
 a measured monotone carrier: the per-cycle envelope ratchet of
 Sec.~\ref{sec:mechanism}, climbing the unstable spiral that the reduced flow

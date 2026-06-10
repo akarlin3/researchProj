@@ -8,6 +8,10 @@ Steps:
        fig1.py                  plot Figure 1 + caption
   F7   fig7_curves.py           SN/Hopf series+numeric, homoclinic bisection (slow)
        fig7.py                  plot Figure 7 + caption
+  APP  figA.py, figB.py         appendix figures (beta=0.10 slice; noise test)
+  F10  fig10_ring.py            ring summary (anneal-hazard/results/)
+  REV  fig_corner_map.py, fig_mech_probe.py, fig_betac.py
+                                revision appendix figures (committed data)
   RPT  make_report.py           FIGURES_REPORT.md
 
 Usage:
@@ -82,6 +86,18 @@ def main():
     # Appendix figures: beta=0.10 slice (A) and finite-size noise test (B).
     run([sys.executable, os.path.join(HERE, "figA.py")])
     run([sys.executable, os.path.join(HERE, "figB.py")])
+
+    # Ring summary figure (reads anneal-hazard/results/).
+    run([sys.executable, os.path.join(HERE, "fig10_ring.py")])
+
+    # Revision appendix figures: corner-generality map, mechanism probe, and
+    # ring existence-boundary measurement. Each plots from committed data; the
+    # heavy regeneration commands are documented in the scripts' docstrings
+    # (tools/reduced-ode/corner_map_data.py, tools/noise-test/mech_probe.py +
+    # tools/manifold-probe/ws_decomposition.mjs, anneal-hazard/analysis/run_betac.py).
+    run([sys.executable, os.path.join(OUT, "fig_corner_map.py")])
+    run([sys.executable, os.path.join(OUT, "fig_mech_probe.py")])
+    run([sys.executable, os.path.join(OUT, "fig_betac.py")])
 
     # Assemble single-panel Figures 2, 4, 6, 9 from their source pipelines.
     assemble_figs()

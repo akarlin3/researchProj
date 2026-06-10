@@ -241,7 +241,9 @@ ring campaign --- design, event definition, primary endpoint (the censored-Weibu
 shape $k$ with profile-likelihood intervals), and decision rule all pre-registered
 before any production run --- comprises
 $\beta \in \{0.110, 0.115, 0.120, 0.125, 0.130\}$ approaching the existence
-boundary $\beta_c \approx 0.13$--$0.14$, at $N \in \{32, 64, 128\}$ with $300$ runs
+boundary --- $\beta_c = 0.137$ [$0.130, 0.144$], measured independently in
+Appendix~\ref{app:betac} and consistent with the literature range
+$\beta_c \approx 0.13$--$0.14$ --- at $N \in \{32, 64, 128\}$ with $300$ runs
 per cell ($4{,}500$ runs), later extended at all five $\beta$ to $N = 192$ and
 $256$ ($3{,}000$ further runs) for the thermodynamic-limit extrapolation of
 Appendix~\ref{app:ring}.
@@ -669,9 +671,12 @@ freedom frozen as constants of motion --- as the group-theoretic~\cite{mms2009}
 and hierarchical-population~\cite{pr2008} formulations make explicit. The
 three-variable system integrated here is exact on the uniform-constants (Poisson)
 submanifold, where the collective dynamics closes independently of $N$; the
-off-manifold constants, which a finite-$N$ ensemble need not realize, are precisely
-where the residual $3.2\times$ prolongation must originate --- sharpening, not
-softening, the open problem.
+off-manifold constants, which a finite-$N$ ensemble need not realize, are the
+natural suspect for the residual $3.2\times$ prolongation --- but the
+interventional decomposition of Appendix~\ref{app:noise} exonerates them:
+constants-uniformized ensembles are prolonged by the same factor, so the
+prolongation arises from finite-$N$ sampling of the on-manifold flow itself ---
+sharpening, not softening, the open problem.
 
 \begin{figure}[t]
 \centering
@@ -694,7 +699,9 @@ first quantified: in the deep-stable regime its chimeras are chaotic transients
 whose lifetimes grow rapidly with oscillator count~\cite{wo2011}. That regime is
 unmeasurably long-lived at feasible compute, so we measure the near-boundary
 window instead --- $\beta = 0.110$--$0.130$, just inside the chimera existence
-boundary $\beta_c \approx 0.13$--$0.14$ --- where every run dies within the
+boundary, which we measure independently at $\beta_c = 0.137$ [$0.130, 0.144$]
+(Appendix~\ref{app:betac}; consistent with the literature
+$\beta_c \approx 0.13$--$0.14$) --- where every run dies within the
 horizon and survival analysis has full power. The campaign design, event
 criterion, primary endpoint, and decision rule were pre-registered before any
 production run (Sec.~\ref{sec:system:ring}).
@@ -738,7 +745,8 @@ intervals): all 25 $(\beta, N)$ cells sit above the memoryless $k = 1$, rising
 with $N$ and then saturating; curves are the AICc-selected bounded fits
 $k_\infty - a/N$ (Appendix~\ref{app:ring}). (c)~Bootstrapped $k_\infty$ versus
 $\beta$: every interval excludes one, and the limiting shape rises toward the
-existence boundary $\beta_c \approx 0.13$--$0.14$.}
+existence boundary, measured at $\beta_c = 0.137$ [$0.130, 0.144$]
+(Appendix~\ref{app:betac}).}
 \label{fig:ringhazard}
 \end{figure}
 
@@ -827,7 +835,8 @@ bounded and divergent forms of $k(N)$ by AICc, the saturating form
 $k(N) = k_\infty - a/N$ wins in all five $\beta$ cells (gaps $2.29$--$5.42$),
 with bootstrapped $k_\infty = 1.35, 1.49, 1.56, 1.62, 1.65$ for
 $\beta = 0.110 \to 0.130$ --- every interval excluding one, rising monotonically
-toward $\beta_c$ (Fig.~\ref{fig:ringhazard}b,c; Appendix~\ref{app:ring}). The
+toward the measured boundary $\beta_c = 0.137$ [$0.130, 0.144$]
+(Fig.~\ref{fig:ringhazard}b,c; Appendices~\ref{app:ring} and~\ref{app:betac}). The
 increasing-hazard character of ring chimera collapse is not a finite-$N$
 artifact: it survives the limit, with a limiting shape that sharpens toward
 criticality.
@@ -864,7 +873,10 @@ flat $\tau_{\mathrm{abs}}(N)$ plateau has no analog in an $N$-free collective fl
 Both point the same direction: finite-$N$ fluctuations \emph{extend} the transient's
 life relative to mean-field, the opposite of the usual intuition in which noise
 destroys metastable states. At the operating corner this prolongation is $N$-independent --- the same factor of
-$3.2$ across the full $16\times$ range of $N$ --- though that independence is itself
+$3.2$ across the full $16\times$ range of $N$ (against the pooled reduced median;
+per-$N$ referencing shifts the $N = 64$ factor to $2.0$ because the reduced
+ensemble's median capture crosses one additional breath cycle there) --- though
+that independence is itself
 a property of the corner's depth beyond the homoclinic, not of every post-homoclinic
 parameter: at $\beta = 0.10$ it survives at the depth-matched point (coefficient of
 variation $0.14$ across $N$) but weakens at the deeper $A = 0.5$, where the factor
@@ -875,13 +887,24 @@ tested the simplest version directly (Appendix~\ref{app:noise}): additive Gaussi
 noise of amplitude $c/\sqrt N$ on the collective variables of the reduced flow. It
 does produce re-injection and prolongation, but the prolongation is
 $N$-\emph{dependent} --- strong at small $N$ and absent by $N = 64$ --- because the
-noise amplitude is. The observed $N$-independent factor of $3.2$ at the operating
-corner therefore rules out additive collective noise and points to a mechanism whose
-effective re-injection strength does not scale away as $1/\sqrt N$ (for example
-structured or multiplicative fluctuations tied to the breath cycle). We report the
-puzzle as measured and leave the responsible mechanism open; the rising-hazard
-(aging-in-cycles) structure and the breath-locked phase distribution remain sharp
-constraints any such theory must satisfy.
+noise amplitude is. The observed $N$-independent factor of $3.2$ at the operating corner therefore
+rules out additive collective noise. The two candidates this leaves ---
+multiplicative fluctuations tied to the breath cycle, and the off-manifold
+Watanabe--Strogatz constants of Sec.~\ref{sec:reduced} --- are both ruled out
+in Appendix~\ref{app:noise}: breath-locked multiplicative noise at its measured
+amplitude leaves capture essentially unperturbed and at no amplitude produces
+more than a $1.4\times$ median prolongation (envelope-gated noise vanishes
+exactly where re-injection must act), while seeds whose constants are projected
+onto the uniform
+submanifold at machine precision remain prolonged by the same factor as the
+real seeds. What survives is sharper than a candidate list: the prolongation is
+generated by finite-$N$ sampling of the collective flow \emph{on} the Poisson
+submanifold, and it accrues mainly between the first sustained $\theta$-crossing
+and absorption --- the fluctuation-induced recoveries the deterministic reduced
+flow does not possess. We report the mechanism's location as measured and leave
+its theory open; the rising-hazard (aging-in-cycles) structure and the
+breath-locked phase distribution remain sharp constraints any such theory must
+satisfy.
 
 \textbf{Topology: aging transfers, scaling does not.} On nonlocally coupled rings
 in the deep-stable regime, finite-size chimeras are chaotic transients with
@@ -961,8 +984,15 @@ experiment harnesses, campaign records, committed configurations, and
 figure-generation scripts --- are openly available in the annealMusic repository at
 github.com/akarlin3/annealMusic and archived at Zenodo
 (doi.org/10.5281/zenodo.20564867); \texttt{python3 tools/paper-figures/run\_all.py}
-regenerates the mean-field figures and
-\texttt{tools/paper-figures/fig10\_ring.py} the ring summary figure. The ring
+regenerates the mean-field figures, the ring summary figure
+(\texttt{fig10\_ring.py}), and the three appendix measurements added in revision:
+the corner-generality map (\texttt{paper\_figures/fig\_corner\_map.py}, data from
+\texttt{tools/reduced-ode/corner\_map\_data.py}), the re-injection mechanism
+probe (\texttt{paper\_figures/fig\_mech\_probe.py}, data from
+\texttt{tools/noise-test/mech\_probe.py} and
+\texttt{tools/manifold-probe/ws\_decomposition.mjs}), and the existence-boundary
+measurement (\texttt{paper\_figures/fig\_betac.py}, data from
+\texttt{anneal-hazard/analysis/run\_betac.py}). The ring
 campaign (pre-registration, ensemble records, and fits) is in
 \texttt{anneal-hazard/}; the stratified-hazard and criterion-robustness analyses,
 including the field re-runs validating the dying ring object, are in
@@ -1069,6 +1099,195 @@ so the prolongation is $N$-dependent and never reaches the measured $\approx 3.2
 \label{fig:appB}
 \end{figure}
 
+The two candidates this negative left standing --- multiplicative fluctuations
+tied to the breath cycle, and the off-manifold Watanabe--Strogatz constants of
+Sec.~\ref{sec:reduced} --- were then tested directly. Both fail, each in an
+instructive way.
+
+\emph{Breath-locked multiplicative noise.} We repeated the Euler--Maruyama
+experiment with the noise amplitude tied to the breath envelope and carrying no
+$N$ factor at all: $\sigma_{\mathrm{eff}} = c_m\,[1 - \min(\rho_1,\rho_2)]$,
+strongest mid-breath and vanishing at capture, applied to $(\rho_1,\rho_2,\psi)$
+with the same reflection ($c_m = 0$ reproduces the deterministic capture to a
+median $0.23$--$0.25\%$ per initial condition). The physical amplitude, from the
+same baseline traces as Appendix~B's $c \approx 0.05$, is the high-frequency
+$R_{\mathrm{incoh}}$ fluctuation relative to the envelope:
+$c_m = \sigma_{\mathrm{HF}}/\langle 1 - R_{\mathrm{incoh}}\rangle = 0.052$,
+$0.040$, $0.028$, $0.022$ for $N = 8$--$64$ (pooled median $0.034$) --- already
+$N$-dependent, which by itself undercuts the premise of an $N$-free
+multiplicative amplitude. The sweep ($c_m = 0.5\times$--$16\times$ the pooled
+estimate, $200$ realizations per cell, no censoring) is a clean negative
+(Fig.~\ref{fig:mechprobe}a): at the physical amplitude the prolongation factor
+is $0.93$--$1.00$ for $N = 8$--$32$ ($0.69$ at $N = 64$), and at \emph{no}
+amplitude does the median factor exceed $1.39$ --- strong envelope noise
+eventually \emph{accelerates} capture (factor $0.52$ at $16\times$) rather than
+prolonging it. The reason is structural: noise gated by the breath envelope is
+weakest exactly where re-injection must act, near the capture boundary
+($\sigma_{\mathrm{eff}} \le 0.15\,c_m$ above $\theta$). Breath-phase locking and
+rising hazard survive at the physical amplitude (Rayleigh $p < 10^{-4}$ at
+every $N$; $k_{\mathrm{cyc}} = 2.6$--$3.4$ with $95\%$
+profile intervals excluding $1$), but the prolongation conditions fail
+decisively.
+
+\emph{Off-manifold Watanabe--Strogatz constants.} For identical oscillators the
+finite-$N$ dynamics is the WS flow with the seed's constants, so the constants
+hypothesis admits an interventional test with the campaign integrator itself.
+For every $A = 0.5$ campaign seed at $N \in \{8,16,32,64\}$ ($200$ seeds per
+$N$) we built a \emph{constants-uniformized partner}: per population, a
+M\"obius push of the exact splay configuration matched to the seed's complex
+$Z_1$ (match error $\le 9\times10^{-16}$), i.e.\ the same collective state with
+the constants projected onto the uniform (Poisson) submanifold --- the
+incoherent population's closure defect drops from a median $D_0 = 0.04$--$0.35$
+to its splay floor (down to $10^{-31}$). Actual and partner were integrated
+with the identical absorption-grade pipeline (the actual runs reproduce the
+recorded $t_{\mathrm{abs}}$ exactly). If the off-manifold constants carried the
+prolongation, the partners would die on the reduced flow's schedule
+($\approx 43$\,s; $64$\,s at $N = 64$). They do not (Fig.~\ref{fig:mechprobe}b): partner medians are
+$146$, $124$, $120$, $124$\,s against actual $143$, $133$, $130$, $127$\,s ---
+actual-to-partner ratios $0.98$--$1.08$, bootstrap intervals all spanning $1$
+--- so ensembles with \emph{machine-precision uniform constants} are prolonged
+by the same $\approx 3\times$ factor as the real seeds. Consistent with the
+$D_0$ null of Sec.~\ref{sec:mechanism}, the constants are exonerated
+interventionally, not just correlationally. The prolongation must therefore be
+generated by the finite-$N$ sampling dynamics \emph{on} the Poisson
+submanifold; the decomposition also localizes it within the run --- the first
+sustained $\theta$-crossing comes only $1.0$--$1.6\times$ later than the
+reduced capture, and the bulk of the factor accrues between that first graze
+and absorption (a mean $1.2$--$1.7$ fluctuation-induced recoveries per run),
+exactly the window in which the reduced flow, which never recovers, has already
+died.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_mech_probe}
+\caption{The two remaining re-injection candidates, tested. (a)~Multiplicative
+breath-locked noise $\sigma_{\mathrm{eff}} = c_m [1-\min(\rho_1,\rho_2)]$
+($N$-free amplitude by construction): prolongation factor versus $c_m$ at
+$A = 0.5$, $\beta = 0.05$. At the physical amplitude (vertical line; band =
+per-$N$ spread of the measured estimate) the factor is $\approx 1$, and no
+amplitude raises it beyond $1.4$ --- envelope-gated noise cannot re-inject from
+the capture region, and at large $c_m$ it accelerates capture. (b)~Constants
+decomposition: absorption time of the constants-uniformized partner versus the
+actual seed ($200$ seeds per $N$; large symbols are per-$N$ medians). The pairs
+sit on the diagonal, a factor $\approx 3$ above the reduced-flow median
+(dotted): uniformizing the Watanabe--Strogatz constants does not remove the
+prolongation.}
+\label{fig:mechprobe}
+\end{figure}
+
+\section{Generality of the post-homoclinic regime across the $(\beta, A)$ plane}\label{app:corner}
+
+Section~\ref{sec:reduced} and Appendix~\ref{app:beta} establish the
+post-homoclinic inversion at two phase lags. This appendix asks, within the
+reduced model, whether the inversion --- and the aging shape of the collapse-time
+distribution --- is a property of those corners or of the post-homoclinic region
+as a whole. We traced the homoclinic curve $A_{hc}(\beta)$ at $35$ values of
+$\beta \in [0.03, 0.20]$ by the escape-to-sync bisection of
+Sec.~\ref{sec:reduced} (bracket width $\le 7\times10^{-5}$ everywhere;
+$A_{hc}(0.05) = 0.4096$ reproduced exactly), combined it with the saddle-node
+and Hopf series (Eqs.~17--18 of Ref.~\cite{abrams2008}; numeric locators agree
+to $1.4\times10^{-3}$ and $8.7\times10^{-4}$), and classified a $40\times40$
+grid over $(\beta, A) \in [0.03, 0.20] \times [0.02, 0.55]$ into the four
+regimes of Fig.~\ref{fig:diagram} (Fig.~\ref{fig:cornermap}).
+
+The inversion is generic. At every one of the $592$ grid points above the
+homoclinic curve the stationary-chimera fixed point of Eqs.~(13)--(14) persists
+and is an unstable spiral: $\sigma = \mathrm{Re}\,\lambda > 0$ at all $592$
+points, with $\sigma = 0.0046$--$0.0578$\,s$^{-1}$ and
+$\omega = 0.14$--$0.35$\,s$^{-1}$, $\sigma$ growing with $\beta$ and with depth
+beyond the homoclinic (Fig.~\ref{fig:cornermap}); the operating corner
+reproduces the Sec.~\ref{sec:reduced} values
+($\sigma = +0.01243$\,s$^{-1}$, $\omega = 0.3277$\,s$^{-1}$). Sync is globally
+attracting in practice as well as in the portrait: every ensemble run below
+captured (zero censoring in $9{,}600$ integrations), as did single
+canonical-seed trajectories at three additional spot points.
+
+The aging shape is \emph{not} uniform over this region. We selected eight
+post-homoclinic points spanning the wedge --- four shallow points at fixed depth
+$A - A_{hc} \approx +0.020$ with $\beta = 0.03$--$0.18$, and four deep points at
+$A = 0.5$ with $\beta = 0.03$--$0.16$, including the operating corner --- and at
+each integrated the full Sec.~\ref{sec:reduced} canonical-seed ensemble (the
+$1{,}200$ seed-mapped collective initial conditions at $N = 8$--$64$, $200$ per
+size) through the three-variable flow to capture, $t_{\max} = 2000$\,s. (The
+$200$ $N = 4$ rows are excluded: ten of them start beyond the capture threshold
+--- the two-oscillator ``population'' makes the seed map degenerate, producing
+$t = 0$ events on which the Weibull likelihood is undefined; including them via
+a clamped fit moves the corner value from $\hat k = 1.40$ to $1.22$ and changes
+no verdict.) The censored-Weibull shape was fitted with the
+profile-likelihood MLE of Sec.~\ref{sec:stats} and, independently, with a
+Nelder--Mead MLE with $1{,}000$-resample bootstrap intervals; the two point
+estimates agree to better than $10^{-5}$ at every point
+(Table~\ref{tab:cornerk}).
+
+Aging survives everywhere at the operating corner's depth, and fails in a
+narrow band along the homoclinic. All four deep points give
+$\hat k = 1.30$--$1.51$ with both intervals excluding one, as does the shallow
+point at $\beta = 0.18$ ($\hat k = 1.33$), where the breathing band has
+narrowed on the approach to the Takens--Bogdanov point. The three shallow
+points at $\beta \le 0.10$, by contrast, are statistically memoryless:
+$\hat k = 0.97$--$1.02$ with confidence intervals straddling one (at
+$(\beta, A) = (0.05, 0.43)$ the bootstrap interval $[0.94, 1.00]$ sits
+marginally below). The capture-time quartiles show why: near the homoclinic
+they are strongly right-skewed ($9.8/13.5/70.4$\,s at $(0.05, 0.43)$ versus
+$37.5/62.5/85.7$\,s at the corner) --- a seed either exits promptly or is
+carried around long ghost-cycle passages near the saddle, and the heavy tail
+flattens the hazard. Two cautions bound the reading. First, these $\hat k$
+measure the deterministic reduced flow's dispersal of the seed ensemble, not
+the finite-$N$ hazard: at the operating corner itself the reduced ensemble
+gives $\hat k = 1.40$ against the measured $k_{\mathrm{abs}} = 2.27$--$3.03$
+(Sec.~\ref{sec:stats}), so the reduced value is a shape test, not a magnitude
+prediction. Second, and consequently, the rising hazard reported in the body
+is a property of the operating corner's depth beyond the homoclinic --- it
+holds at that depth for every $\beta$ tested --- but it is not a property of
+post-homoclinicity per se: within ${\approx}0.02$ of the homoclinic at
+$\beta \le 0.10$ the reduced collapse-time distribution loses its aging shape.
+This sharpens, in the same direction, the depth caveat of
+Appendix~\ref{app:beta}.
+
+\begin{table}[t]
+\centering
+\caption{Censored-Weibull shape $\hat k$ of the reduced-flow capture times at
+the eight aging test points ($n = 1200$ canonical-seed initial conditions per
+point, zero censoring at $t_{\max} = 2000$\,s). Depth is $A - A_{hc}(\beta)$;
+$\sigma$ is the unstable-spiral rate at the chimera fixed point. Profile CI:
+profile-likelihood $95\%$ interval (Sec.~\ref{sec:stats} fitter); bootstrap CI:
+$1{,}000$-resample percentile interval (independent fitter). Bold rows have
+both intervals above one.}
+\label{tab:cornerk}
+\begin{tabular}{llcccc}
+\toprule
+$\beta$ & $A$ & depth & $\sigma$ (s$^{-1}$) & $\hat k$ [profile CI] & bootstrap CI \\
+\midrule
+$0.03$ & $0.461$ & $+0.021$ & $0.0048$ & $1.02$ [$0.98, 1.07$] & [$0.98, 1.07$] \\
+$\mathbf{0.03}$ & $\mathbf{0.500}$ & $+0.060$ & $0.0053$ & $\mathbf{1.30}$ [$1.24, 1.36$] & [$1.24, 1.37$] \\
+$0.05$ & $0.430$ & $+0.020$ & $0.0093$ & $0.97$ [$0.93, 1.01$] & [$0.94, 1.00$] \\
+$\mathbf{0.05}$ & $\mathbf{0.500}$ & $+0.090$ & $0.0124$ & $\mathbf{1.40}$ [$1.33, 1.46$] & [$1.33, 1.47$] \\
+$0.10$ & $0.374$ & $+0.020$ & $0.0126$ & $1.02$ [$0.98, 1.06$] & [$0.98, 1.08$] \\
+$\mathbf{0.10}$ & $\mathbf{0.500}$ & $+0.146$ & $0.0250$ & $\mathbf{1.51}$ [$1.45, 1.58$] & [$1.45, 1.59$] \\
+$\mathbf{0.16}$ & $\mathbf{0.500}$ & $+0.179$ & $0.0398$ & $\mathbf{1.43}$ [$1.37, 1.49$] & [$1.39, 1.48$] \\
+$\mathbf{0.18}$ & $\mathbf{0.339}$ & $+0.020$ & $0.0117$ & $\mathbf{1.33}$ [$1.29, 1.37$] & [$1.22, 1.53$] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_corner_map}
+\caption{Corner-generality map. The four regimes of the $(\beta, A)$ plane
+bounded by the saddle-node (Eq.~17), Hopf (Eq.~18) and homoclinic curves (the
+latter traced at $35$ values of $\beta$, bisection bracket
+$\le 7\times10^{-5}$), meeting at the Takens--Bogdanov point
+$(0.2239, 0.3372)$. The post-homoclinic wedge is shaded by the unstable-spiral
+rate $\sigma(\beta, A)$ of the persisting chimera fixed point ($\sigma > 0$ at
+all $592$ grid points; labelled contours in s$^{-1}$). Open circles: the eight
+aging test points with their fitted censored-Weibull shape $\hat k$
+(Table~\ref{tab:cornerk}); $\hat k > 1$ at all four deep points and at the
+shallow $\beta = 0.18$ point, while the shallow points at $\beta \le 0.10$
+(depth ${\approx}+0.02$) are consistent with a memoryless collapse. Star and
+cross: the two shipped corners.}
+\label{fig:cornermap}
+\end{figure}
+
 \section{Ring hazard-shape extrapolation}\label{app:ring}
 
 Section~\ref{sec:ring} reports that the ring's Weibull shape $\hat k$ rises with
@@ -1107,7 +1326,12 @@ choice. The nominally divergent fits barely diverge in any case: the fitted
 logarithmic slopes are $0.05$--$0.18$ and the power exponents $0.04$--$0.13$.
 All five bootstrap $k_\infty$ intervals exclude one and are tight (width
 $\le 0.18$), and $k_\infty$ rises monotonically toward the existence boundary:
-$1.35 < 1.49 < 1.56 < 1.62 < 1.65$ for $\beta = 0.110 \to 0.130$.
+$1.35 < 1.49 < 1.56 < 1.62 < 1.65$ for $\beta = 0.110 \to 0.130$. The boundary
+itself sits above the sweep: Appendix~\ref{app:betac} measures
+$\beta_c = 0.137$ [$0.130, 0.144$], so the entire sweep approaches $\beta_c$
+from below and the rise of $k_\infty$ is a rise \emph{toward} the boundary, not
+across it (bootstrap probability $0.966$ that $\beta_c$ exceeds the last sweep
+point $0.130$).
 
 \begin{table}[t]
 \centering
@@ -1166,6 +1390,85 @@ headline rests on the parsimonious two-parameter form. What is firm is the
 binary outcome and its direction: the saturating form wins in $5/5$ cells
 ($0/5$ divergent), and the limiting shape exceeds one in every cell --- the
 increasing-hazard result survives the thermodynamic limit.
+
+\section{An independent measurement of the ring existence boundary}
+\label{app:betac}
+
+The campaign sections take the ring chimera's existence boundary
+$\beta_c \approx 0.13$--$0.14$ from the literature; this appendix turns that
+citation into a measurement with the same frozen pipeline (integrator, initial
+conditions, death criterion $\rho_{\mathrm{std}} < 0.04$ sustained $50$ time
+units, $T_{\max} = 12{,}000$). The operational endpoint was fixed before the
+ladder ran, on design probes only. Per $(\beta, N)$ cell,
+$P_{\mathrm{persist}}$ is the fraction of runs that (a)~establish a chimera ---
+the equilibration gate of Sec.~\ref{sec:ring}, maximum $\rho_{\mathrm{std}}$
+over the live window $[50, \tau]$ exceeding $0.08$ --- and (b)~survive past a
+fixed horizon $T^{*} = 400$ time units, the pooled median lifetime of the last
+pre-registered cell $\beta = 0.130$ (medians $422/404/345$ at
+$N = 64/128/256$), roughly twice the ${\approx}200$--$250$ decay time of the
+initial-condition transient that survives above the boundary. The boundary
+estimate $\beta_c(N)$ is the midpoint of a four-parameter logistic (free floor
+and ceiling, binomial maximum likelihood) fit to $P_{\mathrm{persist}}(\beta)$
+over the ladder $\beta = 0.115$--$0.170$ in steps of $0.0025$ ($100$ runs per
+cell, $N \in \{64, 128, 256\}$, $6{,}900$ runs, zero censoring, globally unique
+seeds disjoint from all prior campaigns); intervals are percentile bootstrap
+over runs within cells ($B = 2{,}000$).
+
+Establishment never fails appreciably ($\ge 95\%$ in every cell): crossing the
+boundary does not prevent the seeded chimera from forming, it shortens its
+life. $P_{\mathrm{persist}}$ falls from a plateau of $0.59$--$0.75$ at
+$\beta \le 0.1225$ to a floor of $0.05$--$0.29$ at $\beta \ge 0.16$
+(Fig.~\ref{fig:betac}a) --- the floor is nonzero because slowly decaying
+traveling-wave remnants occasionally outlive $T^{*}$. The logistic midpoints
+are $\beta_c(64) = 0.130$ [$0.128, 0.136$], $\beta_c(128) = 0.136$
+[$0.128, 0.140$], and $\beta_c(256) = 0.134$ [$0.129, 0.141$]. Extrapolating
+$\beta_c(N) = \beta_c^{\infty} + a/N$ (weighted least squares; the $1/N$ form
+beats $1/\sqrt{N}$ on $\chi^2$, $0.68$ versus $0.87$ on one degree of freedom)
+gives
+\[
+\beta_c^{\infty} = 0.137 \; [0.130, 0.144],
+\]
+with the $1/\sqrt{N}$ form at $0.141$ [$0.128, 0.152$] --- a form systematic of
+${\approx}0.004$, smaller than the statistical interval. Moving the horizon to
+$T^{*} = 300$ or $500$ moves the extrapolated midpoint to $0.142$ or $0.135$, a
+comparable systematic; under every variant the boundary stays inside
+$0.13$--$0.15$. The robustness endpoint --- the knee where the median lifetime
+of established runs meets the post-boundary transient floor
+(Fig.~\ref{fig:betac}b) --- sits higher, at $\beta = 0.155$--$0.164$ across
+$N$: the persistence midpoint marks the center of the crossover, the knee its
+upper edge, and together they say the boundary is a soft crossover in this
+finite-$N$, fixed-criterion setting rather than a sharp threshold. As a
+consistency check, the two ladder rungs shared with the main campaign
+($\beta = 0.125, 0.130$; disjoint seeds, $100$ versus $300$ runs) reproduce the
+published median lifetimes within sampling error.
+
+Two readings follow. First, the measured $\beta_c^{\infty} = 0.137$
+[$0.130, 0.144$] lands inside the literature range $0.13$--$0.14$ the
+manuscript previously only cited. Second, the $k_\infty$ ladder of
+Appendix~\ref{app:ring} ($1.35 \to 1.65$ over $\beta = 0.110 \to 0.130$) rises
+toward a boundary that sits above its last rung with bootstrap probability
+$0.966$ (Fig.~\ref{fig:betac}d), so ``rising monotonically toward $\beta_c$''
+is geometrically coherent --- with the honest caveat that the bootstrap
+interval grazes $0.130$ rather than excluding it outright, and that
+$\beta_c(N)$ is measured at three sizes, so the extrapolation leans on the
+form-robustness reported above.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_betac}
+\caption{Independent measurement of the ring existence boundary.
+(a)~$P_{\mathrm{persist}}(\beta)$ (establish $\wedge$ $\tau > T^{*} = 400$) per
+$N$ with four-parameter logistic fits; diamonds mark the midpoints
+$\beta_c(N)$ with bootstrap $95\%$ intervals. (b)~Median lifetime of
+established runs: a decline meeting the post-boundary transient floor at the
+knee (dotted verticals), the robustness endpoint. (c)~$\beta_c(N)$ versus
+$1/N$ with the bootstrap band of the $1/N$ extrapolation and the
+$1/\sqrt{N}$ form for the systematic; the square is
+$\beta_c^{\infty} = 0.137$ [$0.130, 0.144$]. (d)~The $k_\infty(\beta)$ ladder
+of Table~\ref{tab:ringextrap} rises toward the measured boundary (vertical
+line; shaded $95\%$ interval).}
+\label{fig:betac}
+\end{figure}
 
 \end{appendices}
 

@@ -1,0 +1,121 @@
+% ---------------------------------------------------------------------------
+% Patch-ready appendix for death_of_a_chimera_nld.tex (sn-jnl style).
+% Insert inside \begin{appendices}...\end{appendices}, after \label{app:noise}.
+% All numbers are from the committed run paper/revision-data-gated/
+% results_corner.json; regenerate with
+%   python3 tools/reduced-ode/corner_map_data.py
+%   python3 paper_figures/fig_corner_map.py
+% ---------------------------------------------------------------------------
+
+\section{Generality of the post-homoclinic regime across the $(\beta, A)$ plane}\label{app:corner}
+
+Section~\ref{sec:reduced} and Appendix~\ref{app:beta} establish the
+post-homoclinic inversion at two phase lags. This appendix asks, within the
+reduced model, whether the inversion --- and the aging shape of the collapse-time
+distribution --- is a property of those corners or of the post-homoclinic region
+as a whole. We traced the homoclinic curve $A_{hc}(\beta)$ at $35$ values of
+$\beta \in [0.03, 0.20]$ by the escape-to-sync bisection of
+Sec.~\ref{sec:reduced} (bracket width $\le 7\times10^{-5}$ everywhere;
+$A_{hc}(0.05) = 0.4096$ reproduced exactly), combined it with the saddle-node
+and Hopf series (Eqs.~17--18 of Ref.~\cite{abrams2008}; numeric locators agree
+to $1.4\times10^{-3}$ and $8.7\times10^{-4}$), and classified a $40\times40$
+grid over $(\beta, A) \in [0.03, 0.20] \times [0.02, 0.55]$ into the four
+regimes of Fig.~\ref{fig:diagram} (Fig.~\ref{fig:cornermap}).
+
+The inversion is generic. At every one of the $592$ grid points above the
+homoclinic curve the stationary-chimera fixed point of Eqs.~(13)--(14) persists
+and is an unstable spiral: $\sigma = \mathrm{Re}\,\lambda > 0$ at all $592$
+points, with $\sigma = 0.0046$--$0.0578$\,s$^{-1}$ and
+$\omega = 0.14$--$0.35$\,s$^{-1}$, $\sigma$ growing with $\beta$ and with depth
+beyond the homoclinic (Fig.~\ref{fig:cornermap}); the operating corner
+reproduces the Sec.~\ref{sec:reduced} values
+($\sigma = +0.01243$\,s$^{-1}$, $\omega = 0.3277$\,s$^{-1}$). Sync is globally
+attracting in practice as well as in the portrait: every ensemble run below
+captured (zero censoring in $9{,}600$ integrations), as did single
+canonical-seed trajectories at three additional spot points.
+
+The aging shape is \emph{not} uniform over this region. We selected eight
+post-homoclinic points spanning the wedge --- four shallow points at fixed depth
+$A - A_{hc} \approx +0.020$ with $\beta = 0.03$--$0.18$, and four deep points at
+$A = 0.5$ with $\beta = 0.03$--$0.16$, including the operating corner --- and at
+each integrated the full Sec.~\ref{sec:reduced} canonical-seed ensemble (the
+$1{,}200$ seed-mapped collective initial conditions at $N = 8$--$64$, $200$ per
+size) through the three-variable flow to capture, $t_{\max} = 2000$\,s. (The
+$200$ $N = 4$ rows are excluded: ten of them start beyond the capture threshold
+--- the two-oscillator ``population'' makes the seed map degenerate, producing
+$t = 0$ events on which the Weibull likelihood is undefined; including them via
+a clamped fit moves the corner value from $\hat k = 1.40$ to $1.22$ and changes
+no verdict.) The censored-Weibull shape was fitted with the
+profile-likelihood MLE of Sec.~\ref{sec:stats} and, independently, with a
+Nelder--Mead MLE with $1{,}000$-resample bootstrap intervals; the two point
+estimates agree to better than $10^{-5}$ at every point
+(Table~\ref{tab:cornerk}).
+
+Aging survives everywhere at the operating corner's depth, and fails in a
+narrow band along the homoclinic. All four deep points give
+$\hat k = 1.30$--$1.51$ with both intervals excluding one, as does the shallow
+point at $\beta = 0.18$ ($\hat k = 1.33$), where the breathing band has
+narrowed on the approach to the Takens--Bogdanov point. The three shallow
+points at $\beta \le 0.10$, by contrast, are statistically memoryless:
+$\hat k = 0.97$--$1.02$ with confidence intervals straddling one (at
+$(\beta, A) = (0.05, 0.43)$ the bootstrap interval $[0.94, 1.00]$ sits
+marginally below). The capture-time quartiles show why: near the homoclinic
+they are strongly right-skewed ($9.8/13.5/70.4$\,s at $(0.05, 0.43)$ versus
+$37.5/62.5/85.7$\,s at the corner) --- a seed either exits promptly or is
+carried around long ghost-cycle passages near the saddle, and the heavy tail
+flattens the hazard. Two cautions bound the reading. First, these $\hat k$
+measure the deterministic reduced flow's dispersal of the seed ensemble, not
+the finite-$N$ hazard: at the operating corner itself the reduced ensemble
+gives $\hat k = 1.40$ against the measured $k_{\mathrm{abs}} = 2.27$--$3.03$
+(Sec.~\ref{sec:stats}), so the reduced value is a shape test, not a magnitude
+prediction. Second, and consequently, the rising hazard reported in the body
+is a property of the operating corner's depth beyond the homoclinic --- it
+holds at that depth for every $\beta$ tested --- but it is not a property of
+post-homoclinicity per se: within ${\approx}0.02$ of the homoclinic at
+$\beta \le 0.10$ the reduced collapse-time distribution loses its aging shape.
+This sharpens, in the same direction, the depth caveat of
+Appendix~\ref{app:beta}.
+
+\begin{table}[t]
+\centering
+\caption{Censored-Weibull shape $\hat k$ of the reduced-flow capture times at
+the eight aging test points ($n = 1200$ canonical-seed initial conditions per
+point, zero censoring at $t_{\max} = 2000$\,s). Depth is $A - A_{hc}(\beta)$;
+$\sigma$ is the unstable-spiral rate at the chimera fixed point. Profile CI:
+profile-likelihood $95\%$ interval (Sec.~\ref{sec:stats} fitter); bootstrap CI:
+$1{,}000$-resample percentile interval (independent fitter). Bold rows have
+both intervals above one.}
+\label{tab:cornerk}
+\begin{tabular}{llcccc}
+\toprule
+$\beta$ & $A$ & depth & $\sigma$ (s$^{-1}$) & $\hat k$ [profile CI] & bootstrap CI \\
+\midrule
+$0.03$ & $0.461$ & $+0.021$ & $0.0048$ & $1.02$ [$0.98, 1.07$] & [$0.98, 1.07$] \\
+$\mathbf{0.03}$ & $\mathbf{0.500}$ & $+0.060$ & $0.0053$ & $\mathbf{1.30}$ [$1.24, 1.36$] & [$1.24, 1.37$] \\
+$0.05$ & $0.430$ & $+0.020$ & $0.0093$ & $0.97$ [$0.93, 1.01$] & [$0.94, 1.00$] \\
+$\mathbf{0.05}$ & $\mathbf{0.500}$ & $+0.090$ & $0.0124$ & $\mathbf{1.40}$ [$1.33, 1.46$] & [$1.33, 1.47$] \\
+$0.10$ & $0.374$ & $+0.020$ & $0.0126$ & $1.02$ [$0.98, 1.06$] & [$0.98, 1.08$] \\
+$\mathbf{0.10}$ & $\mathbf{0.500}$ & $+0.146$ & $0.0250$ & $\mathbf{1.51}$ [$1.45, 1.58$] & [$1.45, 1.59$] \\
+$\mathbf{0.16}$ & $\mathbf{0.500}$ & $+0.179$ & $0.0398$ & $\mathbf{1.43}$ [$1.37, 1.49$] & [$1.39, 1.48$] \\
+$\mathbf{0.18}$ & $\mathbf{0.339}$ & $+0.020$ & $0.0117$ & $\mathbf{1.33}$ [$1.29, 1.37$] & [$1.22, 1.53$] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_corner_map}
+\caption{Corner-generality map. The four regimes of the $(\beta, A)$ plane
+bounded by the saddle-node (Eq.~17), Hopf (Eq.~18) and homoclinic curves (the
+latter traced at $35$ values of $\beta$, bisection bracket
+$\le 7\times10^{-5}$), meeting at the Takens--Bogdanov point
+$(0.2239, 0.3372)$. The post-homoclinic wedge is shaded by the unstable-spiral
+rate $\sigma(\beta, A)$ of the persisting chimera fixed point ($\sigma > 0$ at
+all $592$ grid points; labelled contours in s$^{-1}$). Open circles: the eight
+aging test points with their fitted censored-Weibull shape $\hat k$
+(Table~\ref{tab:cornerk}); $\hat k > 1$ at all four deep points and at the
+shallow $\beta = 0.18$ point, while the shallow points at $\beta \le 0.10$
+(depth ${\approx}+0.02$) are consistent with a memoryless collapse. Star and
+cross: the two shipped corners.}
+\label{fig:cornermap}
+\end{figure}

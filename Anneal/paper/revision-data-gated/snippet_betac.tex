@@ -1,0 +1,159 @@
+% ============================================================================
+% snippet_betac.tex — patch-ready replacements for the beta_c hedge sentences
+% (death_of_a_chimera_nld.tex), plus a new appendix measuring beta_c.
+%
+% Source of every number: paper/revision-data-gated/results_betac.json,
+% produced by anneal-hazard/analysis/run_betac.py (+ --extend) and
+% analyze_betac.py on results/betac_ladder.csv (6,900 runs, seeds
+% 20270000--20276899, endpoint pre-stated before the ladder ran).
+% Figure: paper_figures/fig_betac.{pdf,png} (paper_figures/fig_betac.py).
+%
+% Headline numbers used below (bootstrap 95% intervals):
+%   beta_c(N=64)  = 0.130 [0.128, 0.136]
+%   beta_c(N=128) = 0.136 [0.128, 0.140]
+%   beta_c(N=256) = 0.134 [0.129, 0.141]
+%   beta_c(N->inf), 1/N form (lower chi^2)   = 0.137 [0.130, 0.144]
+%   beta_c(N->inf), 1/sqrt(N) form           = 0.141 [0.128, 0.152]
+%   horizon systematic (T* = 300/400/500)    = 0.142 / 0.137 / 0.135
+%   P(beta_c_inf > 0.130) = 0.966 (bootstrap, 1/N form)
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+% PATCH 1 — Sec. 2 (sec:system:ring), lines ~243-244.
+% CURRENT:
+%   $\beta \in \{0.110, 0.115, 0.120, 0.125, 0.130\}$ approaching the existence
+%   boundary $\beta_c \approx 0.13$--$0.14$, at $N \in \{32, 64, 128\}$ with $300$ runs
+% REPLACEMENT (only the boundary clause changes):
+$\beta \in \{0.110, 0.115, 0.120, 0.125, 0.130\}$ approaching the existence
+boundary --- $\beta_c = 0.137$ [$0.130, 0.144$], measured independently in
+Appendix~\ref{app:betac} and consistent with the literature range
+$\beta_c \approx 0.13$--$0.14$ --- at $N \in \{32, 64, 128\}$ with $300$ runs
+
+% ----------------------------------------------------------------------------
+% PATCH 2 — Sec. 6.1 (Why the ring, and where on it), lines ~696-697.
+% CURRENT:
+%   window instead --- $\beta = 0.110$--$0.130$, just inside the chimera existence
+%   boundary $\beta_c \approx 0.13$--$0.14$ --- where every run dies within the
+% REPLACEMENT:
+window instead --- $\beta = 0.110$--$0.130$, just inside the chimera existence
+boundary, which we measure independently at $\beta_c = 0.137$ [$0.130, 0.144$]
+(Appendix~\ref{app:betac}; consistent with the literature
+$\beta_c \approx 0.13$--$0.14$) --- where every run dies within the
+
+% ----------------------------------------------------------------------------
+% PATCH 3 — fig:ringhazard caption, line ~741.
+% CURRENT:
+%   existence boundary $\beta_c \approx 0.13$--$0.14$.}
+% REPLACEMENT:
+existence boundary, measured at $\beta_c = 0.137$ [$0.130, 0.144$]
+(Appendix~\ref{app:betac}).}
+
+% ----------------------------------------------------------------------------
+% PATCH 4 — Sec. 6.6 (The limiting shape is finite and exceeds one), lines ~829-830.
+% CURRENT:
+%   $\beta = 0.110 \to 0.130$ --- every interval excluding one, rising monotonically
+%   toward $\beta_c$ (Fig.~\ref{fig:ringhazard}b,c; Appendix~\ref{app:ring}). The
+% REPLACEMENT:
+$\beta = 0.110 \to 0.130$ --- every interval excluding one, rising monotonically
+toward the measured boundary $\beta_c = 0.137$ [$0.130, 0.144$]
+(Fig.~\ref{fig:ringhazard}b,c; Appendices~\ref{app:ring} and~\ref{app:betac}). The
+
+% ----------------------------------------------------------------------------
+% PATCH 5 — Appendix app:ring, lines ~1108-1110.
+% CURRENT:
+%   All five bootstrap $k_\infty$ intervals exclude one and are tight (width
+%   $\le 0.18$), and $k_\infty$ rises monotonically toward the existence boundary:
+%   $1.35 < 1.49 < 1.56 < 1.62 < 1.65$ for $\beta = 0.110 \to 0.130$.
+% REPLACEMENT:
+All five bootstrap $k_\infty$ intervals exclude one and are tight (width
+$\le 0.18$), and $k_\infty$ rises monotonically toward the existence boundary:
+$1.35 < 1.49 < 1.56 < 1.62 < 1.65$ for $\beta = 0.110 \to 0.130$. The boundary
+itself sits above the sweep: Appendix~\ref{app:betac} measures
+$\beta_c = 0.137$ [$0.130, 0.144$], so the entire sweep approaches $\beta_c$
+from below and the rise of $k_\infty$ is a rise \emph{toward} the boundary, not
+across it (bootstrap probability $0.966$ that $\beta_c$ exceeds the last sweep
+point $0.130$).
+
+% ============================================================================
+% PATCH 6 — NEW APPENDIX (insert after app:ring, before \end{appendices}).
+% Requires fig_betac.{pdf,png} in the figure path (paper_figures/fig_betac).
+% ============================================================================
+
+\section{An independent measurement of the ring existence boundary}
+\label{app:betac}
+
+The campaign sections take the ring chimera's existence boundary
+$\beta_c \approx 0.13$--$0.14$ from the literature; this appendix turns that
+citation into a measurement with the same frozen pipeline (integrator, initial
+conditions, death criterion $\rho_{\mathrm{std}} < 0.04$ sustained $50$ time
+units, $T_{\max} = 12{,}000$). The operational endpoint was fixed before the
+ladder ran, on design probes only. Per $(\beta, N)$ cell,
+$P_{\mathrm{persist}}$ is the fraction of runs that (a)~establish a chimera ---
+the equilibration gate of Sec.~\ref{sec:ring}, maximum $\rho_{\mathrm{std}}$
+over the live window $[50, \tau]$ exceeding $0.08$ --- and (b)~survive past a
+fixed horizon $T^{*} = 400$ time units, the pooled median lifetime of the last
+pre-registered cell $\beta = 0.130$ (medians $422/404/345$ at
+$N = 64/128/256$), roughly twice the ${\approx}200$--$250$ decay time of the
+initial-condition transient that survives above the boundary. The boundary
+estimate $\beta_c(N)$ is the midpoint of a four-parameter logistic (free floor
+and ceiling, binomial maximum likelihood) fit to $P_{\mathrm{persist}}(\beta)$
+over the ladder $\beta = 0.115$--$0.170$ in steps of $0.0025$ ($100$ runs per
+cell, $N \in \{64, 128, 256\}$, $6{,}900$ runs, zero censoring, globally unique
+seeds disjoint from all prior campaigns); intervals are percentile bootstrap
+over runs within cells ($B = 2{,}000$).
+
+Establishment never fails appreciably ($\ge 95\%$ in every cell): crossing the
+boundary does not prevent the seeded chimera from forming, it shortens its
+life. $P_{\mathrm{persist}}$ falls from a plateau of $0.59$--$0.75$ at
+$\beta \le 0.1225$ to a floor of $0.05$--$0.29$ at $\beta \ge 0.16$
+(Fig.~\ref{fig:betac}a) --- the floor is nonzero because slowly decaying
+traveling-wave remnants occasionally outlive $T^{*}$. The logistic midpoints
+are $\beta_c(64) = 0.130$ [$0.128, 0.136$], $\beta_c(128) = 0.136$
+[$0.128, 0.140$], and $\beta_c(256) = 0.134$ [$0.129, 0.141$]. Extrapolating
+$\beta_c(N) = \beta_c^{\infty} + a/N$ (weighted least squares; the $1/N$ form
+beats $1/\sqrt{N}$ on $\chi^2$, $0.68$ versus $0.87$ on one degree of freedom)
+gives
+\[
+\beta_c^{\infty} = 0.137 \; [0.130, 0.144],
+\]
+with the $1/\sqrt{N}$ form at $0.141$ [$0.128, 0.152$] --- a form systematic of
+${\approx}0.004$, smaller than the statistical interval. Moving the horizon to
+$T^{*} = 300$ or $500$ moves the extrapolated midpoint to $0.142$ or $0.135$, a
+comparable systematic; under every variant the boundary stays inside
+$0.13$--$0.15$. The robustness endpoint --- the knee where the median lifetime
+of established runs meets the post-boundary transient floor
+(Fig.~\ref{fig:betac}b) --- sits higher, at $\beta = 0.155$--$0.164$ across
+$N$: the persistence midpoint marks the center of the crossover, the knee its
+upper edge, and together they say the boundary is a soft crossover in this
+finite-$N$, fixed-criterion setting rather than a sharp threshold. As a
+consistency check, the two ladder rungs shared with the main campaign
+($\beta = 0.125, 0.130$; disjoint seeds, $100$ versus $300$ runs) reproduce the
+published median lifetimes within sampling error.
+
+Two readings follow. First, the measured $\beta_c^{\infty} = 0.137$
+[$0.130, 0.144$] lands inside the literature range $0.13$--$0.14$ the
+manuscript previously only cited. Second, the $k_\infty$ ladder of
+Appendix~\ref{app:ring} ($1.35 \to 1.65$ over $\beta = 0.110 \to 0.130$) rises
+toward a boundary that sits above its last rung with bootstrap probability
+$0.966$ (Fig.~\ref{fig:betac}d), so ``rising monotonically toward $\beta_c$''
+is geometrically coherent --- with the honest caveat that the bootstrap
+interval grazes $0.130$ rather than excluding it outright, and that
+$\beta_c(N)$ is measured at three sizes, so the extrapolation leans on the
+form-robustness reported above.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_betac}
+\caption{Independent measurement of the ring existence boundary.
+(a)~$P_{\mathrm{persist}}(\beta)$ (establish $\wedge$ $\tau > T^{*} = 400$) per
+$N$ with four-parameter logistic fits; diamonds mark the midpoints
+$\beta_c(N)$ with bootstrap $95\%$ intervals. (b)~Median lifetime of
+established runs: a decline meeting the post-boundary transient floor at the
+knee (dotted verticals), the robustness endpoint. (c)~$\beta_c(N)$ versus
+$1/N$ with the bootstrap band of the $1/N$ extrapolation and the
+$1/\sqrt{N}$ form for the systematic; the square is
+$\beta_c^{\infty} = 0.137$ [$0.130, 0.144$]. (d)~The $k_\infty(\beta)$ ladder
+of Table~\ref{tab:ringextrap} rises toward the measured boundary (vertical
+line; shaded $95\%$ interval).}
+\label{fig:betac}
+\end{figure}

@@ -1,0 +1,7 @@
+# Regenerable intermediates — fully reproduced by the committed scripts from logged seeds.
+# (Same policy as anneal-hazard/results/traces/: decimated traces are not committed.)
+*.npz
+*.log
+__pycache__/
+*.pyc
+.numba_cache/

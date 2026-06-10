@@ -1,0 +1,84 @@
+{
+  "c_struct": 0.08,
+  "last_frac": 0.1,
+  "cells": {
+    "b0.11_N256": {
+      "n": 300,
+      "tau_mismatches": 0,
+      "categories": {
+        "canonical_single": 251,
+        "multi_head": 43,
+        "degenerate_channel": 6
+      },
+      "canonical_single_frac": 0.8366666666666667,
+      "chimera_death_frac": 0.98,
+      "degenerate_frac": 0.02,
+      "fit_unfiltered": {
+        "n": 300,
+        "n_events": 300,
+        "k": 1.2201092814437966,
+        "k_lo": 1.1199434537933297,
+        "k_hi": 1.3241080944288175,
+        "ci_excl_1": true,
+        "lrt_p": 1.0137280127123166e-05
+      },
+      "fit_chimera_death": {
+        "n": 294,
+        "n_events": 294,
+        "k": 1.2413763244033535,
+        "k_lo": 1.1386350687947813,
+        "k_hi": 1.3480594863248534,
+        "ci_excl_1": true,
+        "lrt_p": 2.186094494929442e-06
+      },
+      "fit_single_arc": {
+        "n": 251,
+        "n_events": 251,
+        "k": 1.240587379912587,
+        "k_lo": 1.1287799870020958,
+        "k_hi": 1.3572432137085118,
+        "ci_excl_1": true,
+        "lrt_p": 1.4741292833297815e-05
+      }
+    },
+    "b0.13_N256": {
+      "n": 300,
+      "tau_mismatches": 0,
+      "categories": {
+        "canonical_single": 268,
+        "degenerate_channel": 8,
+        "multi_head": 24
+      },
+      "canonical_single_frac": 0.8933333333333333,
+      "chimera_death_frac": 0.9733333333333334,
+      "degenerate_frac": 0.02666666666666667,
+      "fit_unfiltered": {
+        "n": 300,
+        "n_events": 300,
+        "k": 1.4658460981969075,
+        "k_lo": 1.3506925911148857,
+        "k_hi": 1.5844547323888207,
+        "ci_excl_1": true,
+        "lrt_p": 5.81105835313737e-17
+      },
+      "fit_chimera_death": {
+        "n": 292,
+        "n_events": 292,
+        "k": 1.481432856376363,
+        "k_lo": 1.3634990312214803,
+        "k_hi": 1.6029491299021088,
+        "ci_excl_1": true,
+        "lrt_p": 2.6988793054075202e-17
+      },
+      "fit_single_arc": {
+        "n": 268,
+        "n_events": 268,
+        "k": 1.46244882006984,
+        "k_lo": 1.3403656773765753,
+        "k_hi": 1.588535865784557,
+        "ci_excl_1": true,
+        "lrt_p": 4.685280382441179e-15
+      }
+    }
+  }
+}

@@ -31,45 +31,42 @@
 
 \title[Chimera Collapse Ages]{Chimera Collapse Ages: Topology-Dependent Finite-Size Scaling in Mean-Field and Ring Oscillator Systems}
 
-\author*[1]{\fnm{Avery} \sur{Karlin}\orcid{0000-0003-3848-6782}}\email{averykarlin3@gmail.com}
+\author*[1,2]{\fnm{Avery} \sur{Karlin}\orcid{0000-0003-3848-6782}}\email{ak5232@columbia.edu}
 
-\affil*[1]{\orgname{Independent Researcher}}
+\affil*[1]{\orgdiv{Department of Applied Physics and Applied Mathematics}, \orgname{Columbia University}, \orgaddress{\city{New York}, \state{NY}, \postcode{10027}, \country{USA}}}
 
-\abstract{We report a long-duration empirical study of chimera collapse in two canonical
-settings: the two-population Sakaguchi--Kuramoto system with strictly identical
-natural frequencies, on the oscillator engine of a deployed additive synthesizer at
-small population sizes ($N = 4$--$64$ per population), and the nonlocally coupled
-ring near its chimera existence boundary. In the mean-field system, the operational
-collapse detector --- and the first-passage criterion standard for chimera
-lifetimes --- measure the wrong observable: up to 98\% of sustained near-synchrony
-crossings recover as the chimera re-forms, and 69--97\% of detector firings are
-self-healing \emph{grazes}. Under an absorption-grade label, true lifetimes at the
-operating corner ($A = 0.5$, $\beta = 0.05$) double, become $N$-independent
-($\tau_{\mathrm{abs}} \approx 139$\,s over a $16\times$ range of $N$), and age
-(Weibull shape $2.3$--$3.0$, surviving stratification on the collective initial
-condition). Deaths are breath-synchronized and ratchet: per-cycle envelope maxima
-grow monotonically to capture. The reduced two-population model of Abrams
-\emph{et al.}, validated against its published bifurcations with no fitted
-parameters, explains the inversion --- the operating corner lies beyond the
-homoclinic, so the deployed ``chimera'' is a transient spiraling out along a
-destroyed limit cycle's ghost, while the nominally unreliable corner ($A = 0.2$)
-holds the only true attractor --- and a reduced-flow sweep shows the inversion is
-generic across the post-homoclinic wedge while the aging holds only beyond a
-finite depth, going memoryless within ${\approx}0.02$ of the homoclinic. Yet the
-reduced flow captures $3.2\times$ faster than the finite-$N$ system dies; direct
-tests rule out additive collective noise, breath-locked multiplicative noise, and
-the off-manifold Watanabe--Strogatz constants, localizing the prolongation to
-finite-$N$ sampling on the Poisson submanifold and leaving its theory open. On
-the ring, just inside an independently measured existence boundary
-($\beta_c = 0.137$ [$0.130, 0.144$]; $\beta = 0.110$--$0.130$, $N = 32$--$256$,
-$7{,}500$ pre-registered runs), collapse is again an aging
-process: the Weibull shape exceeds one in every $(\beta, N)$ cell and rises with
-$N$ before saturating to a finite $k_\infty \approx 1.35$--$1.65 > 1$ (bootstrap
-intervals excluding one) that grows toward criticality. The dying object is a
-genuine chimera in $97$--$98\%$ of runs and the result is robust to the death
-criterion --- but median ring lifetimes \emph{decrease} with $N$ on the
-near-boundary side, opposite to the mean-field plateau. The aging of chimera
-collapse is topology-independent; its finite-size scaling is topology-dependent.}
+\affil[2]{\orgdiv{Department of Computer Science}, \orgname{University of Colorado Boulder}, \orgaddress{\city{Boulder}, \state{CO}, \postcode{80309}, \country{USA}}}
+
+\abstract{Which features of chimera collapse are universal, and which belong to the
+coupling topology? We answer with matched long-duration survival measurements on the
+two canonical chimera substrates: the two-population Sakaguchi--Kuramoto mean field
+with strictly identical natural frequencies ($N = 4$--$64$ per population, the
+oscillator engine of a deployed real-time additive synthesizer) and the nonlocally
+coupled ring near its existence boundary, which we measure independently at
+$\beta_c = 0.137$ [$0.130, 0.144$] ($\beta = 0.110$--$0.130$, $N = 32$--$256$,
+$7{,}500$ pre-registered runs). In both systems, collapse ages \emph{at the hazard
+level}: the instantaneous death rate rises with the state's lifetime. In the mean
+field, censored-Weibull shapes $k = 2.3$--$3.0$ survive stratification on the
+collective initial condition, and death arrives by a breath-synchronized ratchet ---
+per-cycle envelope maxima climb monotonically to capture. On the ring, $k$ exceeds
+one in all 15 pre-registered $(\beta, N)$ cells and saturates to a finite
+$k_\infty \approx 1.35$--$1.65 > 1$ that sharpens toward the measured $\beta_c$. The
+finite-size scaling, by contrast, is topology-dependent: mean-field absorption
+lifetimes are flat ($\tau_{\mathrm{abs}} \approx 139$\,s over a $16\times$ range of
+$N$) while near-boundary ring medians \emph{decrease} with $N$. The mean-field half
+also corrects a measurement habit: first-passage criteria misfire there, with up to
+98\% of criterion-satisfying crossings recovering and 69--97\% of the deployed
+detector's firings landing on self-healing near-synchrony \emph{grazes}, so an
+absorption-grade label doubles true lifetimes and inverts the stability map --- the
+operating corner lies beyond the homoclinic of the parameter-free reduced flow,
+validated against its source's published bifurcations and confirmed across the
+$(\beta, A)$ plane, with the aging signature onsetting at homoclinic depth. That gap
+is specific to the breathing mean field: on the ring first-passage and
+absorption-grade labels coincide. The reduced flow underpredicts finite-$N$ lifetimes
+by a fixed $3.2\times$; additive collective noise, multiplicative breath-locked
+noise, and the off-manifold Watanabe--Strogatz constants are each ruled out by direct
+test, leaving the prolongation mechanism a sharply constrained open problem. The
+aging belongs to the chimera; the scaling belongs to the network.}
 
 \keywords{chimera states, coupled phase oscillators, Kuramoto--Sakaguchi model, nonlocal coupling, finite-size scaling, transient dynamics, Weibull aging hazard}
 
@@ -405,7 +402,7 @@ both facts are exactly where the bifurcation diagram says they should be.
 
 \subsection{Aging: hazard rises with every breath}
 
-Absorption at $A = 0.5$ is not memoryless. Censored-Weibull fits give shape
+The natural null for collapse is memoryless escape: a transient leaving a chaotic saddle at a constant per-unit-time rate --- the standard chaotic-transient picture, and the behaviour Ref.~\cite{wo2011} establishes for ring chimeras --- gives exponential lifetimes, i.e.\ Weibull shape $k = 1$. Departure from $k = 1$ is therefore the non-trivial signal. Absorption at $A = 0.5$ is not memoryless in this sense. Censored-Weibull fits give shape
 parameters $k_{\mathrm{abs}}$ of $2.27$, $2.22$, $2.49$, $2.67$, $2.44$, $2.72$, and
 $3.03$ for the seven sizes $N = 4$--$64$, all confidence intervals well above 1 (Fig.~\ref{fig:weibull}) ---
 stronger aging than in the graze times ($k_{\mathrm{graze}} = 0.82$--$2.19$), so the
@@ -745,7 +742,7 @@ production run (Sec.~\ref{sec:system:ring}).
 
 \subsection{Ring collapse is a structured, aging hazard}
 
-Collapse on the ring is not a memoryless escape. Across all 15 pre-registered
+Collapse on the ring is not a memoryless escape. As in the mean field, the memoryless null --- a constant escape rate giving Weibull shape $k = 1$~\cite{wo2011} --- is the baseline, and the data reject it. Across all 15 pre-registered
 $(\beta, N)$ cells the censored-Weibull shape $\hat k$ ranges from $1.13$ to
 $1.68$ with every $95\%$ profile-likelihood interval excluding one; the
 likelihood-ratio test against the exponential rejects memorylessness in $15/15$

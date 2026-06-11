@@ -1,44 +1,157 @@
-# Proteus — resolved conda environment snapshot. GENERATED, DO NOT HAND-EDIT.
-#
-# STATUS: PENDING GENERATION ON THE M4. This is NOT a real `conda env export`.
-# The scaffolding session ran in a Linux x86_64 container with no conda/mamba and
-# no Apple Silicon, so a true osx-arm64 solve could not be produced here. A solve
-# from the wrong platform would pin the wrong builds — so this file carries only
-# the resolution PLAN, not fabricated versions. See envlog/env-failures.md.
-#
-# Regenerate the REAL export on the M4 MacBook Air:
-#   CONDA_SUBDIR=osx-arm64 mamba env create -f environment.yml
-#   conda activate proteus
-#   conda env export > envlog/conda-env-resolved.yml
-#
-# Target platform: osx-arm64 (Apple Silicon). Device: MPS/CPU. No CUDA.
 name: proteus
 channels:
   - conda-forge
   - bioconda
-  - nodefaults
-resolution_plan:           # filled with concrete '=version=build' by the real export
-  python: "3.11"
-  # --- arm64 PyTorch (MPS). CPU/MPS only, no CUDA. ---
-  pytorch: "RESOLVE on osx-arm64; verify torch.backends.mps.is_available() == True"
-  # --- Structure search / clustering: bioconda osx-arm64 first, else Homebrew ---
-  foldseek: "RESOLVE (bioconda osx-arm64 | brew install foldseek)"
-  mmseqs2:  "RESOLVE (bioconda osx-arm64 | brew install mmseqs2)"
-  # --- Pocket detection ---
-  fpocket:  "RESOLVE (bioconda | brew install fpocket | source build)"
-  # --- Docking (local small runs) ---
-  vina:     "RESOLVE (conda-forge osx-arm64)"
-  meeko:    "RESOLVE (pip)"
-  adfr:     "NOT installed — x86-only Scripps suite; run under Rosetta 2 if needed, prefer Meeko"
-  # --- ProstT5 deps (no weights at install time) ---
-  transformers:  "RESOLVE (pip)"
-  sentencepiece: "RESOLVE (pip)"
-  # --- Standard scientific stack (conda-forge osx-arm64) ---
-  numpy: "RESOLVE"
-  pandas: "RESOLVE"
-  biopython: "RESOLVE"
-  biotite: "RESOLVE"
-  pyyaml: "RESOLVE"
-  tqdm: "RESOLVE"
-  pytest: "RESOLVE"
-# NOTE: esmfold / fair-esm / chai_lab / gnina are intentionally ABSENT — Vast-only.
+dependencies:
+  - _openmp_mutex=4.5=7_kmp_llvm
+  - aria2=1.37.0=h813a3f0_3
+  - backports.zstd=1.5.0=py311h36d4fbb_0
+  - biopython=1.87=py311hc949640_0
+  - biotite=1.6.0=py311h26b58ef_1
+  - biotraj=1.2.2=py311h8948835_2
+  - blosc=1.21.6=h7dd00d9_1
+  - brotli-python=1.2.0=py311hdc60ec4_1
+  - bzip2=1.0.8=hd037594_9
+  - c-ares=1.34.6=hc919400_0
+  - ca-certificates=2026.5.20=hbd8a1cb_0
+  - cairo=1.18.4=h6a3b0d2_0
+  - certifi=2026.5.20=pyhd8ed1ab_0
+  - charset-normalizer=3.4.7=pyhd8ed1ab_0
+  - colorama=0.4.6=pyhd8ed1ab_1
+  - cpython=3.11.15=py311hd8ed1ab_1
+  - exceptiongroup=1.3.1=pyhd8ed1ab_0
+  - filelock=3.29.3=pyhd8ed1ab_0
+  - fmt=12.1.0=h403dcb5_0
+  - foldseek=10.941cd33=h45d0289_1
+  - font-ttf-dejavu-sans-mono=2.37=hab24e00_0
+  - font-ttf-inconsolata=3.000=h77eed37_0
+  - font-ttf-source-code-pro=2.038=h77eed37_0
+  - font-ttf-ubuntu=0.83=h77eed37_3
+  - fontconfig=2.18.1=h2b252f5_0
+  - fonts-conda-ecosystem=1=0
+  - fonts-conda-forge=1=hc364b38_1
+  - fpocket=4.2.2=hfb15e11_0
+  - freetype=2.14.3=hce30654_1
+  - fsspec=2026.4.0=pyhd8ed1ab_0
+  - gawk=5.4.0=hcc05c04_0
+  - gmp=6.3.0=h7bae524_2
+  - gmpy2=2.3.0=py311hafb79fe_1
+  - h2=4.3.0=pyhcf101f3_0
+  - hdf4=4.2.15=h2ee6834_7
+  - hdf5=1.14.6=nompi_had3affe_110
+  - hpack=4.1.0=pyhd8ed1ab_0
+  - hyperframe=6.1.0=pyhd8ed1ab_0
+  - icu=75.1=hfee45f7_0
+  - idna=3.17=pyhcf101f3_0
+  - iniconfig=2.3.0=pyhd8ed1ab_0
+  - jinja2=3.1.6=pyhcf101f3_1
+  - krb5=1.22.2=h385eeb1_0
+  - libabseil=20260107.1=cxx17_h2062a1b_0
+  - libaec=1.1.5=h8664d51_0
+  - libasprintf=0.25.1=h493aca8_0
+  - libblas=3.11.0=8_h51639a9_openblas
+  - libboost=1.86.0=hf493ff8_4
+  - libcblas=3.11.0=8_hb0561ab_openblas
+  - libcurl=8.20.0=hd5a2499_0
+  - libcxx=22.1.7=h55c6f16_0
+  - libedit=3.1.20250104=pl5321hafb1f1b_0
+  - libev=4.33=h93a5062_2
+  - libexpat=2.8.1=hf6b4638_0
+  - libffi=3.5.2=hcf2aa1b_0
+  - libfreetype=2.14.3=hce30654_1
+  - libfreetype6=2.14.3=hdfa99f5_1
+  - libgcc=15.2.0=hcbb3090_19
+  - libgettextpo=0.25.1=h493aca8_0
+  - libgfortran=15.2.0=h07b0088_19
+  - libgfortran5=15.2.0=hdae7583_19
+  - libglib=2.88.1=ha08bb59_2
+  - libiconv=1.18=h23cfdf5_2
+  - libintl=0.25.1=h493aca8_0
+  - libjpeg-turbo=3.1.4.1=h84a0fba_0
+  - liblapack=3.11.0=8_hd9741b5_openblas
+  - liblzma=5.8.3=h8088a28_0
+  - libnetcdf=4.9.2=nompi_h2d3d5cf_118
+  - libnghttp2=1.68.1=h8f3e76b_0
+  - libopenblas=0.3.33=openmp_he657e61_0
+  - libpng=1.6.58=h132b30e_0
+  - libprotobuf=6.33.5=h2d4b707_1
+  - libsqlite=3.53.2=h1b79a29_0
+  - libssh2=1.11.1=h1590b86_0
+  - libtorch=2.11.0=cpu_generic_h5d695db_1
+  - libuv=1.52.1=h1a92334_0
+  - libxml2=2.13.9=h4a9ca0c_0
+  - libzip=1.11.2=h1336266_0
+  - libzlib=1.3.2=h8088a28_2
+  - llvm-openmp=22.1.7=hc7d1edf_0
+  - lz4-c=1.10.0=h286801f_1
+  - markupsafe=3.0.3=py311hc290fe0_1
+  - mmseqs2=18.8cc5c=h44b2af9_0
+  - mpc=1.4.0=h169892a_0
+  - mpfr=4.2.2=h6bc93b0_0
+  - mpmath=1.4.1=pyhd8ed1ab_0
+  - msgpack-python=1.1.2=py311h5a5e7c7_1
+  - ncurses=6.6=h1d4f5a5_0
+  - networkx=3.6.1=pyhcf101f3_0
+  - nomkl=1.0=h5ca1d4c_0
+  - numpy=2.3.5=py311had1e860_1
+  - openbabel=3.1.1=py311h292ccdb_9
+  - openssl=3.6.3=hd24854e_0
+  - optree=0.19.1=py311h572238d_0
+  - packaging=26.2=pyhc364b38_0
+  - pandas=3.0.3=py311h8948835_0
+  - pcre2=10.47=h30297fc_0
+  - pip=26.1.2=pyh8b19718_0
+  - pixman=0.46.4=h81086ad_1
+  - pluggy=1.6.0=pyhf9edf01_1
+  - pybind11=3.0.1=pyh7a1b43c_0
+  - pybind11-abi=11=hc364b38_1
+  - pybind11-global=3.0.1=pyhc7ab6ef_0
+  - pygments=2.20.0=pyhd8ed1ab_0
+  - pysocks=1.7.1=pyha55dd90_7
+  - pytest=9.0.3=pyhc364b38_1
+  - python=3.11.15=h0c9c016_1_cpython
+  - python-dateutil=2.9.0.post0=pyhe01879c_2
+  - python_abi=3.11=8_cp311
+  - pytorch=2.11.0=cpu_generic_py311_hbaf2b46_1
+  - pyyaml=6.0.3=py311hc290fe0_1
+  - readline=8.3=h46df422_0
+  - requests=2.34.2=pyhcf101f3_0
+  - scipy=1.17.1=py311h9a58382_1
+  - setuptools=81.0.0=pyh332efcf_0
+  - six=1.17.0=pyhe01879c_1
+  - sleef=3.9.0=hb028509_0
+  - snappy=1.2.2=hada39a4_1
+  - sympy=1.14.0=pyh2585a3b_106
+  - tk=8.6.13=h010d191_3
+  - tomli=2.4.1=pyhcf101f3_0
+  - tqdm=4.68.2=pyh8f84b5b_1
+  - typing-extensions=4.15.0=h396c80c_0
+  - typing_extensions=4.15.0=pyhcf101f3_0
+  - tzdata=2025c=hc9c84f9_1
+  - urllib3=2.7.0=pyhd8ed1ab_0
+  - vina=1.2.7=py311h8325047_0
+  - wheel=0.47.0=pyhd8ed1ab_0
+  - yaml=0.2.5=h925e9cb_3
+  - zlib=1.3.2=h8088a28_2
+  - zstd=1.5.7=hbf9d68e_6
+  - pip:
+      - annotated-doc==0.0.4
+      - anyio==4.13.0
+      - click==8.4.1
+      - h11==0.16.0
+      - hf-xet==1.5.1
+      - httpcore==1.0.9
+      - httpx==0.28.1
+      - huggingface-hub==1.18.0
+      - markdown-it-py==4.2.0
+      - mdurl==0.1.2
+      - meeko==0.7.1
+      - regex==2026.5.9
+      - rich==15.0.0
+      - safetensors==0.8.0
+      - sentencepiece==0.2.1
+      - shellingham==1.5.4
+      - tokenizers==0.22.2
+      - transformers==5.11.0
+      - typer==0.25.1
+prefix: /opt/homebrew/Caskroom/miniforge/base/envs/proteus

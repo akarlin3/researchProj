@@ -1,28 +1,63 @@
-# Proteus — resolved Python deps lock. GENERATED, DO NOT HAND-EDIT.
-#
-# ┌─ STATUS: PENDING GENERATION ON THE M4 ──────────────────────────────────────┐
-# │ This lockfile must be a `pip freeze` of the resolved osx-arm64 env. It was   │
-# │ NOT generated here: the scaffolding session ran in a Linux x86_64 container  │
-# │ (no Apple Silicon, no MPS), so any freeze produced here would pin the WRONG  │
-# │ platform wheels (e.g. a linux torch build instead of the arm64 MPS build).   │
-# │ Fabricating arm64 pins would be dishonest, so this file is intentionally     │
-# │ empty of pins. See envlog/env-failures.md for the full reason.               │
-# └─────────────────────────────────────────────────────────────────────────────┘
-#
-# Generate the REAL lock on the M4 MacBook Air after a clean install:
-#
-#   CONDA_SUBDIR=osx-arm64 mamba env create -f environment.yml
-#   conda activate proteus
-#   # verify imports/runs (Checkpoint 2) and pass the smoke suite (Checkpoint 3):
-#   pytest tests/test_smoke.py -v
-#   # then freeze:
-#   pip freeze > requirements-lock.txt
-#   conda env export > envlog/conda-env-resolved.yml
-#
-# Expected top-level packages once resolved (versions filled by the freeze, not by hand):
-#   torch (arm64, MPS)  transformers  sentencepiece  meeko
-#   numpy  pandas  biopython  biotite  pyyaml  tqdm  pytest
-#   (foldseek / mmseqs2 / fpocket / vina are conda/Homebrew tools, not pip — see
-#    environment.yml and envlog/conda-env-resolved.yml)
-#
-# DO NOT add esmfold / fair-esm / chai_lab / gnina — those are Vast-only (vast/).
+annotated-doc==0.0.4
+anyio==4.13.0
+backports.zstd @ file:///Users/runner/miniforge3/conda-bld/bld/rattler-build_backports.zstd_1778594075/work
+biopython @ file:///Users/runner/miniforge3/conda-bld/biopython_1774882316145/work
+biotite @ file:///Users/runner/miniforge3/conda-bld/bld/rattler-build_biotite_1779883761/work
+biotraj @ file:///Users/runner/miniforge3/conda-bld/bld/rattler-build_biotraj_1767272728/work
+Brotli @ file:///Users/runner/miniforge3/conda-bld/brotli-split_1764017116075/work
+certifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1779285033994/work/certifi
+charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1775127091311/work
+click==8.4.1
+colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1733218098505/work
+exceptiongroup @ file:///home/conda/feedstock_root/build_artifacts/exceptiongroup_1763918002538/work
+filelock @ file:///home/conda/feedstock_root/build_artifacts/filelock_1781137920983/work
+fsspec @ file:///home/conda/feedstock_root/build_artifacts/fsspec_1777547723461/work
+gmpy2 @ file:///Users/runner/miniforge3/conda-bld/gmpy2_1773245039962/work
+h11==0.16.0
+h2 @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_h2_1756364871/work
+hf-xet==1.5.1
+hpack @ file:///home/conda/feedstock_root/build_artifacts/hpack_1737618293087/work
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==1.18.0
+hyperframe @ file:///home/conda/feedstock_root/build_artifacts/hyperframe_1737618333194/work
+idna @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_idna_1779999227/work
+iniconfig @ file:///home/conda/feedstock_root/build_artifacts/iniconfig_1760831328738/work
+Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_jinja2_1764517220/work
+markdown-it-py==4.2.0
+MarkupSafe @ file:///Users/runner/miniforge3/conda-bld/markupsafe_1772445084013/work
+mdurl==0.1.2
+meeko==0.7.1
+mpmath @ file:///home/conda/feedstock_root/build_artifacts/mpmath_1773661943568/work
+msgpack @ file:///Users/runner/miniforge3/conda-bld/msgpack-python_1762504096247/work
+networkx @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_networkx_1765215107/work
+numpy @ file:///Users/runner/miniforge3/conda-bld/bld/rattler-build_numpy_1766383297/work/dist/numpy-2.3.5-cp311-cp311-macosx_11_0_arm64.whl#sha256=7f5d50bd02220f5fa9b34b6b1af2f8b1ae567554a3dc60d7623202877e0a4d66
+optree @ file:///Users/runner/miniforge3/conda-bld/optree_1778047770575/work
+packaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1777103621/work
+pandas @ file:///Users/runner/miniforge3/conda-bld/bld/rattler-build_pandas_1778602822/work
+pluggy @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pluggy_1764896838/work
+pybind11 @ file:///D:/bld/bld/rattler-build_pybind11_1755953378/work
+pybind11-global @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pybind11-global_1755953338/work
+Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1774796700044/work
+PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1733217236728/work
+pytest @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pytest_1775644472/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-dateutil_1751104122/work
+PyYAML @ file:///Users/runner/miniforge3/conda-bld/pyyaml_1770223350679/work
+regex==2026.5.9
+requests @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_requests_1778851103/work
+rich==15.0.0
+safetensors==0.8.0
+scipy @ file:///Users/runner/miniforge3/conda-bld/scipy-split_1779874068725/work/dist/scipy-1.17.1-cp311-cp311-macosx_11_0_arm64.whl#sha256=1d02cc9f9e332871544f61075c33d06641e00a33624ab805b8c955840bb995c3
+sentencepiece==0.2.1
+shellingham==1.5.4
+six @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_six_1753199211/work
+sympy @ file:///home/conda/feedstock_root/build_artifacts/sympy_1771952240620/work
+tokenizers==0.22.2
+tomli @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_tomli_1774492402/work
+torch @ file:///Users/runner/miniforge3/conda-bld/libtorch_1781053922102/work
+tqdm @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_tqdm_1781094943/work
+transformers==5.11.0
+typer==0.25.1
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_typing_extensions_1756220668/work
+urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1778188571305/work
+vina==1.2.7

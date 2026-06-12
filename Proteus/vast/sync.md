@@ -71,11 +71,20 @@ python3 /opt/proteus/run_fold.py \
 
 ```bash
 rsync -avP vast:/data/proteus/out/ structures/folded/
-# resume locally:
-#   python -m proteus.s4_geometry   # triad + oxyanion on returned models
-#   python -m proteus.s5_cleft_filter
+# resume locally — screen the returned models through S4 (triad geometry) + S5
+# (cleft), scored against the positive-control anchor at the calibrated operating
+# point. Reads the runner's s3_results.json (only pLDDT-kept models) automatically:
+PYTHONPATH=src python -m proteus.screen \
+  --folded structures/folded --struct-dir structures \
+  --out data/processed/s4s5_candidates        # ranked PETase-like hits (.csv + .json)
 vastai destroy instance <INSTANCE_ID>      # stop billing once results are down
 ```
+
+`proteus.screen` chains the two gates and the control-anchored cleft score: a
+returned model is a **PETase-like hit** only if it (1) passes the S4 catalytic
+triad + oxyanion-hole gate, (2) has a catalytic pocket (S5), and (3) scores at or
+above the calibration operating point (lowest positive control). Non-PETase serine
+hydrolases clear (1)+(2) but fall below (3) — exactly as the controls calibrate.
 
 ## Interruptible vs on-demand (and why checkpointing matters)
 

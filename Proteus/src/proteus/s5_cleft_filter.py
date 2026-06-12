@@ -267,6 +267,27 @@ def _robust_scale(pos_vals: np.ndarray, all_vals: np.ndarray) -> float:
     return max(pos_std, 0.5 * all_std, 1e-6)
 
 
+def composite_from_anchor(metrics: dict, anchor: dict, cfg: dict) -> dict:
+    """Score ONE cleft's metrics against a PRECOMPUTED anchor (center/scale per
+    metric), using the configured weights + orientation. Returns {z, composite}.
+
+    This is the scoring kernel shared by control calibration (anchor built from the
+    positives) and dark-candidate screening (same positive-control anchor applied
+    to a folded model). `metrics.exposure` must already be in the anchor's
+    peripherality mode."""
+    s5 = cfg["s5_cleft_filter"]
+    weights = s5["weights"]
+    orient = s5["orientation"]
+    zr, composite = {}, 0.0
+    for metric, w in weights.items():
+        z = (metrics[metric] - anchor[metric]["center"]) / anchor[metric]["scale"]
+        sign = orient.get(metric, 0)
+        contrib = (sign * z) if sign != 0 else (-abs(z))  # 0 => penalise deviation
+        zr[metric] = round(z, 3)
+        composite += w * contrib
+    return {"z": zr, "composite": round(composite, 4)}
+
+
 def score_controls(metrics_by_id: dict, positive_ids, cfg: dict) -> dict:
     """z-score each metric against the positive controls and combine into a composite.
 
@@ -275,7 +296,6 @@ def score_controls(metrics_by_id: dict, positive_ids, cfg: dict) -> dict:
     center/scale used (under key '_anchor')."""
     s5 = cfg["s5_cleft_filter"]
     weights = s5["weights"]
-    orient = s5["orientation"]
     ids = list(metrics_by_id)
     pos_ids = [i for i in positive_ids if i in metrics_by_id]
 
@@ -289,14 +309,7 @@ def score_controls(metrics_by_id: dict, positive_ids, cfg: dict) -> dict:
 
     out = {"_anchor": anchor}
     for cid in ids:
-        zr, composite = {}, 0.0
-        for metric, w in weights.items():
-            z = (metrics_by_id[cid][metric] - anchor[metric]["center"]) / anchor[metric]["scale"]
-            sign = orient.get(metric, 0)
-            contrib = (sign * z) if sign != 0 else (-abs(z))  # 0 => penalise deviation
-            zr[metric] = round(z, 3)
-            composite += w * contrib
-        out[cid] = {"z": zr, "composite": round(composite, 4)}
+        out[cid] = composite_from_anchor(metrics_by_id[cid], anchor, cfg)
     return out
 
 

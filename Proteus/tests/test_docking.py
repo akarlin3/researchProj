@@ -124,3 +124,16 @@ def test_inputs_from_candidates_docks_only_hits(tmp_path):
     assert {h["id"] for h in hits} == {"hitA", "hitB"}
     allm = docking._inputs_from_candidates(str(cj), str(models), hits_only=False)
     assert {h["id"] for h in allm} == {"hitA", "hitB", "missC"}
+
+
+def test_package_is_runnable_as_module():
+    """`python -m proteus.docking` must work — the package needs a __main__.py that
+    re-exports main(). Guards the documented CLI invocation from regressing."""
+    import runpy
+
+    from proteus.docking import __main__ as dunder_main
+    assert dunder_main.main is docking.main
+    # the module is importable as proteus.docking.__main__ (what `-m` executes)
+    spec = runpy.importlib.util.find_spec("proteus.docking.__main__")
+    assert spec is not None
+

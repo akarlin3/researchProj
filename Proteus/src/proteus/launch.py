@@ -159,10 +159,21 @@ def build_plan(cfg: dict, manifest_path: str, shortlist_path: str) -> list[dict]
     # bind-mounted into every container at /data/proteus, so the in-container paths
     # (remote_in/remote_out) stay /data/proteus/{in,out}.
     mount = f"-v {vm_workdir}:/data/proteus"
+    # COS docker is not authenticated to Artifact Registry, so pulling the fold image
+    # fails with "Unauthenticated request". Log docker in first using an access token
+    # from the VM's service account (printed by the cloud-sdk container). Only for
+    # Google registries (AR/GCR); a public image needs no login.
+    registry = image.split("/")[0] if "/" in image else ""
+    login = ""
+    if any(host in registry for host in ("pkg.dev", "gcr.io")):
+        login = (f'docker login -u oauth2accesstoken '
+                 f'-p "$(docker run --rm {sdk} gcloud auth print-access-token)" '
+                 f"https://{registry} && ")
     remote = (
         f"mkdir -p {vm_workdir}/in {vm_workdir}/out && "
         f"docker run --rm {mount} {sdk} "
         f"gcloud storage cp {bucket}/in/* {remote_in}/ && "
+        f"{login}"
         f"docker run {gpu_flag}{mount} {image} "
         f"--manifest {remote_in}/{man_name} --fasta {remote_in}/{fa_name} "
         f"--out {remote_out}/ --device {device} && "

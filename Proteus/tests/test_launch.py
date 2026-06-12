@@ -94,6 +94,9 @@ def test_build_plan_orders_the_burst_cycle(tmp_path):
     assert "mkdir -p /tmp/proteus/in /tmp/proteus/out" in remote
     assert "-v /tmp/proteus:/data/proteus" in remote
     assert "google/cloud-sdk" in remote and "gcloud storage cp" in remote
+    # docker authenticates to Artifact Registry (COS docker isn't logged in) before pulling
+    assert "docker login -u oauth2accesstoken" in remote
+    assert "gcloud auth print-access-token" in remote and "https://us-docker.pkg.dev" in remote
     assert "gs://my-bucket/in/*" in remote and "gs://my-bucket/out/" in remote
     # stage_down runs LOCALLY via gcloud storage; delete cleans up
     assert by["stage_down"][:3] == ["gcloud", "storage", "cp"]

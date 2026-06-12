@@ -89,6 +89,7 @@ gcloud compute ssh proteus-fold --project projproteus --zone us-central1-a --com
   mkdir -p /tmp/proteus/in /tmp/proteus/out &&
   docker run --rm -v /tmp/proteus:/data/proteus google/cloud-sdk:slim \
     gcloud storage cp $BUCKET/in/* /data/proteus/in/ &&
+  docker login -u oauth2accesstoken -p \"\$(docker run --rm google/cloud-sdk:slim gcloud auth print-access-token)\" https://us-central1-docker.pkg.dev &&
   docker run -v /tmp/proteus:/data/proteus $IMAGE \
     --manifest /data/proteus/in/s3_job_manifest.json \
     --fasta    /data/proteus/in/s2_shortlist.fasta \

@@ -44,7 +44,7 @@ never loses finished models.
 # On a Linux box or CI — NOT on the Mac. Pin the ESMFold toolchain on this first
 # real build (see the __PIN_ON_FIRST_BUILD__ markers in gce/Dockerfile.fold — it is
 # a CPU torch build, no CUDA).
-REGION=us-central1; PROJ=projProteus; REPO=proteus
+REGION=us-central1; PROJ=projproteus; REPO=proteus
 gcloud artifacts repositories create $REPO --repository-format=docker --location=$REGION
 IMAGE=$REGION-docker.pkg.dev/$PROJ/$REPO/proteus-fold:cpu
 docker build -t "$IMAGE" -f gce/Dockerfile.fold .
@@ -74,7 +74,7 @@ gsutil -m cp data/interim/s2_shortlist.fasta data/interim/s3_job_manifest.json $
 
 ```bash
 gcloud compute instances create proteus-fold \
-  --project projProteus --zone us-central1-a \
+  --project projproteus --zone us-central1-a \
   --machine-type c4-highmem-8 \
   --image-family cos-stable --image-project cos-cloud \
   --boot-disk-size 100GB --scopes cloud-platform \
@@ -82,7 +82,7 @@ gcloud compute instances create proteus-fold \
 
 # On the VM (Container-Optimized OS has docker): pull inputs, run the fold container
 # on CPU, push outputs back to the bucket.
-gcloud compute ssh proteus-fold --project projProteus --zone us-central1-a --command "
+gcloud compute ssh proteus-fold --project projproteus --zone us-central1-a --command "
   mkdir -p /data/proteus/in /data/proteus/out &&
   gsutil -m cp $BUCKET/in/* /data/proteus/in/ &&
   docker run -v /data/proteus:/data/proteus $IMAGE \
@@ -99,7 +99,7 @@ so a preempt costs only the single in-flight sequence (skipped-already-done on r
 
 ```bash
 gsutil -m cp -r $BUCKET/out/* structures/folded/
-gcloud compute instances delete proteus-fold --project projProteus --zone us-central1-a --quiet
+gcloud compute instances delete proteus-fold --project projproteus --zone us-central1-a --quiet
 
 # resume locally — screen the returned models through S4 (triad geometry) + S5
 # (cleft), scored against the positive-control anchor at the calibrated operating

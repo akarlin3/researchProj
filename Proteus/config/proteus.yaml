@@ -203,7 +203,7 @@ compute:
     description: "Google Compute Engine burst: ESMFold batch fold (S3). CPU fold (no GPU quota in this project) on a C4 VM; the narrowed S2 shortlist is small enough to fold on CPU. Only the shortlist is shipped up."
     dockerfile: gce/Dockerfile.fold     # build context for the fold image (push to Artifact Registry)
     # Burst launch parameters (proteus.launch plans the up-fold-down cycle from these).
-    project: "projProteus"              # GCP project id
+    project: "projproteus"              # GCP project id
     zone: us-central1-a
     instance_name: proteus-fold
     # CPU fold: ESMFold runs fp32 on CPU, so RAM is the binding constraint (~30-40 GB for

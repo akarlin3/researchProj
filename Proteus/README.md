@@ -44,7 +44,9 @@ in `data/raw` into one corpus; `proteus.pipeline` then chains **corpus → S0 �
 S2 → S3 job manifest** in one command and prints the narrowing funnel:
 
 ```bash
-# drop dark-proteome FASTA(.gz) shards in data/raw/ (corpus.fasta_glob), then:
+# (optional) fetch the configured corpus.sources (UniProt queries / URLs) into data/raw:
+PYTHONPATH=src python -m proteus.fetch_corpus
+# ...or drop dark-proteome FASTA(.gz) shards in data/raw/ (corpus.fasta_glob) directly, then:
 PYTHONPATH=src python -m proteus.pipeline --out data/interim
 #   corpus N (length-filtered) → S0 reps → S2 shortlist → S3 manifest
 # ship data/interim/s2_shortlist.fasta + s3_job_manifest.json to Vast (vast/sync.md)

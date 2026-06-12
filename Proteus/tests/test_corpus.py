@@ -11,7 +11,7 @@ import os
 
 import pytest
 
-from proteus.corpus import assemble_corpus, parse_fasta
+from proteus.corpus import assemble_corpus, clean_id, parse_fasta
 
 CFG = {"corpus": {"fasta_glob": "", "min_length": 80, "max_length": 1000}}
 
@@ -71,3 +71,25 @@ def test_assemble_raises_when_no_shards(tmp_path):
     with pytest.raises(FileNotFoundError):
         assemble_corpus(CFG, str(tmp_path / "out.fasta"),
                         glob_override=str(tmp_path / "nothing" / "*.fasta.gz"))
+
+
+def test_clean_id_strips_uniprot_pipes():
+    # MMseqs2/Foldseek rewrite 'sp|ACC|NAME' to a token without pipes; our parser must
+    # agree, or S2 hits never match their representatives (the cutinase 0/12 bug).
+    assert clean_id("sp|A0A024SC78|CUTI1_TRIR3") == "sp_A0A024SC78_CUTI1_TRIR3"
+    assert "|" not in clean_id("tr|X1Y2Z3|SOME_THING")
+    assert clean_id("IsPETase_var1") == "IsPETase_var1"  # already-clean ids untouched
+
+
+def test_assemble_sanitizes_uniprot_headers(tmp_path):
+    """Pipe-bearing UniProt headers are sanitized so downstream tools + parsers agree."""
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    _write_shard(str(raw / "u.fasta.gz"),
+                 [("sp|A0A024SC78|CUTI1_TRIR3", "A" * 100)], gz=True)
+    out = tmp_path / "corpus.fasta"
+    s = assemble_corpus(CFG, str(out), glob_override=str(raw / "*.fasta.gz"))
+    assert s["n_written"] == 1
+    ids = [rid for rid, _ in parse_fasta(str(out))]
+    assert ids == ["sp_A0A024SC78_CUTI1_TRIR3"]
+    assert all("|" not in i for i in ids)

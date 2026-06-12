@@ -33,7 +33,16 @@ paths:
 # Corpus selection — which dark-proteome sources to mine
 # ---------------------------------------------------------------------------
 corpus:
-  sources: []                          # e.g. ["mgnify_peptide_db", "gtdb_reps"] — fill per run
+  # Dark-proteome sources, resolved into data/raw shards by `proteus.fetch_corpus`.
+  # Each entry is a dict:
+  #   {name: <id>, type: uniprot, query: "<UniProtKB query>", limit: <N<=500>}
+  #   {name: <id>, type: url,     url: "https://.../shard.fasta(.gz)"}
+  # Left empty by default (no network dependency); bulk MGnify/GTDB shards are too
+  # large to auto-fetch — point a `url` source at a prepared shard or drop FASTA(.gz)
+  # in data/raw directly. Example:
+  #   sources:
+  #     - {name: sprot_cutinases, type: uniprot, query: "cutinase AND reviewed:true", limit: 50}
+  sources: []
   min_length: 80                       # residues; below this, skip
   max_length: 1000                     # length cap; longer seqs chunked on Vast (S3)
   fasta_glob: "data/raw/*.fasta.gz"

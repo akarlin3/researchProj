@@ -20,6 +20,7 @@ import argparse
 import glob
 import gzip
 import os
+import re
 import sys
 
 from proteus.utils import DEFAULT_CONFIG, REPO, load_config
@@ -55,6 +56,16 @@ def parse_fasta(path: str):
         yield rid, "".join(seq)
 
 
+def clean_id(raw_id: str) -> str:
+    """Normalise a FASTA id to a token MMseqs2/Foldseek and our own parsers all agree
+    on. Critically, '|' is replaced (not kept): foldseek/mmseqs rewrite a UniProt
+    'sp|ACC|NAME' header down to 'ACC', while a naive whitespace-split keeps the
+    whole pipe string — so the two disagree and S2 hits never match their
+    representatives. Stripping pipes (and any other special chars) to '_' removes the
+    tool-specific special-casing, so the id round-trips identically end to end."""
+    return re.sub(r"[^A-Za-z0-9_.:-]", "_", raw_id)
+
+
 def _resolve_glob(pattern: str) -> list[str]:
     """Resolve a corpus glob relative to the repo root (unless already absolute)."""
     if not os.path.isabs(pattern):
@@ -88,9 +99,10 @@ def assemble_corpus(cfg: dict, out_fasta: str, glob_override: str | None = None)
     os.makedirs(os.path.dirname(os.path.abspath(out_fasta)), exist_ok=True)
     with open(out_fasta, "w") as out:
         for shard in shards:
-            for rid, seq in parse_fasta(shard):
+            for raw_id, seq in parse_fasta(shard):
                 n_read += 1
                 seq = seq.upper()
+                rid = clean_id(raw_id)  # tool-stable id (strips UniProt 'sp|ACC|NAME' pipes)
                 if not rid or rid in seen:
                     n_dup += 1
                     continue

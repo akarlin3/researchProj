@@ -97,7 +97,8 @@ def run_local(cfg: dict, references=None, out_dir: str | None = None,
             "s3_manifest": manifest_path,
         },
         "corpus": cz, "s0": {k: s0[k] for k in ("n_input", "n_representatives", "n_clusters")},
-        "s1_backend": s1["backend"], "s2": {k: s2[k] for k in ("n_input", "n_shortlisted", "dropped")},
+        "s1_backend": s1["backend"],
+        "s2": {k: s2[k] for k in ("n_input", "n_shortlisted", "dropped")},
     }
     print("[pipeline] NARROWING FUNNEL: "
           f"corpus {funnel['corpus_kept']} (of {funnel['corpus_read']} read) "

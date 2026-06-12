@@ -1,0 +1,41 @@
+name: CI
+
+# Lint + test the Proteus pipeline. The local toolchain (MMseqs2 / Foldseek /
+# fpocket / Open Babel / controls) is installed by scripts/setup_tools.sh — the
+# SAME script the Claude-Code-on-the-web SessionStart hook uses. The ~2.4 GB ProstT5
+# weights are NOT fetched in CI (PROTEUS_FETCH_WEIGHTS unset), so the S1/S2/pipeline
+# tests skip here; everything else (S0, S4, S5, calibration, recovery, docking,
+# corpus, launch, …) runs.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Cache the built/downloaded binaries (mmseqs/foldseek/fpocket) across runs.
+      - name: Cache Proteus toolchain
+        uses: actions/cache@v4
+        with:
+          path: ~/.proteus-tools
+          key: proteus-tools-${{ runner.os }}-${{ hashFiles('scripts/setup_tools.sh') }}
+
+      - name: Install toolchain (shared with the SessionStart hook)
+        run: |
+          bash scripts/setup_tools.sh
+          echo "$HOME/.proteus-tools/bin" >> "$GITHUB_PATH"
+
+      - name: Lint (ruff)
+        run: ruff check src/ tests/
+
+      - name: Test (pytest)
+        run: python -m pytest -q

@@ -458,9 +458,11 @@ def write_report(result: dict, path: str):
     # main table
     L.append("## Per-control results")
     L.append("")
+    _expl = {"percentile": "fraction of residues more central than the Ser, 0-1",
+             "rg_norm": "OG->centroid / Rg, dimensionless",
+             "absolute": "OG->centroid, Angstrom"}.get(result["mode"], result["mode"])
     L.append(f"`exposure` is the catalytic-Ser peripherality in the production "
-             f"`{result['mode']}` mode "
-             f"({'fraction of residues more central than the Ser, 0-1' if result['mode']=='percentile' else 'OG->centroid / Rg, dimensionless' if result['mode']=='rg_norm' else 'OG->centroid, Angstrom'}).")
+             f"`{result['mode']}` mode ({_expl}).")
     L.append("")
     L.append("| rank | control | acc | class | triad | cat.Ser | exposure | aromatics "
              "| drugg. | depth | volume | composite |")
@@ -536,8 +538,9 @@ def write_report(result: dict, path: str):
         L.append("")
         L.append(f"- Recall on positives: {op['recall_positives']:.2f} "
                  f"({op['true_positives']}/{op['true_positives']})")
+        _kept = op["true_positives"] + op["false_positives"]
         L.append(f"- Precision at this line: **{_fmt(op['precision'],3)}** "
-                 f"({op['true_positives']} TP / {op['true_positives'] + op['false_positives']} kept)")
+                 f"({op['true_positives']} TP / {_kept} kept)")
         L.append(f"- Negatives above the line (false positives): "
                  f"{op['negatives_above_line'] or 'none'}")
         L.append("")
@@ -570,8 +573,10 @@ def write_report(result: dict, path: str):
     L.append("")
     for cid, r in result["trap"].items():
         tf = r.get("triad_found")
-        L.append(f"- **{cid} ({r['accession']})**: triad_found = {tf} "
-                 f"-> {'EXPECTED NULL OK (catalytic Ser is mutated to Ala; no triad to find)' if tf is False else 'UNEXPECTED — a triad was detected in the inactivated mutant'}")
+        _verdict = ("EXPECTED NULL OK (catalytic Ser is mutated to Ala; no triad to find)"
+                    if tf is False else
+                    "UNEXPECTED — a triad was detected in the inactivated mutant")
+        L.append(f"- **{cid} ({r['accession']})**: triad_found = {tf} -> {_verdict}")
     L.append("")
 
     # honest stats
@@ -820,8 +825,8 @@ def main(argv=None) -> int:
     ap.add_argument("--struct-dir", default=os.path.join(REPO, "structures"))
     ap.add_argument("--report", default=os.path.join(REPO, "envlog", "calibration-report.md"))
     ap.add_argument("--csv", default=os.path.join(REPO, "data", "processed", "s5_scores.csv"))
-    ap.add_argument("--norm-csv",
-                    default=os.path.join(REPO, "data", "processed", "s5_normalization_comparison.csv"))
+    _norm_default = os.path.join(REPO, "data", "processed", "s5_normalization_comparison.csv")
+    ap.add_argument("--norm-csv", default=_norm_default)
     ap.add_argument("--s4-json", default=os.path.join(REPO, "data", "processed", "s4_triads.json"))
     ap.add_argument("--check-only", action="store_true",
                     help="run only the Checkpoint 0 precondition audit and exit")

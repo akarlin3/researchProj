@@ -183,8 +183,9 @@ def execute_plan(plan: list[dict], ssh: str | None, only: set[str] | None = None
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--manifest", default=os.path.join(REPO, "data", "interim", "s3_job_manifest.json"))
-    ap.add_argument("--shortlist", default=os.path.join(REPO, "data", "interim", "s2_shortlist.fasta"))
+    _interim = os.path.join(REPO, "data", "interim")
+    ap.add_argument("--manifest", default=os.path.join(_interim, "s3_job_manifest.json"))
+    ap.add_argument("--shortlist", default=os.path.join(_interim, "s2_shortlist.fasta"))
     ap.add_argument("--config", default=DEFAULT_CONFIG)
     ap.add_argument("--offer", default=None, help="vastai offer id (from search_offers)")
     ap.add_argument("--instance", default=None, help="vastai instance id (for destroy)")
@@ -210,7 +211,8 @@ def main(argv=None) -> int:
                       instance_id=args.instance, ssh=args.ssh, bid=args.bid)
     if not args.execute:
         print(render_plan(plan))
-        print("[launch] dry-run only — re-run with --execute (and --offer/--instance/--ssh) to burst.")
+        print("[launch] dry-run only — re-run with --execute "
+              "(and --offer/--instance/--ssh) to burst.")
         return 0
 
     only = set(args.only.split(",")) if args.only else None

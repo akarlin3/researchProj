@@ -7,7 +7,6 @@ and transparent gzip handling produce the exact documented counts.
 from __future__ import annotations
 
 import gzip
-import os
 
 import pytest
 

@@ -97,8 +97,8 @@ def test_widened_operating_point_recovers_all_divergent_at_precision_1():
     rec = recovery_screen(cfg, STRUCT, cal)
 
     w = rec["widened_operating_point"]
-    assert w is not None, "a widened line should be proposed once divergent positives clear negatives"
-    assert DIVERGENT <= set(w["includes_recovery"]), "widened line should keep all 3 divergent positives"
+    assert w is not None, "a widened line should appear once divergent positives clear negatives"
+    assert DIVERGENT <= set(w["includes_recovery"]), "widened line should keep all 3 positives"
     # lowering the line to keep the divergent positives must not let any negative in
     assert w["false_positives"] == 0
     assert w["precision"] == 1.0

@@ -44,7 +44,6 @@ import numpy as np
 
 from proteus.utils import (
     DEFAULT_CONFIG,
-    REPO,
     euclidean,
     load_structure,
     per_atom_sasa,

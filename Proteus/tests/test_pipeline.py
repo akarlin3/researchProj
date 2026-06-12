@@ -18,12 +18,12 @@ import shutil
 
 import pytest
 
+from proteus.pipeline import run_local
 from proteus.s1_tokenize import (
     foldseek_supports_prostt5,
     resolve_prostt5_weights,
 )
 from proteus.s2_foldclass_triage import build_reference_db
-from proteus.pipeline import run_local
 from proteus.utils import load_config
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -1,0 +1,14 @@
+# Proteus — tooling config. The package itself is run via PYTHONPATH=src (see
+# tests/conftest.py); this file currently configures only the linter (ruff), the
+# linter the codebase was written against (note the `# noqa: PLC0415 / BLE001`
+# annotations). Run it with:  ruff check src/ tests/
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# E/F: pycodestyle + pyflakes; W: warnings; I: import ordering. (The codebase also
+# carries `# noqa: PLC0415 / BLE001` from development under a stricter pylint/bugbear
+# pass; those rules aren't enforced here to avoid a repo-wide cleanup, and the noqas
+# are harmless no-ops under this select.)
+select = ["E", "F", "W", "I"]

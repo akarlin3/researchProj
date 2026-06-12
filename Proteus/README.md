@@ -98,6 +98,15 @@ python controls/fetch_controls.py     # downloads PDBs -> structures/, writes MA
 Structure rows are pulled from RCSB with a sha256 manifest. The PET-mimic docking
 ligand is committed at `controls/ligands/bhet.pdbqt` (BHET, prepared with Open Babel).
 
+## Validation
+
+`envlog/validation-run.md` records the first end-to-end run on a known-answer corpus:
+the screen separates PET-hydrolases from non-PET serine hydrolases (8/15 hits, margin
+1.4), a single widened operating point recovers all three held-out divergent positives
+(bacterial + actinomycete + archaeal) at precision 1.0, and BHET docking is shown to be
+confirmatory, not discriminating. It is the face-validity evidence for
+"dereplicate ≠ homology-gate" before pointing the pipeline at a real dark corpus.
+
 ## Reproduce the environment (on the M4)
 
 The local env targets **osx-arm64 (Apple Silicon), MPS/CPU, no CUDA**, built with

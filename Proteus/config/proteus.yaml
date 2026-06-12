@@ -56,12 +56,33 @@ s1_tokenize:
 
 # S2 — Foldseek fold-CLASS triage against the alpha/beta-hydrolase fold (UNSEEDED:
 #      we match the fold class, not specific PETase templates).  [LOCAL]
+#      DECISION: search against BOTH references — a curated precision set AND a
+#      broad AF-DB/PDB set with a fold-class post-filter — and UNION the survivors.
+#      (See envlog/env-failures.md "S2 fold-class reference — USE BOTH".)
 s2_foldclass_triage:
   target_fold: alpha_beta_hydrolase
-  evalue: 0.01
-  min_bits: 50
-  # The output of S2 is the shortlist FASTA shipped UP to Vast.ai for folding.
-  shortlist_fasta: data/interim/s2_shortlist.fasta
+  evalue: 0.01                         # Foldseek hit e-value cutoff (<= keeps)
+  min_bits: 50                         # minimum Foldseek bit score (>= keeps)
+  # Inputs produced by S1/S0 (the Foldseek query DB and the representative FASTA).
+  query_db: data/interim/s1_3di/querydb
+  representatives_fasta: data/interim/s0_representatives.fasta
+  # Outputs.
+  shortlist_fasta: data/interim/s2_shortlist.fasta   # shipped UP to Vast.ai (S3)
+  triage_tsv: data/interim/s2_triage.tsv             # per-query audit (refs hit, best e/bits)
+  # BOTH references (union of survivors). `db` is a PRE-BUILT Foldseek 3Di DB;
+  # left blank here to avoid guessing a path — populate per host. For a broad
+  # reference, `post_filter.fold_class_allowlist` is a text file of target IDs in
+  # `db` that ARE the alpha/beta-hydrolase fold class (one id per line, '#'
+  # comments allowed); broad hits to anything NOT on that list are discarded.
+  references:
+    - name: curated_alpha_beta_hydrolase   # curated ESTHER/representative precision anchors
+      kind: curated
+      db: ""
+    - name: broad_afdb_pdb                  # broad AF-DB/PDB search, fold-class post-filtered
+      kind: broad
+      db: ""
+      post_filter:
+        fold_class_allowlist: ""
 
 # S3 — ESMFold batch. RUNS ON VAST.AI (Linux+CUDA), NOT locally. On the Mac this
 #      stage is DRY-RUN ONLY: validate the input FASTA and emit a job manifest.

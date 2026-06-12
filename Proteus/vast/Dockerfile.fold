@@ -43,8 +43,8 @@ RUN python3 -m pip install --upgrade pip
 
 # The burst runner: read the S3 job manifest, fold the shortlist on CUDA, write
 # PDBs + per-model pLDDT to a MOUNTED/persistent volume (interruptible instances
-# can die mid-job — checkpoint per sequence). See vast/sync.md.
-# TODO(P3): COPY the runner in and set ENTRYPOINT, e.g.
-#   COPY vast/run_fold.py /opt/proteus/run_fold.py
-#   ENTRYPOINT ["python3", "/opt/proteus/run_fold.py"]
-CMD ["python3", "-c", "print('proteus Vast fold image — set the ESMFold pins + ENTRYPOINT, see vast/sync.md')"]
+# can die mid-job — the runner checkpoints per sequence and resumes). See vast/sync.md.
+COPY vast/run_fold.py /opt/proteus/run_fold.py
+ENTRYPOINT ["python3", "/opt/proteus/run_fold.py"]
+# Default args (override at `docker run` / `vastai` time):
+CMD ["--help"]

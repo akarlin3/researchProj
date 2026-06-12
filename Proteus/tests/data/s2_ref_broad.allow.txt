@@ -1,0 +1,7 @@
+# alpha/beta-hydrolase-fold targets in s2_ref_broad.fasta (post-filter allow-list)
+1CEX
+1EDE
+1I6W
+1AUO
+3TGL
+1QLW

@@ -72,6 +72,35 @@ flag: it pins determinism with **`--shuffle 0`** and still reads + logs the sing
 global `random_seed` from config for provenance. (If a future seedable MMseqs2
 step is added, it reads the same `random_seed`.)
 
+### S2 fold-class reference — USE BOTH (decided; informs the next PR)
+The single open decision flagged for the S2 PR — *what reference defines the
+α/β-hydrolase "fold class" S2 searches against* — is resolved: **use BOTH
+references, not one.**
+
+- **Curated ESTHER / representative α/β-hydrolase set** — high-precision
+  fold-class anchors (known α/β-hydrolase superfamily members).
+- **Broad AF-DB / PDB search + post-filter** — keeps the divergent dark tail
+  that a curated set alone would miss; the post-filter removes off-fold hits.
+
+S2 searches the S1 query DB against both, then **unions** the survivors (curated
+for precision, broad+post-filter for recall). This stays true to the unseeded
+fold-CLASS intent: we match architecture, never specific PETase templates.
+
+**Implemented + empirically validated** (`s2_foldclass_triage.py`). On the mini
+corpus the Foldseek search of ProstT5-predicted 3Di separates the fold class
+decisively at the configured thresholds (evalue≤0.01, bits≥50):
+
+| query rep | best e-value | bits | verdict |
+|---|---|---|---|
+| IsPETase, LCC_WT, CalB, AChE, CRL, Est2 (α/β-hydrolases) | ≤ 4.5e-7 | ≥ 270 | **shortlisted** |
+| decoy_allalpha, decoy_random (non-fold) | ≥ 6.6 | ≤ 4 | **dropped** |
+
+i.e. a ~6-order-of-magnitude e-value gap. The 4 NEGATIVE controls
+(CalB/AChE/CRL/Est2) are NOT PETases yet ARE shortlisted — proof S2 gates on
+FOLD, not PETase homology; they are separated later at S4/S5. The reference DBs
+used in production (curated ESTHER/representative set; broad AF-DB/PDB subset) are
+host-local and pre-built — config `db` paths left blank to avoid guessing.
+
 ## Net env status (on this Linux container): YELLOW — scaffold only
 
 Not GREEN, and cannot be from here: no Apple Silicon to exercise MPS, no osx-arm64

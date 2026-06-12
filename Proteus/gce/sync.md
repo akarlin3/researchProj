@@ -104,6 +104,7 @@ so a preempt costs only the single in-flight sequence (skipped-already-done on r
 ## 4. Pull structures back DOWN and resume locally
 
 ```bash
+mkdir -p structures/folded   # gcloud storage cp errors if the dest dir doesn't exist
 gcloud storage cp --recursive $BUCKET/out/* structures/folded/
 gcloud compute instances delete proteus-fold --project projproteus --zone us-central1-a --quiet
 

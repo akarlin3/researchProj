@@ -93,6 +93,46 @@ def mean_plddt_from_pdb(pdb_str: str) -> float:
     return float(sum(vals) / len(vals)) if vals else 0.0
 
 
+def _max_ca_bfactor(pdb_str: str) -> float:
+    """Largest CA B-factor in the PDB (0.0 if none) — used to detect the pLDDT scale."""
+    mx = 0.0
+    for line in pdb_str.splitlines():
+        if line.startswith(("ATOM", "HETATM")) and line[12:16].strip() == "CA":
+            try:
+                mx = max(mx, float(line[60:66]))
+            except ValueError:
+                continue
+    return mx
+
+
+def _rescale_bfactors(pdb_str: str, factor: float) -> str:
+    """Multiply every ATOM/HETATM B-factor (cols 61–66) by `factor`, preserving the
+    fixed-width PDB columns. transformers' EsmForProteinFolding.output_to_pdb writes
+    pLDDT on a 0–1 scale, but the rest of the toolchain (and the PDB convention ESMFold
+    itself uses) expects 0–100, so we lift it back. Only the B-factor field is touched."""
+    out = []
+    for line in pdb_str.splitlines():
+        if line.startswith(("ATOM", "HETATM")) and len(line) >= 66:
+            try:
+                b = float(line[60:66])
+            except ValueError:
+                out.append(line)
+                continue
+            out.append(f"{line[:60]}{b * factor:6.2f}{line[66:]}")
+        else:
+            out.append(line)
+    return "\n".join(out) + ("\n" if pdb_str.endswith("\n") else "")
+
+
+def normalize_plddt_scale(pdb_str: str) -> str:
+    """Ensure the PDB's pLDDT B-factors are on the 0–100 scale. transformers writes
+    them 0–1; if the max CA B-factor looks like a probability (<= 1.5) we scale ×100.
+    Already-0–100 PDBs (e.g. native ESMFold) are left untouched, so this is idempotent."""
+    if 0.0 < _max_ca_bfactor(pdb_str) <= 1.5:
+        return _rescale_bfactors(pdb_str, 100.0)
+    return pdb_str
+
+
 # --------------------------------------------------------------------------- #
 # ESMFold backend (lazy — imported only when a real fold runs)
 # --------------------------------------------------------------------------- #
@@ -121,8 +161,9 @@ def make_esmfold_folder(bundle, device: str = "cpu"):
     """Wrap a loaded (model, tokenizer) as a folder callable: (seq, chunk_size,
     max_recycles) -> (pdb_str, mean_plddt). For long sequences we reduce the trunk
     chunk size to fit memory (set_chunk_size trades speed for memory — it does NOT
-    split the chain, which would corrupt the fold). ESMFold writes per-residue pLDDT
-    into the PDB B-factor column, so mean_plddt_from_pdb reads it back directly."""
+    split the chain, which would corrupt the fold). transformers writes per-residue
+    pLDDT into the PDB B-factor column on a 0–1 scale, so we normalize it back to the
+    0–100 convention (normalize_plddt_scale) before mean_plddt_from_pdb reads it."""
     import torch  # noqa: PLC0415
     model, tokenizer = bundle
 
@@ -136,7 +177,7 @@ def make_esmfold_folder(bundle, device: str = "cpu"):
         kw = {} if max_recycles is None else {"num_recycles": int(max_recycles)}
         with torch.no_grad():
             outputs = model(**inputs, **kw)
-        pdb_str = model.output_to_pdb(outputs)[0]
+        pdb_str = normalize_plddt_scale(model.output_to_pdb(outputs)[0])
         return pdb_str, mean_plddt_from_pdb(pdb_str)
 
     return _fold

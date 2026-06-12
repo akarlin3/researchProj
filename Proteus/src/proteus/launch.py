@@ -269,6 +269,10 @@ def main(argv=None) -> int:
               file=sys.stderr)
         return 2
 
+    # stage_down does `gcloud storage cp … <local_out>/`, which errors ("Destination URL
+    # must name an existing directory") if local_out doesn't exist yet. Create it up front.
+    os.makedirs(os.path.join(os.getcwd(), vb["local_out"]), exist_ok=True)
+
     only = set(args.only.split(",")) if args.only else None
     return execute_plan(plan, only=only)
 

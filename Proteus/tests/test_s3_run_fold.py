@@ -71,6 +71,28 @@ def test_mean_plddt_from_pdb_reads_bfactor():
     assert rf.mean_plddt_from_pdb("HEADER only, no atoms") == 0.0
 
 
+def test_normalize_plddt_scale_lifts_0_1_to_0_100():
+    # transformers writes pLDDT 0–1; normalize_plddt_scale must lift it to 0–100 so the
+    # keep/drop gate at plddt_min=70 works and the B-factors are the standard convention.
+    pdb01 = _toy_pdb(0.9)
+    assert rf.mean_plddt_from_pdb(pdb01) == pytest.approx(0.9)  # raw, would be "dropped"
+    fixed = rf.normalize_plddt_scale(pdb01)
+    assert rf.mean_plddt_from_pdb(fixed) == pytest.approx(90.0)
+    # column widths preserved (still parseable, B-factor in cols 61–66)
+    for line in fixed.splitlines():
+        if line.startswith("ATOM"):
+            assert line[12:16].strip() == "CA"
+            assert float(line[60:66]) == pytest.approx(90.0)
+
+
+def test_normalize_plddt_scale_is_idempotent_on_0_100():
+    # already-0–100 (native ESMFold, or a second pass) must be left untouched.
+    pdb100 = _toy_pdb(87.5)
+    assert rf.normalize_plddt_scale(pdb100) == pdb100
+    assert rf.normalize_plddt_scale(rf.normalize_plddt_scale(_toy_pdb(0.9))) \
+        == rf.normalize_plddt_scale(_toy_pdb(0.9))
+
+
 def test_fold_batch_gates_on_mean_plddt(tmp_path):
     entries = [("hi", "MKLV"), ("lo", "GGGG")]
     man = _manifest(entries)

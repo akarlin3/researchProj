@@ -386,6 +386,10 @@ def build_predictions(alphas=ALPHAS, seed=DEFAULT_SEED, cache_path=_CACHE,
         theta, s0, sigma = _nlls_init_and_noise(Xs, b)
         nlls[sname] = theta
         mcmc_init[sname] = (theta, s0, sigma)
+        # Store the NLLS S0 and residual-noise estimate so Gauge 03 can build a
+        # label-free SNR proxy (SNR_hat = S0_hat / sigma_hat) without re-fitting.
+        R[f"nlls_s0_{sname}"] = s0
+        R[f"nlls_sigma_{sname}"] = sigma
     R["nlls_cal"], R["nlls_test"] = nlls["cal"], nlls["test"]
     if verbose:
         print(f"[build] NLLS bases done ({time.time()-t0:.0f}s)")

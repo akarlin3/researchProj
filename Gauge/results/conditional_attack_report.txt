@@ -1,0 +1,119 @@
+================================================================================================
+GAUGE 03 -- CP3 VERDICT: IRREDUCIBLE IDENTIFIABILITY LIMIT
+  the high-D* gap is bounded away from nominal under every label-free method (best 'MDN+LCP/features': hi-D* marg 0.868 gap +0.032, worst-SNR cell 0.819 gap +0.081). Feature conditioning lifts weak bases but plateaus, because in the high-D* regime the CRLB(D*) std reaches ~1.12x the tercile width (regime unresolvable) and the absolute CRLB grows ~6x. Conformal widths track CRLB (r=0.75), so intervals are honest; what cannot be label-free-guaranteed is coverage CONDITIONAL on a latent axis the data do not identify.
+  high-D* slice (nominal 0.90): Gauge-02 best (conformalized-MDN) marg 0.877 / worst-SNR 0.808; best label-free 'MDN+LCP/features' marg 0.868 / worst-SNR 0.819.
+  identifiability: CRLB(D*)/tercile-width reaches 1.12 at high D* (regime unresolvable); conformal width~CRLB r=0.75.
+================================================================================================
+
+################################################################################################
+CP0 / GATE 0 -- conditioning toolkit + evaluation harness; reproduce the high-D* under-coverage
+################################################################################################
+alpha=0.1 (nominal=0.90)  seed 20260613  SNR strata [10, 20, 30, 50, 100]
+observable proxies (none read true D*): ['Dhat', 'Dhat*', 'fhat', 'snr_hat', 'snr_known', 'slope_low', 'slope_high', 'curvature', 'early_drop', 'cqr_D*_w']
+true-D* regime edges (terciles, diagnostic only): [0.0416 0.0709]
+
+BASELINE-TO-BEAT -- conditional coverage on the high-D* (top true-D* tercile) slice:
+                      method | hi-D* marg | hi-D* worst-SNR | hi-D* med width
+------------------------------------------------------------------------------------------------
+               split (plain) |      0.800 |           0.513 |            0.12
+                 CQR (plain) |      0.819 |           0.767 |            0.06
+          CQR (Mondrian/SNR) |      0.814 |           0.766 |            0.06
+           conformalized-MDN |      0.877 |           0.808 |            0.05
+------------------------------------------------------------------------------------------------
+GATE 0: reproduced. Even the strongest Gauge 02 method (conformalized-MDN) under-covers the high-D*
+  slice: hi-D* marginal 0.877 vs nominal 0.90  (gap +0.023); worst-SNR cell 0.808.
+  This 0.023 high-D* gap is the baseline-to-beat for CP1-CP2.
+  (high-D* per-SNR cell sizes [193, 195, 212, 216, 184]; worst-cell binomial SE ~0.022, so worst-SNR differences <~0.04 are within sampling noise.)
+
+################################################################################################
+CP1 / GATE 1 (HALT-TO-REPORT) -- feature-conditional conformal (plug-in & observable)
+################################################################################################
+[1.1] PLUG-IN MONDRIAN routing error: stratify by ESTIMATED D-hat* terciles, score vs TRUE.
+  Confusion P(routed to D-hat* tercile | true D* tercile):
+   true\routed |      lo |     mid |      hi
+          loD* |   0.697 |   0.243 |   0.060
+         midD* |   0.181 |   0.569 |   0.250
+          hiD* |   0.093 |   0.218 |   0.689
+  D-hat* bias E[D-hat*-D*] by true tercile (1e-3 mm^2/s): [ 6.44  6.42 11.37]
+  relative bias E[(D-hat*-D*)/D*] by true tercile: [0.32 0.13 0.13]
+  => hi-D* routing sensitivity P(routed hi | true hi) = 0.689.
+     31% of true-high-D* voxels are MISROUTED to a lower D-hat* stratum (smaller radius)
+     -- the plug-in estimate is least reliable exactly where it must route correctly.
+
+[1.2] Does plug-in/feature conditioning recover the high-D* slice? (coverage by TRUE D* regime)
+  reference: split(plain) hi-D* marg 0.800, and the Gauge-02 best conformalized-MDN hi-D* marg 0.877.
+                      method | hi-D* marg | hi-D* worst-SNR | vs conformalized
+------------------------------------------------------------------------------------------------
+     split (Mondrian/D-hat*) |      0.764 |           0.477 |       -0.113
+       CQR (Mondrian/D-hat*) |      0.821 |           0.772 |       -0.056
+        split (LCP/features) |      0.859 |           0.632 |       -0.018
+          CQR (LCP/features) |      0.819 |           0.793 |       -0.058
+  (LCP feature bandwidth h=2.037 on standardized proxies; 'vs conformalized' = hi-D* marg minus the Gauge-02 best; + = beats it.)
+  Feature conditioning lifts the weak split base (0.800 -> 0.859 via LCP) but none exceed the conformalized-MDN baseline.
+
+  GATE 1 verdict: plug-in Mondrian gives valid coverage conditional on the OBSERVED D-hat*
+  stratum, but coverage conditional on the TRUE D* regime stays low -- the routing error above
+  misassigns high-true-D* voxels to small-radius strata. LCP on observable features narrows but
+  does not close the high-D* gap. (Quantified; reported, not engineered around.)
+
+  Evidence -- split (Mondrian/D-hat*): coverage by OBSERVED D-hat* stratum vs by TRUE D* tercile
+     by OBSERVED D-hat* stratum (what Mondrian controls): [0.903 0.891 0.897]
+     by TRUE D* tercile       (what we actually want): [0.97  0.957 0.764]
+
+################################################################################################
+CP2 / GATE 2 (HALT-TO-REPORT) -- conditional-coverage methods proper
+################################################################################################
+Methods built for approximate conditional coverage: conditional conformal (Gibbs, Cherian &
+Candes 2023) over an observable D-hat* basis, richer feature-conditional CQR, and the same
+conditioning applied to the STRONGEST base (the MDN band).
+                      method | hi-D* marg | hi-D* worst-SNR | worst cell(all) | vs conformalized
+------------------------------------------------------------------------------------------------
+      split (CondConf/Gibbs) |      0.843 |           0.653 |           0.653 |       -0.034
+        CQR (CondConf/Gibbs) |      0.817 |           0.766 |           0.766 |       -0.060
+ richer-CQR (signal+proxies) |      0.830 |           0.705 |           0.705 |       -0.047
+            MDN+LCP/features |      0.868 |           0.819 |           0.819 |       -0.009
+          MDN+CondConf/Gibbs |      0.850 |           0.793 |           0.793 |       -0.027
+------------------------------------------------------------------------------------------------
+  GATE 2: best label-free method (by hi-D* worst-SNR cell) = 'MDN+LCP/features'
+    hi-D* marginal 0.868 (residual gap +0.032); hi-D* worst-SNR cell 0.819 (residual gap +0.081), nominal 0.90.
+    NO label-free method MATERIALLY beats the Gauge-02 conformalized-MDN baseline on the high-D* slice (best edge +0.010 is within the ~0.04 sampling noise); the worst-SNR cell stays ~0.82 (gap +0.081).
+
+################################################################################################
+CP3 / GATE 3 -- identifiability diagnosis: is the residual gap irreducible?
+################################################################################################
+[3.1] Cramer-Rao bound on D* across the D* range (D=1.5e-3, f=0.2, S0 free), absolute std in 1e-3:
+   D* (1e-3) | SNR  10 | SNR  20 | SNR  30 | SNR  50 | SNR 100
+        10.0 |   22.2 |   11.1 |    7.4 |    4.4 |    2.2
+        33.1 |   38.5 |   19.2 |   12.8 |    7.7 |    3.8
+        56.2 |   64.2 |   32.1 |   21.4 |   12.8 |    6.4
+        79.2 |   94.8 |   47.4 |   31.6 |   19.0 |    9.5
+       100.0 |  127.1 |   63.6 |   42.4 |   25.4 |   12.7
+  => absolute CRLB(D*) grows ~6x from low to high D* (avg over SNR); and the RELATIVE
+     CRLB(D*)/D* stays >~1 at low SNR everywhere (e.g. 2.2 at SNR10) -- D* is poorly identified across the board, and its
+     absolute uncertainty balloons at high D*: the data carry less and less information to pin it.
+
+[3.2] Per-voxel CRLB(D*) on TEST, by true-D* tercile, vs the tercile WIDTH (the resolution wall):
+  tercile |  median CRLB std |  tercile width |  CRLB/width
+    loD* |          10.8e-3 |        31.6e-3 |        0.34
+   midD* |          20.3e-3 |        29.4e-3 |        0.69
+    hiD* |          32.6e-3 |        29.1e-3 |        1.12
+  => CRLB(D*)/tercile-width rises 0.34 -> 0.69 -> 1.12: at high D* the CRLB std EXCEEDS the bin width.
+     A voxel's D* cannot be localized to its own tercile from the data -- the regime is UNRESOLVABLE,
+     so no label-free rule (D-hat* or any feature) can route high-D* voxels to a wider-interval stratum.
+
+  Conformal interval width vs CRLB(D*) (log-log corr, 'MDN+LCP/features'): r = 0.75
+  => conformal CORRECTLY widens where D* is under-identified; the intervals are honest, not broken.
+
+[3.3] The identifiability wall:
+  - Coverage conditional on the OBSERVED stratum/features IS recoverable: split(Mondrian/D-hat*)
+    reaches nominal per observed stratum ([0.9  0.89 0.9 ]) yet craters per TRUE tercile ([0.97 0.96 0.76]).
+  - Coverage conditional on the LATENT true D* is NOT label-free-guaranteed in high D*: the Fisher
+    information for D* collapses there (CRLB >= bin width above), so no observable identifies the
+    latent regime, so no label-free routing can target it. The wall is information, not method.
+  - Same unobservable-axis wall as Minos's hidden channel and Echo's no-ground-truth problem --
+    a recurring thesis theme, not a one-off.
+
+================================================================================================
+GATE 3 VERDICT: IRREDUCIBLE IDENTIFIABILITY LIMIT
+  the high-D* gap is bounded away from nominal under every label-free method (best 'MDN+LCP/features': hi-D* marg 0.868 gap +0.032, worst-SNR cell 0.819 gap +0.081). Feature conditioning lifts weak bases but plateaus, because in the high-D* regime the CRLB(D*) std reaches ~1.12x the tercile width (regime unresolvable) and the absolute CRLB grows ~6x. Conformal widths track CRLB (r=0.75), so intervals are honest; what cannot be label-free-guaranteed is coverage CONDITIONAL on a latent axis the data do not identify.
+================================================================================================

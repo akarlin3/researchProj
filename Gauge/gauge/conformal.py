@@ -105,3 +105,96 @@ def interval_score(lower, upper, true, alpha):
     below = np.maximum(lower - true, 0.0)
     above = np.maximum(true - upper, 0.0)
     return width + (2.0 / alpha) * (below + above)
+
+
+# --------------------------------------------------------------------------- #
+# Feature-conditional conformal toolkit (Gauge 03).
+#
+# Split/Mondrian/CQR above give MARGINAL (or group-marginal) coverage. The two
+# methods below target *approximate conditional* coverage -- coverage that holds
+# locally in feature space -- which is what the Gauge 03 high-D* attack needs.
+# --------------------------------------------------------------------------- #
+def weighted_conformal_quantile(scores, weights, alpha, self_weight=None):
+    """Test-point-augmented weighted conformal quantile.
+
+    Given calibration ``scores`` with nonnegative localization ``weights`` and
+    the test point's own ``self_weight`` (its score is unknown, so it sits at
+    +inf), return the smallest threshold t at which the normalized weight of
+    ``{s_i <= t}`` reaches ``1 - alpha``. The +inf test-point mass is what keeps
+    the localized interval valid under weighted exchangeability (Tibshirani et
+    al. 2019; Guan 2023). With uniform weights this reduces exactly to
+    :func:`conformal_quantile`. Returns +inf when 1-alpha is unreachable.
+    """
+    scores = np.asarray(scores, dtype=float)
+    weights = np.asarray(weights, dtype=float)
+    if self_weight is None:
+        self_weight = float(weights.max()) if weights.size else 1.0
+    order = np.argsort(scores, kind="mergesort")
+    s_sorted = scores[order]
+    total = weights.sum() + self_weight
+    if total <= 0:
+        return np.inf
+    cum = np.cumsum(weights[order]) / total
+    idx = int(np.searchsorted(cum, 1.0 - alpha, side="left"))
+    if idx >= s_sorted.size:
+        return np.inf
+    return float(s_sorted[idx])
+
+
+def localized_conformal(cal_scores, cal_feat, test_feat, alpha, bandwidth,
+                        kernel="gaussian"):
+    """Localized conformal prediction (Guan 2023, LCP).
+
+    For each test point, calibration nonconformity scores are reweighted by a
+    kernel on standardized feature distance, then a test-point-augmented weighted
+    quantile gives a *locally* calibrated threshold. Coverage adapts to feature
+    space without ever using the label -- the label-free way to condition on a
+    regime through features that correlate with it. Features are standardized by
+    the calibration mean/std (deterministic). Returns an (n_test,) threshold
+    array.
+    """
+    cal_scores = np.asarray(cal_scores, dtype=float)
+    cal_feat = np.atleast_2d(np.asarray(cal_feat, dtype=float))
+    test_feat = np.atleast_2d(np.asarray(test_feat, dtype=float))
+    mu = cal_feat.mean(0)
+    sd = cal_feat.std(0) + 1e-12
+    C = (cal_feat - mu) / sd
+    T = (test_feat - mu) / sd
+    h = float(bandwidth)
+    thr = np.empty(T.shape[0])
+    for i in range(T.shape[0]):
+        d2 = np.sum((C - T[i]) ** 2, axis=1)
+        if kernel == "gaussian":
+            w = np.exp(-0.5 * d2 / (h * h))
+        elif kernel == "boxcar":
+            w = (np.sqrt(d2) <= h).astype(float)
+        else:
+            raise ValueError(f"unknown kernel {kernel!r}")
+        thr[i] = weighted_conformal_quantile(cal_scores, w, alpha,
+                                             self_weight=1.0)
+    return thr
+
+
+def conditional_conformal(cal_scores, cal_Phi, test_Phi, alpha, ridge=0.0):
+    """Conditional conformal via quantile regression of scores on features.
+
+    The Gibbs, Cherian & Candes (2023) construction: over the linear class
+    ``{x -> Phi(x)^T beta}``, the threshold that gives coverage conditional on
+    that class is the level-(1-alpha) quantile regression of the nonconformity
+    score on ``Phi``. We fit it by pinball loss (sklearn ``QuantileRegressor``,
+    LP solver) and return ``t(x) = Phi(x)^T beta_hat`` per test point. This is
+    the asymptotic-guarantee form (the finite-sample per-point augmentation is
+    omitted, as is standard for moderate n). Coverage is then controlled
+    conditional on the span of ``Phi`` -- e.g. on a plug-in D-hat* feature --
+    but NOT on quantities outside that span.
+
+    For symmetric absolute-residual scores the caller should clip the threshold
+    at 0; for CQR scores a negative threshold legitimately shrinks the band.
+    """
+    from sklearn.linear_model import QuantileRegressor
+    cal_scores = np.asarray(cal_scores, dtype=float)
+    cal_Phi = np.atleast_2d(np.asarray(cal_Phi, dtype=float))
+    test_Phi = np.atleast_2d(np.asarray(test_Phi, dtype=float))
+    qr = QuantileRegressor(quantile=1.0 - alpha, alpha=ridge, solver="highs")
+    qr.fit(cal_Phi, cal_scores)
+    return qr.predict(test_Phi)

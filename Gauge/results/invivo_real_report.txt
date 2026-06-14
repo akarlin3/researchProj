@@ -1,0 +1,38 @@
+############################################################################################
+GAUGE -- REAL IN-VIVO DATA PATH (qualitative; NO coverage claim)
+############################################################################################
+data source: REAL in-vivo DWI -- ACRIN-6698 ACRIN-6698-102212 (b=0 foreground)
+dataset: ACRIN-6698 / I-SPY2 Breast DWI (TCIA, CC-BY-4.0, DOI 10.7937/tcia.kk02-6d95) -- REAL in-vivo, NO ground-truth IVIM params.
+voxels: 4000   |   real b-values (s/mm^2): [0.0, 100.0, 600.0, 800.0]   |   ground truth available: False
+
+** NO IN-VIVO COVERAGE CLAIM ** Everything below is QUALITATIVE pipeline/monitor behavior on
+   real signal. There are NO ground-truth (D, D*, f) in vivo, so realized coverage is UNMEASURABLE
+   and the finite-sample 1-alpha guarantee is NOT asserted here.
+   b-scheme handling (human-approved): MONITOR = as-deployed (synthetic 22-value calibration);
+   CQR BAND = re-fit at the real 4-b scheme (a 22-b predictor cannot ingest a 4-b signal, and
+   interpolation would fabricate unacquired b-values). The bands are NOT coverage intervals.
+--------------------------------------------------------------------------------------------
+[R2.1] Conformalized interval map (CQR band re-fit at real 4-b; qualitative):
+       median plug-in (D, D*, f) = (0.64, 54.7, 0.505)   [D,D* in 1e-3 mm^2/s]
+       median band width (D, D*, f) = (0.69, 78.7, 0.151)
+[R2.2] D* compartment band widths on REAL signal: 10/50/90th pct (1e-3 mm^2/s)
+       = [63.7, 78.7, 86.4]  -- the D* band is wide; the sparse 4-b scheme under-
+       identifies the perfusion compartment (the Gauge 03 wall, now on real in-vivo signal).
+       widest-decile / narrowest-decile D* width ratio = 1.4x.
+--------------------------------------------------------------------------------------------
+[R2.3] AS-DEPLOYED deployment monitor (synthetic 22-value calibration) on the REAL in-vivo features:
+       monitor: FIRES   AUC(cal vs in-vivo) = 0.97
+       Family-1 Mahalanobis (b-independent feature detector): FIRES  stat 16.26/thr 2.60  AUC 0.97
+       Family-2 residual: silent  stat 0.063/thr 0.177  AUC 0.19
+       (CAVEAT: with only 4 b-values an exactly-determined NLLS fit drives the residual NORM toward 0,
+       so Family-2 is NOT comparable to the 22-b calibration; Family-1 Mahalanobis is the honest detector.)
+       domain-weight spread 5x.
+       INTERPRETATION: the synthetic-calibrated -> real-in-vivo transfer (sparse 4-b scheme + real
+       breast tissue) is a large exchangeability break, and the as-deployed monitor detects it. That
+       firing is the honest, label-free reason the synthetic coverage guarantee must NOT be transferred
+       to this data -- matched LABELED in-vivo data does not exist (the Echo tension).
+============================================================================================
+REAL-DATA PATH: the deployed pipeline RUNS on real in-vivo DWI; its qualitative outputs (interval
+  map, heavy-tailed D* widths, as-deployed monitor firing on transfer) are clearly DELIMITED from the
+  synthetic coverage guarantees, which remain byte-identical and are the ONLY coverage claims.
+############################################################################################

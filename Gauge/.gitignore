@@ -14,3 +14,8 @@ results/*.pkl
 
 # Regenerable per-seed multiseed raw quantities (aggregated into results/multiseed.json)
 results/seeds/
+
+# Real in-vivo DWI: download-on-demand pixel data (CC-BY-4.0 ACRIN-6698, NOT
+# redistributed here -- fetch with scripts/fetch_invivo.py; provenance manifest
+# results/invivo_real_provenance.json IS committed, the pixel data is not).
+data/

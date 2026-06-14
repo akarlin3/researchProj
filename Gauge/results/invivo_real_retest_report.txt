@@ -1,0 +1,20 @@
+############################################################################################
+GAUGE -- REAL IN-VIVO TEST-RETEST REPEATABILITY PROXY (Checkpoint D)
+############################################################################################
+** REPEATABILITY-TRACKING CHECK -- NOT a coverage claim. ** No ground truth is used. This asks
+   whether the conformal interval WIDTH (predicted uncertainty) tracks the real scan-rescan
+   variability of the plug-in diffusion estimate across tumors. Region-level (whole-tumor ROI);
+   the two same-visit ACRIN-6698 exams are NOT registered, so this is not a per-voxel claim.
+   dataset: ACRIN-6698 / I-SPY2 Breast DWI (TCIA, CC-BY-4.0); b=[0.0, 100.0, 600.0, 800.0] s/mm^2; tumor pairs n=11.
+--------------------------------------------------------------------------------------------
+[D.1] Tissue diffusion D (the 4-b-identifiable / ADC-like quantity):
+      conformal D-width vs |scan-rescan ΔD|:  Spearman r = +0.69 (p=0.019, n=11);  Pearson r = +0.48
+      median conformal D-width = 0.40; median |scan-rescan ΔD| = 0.334  (1e-3 mm^2/s)
+[D.2] Pseudo-diffusion D* (poorly identified by the sparse 4-b scheme -- expected noisy):
+      conformal D*-width vs |scan-rescan ΔD*|:  Spearman r = -0.49 (p=0.125, n=11)
+--------------------------------------------------------------------------------------------
+      INTERPRETATION: across 11 tumors the conformal D-width positively tracks measured scan-rescan
+      ADC variability (Spearman +0.69, p=0.019, significant). This is a label-free repeatability-
+      tracking signal, NOT in-vivo coverage: the model's predicted uncertainty IS informative about
+      real measurement reproducibility -- no ground-truth parameter is involved anywhere.
+############################################################################################

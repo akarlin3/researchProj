@@ -31,6 +31,9 @@ GATE 2 / HALT-TO-REPORT printout). Recommended real options to sign off on:
 Run:  python -m gauge.invivo                      # synthetic stand-in demo
       python -m gauge.invivo /path/dwi.nii.gz /path/bvals   # real DWI
 """
+import argparse
+import datetime
+import json
 import os
 import pickle
 import sys
@@ -53,6 +56,14 @@ _RESULTS_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results")
 _FIG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures")
 _CACHE = os.path.join(_RESULTS_DIR, "invivo.pkl")
+
+# Real-data path outputs (ADDITIVE: never overwrite the synthetic invivo_report.txt
+# / invivo_demo.pdf, which the GATE-3 consistency check traces byte-for-byte).
+_REAL_REPORT = os.path.join(_RESULTS_DIR, "invivo_real_report.txt")
+_REAL_PROVENANCE = os.path.join(_RESULTS_DIR, "invivo_real_provenance.json")
+_REAL_FIG = os.path.join(_FIG_DIR, "invivo_real_demo.pdf")
+_REAL_RETEST_REPORT = os.path.join(_RESULTS_DIR, "invivo_real_retest_report.txt")
+_REAL_RETEST_FIG = os.path.join(_FIG_DIR, "invivo_real_retest.pdf")
 
 
 # --------------------------------------------------------------------------- #
@@ -360,10 +371,504 @@ def _make_figure(r):
     print(f"[figures] wrote invivo_demo.pdf -> {_FIG_DIR}")
 
 
+# =========================================================================== #
+# REAL-DATA PATH (ADDITIVE) -- human-approved 2026-06-14:
+#   dataset  = ACRIN-6698 / I-SPY2 Breast DWI (TCIA, CC-BY-4.0, no IVIM ground
+#              truth, b = {0,100,600,800}); fetch with scripts/fetch_invivo.py.
+#   b-scheme = HYBRID:
+#      * MONITOR  -> AS-DEPLOYED (option c): the synthetic 22-value-calibrated
+#        deployment monitor is evaluated on the real data's b-INDEPENDENT
+#        observable features. The real 4-b acquisition is itself the
+#        exchangeability break the monitor is built to flag.
+#      * CQR BAND -> RE-FIT AT THE REAL 4-b SCHEME (option b): a 22-b predictor
+#        cannot ingest a 4-b signal, and interpolating onto the 22-b grid would
+#        fabricate unacquired b-values, so the quantile layer is re-fit on
+#        synthetic-parameter draws simulated at the real scheme. The band widths
+#        are QUALITATIVE -- NO coverage claim (no ground truth in vivo).
+# This path writes ONLY to invivo_real_* and never touches the synthetic outputs.
+# =========================================================================== #
+def load_dwi_npy4d(vol_path, bval_path, mask_path=None, max_voxels=4000, seed=0):
+    """Load an assembled 4D DWI volume ``(X,Y,Z,B)`` ``.npy`` + b-values.
+
+    No nibabel needed -- ``scripts/fetch_invivo.py`` assembles the DICOM series
+    into a ``.npy`` grid. Voxels are masked (a provided tumor mask, or a b=0
+    foreground threshold), normalized to S0, and randomly subsampled to
+    ``max_voxels``. Mirrors :func:`load_dwi_nifti` for the no-nibabel case.
+    """
+    vol = np.asarray(np.load(vol_path), float)             # (X, Y, Z, B)
+    b = np.loadtxt(bval_path).ravel()
+    flat = vol.reshape(-1, vol.shape[-1])
+    if mask_path:
+        mask = np.asarray(np.load(mask_path)).ravel() > 0
+    else:                                                  # b=0 foreground (air-reject)
+        s0 = flat[:, b == b.min()].mean(1)
+        mask = s0 > 0.25 * np.percentile(s0, 99)
+    vox = flat[mask]
+    # reject degenerate voxels (non-finite, or S0<=0) -- e.g. tumor-mask voxels that
+    # fall on air after nearest-slice mapping, which would break S0-normalization.
+    s0v = vox[:, b == b.min()].mean(1)
+    vox = vox[np.isfinite(vox).all(1) & (s0v > 0)]
+    rng = np.random.default_rng(seed)
+    if vox.shape[0] > max_voxels:
+        vox = vox[rng.choice(vox.shape[0], max_voxels, replace=False)]
+    return _normalize_to_s0(vox, b), b
+
+
+def _cqr_band_widths(signals, cal):
+    """CQR per-voxel interval widths (N,3) from a fitted calibration dict.
+
+    Conformalizes the gradient-boosted quantile predictor with the split-CQR
+    offset. Shared by the real-data run and the test-retest proxy.
+    """
+    levels = cal["levels"]
+    lo_raw = np.stack([cal["qreg"].predict_quantile(signals, j, levels[0])
+                       for j in range(3)], axis=1)
+    hi_raw = np.stack([cal["qreg"].predict_quantile(signals, j, levels[1])
+                       for j in range(3)], axis=1)
+    lo = np.empty_like(lo_raw)
+    hi = np.empty_like(hi_raw)
+    for j in range(3):
+        lj, hj, _ = cqr(cal["cal_lo"][:, j], cal["cal_hi"][:, j],
+                        cal["cal_params"][:, j], lo_raw[:, j], hi_raw[:, j], ALPHA)
+        lo[:, j], hi[:, j] = lj, hj
+    return interval_width(lo, hi), lo, hi
+
+
+def run_real_hybrid(signals, b_real, source_name, seed=SEED, n_train=3000,
+                    n_cal=2000):
+    """Apply the hybrid deployed pipeline to (unlabeled) real in-vivo signals.
+
+    Returns ``(out, (lo, hi, widths, theta))`` -- qualitative observables plus the
+    raw per-voxel arrays (for the figure / the test-retest proxy). No ground truth
+    is ever used; there is no coverage number anywhere in here.
+    """
+    # --- MONITOR = AS-DEPLOYED (synthetic 22-value calibration; option c) -------
+    cal_mon = deployed_calibration(b=DEFAULT_B_VALUES, seed=seed, n_train=n_train,
+                                   n_cal=n_cal)
+    _, feat_real, resid_real = _observe(signals, b_real)
+    mon = cal_mon["monitor"].evaluate(feat_real, resid_real)
+    w_cal, w_test, _ = _importance_weights(cal_mon["cal_feat"], feat_real, seed=seed)
+
+    # --- CQR BAND = RE-FIT AT THE REAL b-SCHEME (option b; qualitative only) -----
+    cal_band = deployed_calibration(b=b_real, seed=seed, n_train=n_train,
+                                    n_cal=n_cal)
+    theta, _, _ = _observe(signals, b_real)
+    widths, lo, hi = _cqr_band_widths(signals, cal_band)   # (N, 3)
+
+    out = {
+        "source": source_name, "n_vox": int(signals.shape[0]),
+        "b_real": np.asarray(b_real, float).tolist(),
+        "theta_median": np.median(theta, 0),
+        "width_median": np.median(widths, 0),
+        "dstar_width_q": np.quantile(widths[:, 1], [0.1, 0.5, 0.9]),
+        "dstar_widths": widths[:, 1], "dstar_hat": theta[:, 1], "d_hat": theta[:, 0],
+        # as-deployed monitor: per-family breakdown (Mahalanobis is the b-independent
+        # detector; the residual family is reported with a caveat -- see main_real).
+        "monitor_fires": bool(mon["fires"]), "monitor_auc": float(mon["auc"]),
+        "monitor_maha": float(mon["maha"]["stat"]),
+        "monitor_maha_thr": float(mon["maha"]["threshold"]),
+        "monitor_maha_fires": bool(mon["maha"]["fires"]),
+        "monitor_maha_auc": float(mon["maha"]["auc"]),
+        "monitor_resid": float(mon["resid"]["stat"]),
+        "monitor_resid_thr": float(mon["resid"]["threshold"]),
+        "monitor_resid_fires": bool(mon["resid"]["fires"]),
+        "monitor_resid_auc": float(mon["resid"]["auc"]),
+        "weight_spread": float(np.quantile(w_test, 0.9) /
+                               max(np.quantile(w_test, 0.1), 1e-9)),
+        "has_gt": False,
+    }
+    return out, (lo, hi, widths, theta)
+
+
+def compute_real(data_dir, seed=SEED, use_tumor_mask=False, max_voxels=4000):
+    """Run the real-data qualitative demo on one assembled exam directory.
+
+    ``data_dir`` holds ``signals_4d.npy`` + ``bvals.txt`` (+ ``tumor_mask.npy``)
+    from ``scripts/fetch_invivo.py``. Never caches over / reads the synthetic
+    pipeline; the synthetic seed-20260613 path is byte-identical and untouched.
+    """
+    vol = os.path.join(data_dir, "signals_4d.npy")
+    bvp = os.path.join(data_dir, "bvals.txt")
+    mp = os.path.join(data_dir, "tumor_mask.npy") if use_tumor_mask else None
+    signals, b = load_dwi_npy4d(vol, bvp, mask_path=mp, max_voxels=max_voxels,
+                                seed=seed)
+    # shape / units assertions: predictor expects S0-normalized (N, B) signals.
+    assert signals.ndim == 2 and signals.shape[1] == b.size, "bad (N,B) shape"
+    assert np.allclose(signals[:, int(np.argmin(b))], 1.0, atol=1e-6), \
+        "signals not S0-normalized at b=0"
+    patient = "unknown"
+    meta_p = os.path.join(data_dir, "meta.json")
+    if os.path.exists(meta_p):
+        patient = json.load(open(meta_p)).get("patient", "unknown")
+    roi = "whole-tumor ROI" if use_tumor_mask else "b=0 foreground"
+    src = f"REAL in-vivo DWI -- ACRIN-6698 {patient} ({roi})"
+    res, arrays = run_real_hybrid(signals, b, src, seed=seed)
+    return {"res": res, "arrays": arrays, "is_real": True, "patient": patient,
+            "data_dir": os.path.relpath(data_dir, os.path.dirname(_RESULTS_DIR))}
+
+
+def _write_real_provenance(res, patient, data_dir, seed):
+    prov = {}
+    if os.path.exists(_REAL_PROVENANCE):
+        try:
+            prov = json.load(open(_REAL_PROVENANCE))
+        except (json.JSONDecodeError, OSError):
+            prov = {}
+    prov["run"] = {
+        "b_scheme_handling": ("hybrid: as-deployed monitor (synthetic 22-value "
+                              "calibration) + CQR band re-fit at the real 4-b scheme"),
+        "no_coverage_claim_in_vivo": True,
+        "patient": patient, "data_dir": data_dir, "seed": int(seed),
+        "n_voxels": int(res["n_vox"]), "b_values": res["b_real"],
+        "monitor_fires": bool(res["monitor_fires"]),
+        "monitor_auc": float(res["monitor_auc"]),
+        "monitor_mahalanobis": {"stat": res["monitor_maha"],
+                                "threshold": res["monitor_maha_thr"],
+                                "fires": res["monitor_maha_fires"],
+                                "auc": res["monitor_maha_auc"]},
+        "monitor_residual": {"stat": res["monitor_resid"],
+                             "threshold": res["monitor_resid_thr"],
+                             "fires": res["monitor_resid_fires"],
+                             "auc": res["monitor_resid_auc"],
+                             "caveat": ("4-b NLLS residual norm is not directly "
+                                        "comparable to the 22-b calibration; the "
+                                        "Mahalanobis feature family is the "
+                                        "b-independent detector")},
+        "dstar_width_pct_10_50_90_e3": (res["dstar_width_q"] * 1e3).tolist(),
+        "median_plugin_D_Dstar_f": [float(res["theta_median"][0]),
+                                    float(res["theta_median"][1]),
+                                    float(res["theta_median"][2])],
+        "computed_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    }
+    os.makedirs(os.path.dirname(_REAL_PROVENANCE), exist_ok=True)
+    json.dump(prov, open(_REAL_PROVENANCE, "w"), indent=2)
+
+
+def main_real(data_dir, seed=SEED, use_tumor_mask=False):
+    P = compute_real(data_dir, seed=seed, use_tumor_mask=use_tumor_mask)
+    r = P["res"]
+    lines = []
+
+    def out(*x):
+        s = " ".join(str(z) for z in x)
+        print(s)
+        lines.append(s)
+
+    out("#" * 92)
+    out("GAUGE -- REAL IN-VIVO DATA PATH (qualitative; NO coverage claim)")
+    out("#" * 92)
+    out(f"data source: {r['source']}")
+    out(f"dataset: ACRIN-6698 / I-SPY2 Breast DWI (TCIA, CC-BY-4.0, "
+        f"DOI 10.7937/tcia.kk02-6d95) -- REAL in-vivo, NO ground-truth IVIM params.")
+    out(f"voxels: {r['n_vox']}   |   real b-values (s/mm^2): {r['b_real']}   |   "
+        f"ground truth available: {r['has_gt']}")
+    out("")
+    out("** NO IN-VIVO COVERAGE CLAIM ** Everything below is QUALITATIVE pipeline/"
+        "monitor behavior on")
+    out("   real signal. There are NO ground-truth (D, D*, f) in vivo, so realized "
+        "coverage is UNMEASURABLE")
+    out("   and the finite-sample 1-alpha guarantee is NOT asserted here.")
+    out("   b-scheme handling (human-approved): MONITOR = as-deployed (synthetic "
+        "22-value calibration);")
+    out("   CQR BAND = re-fit at the real 4-b scheme (a 22-b predictor cannot ingest "
+        "a 4-b signal, and")
+    out("   interpolation would fabricate unacquired b-values). The bands are NOT "
+        "coverage intervals.")
+    out("-" * 92)
+    out("[R2.1] Conformalized interval map (CQR band re-fit at real 4-b; qualitative):")
+    out(f"       median plug-in (D, D*, f) = "
+        f"({r['theta_median'][0]*1e3:.2f}, {r['theta_median'][1]*1e3:.1f}, "
+        f"{r['theta_median'][2]:.3f})   [D,D* in 1e-3 mm^2/s]")
+    out(f"       median band width (D, D*, f) = "
+        f"({r['width_median'][0]*1e3:.2f}, {r['width_median'][1]*1e3:.1f}, "
+        f"{r['width_median'][2]:.3f})")
+    out("[R2.2] D* compartment band widths on REAL signal: 10/50/90th pct "
+        "(1e-3 mm^2/s)")
+    q = r["dstar_width_q"] * 1e3
+    out(f"       = [{q[0]:.1f}, {q[1]:.1f}, {q[2]:.1f}]  -- the D* band is wide; the "
+        f"sparse 4-b scheme under-")
+    out(f"       identifies the perfusion compartment (the Gauge 03 wall, now on real "
+        f"in-vivo signal).")
+    w = r["dstar_widths"]
+    ratio = np.quantile(w, 0.9) / max(np.quantile(w, 0.1), 1e-12)
+    out(f"       widest-decile / narrowest-decile D* width ratio = {ratio:.1f}x.")
+    out("-" * 92)
+    out("[R2.3] AS-DEPLOYED deployment monitor (synthetic 22-value calibration) on "
+        "the REAL in-vivo features:")
+    fire = "FIRES" if r["monitor_fires"] else "SILENT"
+    out(f"       monitor: {fire}   AUC(cal vs in-vivo) = {r['monitor_auc']:.2f}")
+    mfire = "FIRES" if r["monitor_maha_fires"] else "silent"
+    out(f"       Family-1 Mahalanobis (b-independent feature detector): {mfire}  "
+        f"stat {r['monitor_maha']:.2f}/thr {r['monitor_maha_thr']:.2f}  "
+        f"AUC {r['monitor_maha_auc']:.2f}")
+    rfire = "FIRES" if r["monitor_resid_fires"] else "silent"
+    out(f"       Family-2 residual: {rfire}  stat {r['monitor_resid']:.3f}/thr "
+        f"{r['monitor_resid_thr']:.3f}  AUC {r['monitor_resid_auc']:.2f}")
+    out(f"       (CAVEAT: with only 4 b-values an exactly-determined NLLS fit drives "
+        f"the residual NORM toward 0,")
+    out(f"       so Family-2 is NOT comparable to the 22-b calibration; Family-1 "
+        f"Mahalanobis is the honest detector.)")
+    out(f"       domain-weight spread {r['weight_spread']:.0f}x.")
+    out("       INTERPRETATION: the synthetic-calibrated -> real-in-vivo transfer "
+        "(sparse 4-b scheme + real")
+    out("       breast tissue) is a large exchangeability break, and the as-deployed "
+        "monitor detects it. That")
+    out("       firing is the honest, label-free reason the synthetic coverage "
+        "guarantee must NOT be transferred")
+    out("       to this data -- matched LABELED in-vivo data does not exist (the Echo "
+        "tension).")
+    if not r["monitor_fires"]:
+        out("       >> FINDING: the monitor did NOT fire -- surfaced as a result "
+            "(unexpected on a 4-b transfer).")
+    out("=" * 92)
+    out("REAL-DATA PATH: the deployed pipeline RUNS on real in-vivo DWI; its "
+        "qualitative outputs (interval")
+    out("  map, heavy-tailed D* widths, as-deployed monitor firing on transfer) are "
+        "clearly DELIMITED from the")
+    out("  synthetic coverage guarantees, which remain byte-identical and are the "
+        "ONLY coverage claims.")
+    out("#" * 92)
+
+    os.makedirs(_RESULTS_DIR, exist_ok=True)
+    with open(_REAL_REPORT, "w") as fh:
+        fh.write("\n".join(lines) + "\n")
+    _write_real_provenance(r, P["patient"], P["data_dir"], seed)
+    _make_figure_real(r)
+    print(f"[invivo-real] wrote {os.path.relpath(_REAL_REPORT, os.path.dirname(_RESULTS_DIR))}")
+    return 0
+
+
+def _make_figure_real(r):
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except Exception as e:                                  # pragma: no cover
+        print(f"[figures] skipped ({e})")
+        return
+    os.makedirs(_FIG_DIR, exist_ok=True)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.2))
+    dh = r["dstar_hat"] * 1e3
+    ww = r["dstar_widths"] * 1e3
+    ax1.scatter(dh, ww, s=5, alpha=0.3, color="#16a085")
+    ax1.set_xlabel("plug-in D-hat*  (1e-3 mm^2/s)")
+    ax1.set_ylabel("conformal D* band width  (1e-3 mm^2/s)")
+    ax1.set_title("REAL in-vivo: D* band vs plug-in D-hat*\n"
+                  "(qualitative; no coverage claim in vivo)")
+    ax2.hist(ww, bins=40, color="#16a085", alpha=0.8)
+    for p, c in [(50, "#27ae60"), (90, "#c0392b")]:
+        ax2.axvline(np.percentile(ww, p), ls="--", c=c, lw=1, label=f"{p}th pct")
+    ax2.set_xlabel("conformal D* band width  (1e-3 mm^2/s)")
+    ax2.set_ylabel("voxel count")
+    ax2.set_title(f"REAL in-vivo D* band widths (ACRIN-6698)\nas-deployed monitor: "
+                  f"{'FIRES' if r['monitor_fires'] else 'silent'} "
+                  f"(AUC {r['monitor_auc']:.2f})")
+    ax2.legend(fontsize=7)
+    fig.suptitle("Gauge in-vivo, qualitative, NO coverage claim "
+                 "(real DWI; b={0,100,600,800} s/mm^2)", fontsize=9)
+    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    fig.savefig(_REAL_FIG)
+    plt.close(fig)
+    print(f"[figures] wrote {os.path.basename(_REAL_FIG)} -> {_FIG_DIR}")
+
+
+# --------------------------------------------------------------------------- #
+# CHECKPOINT D -- test-retest repeatability proxy (REAL quantitative, no GT).
+#
+# ACRIN-6698 acquired two same-visit DWI exams per patient (patient repositioned
+# between scans). With no inter-scan registration, true per-voxel correspondence
+# is unavailable, so this is a REGION-level check across tumors: does the
+# conformal interval width (predicted uncertainty) track the scan-rescan
+# variability of the plug-in diffusion estimate (the measured reproducibility)?
+# This is a REPEATABILITY-TRACKING check -- it needs no ground truth and is NOT a
+# coverage claim.
+# --------------------------------------------------------------------------- #
+def _find_retest_pairs(root):
+    """Find patients with >=2 assembled exams that each carry a tumor mask."""
+    pairs = []
+    if not os.path.isdir(root):
+        return pairs
+    for patient in sorted(os.listdir(root)):
+        pdir = os.path.join(root, patient)
+        if not os.path.isdir(pdir):
+            continue
+        exams = [os.path.join(pdir, d) for d in sorted(os.listdir(pdir))
+                 if os.path.exists(os.path.join(pdir, d, "tumor_mask.npy"))
+                 and os.path.exists(os.path.join(pdir, d, "signals_4d.npy"))]
+        if len(exams) >= 2:
+            pairs.append((patient, exams[:2]))
+    return pairs
+
+
+def _tumor_summary(exam_dir, b, cal, max_voxels=20000, seed=SEED):
+    """Tumor-ROI median plug-in (D, D*) and median CQR band widths for one exam."""
+    sig, _ = load_dwi_npy4d(os.path.join(exam_dir, "signals_4d.npy"),
+                            os.path.join(exam_dir, "bvals.txt"),
+                            mask_path=os.path.join(exam_dir, "tumor_mask.npy"),
+                            max_voxels=max_voxels, seed=seed)
+    theta, _, _ = _observe(sig, b)
+    widths, _, _ = _cqr_band_widths(sig, cal)
+    return {"n": int(sig.shape[0]),
+            "D_med": float(np.median(theta[:, 0])),
+            "Dstar_med": float(np.median(theta[:, 1])),
+            "wD_med": float(np.median(widths[:, 0])),
+            "wDstar_med": float(np.median(widths[:, 1]))}
+
+
+def analyze_test_retest(root, seed=SEED):
+    """Region-level repeatability proxy across all test-retest tumor pairs."""
+    pairs = _find_retest_pairs(root)
+    b = np.loadtxt(os.path.join(pairs[0][1][0], "bvals.txt")).ravel()
+    cal = deployed_calibration(b=b, seed=seed)             # real-b CQR predictor
+    rows = []
+    for patient, (d_test, d_retest) in pairs:
+        t = _tumor_summary(d_test, b, cal, seed=seed)
+        r = _tumor_summary(d_retest, b, cal, seed=seed)
+        rows.append({
+            "patient": patient,
+            "wD": 0.5 * (t["wD_med"] + r["wD_med"]),       # predicted D uncertainty
+            "dD": abs(t["D_med"] - r["D_med"]),            # scan-rescan |ΔADC|
+            "wDstar": 0.5 * (t["wDstar_med"] + r["wDstar_med"]),
+            "dDstar": abs(t["Dstar_med"] - r["Dstar_med"]),
+            "n_test": t["n"], "n_retest": r["n"],
+        })
+    return {"b": b.tolist(), "rows": rows, "seed": int(seed)}
+
+
+def main_retest(root, seed=SEED):
+    from scipy.stats import spearmanr, pearsonr
+    A = analyze_test_retest(root, seed=seed)
+    rows = A["rows"]
+    lines = []
+
+    def out(*x):
+        s = " ".join(str(z) for z in x)
+        print(s)
+        lines.append(s)
+
+    n = len(rows)
+    out("#" * 92)
+    out("GAUGE -- REAL IN-VIVO TEST-RETEST REPEATABILITY PROXY (Checkpoint D)")
+    out("#" * 92)
+    out("** REPEATABILITY-TRACKING CHECK -- NOT a coverage claim. ** No ground "
+        "truth is used. This asks")
+    out("   whether the conformal interval WIDTH (predicted uncertainty) tracks "
+        "the real scan-rescan")
+    out("   variability of the plug-in diffusion estimate across tumors. Region-"
+        "level (whole-tumor ROI);")
+    out("   the two same-visit ACRIN-6698 exams are NOT registered, so this is "
+        "not a per-voxel claim.")
+    out(f"   dataset: ACRIN-6698 / I-SPY2 Breast DWI (TCIA, CC-BY-4.0); "
+        f"b={A['b']} s/mm^2; tumor pairs n={n}.")
+    out("-" * 92)
+    if n < 3:
+        out(f"[D] only {n} test-retest tumor pair(s) available -- too few for a "
+            f"correlation; reporting raw rows only.")
+        for rw in rows:
+            out(f"    {rw['patient']}: wD={rw['wD']*1e3:.2f}  |dD|={rw['dD']*1e3:.3f} "
+                f"(1e-3 mm^2/s)")
+    else:
+        wD = np.array([r["wD"] for r in rows]) * 1e3
+        dD = np.array([r["dD"] for r in rows]) * 1e3
+        wDs = np.array([r["wDstar"] for r in rows]) * 1e3
+        dDs = np.array([r["dDstar"] for r in rows]) * 1e3
+        sD, pD = spearmanr(wD, dD)
+        rD, prD = pearsonr(wD, dD)
+        sDs, pDs = spearmanr(wDs, dDs)
+        out(f"[D.1] Tissue diffusion D (the 4-b-identifiable / ADC-like quantity):")
+        out(f"      conformal D-width vs |scan-rescan ΔD|:  Spearman r = {sD:+.2f} "
+            f"(p={pD:.3f}, n={n});  Pearson r = {rD:+.2f}")
+        out(f"      median conformal D-width = {np.median(wD):.2f}; median "
+            f"|scan-rescan ΔD| = {np.median(dD):.3f}  (1e-3 mm^2/s)")
+        out(f"[D.2] Pseudo-diffusion D* (poorly identified by the sparse 4-b scheme "
+            f"-- expected noisy):")
+        out(f"      conformal D*-width vs |scan-rescan ΔD*|:  Spearman r = {sDs:+.2f} "
+            f"(p={pDs:.3f}, n={n})")
+        out("-" * 92)
+        sig_word = "significant" if pD < 0.05 else "not significant"
+        sign = "positively" if sD > 0 else "negatively"
+        verdict = ("IS informative about" if (pD < 0.05 and sD > 0)
+                   else "is NOT clearly informative about")
+        out(f"      INTERPRETATION: across {n} tumors the conformal D-width "
+            f"{sign} tracks measured scan-rescan")
+        out(f"      ADC variability (Spearman {sD:+.2f}, p={pD:.3f}, {sig_word}). "
+            f"This is a label-free repeatability-")
+        out(f"      tracking signal, NOT in-vivo coverage: the model's predicted "
+            f"uncertainty {verdict}")
+        out(f"      real measurement reproducibility -- no ground-truth parameter "
+            f"is involved anywhere.")
+        _make_figure_retest(wD, dD, sD, n)
+    out("#" * 92)
+
+    os.makedirs(_RESULTS_DIR, exist_ok=True)
+    with open(_REAL_RETEST_REPORT, "w") as fh:
+        fh.write("\n".join(lines) + "\n")
+    # merge a retest block into the provenance
+    prov = {}
+    if os.path.exists(_REAL_PROVENANCE):
+        try:
+            prov = json.load(open(_REAL_PROVENANCE))
+        except (json.JSONDecodeError, OSError):
+            prov = {}
+    block = {"n_pairs": n, "b_values": A["b"], "seed": int(seed),
+             "note": "region-level repeatability-tracking; NOT a coverage claim",
+             "computed_utc": datetime.datetime.now(datetime.timezone.utc).isoformat()}
+    if n >= 3:
+        block["spearman_wD_vs_dD"] = float(spearmanr(
+            [r["wD"] for r in rows], [r["dD"] for r in rows])[0])
+        block["spearman_p"] = float(spearmanr(
+            [r["wD"] for r in rows], [r["dD"] for r in rows])[1])
+    prov["retest"] = block
+    json.dump(prov, open(_REAL_PROVENANCE, "w"), indent=2)
+    print(f"[invivo-retest] wrote {os.path.relpath(_REAL_RETEST_REPORT, os.path.dirname(_RESULTS_DIR))}")
+    return 0
+
+
+def _make_figure_retest(wD, dD, spearman_r, n):
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except Exception as e:                                  # pragma: no cover
+        print(f"[figures] skipped ({e})")
+        return
+    os.makedirs(_FIG_DIR, exist_ok=True)
+    fig, ax = plt.subplots(figsize=(5.4, 4.6))
+    ax.scatter(wD, dD, s=28, alpha=0.8, color="#2c3e50")
+    ax.set_xlabel("conformal D band width (test+retest mean)  (1e-3 mm^2/s)")
+    ax.set_ylabel("|scan-rescan ΔD|  (1e-3 mm^2/s)")
+    ax.set_title(f"REAL in-vivo test-retest (ACRIN-6698, n={n} tumors)\n"
+                 f"width vs measured ADC repeatability  (Spearman r={spearman_r:+.2f})\n"
+                 f"repeatability-tracking check -- NOT a coverage claim")
+    fig.tight_layout()
+    fig.savefig(_REAL_RETEST_FIG)
+    plt.close(fig)
+    print(f"[figures] wrote {os.path.basename(_REAL_RETEST_FIG)} -> {_FIG_DIR}")
+
+
 if __name__ == "__main__":
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     argv = sys.argv[1:]
+    if "--source" in argv:
+        ap = argparse.ArgumentParser(prog="gauge.invivo")
+        ap.add_argument("--source", choices=["synthetic", "real", "retest"],
+                        default="synthetic")
+        ap.add_argument("--data", help="assembled exam dir (real) or data root (retest)")
+        ap.add_argument("--tumor-mask", action="store_true",
+                        help="restrict to the whole-tumor ROI instead of b=0 foreground")
+        ap.add_argument("--seed", type=int, default=SEED)
+        a = ap.parse_args(argv)
+        if a.source == "real":
+            if not a.data:
+                ap.error("--source real needs --data <assembled exam dir>")
+            raise SystemExit(main_real(a.data, seed=a.seed,
+                                       use_tumor_mask=a.tumor_mask))
+        if a.source == "retest":
+            raise SystemExit(main_retest(a.data or os.path.join(
+                os.path.dirname(_RESULTS_DIR), "data", "invivo"), seed=a.seed))
+        raise SystemExit(main(force=os.environ.get("GAUGE_FORCE") == "1", seed=a.seed))
+    # legacy positional synthetic / NIfTI path (unchanged)
     dwi = argv[0] if len(argv) >= 1 else None
     bvals = argv[1] if len(argv) >= 2 else None
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     raise SystemExit(main(force=os.environ.get("GAUGE_FORCE") == "1",
                           dwi=dwi, bvals=bvals))

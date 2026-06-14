@@ -1,8 +1,8 @@
 ================================================================================================
 GAUGE 03 -- CP3 VERDICT: IRREDUCIBLE IDENTIFIABILITY LIMIT
-  the high-D* gap is bounded away from nominal under every label-free method (best 'MDN+LCP/features': hi-D* marg 0.868 gap +0.032, worst-SNR cell 0.819 gap +0.081). Feature conditioning lifts weak bases but plateaus, because in the high-D* regime the CRLB(D*) std reaches ~1.12x the tercile width (regime unresolvable) and the absolute CRLB grows ~6x. Conformal widths track CRLB (r=0.75), so intervals are honest; what cannot be label-free-guaranteed is coverage CONDITIONAL on a latent axis the data do not identify.
-  high-D* slice (nominal 0.90): Gauge-02 best (conformalized-MDN) marg 0.877 / worst-SNR 0.808; best label-free 'MDN+LCP/features' marg 0.868 / worst-SNR 0.819.
-  identifiability: CRLB(D*)/tercile-width reaches 1.12 at high D* (regime unresolvable); conformal width~CRLB r=0.75.
+  the high-D* gap is bounded away from nominal under every label-free method (best 'MDN+LCP/features': hi-D* marg 0.868 gap +0.032, worst-SNR cell 0.813 gap +0.087). Feature conditioning lifts weak bases but plateaus, because in the high-D* regime the CRLB(D*) std reaches ~1.12x the tercile width (regime unresolvable) and the absolute CRLB grows ~6x. Conformal widths track CRLB (r=0.77), so intervals are honest; what cannot be label-free-guaranteed is coverage CONDITIONAL on a latent axis the data do not identify.
+  high-D* slice (nominal 0.90): Gauge-02 best (conformalized-MDN) marg 0.865 / worst-SNR 0.788; best label-free 'MDN+LCP/features' marg 0.868 / worst-SNR 0.813.
+  identifiability: CRLB(D*)/tercile-width reaches 1.12 at high D* (regime unresolvable); conformal width~CRLB r=0.77.
 ================================================================================================
 
 ################################################################################################
@@ -18,11 +18,11 @@ BASELINE-TO-BEAT -- conditional coverage on the high-D* (top true-D* tercile) sl
                split (plain) |      0.800 |           0.513 |            0.12
                  CQR (plain) |      0.819 |           0.767 |            0.06
           CQR (Mondrian/SNR) |      0.814 |           0.766 |            0.06
-           conformalized-MDN |      0.877 |           0.808 |            0.05
+           conformalized-MDN |      0.865 |           0.788 |            0.05
 ------------------------------------------------------------------------------------------------
 GATE 0: reproduced. Even the strongest Gauge 02 method (conformalized-MDN) under-covers the high-D*
-  slice: hi-D* marginal 0.877 vs nominal 0.90  (gap +0.023); worst-SNR cell 0.808.
-  This 0.023 high-D* gap is the baseline-to-beat for CP1-CP2.
+  slice: hi-D* marginal 0.865 vs nominal 0.90  (gap +0.035); worst-SNR cell 0.788.
+  This 0.035 high-D* gap is the baseline-to-beat for CP1-CP2.
   (high-D* per-SNR cell sizes [193, 195, 212, 216, 184]; worst-cell binomial SE ~0.022, so worst-SNR differences <~0.04 are within sampling noise.)
 
 ################################################################################################
@@ -41,13 +41,13 @@ CP1 / GATE 1 (HALT-TO-REPORT) -- feature-conditional conformal (plug-in & observ
      -- the plug-in estimate is least reliable exactly where it must route correctly.
 
 [1.2] Does plug-in/feature conditioning recover the high-D* slice? (coverage by TRUE D* regime)
-  reference: split(plain) hi-D* marg 0.800, and the Gauge-02 best conformalized-MDN hi-D* marg 0.877.
+  reference: split(plain) hi-D* marg 0.800, and the Gauge-02 best conformalized-MDN hi-D* marg 0.865.
                       method | hi-D* marg | hi-D* worst-SNR | vs conformalized
 ------------------------------------------------------------------------------------------------
-     split (Mondrian/D-hat*) |      0.764 |           0.477 |       -0.113
-       CQR (Mondrian/D-hat*) |      0.821 |           0.772 |       -0.056
-        split (LCP/features) |      0.859 |           0.632 |       -0.018
-          CQR (LCP/features) |      0.819 |           0.793 |       -0.058
+     split (Mondrian/D-hat*) |      0.764 |           0.477 |       -0.101
+       CQR (Mondrian/D-hat*) |      0.821 |           0.772 |       -0.044
+        split (LCP/features) |      0.859 |           0.632 |       -0.006
+          CQR (LCP/features) |      0.819 |           0.793 |       -0.046
   (LCP feature bandwidth h=2.037 on standardized proxies; 'vs conformalized' = hi-D* marg minus the Gauge-02 best; + = beats it.)
   Feature conditioning lifts the weak split base (0.800 -> 0.859 via LCP) but none exceed the conformalized-MDN baseline.
 
@@ -68,15 +68,15 @@ Candes 2023) over an observable D-hat* basis, richer feature-conditional CQR, an
 conditioning applied to the STRONGEST base (the MDN band).
                       method | hi-D* marg | hi-D* worst-SNR | worst cell(all) | vs conformalized
 ------------------------------------------------------------------------------------------------
-      split (CondConf/Gibbs) |      0.843 |           0.653 |           0.653 |       -0.034
-        CQR (CondConf/Gibbs) |      0.817 |           0.766 |           0.766 |       -0.060
- richer-CQR (signal+proxies) |      0.830 |           0.705 |           0.705 |       -0.047
-            MDN+LCP/features |      0.868 |           0.819 |           0.819 |       -0.009
-          MDN+CondConf/Gibbs |      0.850 |           0.793 |           0.793 |       -0.027
+      split (CondConf/Gibbs) |      0.843 |           0.653 |           0.653 |       -0.022
+        CQR (CondConf/Gibbs) |      0.817 |           0.766 |           0.766 |       -0.048
+ richer-CQR (signal+proxies) |      0.830 |           0.705 |           0.705 |       -0.035
+            MDN+LCP/features |      0.868 |           0.813 |           0.813 |       +0.003
+          MDN+CondConf/Gibbs |      0.855 |           0.793 |           0.793 |       -0.010
 ------------------------------------------------------------------------------------------------
   GATE 2: best label-free method (by hi-D* worst-SNR cell) = 'MDN+LCP/features'
-    hi-D* marginal 0.868 (residual gap +0.032); hi-D* worst-SNR cell 0.819 (residual gap +0.081), nominal 0.90.
-    NO label-free method MATERIALLY beats the Gauge-02 conformalized-MDN baseline on the high-D* slice (best edge +0.010 is within the ~0.04 sampling noise); the worst-SNR cell stays ~0.82 (gap +0.081).
+    hi-D* marginal 0.868 (residual gap +0.032); hi-D* worst-SNR cell 0.813 (residual gap +0.087), nominal 0.90.
+    NO label-free method MATERIALLY beats the Gauge-02 conformalized-MDN baseline on the high-D* slice (best edge +0.026 is within the ~0.04 sampling noise); the worst-SNR cell stays ~0.81 (gap +0.087).
 
 ################################################################################################
 CP3 / GATE 3 -- identifiability diagnosis: is the residual gap irreducible?
@@ -101,7 +101,7 @@ CP3 / GATE 3 -- identifiability diagnosis: is the residual gap irreducible?
      A voxel's D* cannot be localized to its own tercile from the data -- the regime is UNRESOLVABLE,
      so no label-free rule (D-hat* or any feature) can route high-D* voxels to a wider-interval stratum.
 
-  Conformal interval width vs CRLB(D*) (log-log corr, 'MDN+LCP/features'): r = 0.75
+  Conformal interval width vs CRLB(D*) (log-log corr, 'MDN+LCP/features'): r = 0.77
   => conformal CORRECTLY widens where D* is under-identified; the intervals are honest, not broken.
 
 [3.3] The identifiability wall:
@@ -115,5 +115,43 @@ CP3 / GATE 3 -- identifiability diagnosis: is the residual gap irreducible?
 
 ================================================================================================
 GATE 3 VERDICT: IRREDUCIBLE IDENTIFIABILITY LIMIT
-  the high-D* gap is bounded away from nominal under every label-free method (best 'MDN+LCP/features': hi-D* marg 0.868 gap +0.032, worst-SNR cell 0.819 gap +0.081). Feature conditioning lifts weak bases but plateaus, because in the high-D* regime the CRLB(D*) std reaches ~1.12x the tercile width (regime unresolvable) and the absolute CRLB grows ~6x. Conformal widths track CRLB (r=0.75), so intervals are honest; what cannot be label-free-guaranteed is coverage CONDITIONAL on a latent axis the data do not identify.
+  the high-D* gap is bounded away from nominal under every label-free method (best 'MDN+LCP/features': hi-D* marg 0.868 gap +0.032, worst-SNR cell 0.813 gap +0.087). Feature conditioning lifts weak bases but plateaus, because in the high-D* regime the CRLB(D*) std reaches ~1.12x the tercile width (regime unresolvable) and the absolute CRLB grows ~6x. Conformal widths track CRLB (r=0.77), so intervals are honest; what cannot be label-free-guaranteed is coverage CONDITIONAL on a latent axis the data do not identify.
 ================================================================================================
+
+===== MULTI-SEED CI APPENDIX (auto; additive -- point columns above unchanged) =====
+  n_seeds=16  point=seed-0 (non-NN) / across-seed mean (NN, marked *)  band=[5,95] percentile
+
+  --- fig:attack (E) ---
+    CQR (plain) hi-D* marg                        0.826  CI [0.809, 0.851]  (n=16) 
+    conformalized-MDN hi-D* marg                  0.868  CI [0.856, 0.889]  (n=16)*
+    split (Mondrian/D-hat*) hi-D* marg            0.778  CI [0.760, 0.800]  (n=16) 
+    CQR (Mondrian/D-hat*) hi-D* marg              0.832  CI [0.812, 0.861]  (n=16) 
+    split (LCP/features) hi-D* marg               0.844  CI [0.825, 0.869]  (n=16) 
+    CQR (LCP/features) hi-D* marg                 0.824  CI [0.806, 0.851]  (n=16) 
+    split (CondConf/Gibbs) hi-D* marg             0.832  CI [0.809, 0.857]  (n=16) 
+    CQR (CondConf/Gibbs) hi-D* marg               0.829  CI [0.811, 0.857]  (n=16) 
+    richer-CQR (signal+proxies) hi-D* marg        0.829  CI [0.810, 0.847]  (n=16) 
+    MDN+LCP/features hi-D* marg                   0.874  CI [0.860, 0.899]  (n=16)*
+    MDN+CondConf/Gibbs hi-D* marg                 0.868  CI [0.847, 0.892]  (n=16)*
+    CQR (plain) hi-D* worst                       0.761  CI [0.729, 0.795]  (n=16) 
+    conformalized-MDN hi-D* worst                 0.786  CI [0.751, 0.826]  (n=16)*
+    split (Mondrian/D-hat*) hi-D* worst           0.481  CI [0.406, 0.533]  (n=16) 
+    CQR (Mondrian/D-hat*) hi-D* worst             0.761  CI [0.721, 0.798]  (n=16) 
+    split (LCP/features) hi-D* worst              0.620  CI [0.568, 0.685]  (n=16) 
+    CQR (LCP/features) hi-D* worst                0.773  CI [0.750, 0.810]  (n=16) 
+    split (CondConf/Gibbs) hi-D* worst            0.658  CI [0.583, 0.726]  (n=16) 
+    CQR (CondConf/Gibbs) hi-D* worst              0.771  CI [0.732, 0.817]  (n=16) 
+    richer-CQR (signal+proxies) hi-D* worst       0.735  CI [0.685, 0.780]  (n=16) 
+    MDN+LCP/features hi-D* worst                  0.807  CI [0.774, 0.845]  (n=16)*
+    MDN+CondConf/Gibbs hi-D* worst                0.822  CI [0.781, 0.867]  (n=16)*
+
+  --- fig:crlb + identifiability (E) ---
+    routing misroute %                               33  CI [30, 35]%  (n=16) 
+    CRLB/tercile-width lo                          0.34  CI [0.32, 0.36]  (n=16) 
+    CRLB/tercile-width mid                         0.67  CI [0.64, 0.71]  (n=16) 
+    CRLB/tercile-width hi                          1.10  CI [1.02, 1.15]  (n=16) 
+    abs CRLB growth x                              5.72  CI [5.72, 5.72]  (n=16) 
+    width-CRLB log-log r                           0.76  CI [0.72, 0.77]  (n=16)*
+    smoking gun hi by TRUE tercile                0.778  CI [0.760, 0.800]  (n=16) 
+    smoking gun hi by OBSERVED stratum            0.900  CI [0.884, 0.920]  (n=16) 
+

@@ -1,0 +1,113 @@
+====================================================================================================
+GAUGE-CI -- OLD -> NEW (E) POINT TABLE  (committed value -> across-seed mean + band)
+====================================================================================================
+n_seeds=16.  Every (E) point ships as the across-seed MEAN (D rule change: a seed-0 point
+can fall outside its own band).  '*' = torch-NN-derived.  Human wires these into gauge.tex.
+
+--- tab:hidstar (E) ---
+  number                                        committed  -> new mean              band    delta
+  raw-MDN hi-D* marg                                0.825        0.841    [0.829, 0.857]   +0.016*
+  CQR (plain) hi-D* marg                            0.819        0.826    [0.809, 0.851]   +0.007 
+  split (Mondrian/SNR) hi-D* marg                   0.808        0.829    [0.813, 0.844]   +0.021 
+  CQR (Mondrian/SNR) hi-D* marg                     0.814        0.829    [0.811, 0.854]   +0.015 
+  conformalized-MDN hi-D* marg                      0.877        0.868    [0.856, 0.889]   -0.009*
+  raw-MDN hi-D* worst-SNR                           0.756        0.753    [0.719, 0.789]   -0.003*
+  CQR (plain) hi-D* worst-SNR                       0.767        0.761    [0.729, 0.795]   -0.006 
+  split (Mondrian/SNR) hi-D* worst-SNR              0.764        0.781    [0.743, 0.810]   +0.017 
+  CQR (Mondrian/SNR) hi-D* worst-SNR                0.766        0.789    [0.752, 0.828]   +0.023 
+  conformalized-MDN hi-D* worst-SNR                 0.808        0.786    [0.751, 0.826]   -0.022*
+
+--- fig:attack (E) ---
+  number                                        committed  -> new mean              band    delta
+  CQR (plain) hi-D* marg                            0.819        0.826    [0.809, 0.851]   +0.007 
+  conformalized-MDN hi-D* marg                      0.877        0.868    [0.856, 0.889]   -0.009*
+  split (Mondrian/D-hat*) hi-D* marg                0.764        0.778    [0.760, 0.800]   +0.014 
+  CQR (Mondrian/D-hat*) hi-D* marg                  0.821        0.832    [0.812, 0.861]   +0.011 
+  split (LCP/features) hi-D* marg                   0.859        0.844    [0.825, 0.869]   -0.015 
+  CQR (LCP/features) hi-D* marg                     0.819        0.824    [0.806, 0.851]   +0.005 
+  split (CondConf/Gibbs) hi-D* marg                 0.843        0.832    [0.809, 0.857]   -0.011 
+  CQR (CondConf/Gibbs) hi-D* marg                   0.817        0.829    [0.811, 0.857]   +0.012 
+  richer-CQR (signal+proxies) hi-D* marg            0.830        0.829    [0.810, 0.847]   -0.001 
+  MDN+LCP/features hi-D* marg                       0.868        0.874    [0.860, 0.899]   +0.006*
+  MDN+CondConf/Gibbs hi-D* marg                     0.850        0.868    [0.847, 0.892]   +0.018*
+  CQR (plain) hi-D* worst                           0.767        0.761    [0.729, 0.795]   -0.006 
+  conformalized-MDN hi-D* worst                     0.808        0.786    [0.751, 0.826]   -0.022*
+  split (Mondrian/D-hat*) hi-D* worst               0.477        0.481    [0.406, 0.533]   +0.004 
+  CQR (Mondrian/D-hat*) hi-D* worst                 0.772        0.761    [0.721, 0.798]   -0.011 
+  split (LCP/features) hi-D* worst                  0.632        0.620    [0.568, 0.685]   -0.012 
+  CQR (LCP/features) hi-D* worst                    0.793        0.773    [0.750, 0.810]   -0.020 
+  split (CondConf/Gibbs) hi-D* worst                0.653        0.658    [0.583, 0.726]   +0.005 
+  CQR (CondConf/Gibbs) hi-D* worst                  0.766        0.771    [0.732, 0.817]   +0.005 
+  richer-CQR (signal+proxies) hi-D* worst           0.705        0.735    [0.685, 0.780]   +0.030 
+  MDN+LCP/features hi-D* worst                      0.819        0.807    [0.774, 0.845]   -0.012*
+  MDN+CondConf/Gibbs hi-D* worst                    0.793        0.822    [0.781, 0.867]   +0.029*
+
+--- fig:crlb + identifiability (E) ---
+  number                                        committed  -> new mean              band    delta
+  routing misroute %                                 31.0         32.5         [30, 35]%     +1.5 
+  CRLB/tercile-width lo                              0.34         0.34      [0.32, 0.36]    +0.00 
+  CRLB/tercile-width mid                             0.69         0.67      [0.64, 0.71]    -0.02 
+  CRLB/tercile-width hi                              1.12         1.10      [1.02, 1.15]    -0.02 
+  abs CRLB growth x                                  6.00         5.72      [5.72, 5.72]    -0.28 
+  width-CRLB log-log r                               0.75         0.76      [0.72, 0.77]    +0.01*
+  smoking gun hi by TRUE tercile                    0.760        0.778    [0.760, 0.800]   +0.018 
+  smoking gun hi by OBSERVED stratum                0.900        0.900    [0.884, 0.920]   -0.000 
+
+--- tab:shift (E) ---
+  number                                        committed  -> new mean              band    delta
+  SNR shift (low) naive D                           0.610        0.592    [0.557, 0.637]   -0.018 
+  SNR shift (low) naive D*                          0.744        0.739    [0.709, 0.762]   -0.005 
+  SNR shift (low) naive f                           0.616        0.614    [0.587, 0.660]   -0.002 
+  prior shift (harder tissue) naive D               0.970        0.972    [0.965, 0.978]   +0.002 
+  prior shift (harder tissue) naive D*              0.515        0.508    [0.479, 0.543]   -0.007 
+  prior shift (harder tissue) naive f               0.906        0.909    [0.896, 0.923]   +0.003 
+  tri-exp misspec naive D                           0.908        0.907    [0.896, 0.920]   -0.001 
+  tri-exp misspec naive D*                          0.846        0.843    [0.828, 0.855]   -0.003 
+  tri-exp misspec naive f                           0.910        0.912    [0.900, 0.925]   +0.002 
+  SNR shift (low) weighted D                        0.901        0.882    [0.855, 0.908]   -0.019 
+  SNR shift (low) weighted D*                       0.899        0.901    [0.889, 0.912]   +0.002 
+  SNR shift (low) weighted f                        0.911        0.909    [0.892, 0.932]   -0.002 
+  prior shift (harder tissue) weighted D            0.900        0.919    [0.884, 0.956]   +0.019 
+  prior shift (harder tissue) weighted D*           0.975        0.991    [0.974, 1.000]   +0.016 
+  prior shift (harder tissue) weighted f            0.916        0.902    [0.880, 0.921]   -0.014 
+  tri-exp misspec weighted D                        0.886        0.891    [0.884, 0.900]   +0.005 
+  tri-exp misspec weighted D*                       0.928        0.933    [0.924, 0.941]   +0.005 
+  tri-exp misspec weighted f                        0.894        0.898    [0.889, 0.906]   +0.004 
+  latent hi-D* marg                                 0.815        0.814    [0.787, 0.839]   -0.001 
+  latent hi-D* worst                                0.595        0.573    [0.514, 0.634]   -0.022 
+  latent marginal D*                                0.900        0.898    [0.880, 0.913]   -0.002 
+
+--- tab:acq (E) ---
+  number                                        committed  -> new mean              band    delta
+  clinical (11 b) hi-D* marg                        0.841        0.821    [0.794, 0.845]   -0.020 
+  clinical (11 b) hi-D* worst                       0.595        0.596    [0.542, 0.702]   +0.001 
+  clinical (11 b) CRLB/tercile-width                 1.25         1.24      [1.17, 1.37]    -0.01 
+  CRLB-optimal (11 b) hi-D* marg                    0.844        0.835    [0.795, 0.862]   -0.009 
+  CRLB-optimal (11 b) hi-D* worst                   0.608        0.603    [0.541, 0.678]   -0.005 
+  CRLB-optimal (11 b) CRLB/tercile-width             1.05         1.03      [0.97, 1.16]    -0.02 
+  dense (22 b) hi-D* marg                           0.845        0.808    [0.788, 0.836]   -0.037 
+  dense (22 b) hi-D* worst                          0.596        0.551    [0.508, 0.597]   -0.045 
+  dense (22 b) CRLB/tercile-width                    1.06         1.11      [1.05, 1.21]    +0.05 
+
+--- fig:heatmap hi-D* row cells (E) ---
+  number                                        committed  -> new mean              band    delta
+  raw-MDN hi-cell SNR10                             0.760        0.773    [0.725, 0.827]   +0.013*
+  raw-MDN hi-cell SNR20                             0.770        0.779    [0.729, 0.836]   +0.009*
+  raw-MDN hi-cell SNR30                             0.800        0.836    [0.785, 0.888]   +0.036*
+  raw-MDN hi-cell SNR50                             0.880        0.885    [0.848, 0.933]   +0.005*
+  raw-MDN hi-cell SNR100                            0.920        0.930    [0.903, 0.970]   +0.010*
+  CQR (plain) hi-cell SNR10                         0.770        0.772    [0.729, 0.831]   +0.002 
+  CQR (plain) hi-cell SNR20                         0.830        0.801    [0.762, 0.831]   -0.029 
+  CQR (plain) hi-cell SNR30                         0.820        0.834    [0.801, 0.865]   +0.014 
+  CQR (plain) hi-cell SNR50                         0.870        0.851    [0.807, 0.897]   -0.019 
+  CQR (plain) hi-cell SNR100                        0.820        0.870    [0.824, 0.911]   +0.050 
+  CQR (Mondrian/SNR) hi-cell SNR10                  0.840        0.851    [0.799, 0.919]   +0.011 
+  CQR (Mondrian/SNR) hi-cell SNR20                  0.840        0.828    [0.791, 0.862]   -0.012 
+  CQR (Mondrian/SNR) hi-cell SNR30                  0.820        0.833    [0.798, 0.869]   +0.013 
+  CQR (Mondrian/SNR) hi-cell SNR50                  0.800        0.818    [0.766, 0.873]   +0.018 
+  CQR (Mondrian/SNR) hi-cell SNR100                 0.770        0.813    [0.762, 0.864]   +0.043 
+  conformalized-MDN hi-cell SNR10                   0.810        0.804    [0.756, 0.863]   -0.006*
+  conformalized-MDN hi-cell SNR20                   0.830        0.809    [0.763, 0.866]   -0.021*
+  conformalized-MDN hi-cell SNR30                   0.860        0.861    [0.824, 0.902]   +0.001*
+  conformalized-MDN hi-cell SNR50                   0.930        0.915    [0.884, 0.947]   -0.015*
+  conformalized-MDN hi-cell SNR100                  0.960        0.952    [0.931, 0.981]   -0.008*

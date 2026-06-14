@@ -11,3 +11,6 @@ venv/
 
 # Regenerable prediction caches (large; rebuilt by gauge.baselines.build_predictions)
 results/*.pkl
+
+# Regenerable per-seed multiseed raw quantities (aggregated into results/multiseed.json)
+results/seeds/

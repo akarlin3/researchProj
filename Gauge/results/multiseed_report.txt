@@ -1,0 +1,131 @@
+====================================================================================================
+GAUGE-CI -- MULTI-SEED CONFIDENCE BANDS (Checkpoints C-E)
+====================================================================================================
+n_seeds = 16   seeds[0]=20260613 (index 0)   alpha=0.1
+per-seed n: test=3000, hi-D* tercile=1000, hi-D* worst-cell=184, robustness test=2500
+point = seed-0 for data-resampling (non-NN) items; across-seed MEAN for torch-NN-derived items (marked *).
+bands = empirical [5, 95] percentile across seeds; r aggregated in Fisher-z.
+
+----------------------------------------------------------------------------------------------------
+(E) TABLE 2 -- high-D* tercile coverage per method
+----------------------------------------------------------------------------------------------------
+  raw-MDN hi-D* marg                             0.841 [0.829, 0.857] (mean 0.841 sd 0.012)*
+  raw-MDN hi-D* worst-SNR                        0.753 [0.719, 0.789] (mean 0.753 sd 0.025)*
+  CQR (plain) hi-D* marg                         0.826 [0.809, 0.851] (mean 0.826 sd 0.014) 
+  CQR (plain) hi-D* worst-SNR                    0.761 [0.729, 0.795] (mean 0.761 sd 0.023) 
+  split (Mondrian/SNR) hi-D* marg                0.829 [0.813, 0.844] (mean 0.829 sd 0.012) 
+  split (Mondrian/SNR) hi-D* worst-SNR           0.781 [0.743, 0.810] (mean 0.781 sd 0.029) 
+  CQR (Mondrian/SNR) hi-D* marg                  0.829 [0.811, 0.854] (mean 0.829 sd 0.015) 
+  CQR (Mondrian/SNR) hi-D* worst-SNR             0.789 [0.752, 0.828] (mean 0.789 sd 0.024) 
+  conformalized-MDN hi-D* marg                   0.868 [0.856, 0.889] (mean 0.868 sd 0.012)*
+  conformalized-MDN hi-D* worst-SNR              0.786 [0.751, 0.826] (mean 0.786 sd 0.027)*
+
+----------------------------------------------------------------------------------------------------
+(E) FIG 4 -- 11 label-free hi-D* methods (marg + worst-SNR)
+----------------------------------------------------------------------------------------------------
+  CQR (plain) hi-D* marg                         0.826 [0.809, 0.851] (mean 0.826 sd 0.014) 
+  CQR (plain) hi-D* worst                        0.761 [0.729, 0.795] (mean 0.761 sd 0.023) 
+  conformalized-MDN hi-D* marg                   0.868 [0.856, 0.889] (mean 0.868 sd 0.012)*
+  conformalized-MDN hi-D* worst                  0.786 [0.751, 0.826] (mean 0.786 sd 0.027)*
+  split (Mondrian/D-hat*) hi-D* marg             0.778 [0.760, 0.800] (mean 0.778 sd 0.014) 
+  split (Mondrian/D-hat*) hi-D* worst            0.481 [0.406, 0.533] (mean 0.481 sd 0.041) 
+  CQR (Mondrian/D-hat*) hi-D* marg               0.832 [0.812, 0.861] (mean 0.832 sd 0.017) 
+  CQR (Mondrian/D-hat*) hi-D* worst              0.761 [0.721, 0.798] (mean 0.761 sd 0.025) 
+  split (LCP/features) hi-D* marg                0.844 [0.825, 0.869] (mean 0.844 sd 0.017) 
+  split (LCP/features) hi-D* worst               0.620 [0.568, 0.685] (mean 0.620 sd 0.041) 
+  CQR (LCP/features) hi-D* marg                  0.824 [0.806, 0.851] (mean 0.824 sd 0.015) 
+  CQR (LCP/features) hi-D* worst                 0.773 [0.750, 0.810] (mean 0.773 sd 0.020) 
+  split (CondConf/Gibbs) hi-D* marg              0.832 [0.809, 0.857] (mean 0.832 sd 0.016) 
+  split (CondConf/Gibbs) hi-D* worst             0.658 [0.583, 0.726] (mean 0.658 sd 0.050) 
+  CQR (CondConf/Gibbs) hi-D* marg                0.829 [0.811, 0.857] (mean 0.829 sd 0.016) 
+  CQR (CondConf/Gibbs) hi-D* worst               0.771 [0.732, 0.817] (mean 0.771 sd 0.030) 
+  richer-CQR (signal+proxies) hi-D* marg         0.829 [0.810, 0.847] (mean 0.829 sd 0.014) 
+  richer-CQR (signal+proxies) hi-D* worst        0.735 [0.685, 0.780] (mean 0.735 sd 0.039) 
+  MDN+LCP/features hi-D* marg                    0.874 [0.860, 0.899] (mean 0.874 sd 0.013)*
+  MDN+LCP/features hi-D* worst                   0.807 [0.774, 0.845] (mean 0.807 sd 0.023)*
+  MDN+CondConf/Gibbs hi-D* marg                  0.868 [0.847, 0.892] (mean 0.868 sd 0.018)*
+  MDN+CondConf/Gibbs hi-D* worst                 0.822 [0.781, 0.867] (mean 0.822 sd 0.031)*
+
+----------------------------------------------------------------------------------------------------
+(E) IDENTIFIABILITY -- routing, CRLB ratios, width-CRLB r
+----------------------------------------------------------------------------------------------------
+  routing misroute %                             32.531 [30.150, 35.100] (mean 32.531 sd 1.962) 
+  CRLB/tercile-width  lo                         0.343 [0.324, 0.364] (mean 0.343 sd 0.013) 
+  CRLB/tercile-width  mid                        0.668 [0.637, 0.715] (mean 0.668 sd 0.028) 
+  CRLB/tercile-width  hi  (>1 = wall)            1.104 [1.023, 1.148] (mean 1.104 sd 0.041) 
+  abs CRLB growth (x)                            5.722 [5.722, 5.722] (mean 5.722 sd 0.000) 
+  width-CRLB log-log r                           0.755 [0.722, 0.773] (mean 0.755 sd 0.018)*
+  smoking gun: hi by OBSERVED stratum            0.900 [0.884, 0.920] (mean 0.900 sd 0.012) 
+  smoking gun: hi by TRUE tercile                0.778 [0.760, 0.800] (mean 0.778 sd 0.014) 
+
+----------------------------------------------------------------------------------------------------
+(E) TABLE 4 -- acquisition: hi-D* coverage + resolution ratio by scheme
+----------------------------------------------------------------------------------------------------
+  clinical (11 b) hi-D* marg                     0.821 [0.794, 0.845] (mean 0.821 sd 0.020) 
+  clinical (11 b) hi-D* worst                    0.596 [0.542, 0.702] (mean 0.596 sd 0.051) 
+  clinical (11 b) CRLB/width (>1=wall)           1.237 [1.173, 1.365] (mean 1.237 sd 0.066) 
+  CRLB-optimal (11 b) hi-D* marg                 0.835 [0.795, 0.862] (mean 0.835 sd 0.023) 
+  CRLB-optimal (11 b) hi-D* worst                0.603 [0.541, 0.678] (mean 0.603 sd 0.053) 
+  CRLB-optimal (11 b) CRLB/width (>1=wall)       1.031 [0.970, 1.159] (mean 1.031 sd 0.063) 
+  dense (22 b) hi-D* marg                        0.808 [0.788, 0.836] (mean 0.808 sd 0.016) 
+  dense (22 b) hi-D* worst                       0.551 [0.508, 0.597] (mean 0.551 sd 0.034) 
+  dense (22 b) CRLB/width (>1=wall)              1.114 [1.047, 1.213] (mean 1.114 sd 0.062) 
+
+----------------------------------------------------------------------------------------------------
+(E) TABLE 3 -- exchangeability breaks (naive vs weighted) + latent
+----------------------------------------------------------------------------------------------------
+  SNR shift (low) naive D                        0.592 [0.557, 0.637] (mean 0.592 sd 0.028) 
+  SNR shift (low) weighted D                     0.882 [0.855, 0.908] (mean 0.882 sd 0.019) 
+  SNR shift (low) naive Dstar                    0.739 [0.709, 0.762] (mean 0.739 sd 0.020) 
+  SNR shift (low) weighted Dstar                 0.901 [0.889, 0.912] (mean 0.901 sd 0.009) 
+  SNR shift (low) naive f                        0.614 [0.587, 0.660] (mean 0.614 sd 0.028) 
+  SNR shift (low) weighted f                     0.909 [0.892, 0.932] (mean 0.909 sd 0.014) 
+  prior shift (harder tissue) naive D            0.972 [0.965, 0.978] (mean 0.972 sd 0.004) 
+  prior shift (harder tissue) weighted D         0.919 [0.884, 0.956] (mean 0.919 sd 0.024) 
+  prior shift (harder tissue) naive Dstar        0.508 [0.479, 0.543] (mean 0.508 sd 0.021) 
+  prior shift (harder tissue) weighted Dstar     0.991 [0.974, 1.000] (mean 0.991 sd 0.010) 
+  prior shift (harder tissue) naive f            0.909 [0.896, 0.923] (mean 0.909 sd 0.009) 
+  prior shift (harder tissue) weighted f         0.902 [0.880, 0.921] (mean 0.902 sd 0.014) 
+  tri-exp misspec naive D                        0.907 [0.896, 0.920] (mean 0.907 sd 0.009) 
+  tri-exp misspec weighted D                     0.891 [0.884, 0.900] (mean 0.891 sd 0.006) 
+  tri-exp misspec naive Dstar                    0.843 [0.828, 0.855] (mean 0.843 sd 0.009) 
+  tri-exp misspec weighted Dstar                 0.933 [0.924, 0.941] (mean 0.933 sd 0.007) 
+  tri-exp misspec naive f                        0.912 [0.900, 0.925] (mean 0.912 sd 0.009) 
+  tri-exp misspec weighted f                     0.898 [0.889, 0.906] (mean 0.898 sd 0.006) 
+  latent hi-D* marg                              0.814 [0.787, 0.839] (mean 0.814 sd 0.019) 
+  latent hi-D* worst                             0.573 [0.514, 0.634] (mean 0.573 sd 0.039) 
+
+====================================================================================================
+(G) MARGINAL COVERAGE -- finite-sample GUARANTEED; band = MC precision, NOT uncertainty about the guarantee
+====================================================================================================
+  conformal:CQR-HGB/D                            0.901 [0.886, 0.910] (mean 0.900 sd 0.007) 
+  conformal:CQR-HGB/D*                           0.902 [0.896, 0.912] (mean 0.904 sd 0.006) 
+  conformal:CQR-HGB/f                            0.893 [0.886, 0.904] (mean 0.895 sd 0.006) 
+  conformal:split-NLLS/D                         0.899 [0.884, 0.909] (mean 0.898 sd 0.009) 
+  conformal:split-NLLS/D*                        0.897 [0.891, 0.914] (mean 0.901 sd 0.008) 
+  conformal:split-NLLS/f                         0.907 [0.888, 0.911] (mean 0.900 sd 0.009) 
+  conformalized:Bayesian-MCMC/D                  0.895 [0.881, 0.910] (mean 0.896 sd 0.010) 
+  conformalized:Bayesian-MCMC/D*                 0.894 [0.892, 0.913] (mean 0.901 sd 0.008) 
+  conformalized:Bayesian-MCMC/f                  0.876 [0.881, 0.911] (mean 0.896 sd 0.010) 
+  conformalized:DeepEnsemble-Point/D             0.882 [0.881, 0.913] (mean 0.896 sd 0.010)*
+  conformalized:DeepEnsemble-Point/D*            0.896 [0.893, 0.914] (mean 0.902 sd 0.008)*
+  conformalized:DeepEnsemble-Point/f             0.899 [0.883, 0.909] (mean 0.899 sd 0.008)*
+  conformalized:MDN-DeepEnsemble/D               0.890 [0.890, 0.911] (mean 0.900 sd 0.007)*
+  conformalized:MDN-DeepEnsemble/D*              0.901 [0.893, 0.913] (mean 0.903 sd 0.008)*
+  conformalized:MDN-DeepEnsemble/f               0.882 [0.886, 0.909] (mean 0.899 sd 0.008)*
+  conformalized:PNN-Gaussian/D                   0.912 [0.888, 0.908] (mean 0.900 sd 0.008)*
+  conformalized:PNN-Gaussian/D*                  0.909 [0.885, 0.912] (mean 0.900 sd 0.010)*
+  conformalized:PNN-Gaussian/f                   0.895 [0.882, 0.909] (mean 0.899 sd 0.009)*
+  raw:Bayesian-MCMC/D                            0.876 [0.864, 0.881] (mean 0.873 sd 0.007) 
+  raw:Bayesian-MCMC/D*                           0.870 [0.867, 0.884] (mean 0.875 sd 0.006) 
+  raw:Bayesian-MCMC/f                            0.855 [0.854, 0.873] (mean 0.863 sd 0.007) 
+  raw:DeepEnsemble-Point/D                       0.436 [0.422, 0.468] (mean 0.443 sd 0.017)*
+  raw:DeepEnsemble-Point/D*                      0.425 [0.424, 0.470] (mean 0.450 sd 0.017)*
+  raw:DeepEnsemble-Point/f                       0.475 [0.451, 0.496] (mean 0.472 sd 0.015)*
+  raw:MDN-DeepEnsemble/D                         0.870 [0.855, 0.880] (mean 0.867 sd 0.009)*
+  raw:MDN-DeepEnsemble/D*                        0.876 [0.867, 0.890] (mean 0.878 sd 0.008)*
+  raw:MDN-DeepEnsemble/f                         0.859 [0.859, 0.877] (mean 0.869 sd 0.006)*
+  raw:PNN-Gaussian/D                             0.787 [0.769, 0.805] (mean 0.785 sd 0.013)*
+  raw:PNN-Gaussian/D*                            0.833 [0.822, 0.850] (mean 0.837 sd 0.012)*
+  raw:PNN-Gaussian/f                             0.767 [0.761, 0.811] (mean 0.788 sd 0.018)*
+====================================================================================================

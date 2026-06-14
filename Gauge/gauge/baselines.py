@@ -75,7 +75,14 @@ def _phys_from_std(std_samples, ystd):
 # --------------------------------------------------------------------------- #
 # torch MLP baselines
 # --------------------------------------------------------------------------- #
-def _make_mlp(torch, nn, n_in, n_out, hidden=64):
+def _make_mlp(torch, nn, n_in, n_out, hidden=64, seed=None):
+    # Seed BEFORE constructing the layers so weight initialisation is a reproducible
+    # function of ``seed`` -- NOT of torch's process-global RNG state + call order.
+    # (Gauge-CI determinism fix: the legacy code seeded inside ``_train`` AFTER the
+    # net was already built, so init drew from the global generator and never tracked
+    # the run seed -- the "multi-seed secretly single-init" trap.)
+    if seed is not None:
+        torch.manual_seed(int(seed))
     return nn.Sequential(
         nn.Linear(n_in, hidden), nn.ReLU(),
         nn.Linear(hidden, hidden), nn.ReLU(),
@@ -83,8 +90,8 @@ def _make_mlp(torch, nn, n_in, n_out, hidden=64):
     )
 
 
-def _train(torch, net, Xtr, Ytr, loss_fn, seed, epochs=600, lr=2e-3, wd=1e-5):
-    torch.manual_seed(seed)
+def _train(torch, net, Xtr, Ytr, loss_fn, epochs=600, lr=2e-3, wd=1e-5):
+    # Net init is already seeded in ``_make_mlp``; full-batch Adam consumes no RNG.
     opt = torch.optim.Adam(net.parameters(), lr=lr, weight_decay=wd)
     Xt = torch.tensor(Xtr, dtype=torch.float32)
     Yt = torch.tensor(Ytr, dtype=torch.float32)
@@ -109,13 +116,13 @@ class SingleGaussianPNN:
         import torch.nn as nn
         self.xs, self.ys = _Std().fit(X), _Std().fit(Y)
         Xs, Ys = self.xs.fwd(X), self.ys.fwd(Y)
-        self.net = _make_mlp(torch, nn, X.shape[1], 6, self.hidden)
+        self.net = _make_mlp(torch, nn, X.shape[1], 6, self.hidden, seed=self.seed)
 
         def nll(out, y):
             mean, logvar = out[:, :3], out[:, 3:].clamp(-8, 8)
             return (0.5 * (logvar + (y - mean) ** 2 / torch.exp(logvar))).mean()
 
-        self.final_loss = _train(torch, self.net, Xs, Ys, nll, self.seed,
+        self.final_loss = _train(torch, self.net, Xs, Ys, nll,
                                  epochs=self.epochs)
         return self
 
@@ -159,9 +166,9 @@ class MDNDeepEnsemble:
 
         self.nets, self.losses = [], []
         for m in range(self.M):
-            net = _make_mlp(torch, nn, X.shape[1], out_dim, self.hidden)
-            loss = _train(torch, net, Xs, Ys, mdn_nll, self.seed * 100 + m,
-                          epochs=self.epochs)
+            net = _make_mlp(torch, nn, X.shape[1], out_dim, self.hidden,
+                            seed=self.seed * 100 + m)
+            loss = _train(torch, net, Xs, Ys, mdn_nll, epochs=self.epochs)
             self.nets.append(net)
             self.losses.append(loss)
         return self
@@ -229,8 +236,9 @@ class DeepEnsemblePoint:
         mse = lambda out, y: ((out - y) ** 2).mean()
         self.nets = []
         for m in range(self.M):
-            net = _make_mlp(torch, nn, X.shape[1], 3, self.hidden)
-            _train(torch, net, Xs, Ys, mse, self.seed * 50 + m, epochs=self.epochs)
+            net = _make_mlp(torch, nn, X.shape[1], 3, self.hidden,
+                            seed=self.seed * 50 + m)
+            _train(torch, net, Xs, Ys, mse, epochs=self.epochs)
             self.nets.append(net)
         return self
 
@@ -348,14 +356,20 @@ class BayesianIVIM_MCMC:
 # --------------------------------------------------------------------------- #
 # build + cache all predictions for the benchmark
 # --------------------------------------------------------------------------- #
-def build_predictions(alphas=ALPHAS, seed=DEFAULT_SEED, cache_path=_CACHE,
+def build_predictions(alphas=ALPHAS, seed=DEFAULT_SEED, cache_path=None,
                       force=False, verbose=True):
     """Train/run every baseline + conformal bases on the matched cohort.
 
     Returns a dict of per-(method, split, alpha) interval bounds plus the
     conformal-base predictions, cached to ``cache_path`` (regenerable; not
-    committed). Deterministic from ``seed``.
+    committed). A **pure function of ``seed``**: the cohort, NLLS, HGB and MCMC
+    streams are seeded as before, and (Gauge-CI) the torch NN bases now take
+    per-seed init streams derived from ``seed`` so their weight initialisation
+    varies across seeds too. The cache path defaults to a **seed-specific** file
+    so a multi-seed sweep never silently reuses another seed's predictions.
     """
+    if cache_path is None:
+        cache_path = os.path.join(_RESULTS_DIR, f"predictions_seed{int(seed)}.pkl")
     if (not force) and os.path.exists(cache_path):
         with open(cache_path, "rb") as fh:
             return pickle.load(fh)
@@ -405,10 +419,16 @@ def build_predictions(alphas=ALPHAS, seed=DEFAULT_SEED, cache_path=_CACHE,
         print(f"[build] HGB quantile base done ({time.time()-t0:.0f}s)")
 
     # --- model-based baselines -----------------------------------------
+    # Per-seed NN init streams (independent + reproducible from the run seed via
+    # SeedSequence). Replaces the legacy hardcoded ``seed=0`` so the deep-ensemble
+    # initialisation epistemic spread is actually resampled across seeds, not held
+    # fixed at one (favourable) init -- the B.0-probe finding.
+    pnn_s, mdn_s, de_s = (int(s.generate_state(1)[0])
+                          for s in np.random.SeedSequence(seed).spawn(3))
     nn_models = [
-        SingleGaussianPNN(seed=0),
-        MDNDeepEnsemble(n_members=5, n_comp=2, seed=0),
-        DeepEnsemblePoint(n_members=5, seed=0),
+        SingleGaussianPNN(seed=pnn_s),
+        MDNDeepEnsemble(n_members=5, n_comp=2, seed=mdn_s),
+        DeepEnsemblePoint(n_members=5, seed=de_s),
     ]
     for model in nn_models:
         tt = time.time()

@@ -7,34 +7,34 @@ alpha=0.1 (nominal=0.90)  seed 20260613  SNR strata [10, 20, 30, 50, 100]
 [D] conditional coverage by SNR (nominal 0.90)
                    arm |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100 |   MARG
 ------------------------------------------------------------------------------------------------
-               raw-MDN |     0.77 |     0.80 |     0.84 |     0.90 |     0.98 |  0.856
+               raw-MDN |     0.80 |     0.81 |     0.86 |     0.90 |     0.99 |  0.870
          split (plain) |     0.65 |     0.91 |     0.94 |     1.00 |     1.00 |  0.899
            CQR (plain) |     0.81 |     0.86 |     0.92 |     0.95 |     0.97 |  0.901
   split (Mondrian/SNR) |     0.90 |     0.93 |     0.92 |     0.88 |     0.93 |  0.910
     CQR (Mondrian/SNR) |     0.91 |     0.90 |     0.90 |     0.91 |     0.92 |  0.907
-     conformalized-MDN |     0.80 |     0.84 |     0.89 |     0.94 |     1.00 |  0.891
+     conformalized-MDN |     0.82 |     0.83 |     0.88 |     0.93 |     1.00 |  0.890
 
 ------------------------------------------------------------------------------------------------
 [D*] conditional coverage by SNR (nominal 0.90)
                    arm |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100 |   MARG
 ------------------------------------------------------------------------------------------------
-               raw-MDN |     0.81 |     0.83 |     0.84 |     0.91 |     0.96 |  0.868
+               raw-MDN |     0.84 |     0.83 |     0.85 |     0.91 |     0.96 |  0.876
          split (plain) |     0.76 |     0.87 |     0.90 |     0.97 |     0.99 |  0.897
            CQR (plain) |     0.85 |     0.90 |     0.90 |     0.93 |     0.93 |  0.902
   split (Mondrian/SNR) |     0.90 |     0.91 |     0.88 |     0.90 |     0.89 |  0.896
     CQR (Mondrian/SNR) |     0.89 |     0.92 |     0.90 |     0.89 |     0.90 |  0.899
-     conformalized-MDN |     0.85 |     0.88 |     0.89 |     0.95 |     0.98 |  0.908
+     conformalized-MDN |     0.86 |     0.86 |     0.88 |     0.94 |     0.97 |  0.901
 
 ------------------------------------------------------------------------------------------------
 [f] conditional coverage by SNR (nominal 0.90)
                    arm |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100 |   MARG
 ------------------------------------------------------------------------------------------------
-               raw-MDN |     0.80 |     0.79 |     0.84 |     0.86 |     0.98 |  0.853
+               raw-MDN |     0.81 |     0.79 |     0.85 |     0.87 |     0.99 |  0.859
          split (plain) |     0.68 |     0.91 |     0.95 |     0.99 |     1.00 |  0.907
            CQR (plain) |     0.83 |     0.87 |     0.91 |     0.90 |     0.95 |  0.893
   split (Mondrian/SNR) |     0.89 |     0.91 |     0.92 |     0.88 |     0.91 |  0.901
     CQR (Mondrian/SNR) |     0.89 |     0.88 |     0.90 |     0.86 |     0.90 |  0.887
-     conformalized-MDN |     0.82 |     0.84 |     0.89 |     0.92 |     1.00 |  0.892
+     conformalized-MDN |     0.83 |     0.81 |     0.88 |     0.90 |     1.00 |  0.882
 
 ================================================================================================
 [D*] conditional coverage on SNR x D*-regime grid (the ill-posed compartment)
@@ -42,9 +42,9 @@ D*-regime defined by true-D* terciles (diagnostic only -- true D* is unknown at 
 ================================================================================================
 [raw-MDN]  (nominal 0.90)
 regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
-      loD* |     0.74 |     0.82 |     0.80 |     0.89 |     0.96
-     midD* |     0.93 |     0.91 |     0.91 |     0.96 |     0.99
-      hiD* |     0.76 |     0.77 |     0.80 |     0.88 |     0.92
+      loD* |     0.81 |     0.79 |     0.79 |     0.89 |     0.96
+     midD* |     0.94 |     0.90 |     0.92 |     0.97 |     1.00
+      hiD* |     0.76 |     0.81 |     0.83 |     0.87 |     0.91
 
 [CQR (plain)]  (nominal 0.90)
 regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
@@ -60,21 +60,21 @@ regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
 
 [conformalized-MDN]  (nominal 0.90)
 regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
-      loD* |     0.80 |     0.88 |     0.87 |     0.94 |     0.98
-     midD* |     0.95 |     0.92 |     0.93 |     0.98 |     1.00
-      hiD* |     0.81 |     0.83 |     0.86 |     0.93 |     0.96
+      loD* |     0.84 |     0.84 |     0.84 |     0.93 |     0.97
+     midD* |     0.95 |     0.91 |     0.94 |     0.98 |     1.00
+      hiD* |     0.79 |     0.82 |     0.85 |     0.92 |     0.95
 
 ================================================================================================
 WORST conditional under-coverage across SNR strata (per param, alpha=0.1); nominal 0.90
 ================================================================================================
                    arm |              D |             D* |              f
                        |   min cov @SNR |   min cov @SNR |   min cov @SNR
-               raw-MDN |       0.77 @10 |       0.81 @10 |       0.79 @20
+               raw-MDN |       0.80 @10 |       0.83 @20 |       0.79 @20
          split (plain) |       0.65 @10 |       0.76 @10 |       0.68 @10
            CQR (plain) |       0.81 @10 |       0.85 @10 |       0.83 @10
   split (Mondrian/SNR) |       0.88 @50 |       0.88 @30 |       0.88 @50
     CQR (Mondrian/SNR) |       0.90 @20 |       0.89 @50 |       0.86 @50
-     conformalized-MDN |       0.80 @10 |       0.85 @10 |       0.82 @10
+     conformalized-MDN |       0.82 @10 |       0.86 @20 |       0.81 @20
 
 ================================================================================================
 HIGH-D* REGIME persistence (coverage on the hiD* tercile; the unstable compartment)
@@ -82,11 +82,11 @@ the key test: SNR-Mondrian groups by the KNOWN SNR -- can it fix a failure drive
 UNKNOWN true D*?  (marginal over SNR within hiD*, and worst SNR cell within hiD*; nominal 0.90)
 ------------------------------------------------------------------------------------------------
                    arm |  hiD* marg |   hiD* worst-SNR
-               raw-MDN |      0.825 |            0.756
+               raw-MDN |      0.833 |            0.756
            CQR (plain) |      0.819 |            0.767
   split (Mondrian/SNR) |      0.808 |            0.764
     CQR (Mondrian/SNR) |      0.814 |            0.766
-     conformalized-MDN |      0.877 |            0.808
+     conformalized-MDN |      0.865 |            0.788
 
 ================================================================================================
 GATE 2 VERDICT (honest):
@@ -96,7 +96,7 @@ GATE 2 VERDICT (honest):
   => For the SNR axis: SNR-stratified (Mondrian) or input-adaptive CQR conformal, not plain split.
 
   IVIM-SPECIFIC HEADLINE -- the high-D* (ill-posed) regime:
-    Even after SNR stratification, the hiD* tercile still UNDER-covers (CQR-Mondrian/SNR hiD* marg=0.81, conformalized-MDN hiD* marg=0.88 vs nominal 0.90),
+    Even after SNR stratification, the hiD* tercile still UNDER-covers (CQR-Mondrian/SNR hiD* marg=0.81, conformalized-MDN hiD* marg=0.86 vs nominal 0.90),
     while mid-D* OVER-covers -- a conditional failure invisible marginally. SNR-Mondrian
     cannot fix it because the failure axis is the UNKNOWN true D*, not SNR. This is the
     refined, IVIM-specific form of the D*/f hypothesis: the unstable compartment breaks
@@ -104,3 +104,41 @@ GATE 2 VERDICT (honest):
     (and conformalized-MDN) narrow the gap but do not close it -> a genuine open problem
     (regime-conditional / Mondrian-by-estimated-D* conformal) for future work.
 ================================================================================================
+
+===== MULTI-SEED CI APPENDIX (auto; additive -- point columns above unchanged) =====
+  n_seeds=16  point=seed-0 (non-NN) / across-seed mean (NN, marked *)  band=[5,95] percentile
+
+  --- tab:hidstar (E) ---
+    raw-MDN hi-D* marg                            0.841  CI [0.829, 0.857]  (n=16)*
+    CQR (plain) hi-D* marg                        0.826  CI [0.809, 0.851]  (n=16) 
+    split (Mondrian/SNR) hi-D* marg               0.829  CI [0.813, 0.844]  (n=16) 
+    CQR (Mondrian/SNR) hi-D* marg                 0.829  CI [0.811, 0.854]  (n=16) 
+    conformalized-MDN hi-D* marg                  0.868  CI [0.856, 0.889]  (n=16)*
+    raw-MDN hi-D* worst-SNR                       0.753  CI [0.719, 0.789]  (n=16)*
+    CQR (plain) hi-D* worst-SNR                   0.761  CI [0.729, 0.795]  (n=16) 
+    split (Mondrian/SNR) hi-D* worst-SNR          0.781  CI [0.743, 0.810]  (n=16) 
+    CQR (Mondrian/SNR) hi-D* worst-SNR            0.789  CI [0.752, 0.828]  (n=16) 
+    conformalized-MDN hi-D* worst-SNR             0.786  CI [0.751, 0.826]  (n=16)*
+
+  --- fig:heatmap hi-D* row cells (E) ---
+    raw-MDN hi-cell SNR10                         0.773  CI [0.725, 0.827]  (n=16)*
+    raw-MDN hi-cell SNR20                         0.779  CI [0.729, 0.836]  (n=16)*
+    raw-MDN hi-cell SNR30                         0.836  CI [0.785, 0.888]  (n=16)*
+    raw-MDN hi-cell SNR50                         0.885  CI [0.848, 0.933]  (n=16)*
+    raw-MDN hi-cell SNR100                        0.930  CI [0.903, 0.970]  (n=16)*
+    CQR (plain) hi-cell SNR10                     0.772  CI [0.729, 0.831]  (n=16) 
+    CQR (plain) hi-cell SNR20                     0.801  CI [0.762, 0.831]  (n=16) 
+    CQR (plain) hi-cell SNR30                     0.834  CI [0.801, 0.865]  (n=16) 
+    CQR (plain) hi-cell SNR50                     0.851  CI [0.807, 0.897]  (n=16) 
+    CQR (plain) hi-cell SNR100                    0.870  CI [0.824, 0.911]  (n=16) 
+    CQR (Mondrian/SNR) hi-cell SNR10              0.851  CI [0.799, 0.919]  (n=16) 
+    CQR (Mondrian/SNR) hi-cell SNR20              0.828  CI [0.791, 0.862]  (n=16) 
+    CQR (Mondrian/SNR) hi-cell SNR30              0.833  CI [0.798, 0.869]  (n=16) 
+    CQR (Mondrian/SNR) hi-cell SNR50              0.818  CI [0.766, 0.873]  (n=16) 
+    CQR (Mondrian/SNR) hi-cell SNR100             0.813  CI [0.762, 0.864]  (n=16) 
+    conformalized-MDN hi-cell SNR10               0.804  CI [0.756, 0.863]  (n=16)*
+    conformalized-MDN hi-cell SNR20               0.809  CI [0.763, 0.866]  (n=16)*
+    conformalized-MDN hi-cell SNR30               0.861  CI [0.824, 0.902]  (n=16)*
+    conformalized-MDN hi-cell SNR50               0.915  CI [0.884, 0.947]  (n=16)*
+    conformalized-MDN hi-cell SNR100              0.952  CI [0.931, 0.981]  (n=16)*
+

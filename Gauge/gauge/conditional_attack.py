@@ -306,9 +306,14 @@ def crlb_per_voxel(R, b):
 # --------------------------------------------------------------------------- #
 # Orchestration
 # --------------------------------------------------------------------------- #
-def _load_inputs(force=False):
-    """Cached predictions + regenerated cohort signals + train proxy features."""
-    R = build_predictions(force=force)
+def _load_inputs(force=False, seed=None):
+    """Cached predictions + regenerated cohort signals + train proxy features.
+
+    ``seed=None`` keeps the legacy default-seed path byte-identical; the multi-seed
+    harness passes an explicit seed to drive the whole stage for that seed.
+    """
+    R = (build_predictions(force=force) if seed is None
+         else build_predictions(seed=seed, force=force))
     seed = R["meta"]["seed"]
     sizes = R["meta"]["sizes"]
     cohort = generate_cohort(sizes["train"], sizes["cal"], sizes["test"],

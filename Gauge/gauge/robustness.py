@@ -389,8 +389,10 @@ def run_cp1(seed=SEED):
 # Orchestration: run everything (cached), print gates, write report + figures.
 # --------------------------------------------------------------------------- #
 def compute_all(force=False, seed=SEED, verbose=True):
-    if (not force) and os.path.exists(_CACHE):
-        with open(_CACHE, "rb") as fh:
+    # Seed-specific cache so a multi-seed sweep never reuses another seed's run.
+    cache_path = os.path.join(_RESULTS_DIR, f"robustness_seed{int(seed)}.pkl")
+    if (not force) and os.path.exists(cache_path):
+        with open(cache_path, "rb") as fh:
             return pickle.load(fh)
     os.makedirs(_RESULTS_DIR, exist_ok=True)
     t0 = time.time()
@@ -409,7 +411,7 @@ def compute_all(force=False, seed=SEED, verbose=True):
         print(f"[robustness] CP1 schemes done ({time.time()-t0:.0f}s)")
     payload = {"cp0": cp0, "latent": latent, "sweep": sweep, "cp1": cp1,
                "q": inp["q"], "seed": seed, "alpha": ALPHA}
-    with open(_CACHE, "wb") as fh:
+    with open(cache_path, "wb") as fh:
         pickle.dump(payload, fh)
     return payload
 

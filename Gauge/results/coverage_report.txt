@@ -5,7 +5,7 @@ cohort seed: 20260613   b-values: 22   SNR grid (b=0): [10, 20, 30, 50, 100]
 split sizes: train=4000  calibration=2000  test=3000
 alpha sweep: [0.05, 0.1, 0.2, 0.3]  (nominal coverage = 1 - alpha)
 base estimators: split-conformal<-NLLS, CQR<-grad-boosted quantile reg
-timing: NLLS cal+test = 12.0s,  CQR train+predict = 60.2s
+timing: NLLS cal+test = 12.6s,  CQR train+predict = 27.4s
 
 ------------------------------------------------------------------------------
 [split-conformal]  realized vs nominal coverage on TEST  (n=3000)

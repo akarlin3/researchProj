@@ -10,15 +10,15 @@ method classes: RAW model-based | CONFORMAL (distribution-free) | CONFORMALIZED 
                        arm |                D |               D* |                f
                            |      cov   (gap) |      cov   (gap) |      cov   (gap)
 --------------------------------------------------------------------------------------------
-          raw:PNN-Gaussian |   0.789 (+0.111) |   0.823 (+0.077) |   0.785 (+0.115)
-      raw:MDN-DeepEnsemble |   0.856 (+0.044) |   0.868 (+0.032) |   0.853 (+0.047)
-    raw:DeepEnsemble-Point |   0.431 (+0.469) |   0.432 (+0.468) |   0.483 (+0.417)
+          raw:PNN-Gaussian |   0.787 (+0.113) |   0.833 (+0.067) |   0.767 (+0.133)
+      raw:MDN-DeepEnsemble |   0.870 (+0.030) |   0.876 (+0.024) |   0.859 (+0.041)
+    raw:DeepEnsemble-Point |   0.436 (+0.464) |   0.425 (+0.475) |   0.475 (+0.425)
          raw:Bayesian-MCMC |   0.876 (+0.024) |   0.870 (+0.030) |   0.855 (+0.045)
       conformal:split-NLLS |   0.899 (+0.001) |   0.897 (+0.003) |   0.907 (-0.007)
          conformal:CQR-HGB |   0.901 (-0.001) |   0.902 (-0.002) |   0.893 (+0.007)
-conformalized:PNN-Gaussian |   0.891 (+0.009) |   0.900 (-0.000) |   0.896 (+0.004)
-conformalized:MDN-DeepEnsemble |   0.891 (+0.009) |   0.908 (-0.008) |   0.892 (+0.008)
-conformalized:DeepEnsemble-Point |   0.889 (+0.011) |   0.899 (+0.001) |   0.900 (+0.000)
+conformalized:PNN-Gaussian |   0.912 (-0.012) |   0.909 (-0.009) |   0.895 (+0.005)
+conformalized:MDN-DeepEnsemble |   0.890 (+0.010) |   0.901 (-0.001) |   0.882 (+0.018)
+conformalized:DeepEnsemble-Point |   0.882 (+0.018) |   0.896 (+0.004) |   0.899 (+0.001)
 conformalized:Bayesian-MCMC |   0.895 (+0.005) |   0.894 (+0.006) |   0.876 (+0.024)
 --------------------------------------------------------------------------------------------
 
@@ -28,15 +28,15 @@ conformalized:Bayesian-MCMC |   0.895 (+0.005) |   0.894 (+0.006) |   0.876 (+0.
                        arm |                      D |                     D* |                      f
                            |         width / iscore |         width / iscore |         width / iscore
 --------------------------------------------------------------------------------------------
-          raw:PNN-Gaussian |            0.30 / 0.81 |          43.21 / 71.66 |            0.05 / 0.14
-      raw:MDN-DeepEnsemble |            0.36 / 0.69 |          46.32 / 61.63 |            0.06 / 0.12
-    raw:DeepEnsemble-Point |            0.13 / 1.40 |         15.14 / 139.52 |            0.03 / 0.22
+          raw:PNN-Gaussian |            0.30 / 0.80 |          40.57 / 72.43 |            0.05 / 0.15
+      raw:MDN-DeepEnsemble |            0.37 / 0.67 |          46.47 / 61.41 |            0.06 / 0.12
+    raw:DeepEnsemble-Point |            0.13 / 1.44 |         15.15 / 142.02 |            0.03 / 0.23
          raw:Bayesian-MCMC |            0.35 / 0.59 |          49.29 / 57.89 |            0.09 / 0.15
       conformal:split-NLLS |            0.95 / 1.93 |        123.67 / 284.51 |            0.25 / 0.55
          conformal:CQR-HGB |            0.53 / 0.78 |          63.09 / 71.21 |            0.11 / 0.15
-conformalized:PNN-Gaussian |            0.40 / 0.76 |          51.25 / 68.91 |            0.07 / 0.13
-conformalized:MDN-DeepEnsemble |            0.39 / 0.68 |          50.05 / 61.28 |            0.07 / 0.12
-conformalized:DeepEnsemble-Point |            0.48 / 0.83 |          51.91 / 75.28 |            0.08 / 0.14
+conformalized:PNN-Gaussian |            0.44 / 0.74 |          50.12 / 69.98 |            0.07 / 0.13
+conformalized:MDN-DeepEnsemble |            0.39 / 0.67 |          48.87 / 61.15 |            0.07 / 0.12
+conformalized:DeepEnsemble-Point |            0.48 / 0.85 |          51.80 / 76.23 |            0.09 / 0.14
 conformalized:Bayesian-MCMC |            0.36 / 0.59 |          50.51 / 57.67 |            0.09 / 0.14
 --------------------------------------------------------------------------------------------
 
@@ -46,29 +46,29 @@ HYPOTHESIS TEST (marginal): does model-based under-coverage concentrate in D*/f?
 Per-method marginal coverage gap (nominal - realized), averaged over alpha; +large = overconfident
                 method |    D gap |   D* gap |    f gap | verdict
 --------------------------------------------------------------------------------------------
-          PNN-Gaussian |    0.108 |    0.078 |    0.112 | broad/other (worst=f)
-      MDN-DeepEnsemble |    0.048 |    0.037 |    0.048 | broad/other (worst=D)
-    DeepEnsemble-Point |    0.449 |    0.443 |    0.395 | broad/other (worst=D)
+          PNN-Gaussian |    0.109 |    0.071 |    0.125 | broad/other (worst=f)
+      MDN-DeepEnsemble |    0.034 |    0.029 |    0.037 | broad/other (worst=f)
+    DeepEnsemble-Point |    0.440 |    0.452 |    0.407 | broad/other (worst=D*)
          Bayesian-MCMC |    0.023 |    0.027 |    0.045 | broad/other (worst=f)
 --------------------------------------------------------------------------------------------
 
 CONFORMAL / CONFORMALIZED coverage (should hold nominal regardless of compartment):
          conformal:split-NLLS: mean |gap| per param (D,D*,f) = 0.002, 0.002, 0.005
             conformal:CQR-HGB: mean |gap| per param (D,D*,f) = 0.008, 0.005, 0.005
-   conformalized:PNN-Gaussian: mean |gap| per param (D,D*,f) = 0.007, 0.007, 0.006
-   conformalized:MDN-DeepEnsemble: mean |gap| per param (D,D*,f) = 0.006, 0.009, 0.006
-   conformalized:DeepEnsemble-Point: mean |gap| per param (D,D*,f) = 0.007, 0.005, 0.002
+   conformalized:PNN-Gaussian: mean |gap| per param (D,D*,f) = 0.009, 0.006, 0.003
+   conformalized:MDN-DeepEnsemble: mean |gap| per param (D,D*,f) = 0.006, 0.007, 0.013
+   conformalized:DeepEnsemble-Point: mean |gap| per param (D,D*,f) = 0.010, 0.007, 0.004
    conformalized:Bayesian-MCMC: mean |gap| per param (D,D*,f) = 0.004, 0.004, 0.021
 
 SHARPNESS COST of guaranteed coverage (conformalized / raw median width, alpha=0.1):
-             PNN-Gaussian: D 1.35x  D* 1.19x  f 1.36x
-         MDN-DeepEnsemble: D 1.10x  D* 1.08x  f 1.12x
-       DeepEnsemble-Point: D 3.72x  D* 3.43x  f 3.17x
+             PNN-Gaussian: D 1.47x  D* 1.24x  f 1.46x
+         MDN-DeepEnsemble: D 1.07x  D* 1.05x  f 1.06x
+       DeepEnsemble-Point: D 3.76x  D* 3.42x  f 3.23x
             Bayesian-MCMC: D 1.03x  D* 1.02x  f 1.05x
 
 DOES THE MODEL'S BAND HELP? (conformalized-MDN vs pure CQR-HGB median width, alpha=0.1; <1 = model band sharper):
      D: conformalized-MDN 0.39 vs pure-CQR 0.53  -> ratio 0.73x
-    D*: conformalized-MDN 50.05 vs pure-CQR 63.09  -> ratio 0.79x
+    D*: conformalized-MDN 48.87 vs pure-CQR 63.09  -> ratio 0.77x
      f: conformalized-MDN 0.07 vs pure-CQR 0.11  -> ratio 0.65x
 
 ============================================================================================
@@ -80,3 +80,33 @@ GATE 1 VERDICT (honest):
   variants restore ~nominal coverage in every compartment. Whether a D*/f-specific gap
   exists is therefore a CONDITIONAL question (high D* / low SNR) -> tested in CP2.
 ============================================================================================
+
+===== MULTI-SEED CI APPENDIX (auto; additive -- point columns above unchanged) =====
+  n_seeds=16  point=seed-0 (non-NN) / across-seed mean (NN, marked *)  band=[5,95] percentile
+
+  --- tab:marginal (G; MC precision) ---
+    raw:PNN-Gaussian D                            0.787  CI [0.769, 0.805]  (n=16)*
+    raw:PNN-Gaussian D*                           0.833  CI [0.822, 0.850]  (n=16)*
+    raw:PNN-Gaussian f                            0.767  CI [0.761, 0.811]  (n=16)*
+    raw:MDN-DeepEnsemble D                        0.870  CI [0.855, 0.880]  (n=16)*
+    raw:MDN-DeepEnsemble D*                       0.876  CI [0.867, 0.890]  (n=16)*
+    raw:MDN-DeepEnsemble f                        0.859  CI [0.859, 0.877]  (n=16)*
+    raw:DeepEnsemble-Point D                      0.436  CI [0.422, 0.468]  (n=16)*
+    raw:DeepEnsemble-Point D*                     0.425  CI [0.424, 0.470]  (n=16)*
+    raw:DeepEnsemble-Point f                      0.475  CI [0.451, 0.496]  (n=16)*
+    raw:Bayesian-MCMC D                           0.876  CI [0.864, 0.881]  (n=16) 
+    raw:Bayesian-MCMC D*                          0.870  CI [0.867, 0.884]  (n=16) 
+    raw:Bayesian-MCMC f                           0.855  CI [0.854, 0.873]  (n=16) 
+    conformal:split-NLLS D                        0.899  CI [0.884, 0.909]  (n=16) 
+    conformal:split-NLLS D*                       0.897  CI [0.891, 0.914]  (n=16) 
+    conformal:split-NLLS f                        0.907  CI [0.888, 0.911]  (n=16) 
+    conformal:CQR-HGB D                           0.901  CI [0.886, 0.910]  (n=16) 
+    conformal:CQR-HGB D*                          0.902  CI [0.896, 0.912]  (n=16) 
+    conformal:CQR-HGB f                           0.893  CI [0.886, 0.904]  (n=16) 
+    conformalized:MDN-DeepEnsemble D              0.890  CI [0.890, 0.911]  (n=16)*
+    conformalized:MDN-DeepEnsemble D*             0.901  CI [0.893, 0.913]  (n=16)*
+    conformalized:MDN-DeepEnsemble f              0.882  CI [0.886, 0.909]  (n=16)*
+    conformalized:Bayesian-MCMC D                 0.895  CI [0.881, 0.910]  (n=16) 
+    conformalized:Bayesian-MCMC D*                0.894  CI [0.892, 0.913]  (n=16) 
+    conformalized:Bayesian-MCMC f                 0.876  CI [0.881, 0.911]  (n=16) 
+

@@ -68,3 +68,41 @@ Does the high-D* identifiability wall move with the b-value scheme? Same prior/S
   hi-D* CRLB/tercile-width clinical 1.25 -> optimal 1.05 (improvement +0.20).
 GATE 1: the wall is acquisition-ROBUST -- even the CRLB-optimal / dense schemes keep hi-D* CRLB >= tercile width, so high-D* stays under-resolved. Acquisition shifts the wall but does not remove it (deeper identifiability limit; the Vernier bound).
 ############################################################################################
+
+===== MULTI-SEED CI APPENDIX (auto; additive -- point columns above unchanged) =====
+  n_seeds=16  point=seed-0 (non-NN) / across-seed mean (NN, marked *)  band=[5,95] percentile
+
+  --- tab:shift (E) ---
+    SNR shift (low) naive D                       0.592  CI [0.557, 0.637]  (n=16) 
+    SNR shift (low) naive D*                      0.739  CI [0.709, 0.762]  (n=16) 
+    SNR shift (low) naive f                       0.614  CI [0.587, 0.660]  (n=16) 
+    prior shift (harder tissue) naive D           0.972  CI [0.965, 0.978]  (n=16) 
+    prior shift (harder tissue) naive D*          0.508  CI [0.479, 0.543]  (n=16) 
+    prior shift (harder tissue) naive f           0.909  CI [0.896, 0.923]  (n=16) 
+    tri-exp misspec naive D                       0.907  CI [0.896, 0.920]  (n=16) 
+    tri-exp misspec naive D*                      0.843  CI [0.828, 0.855]  (n=16) 
+    tri-exp misspec naive f                       0.912  CI [0.900, 0.925]  (n=16) 
+    SNR shift (low) weighted D                    0.882  CI [0.855, 0.908]  (n=16) 
+    SNR shift (low) weighted D*                   0.901  CI [0.889, 0.912]  (n=16) 
+    SNR shift (low) weighted f                    0.909  CI [0.892, 0.932]  (n=16) 
+    prior shift (harder tissue) weighted D        0.919  CI [0.884, 0.956]  (n=16) 
+    prior shift (harder tissue) weighted D*       0.991  CI [0.974, 1.000]  (n=16) 
+    prior shift (harder tissue) weighted f        0.902  CI [0.880, 0.921]  (n=16) 
+    tri-exp misspec weighted D                    0.891  CI [0.884, 0.900]  (n=16) 
+    tri-exp misspec weighted D*                   0.933  CI [0.924, 0.941]  (n=16) 
+    tri-exp misspec weighted f                    0.898  CI [0.889, 0.906]  (n=16) 
+    latent hi-D* marg                             0.814  CI [0.787, 0.839]  (n=16) 
+    latent hi-D* worst                            0.573  CI [0.514, 0.634]  (n=16) 
+    latent marginal D*                            0.898  CI [0.880, 0.913]  (n=16) 
+
+  --- tab:acq (E) ---
+    clinical (11 b) hi-D* marg                    0.821  CI [0.794, 0.845]  (n=16) 
+    clinical (11 b) hi-D* worst                   0.596  CI [0.542, 0.702]  (n=16) 
+    clinical (11 b) CRLB/tercile-width             1.24  CI [1.17, 1.37]  (n=16) 
+    CRLB-optimal (11 b) hi-D* marg                0.835  CI [0.795, 0.862]  (n=16) 
+    CRLB-optimal (11 b) hi-D* worst               0.603  CI [0.541, 0.678]  (n=16) 
+    CRLB-optimal (11 b) CRLB/tercile-width         1.03  CI [0.97, 1.16]  (n=16) 
+    dense (22 b) hi-D* marg                       0.808  CI [0.788, 0.836]  (n=16) 
+    dense (22 b) hi-D* worst                      0.551  CI [0.508, 0.597]  (n=16) 
+    dense (22 b) CRLB/tercile-width                1.11  CI [1.05, 1.21]  (n=16) 
+

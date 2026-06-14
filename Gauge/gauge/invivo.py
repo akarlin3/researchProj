@@ -151,7 +151,7 @@ def deployed_calibration(b=DEFAULT_B_VALUES, alpha=ALPHA, seed=SEED,
             "cal_feat": cal_feat, "cal_resid": cal_resid, "monitor": monitor}
 
 
-def run_demo(signals, b, cal, source_name, true_params=None):
+def run_demo(signals, b, cal, source_name, true_params=None, seed=SEED):
     """Run the deployed pipeline on (unlabeled) in-vivo signals; qualitative.
 
     Returns a dict of qualitative observables. ``true_params`` (phantom only) is
@@ -175,7 +175,7 @@ def run_demo(signals, b, cal, source_name, true_params=None):
     widths = interval_width(lo, hi)                        # (N,3)
 
     mon = cal["monitor"].evaluate(feat, resid)
-    w_cal, w_test, _ = _importance_weights(cal["cal_feat"], feat, seed=SEED)
+    w_cal, w_test, _ = _importance_weights(cal["cal_feat"], feat, seed=seed)
 
     out = {
         "source": source_name, "n_vox": int(signals.shape[0]),
@@ -201,9 +201,15 @@ def run_demo(signals, b, cal, source_name, true_params=None):
 # --------------------------------------------------------------------------- #
 # Orchestration / GATE 2
 # --------------------------------------------------------------------------- #
-def compute(force=False, dwi=None, bvals=None):
-    if (not force) and dwi is None and os.path.exists(_CACHE):
-        with open(_CACHE, "rb") as fh:
+def compute(force=False, dwi=None, bvals=None, seed=SEED):
+    """Run the qualitative in-vivo demo. Pure function of ``seed`` (hygiene: the
+    synthetic stand-in, deployed calibration, monitor and domain-classifier all
+    derive from it). In-vivo quantities stay qualitative and are NOT banded; the
+    seed param exists so the demo participates cleanly in the multi-seed harness.
+    Cache is seed-specific so a sweep never reuses another seed's demo."""
+    cache_path = os.path.join(_RESULTS_DIR, f"invivo_seed{int(seed)}.pkl")
+    if (not force) and dwi is None and os.path.exists(cache_path):
+        with open(cache_path, "rb") as fh:
             return pickle.load(fh)
     os.makedirs(_RESULTS_DIR, exist_ok=True)
     t0 = time.time()
@@ -211,21 +217,21 @@ def compute(force=False, dwi=None, bvals=None):
         signals, b = load_dwi_nifti(dwi, bvals)
         source, true_params = f"REAL DWI ({os.path.basename(dwi)})", None
     else:
-        signals, b, true_params = synthetic_stand_in()
+        signals, b, true_params = synthetic_stand_in(seed=seed + 321)
         source = "synthetic stand-in (NOT in vivo)"
-    cal = deployed_calibration(b=b)
-    res = run_demo(signals, b, cal, source, true_params=true_params)
+    cal = deployed_calibration(b=b, seed=seed)
+    res = run_demo(signals, b, cal, source, true_params=true_params, seed=seed)
     res["q_dstar"] = float(cal["q"][1])
     payload = {"res": res, "is_real": dwi is not None}
     if dwi is None:
-        with open(_CACHE, "wb") as fh:
+        with open(cache_path, "wb") as fh:
             pickle.dump(payload, fh)
     print(f"[invivo] demo computed ({time.time()-t0:.0f}s)")
     return payload
 
 
-def main(force=False, dwi=None, bvals=None):
-    P = compute(force=force, dwi=dwi, bvals=bvals)
+def main(force=False, dwi=None, bvals=None, seed=SEED):
+    P = compute(force=force, dwi=dwi, bvals=bvals, seed=seed)
     r = P["res"]
     lines = []
 

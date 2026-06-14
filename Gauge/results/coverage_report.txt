@@ -1,0 +1,95 @@
+==============================================================================
+CP1 -- CONFORMAL COVERAGE VALIDATION (GATE 1)
+==============================================================================
+cohort seed: 20260613   b-values: 22   SNR grid (b=0): [10, 20, 30, 50, 100]
+split sizes: train=4000  calibration=2000  test=3000
+alpha sweep: [0.05, 0.1, 0.2, 0.3]  (nominal coverage = 1 - alpha)
+base estimators: split-conformal<-NLLS, CQR<-grad-boosted quantile reg
+timing: NLLS cal+test = 12.0s,  CQR train+predict = 60.2s
+
+------------------------------------------------------------------------------
+[split-conformal]  realized vs nominal coverage on TEST  (n=3000)
+------------------------------------------------------------------------------
+param | alpha | nominal | realized | |diff| |  med width |       units | gate
+------------------------------------------------------------------------------
+    D |  0.05 |    0.95 |    0.951 |  0.001 |      1.615 | 1e-3 mm^2/s |   OK
+    D |  0.10 |    0.90 |    0.899 |  0.001 |      0.949 | 1e-3 mm^2/s |   OK
+    D |  0.20 |    0.80 |    0.804 |  0.004 |      0.514 | 1e-3 mm^2/s |   OK
+    D |  0.30 |    0.70 |    0.699 |  0.001 |      0.326 | 1e-3 mm^2/s |   OK
+------------------------------------------------------------------------------
+   D* |  0.05 |    0.95 |    0.948 |  0.002 |    216.715 | 1e-3 mm^2/s |   OK
+   D* |  0.10 |    0.90 |    0.897 |  0.003 |    123.668 | 1e-3 mm^2/s |   OK
+   D* |  0.20 |    0.80 |    0.800 |  0.000 |     70.681 | 1e-3 mm^2/s |   OK
+   D* |  0.30 |    0.70 |    0.703 |  0.003 |     46.881 | 1e-3 mm^2/s |   OK
+------------------------------------------------------------------------------
+    f |  0.05 |    0.95 |    0.954 |  0.004 |      0.444 |  (fraction) |   OK
+    f |  0.10 |    0.90 |    0.907 |  0.007 |      0.249 |  (fraction) |   OK
+    f |  0.20 |    0.80 |    0.806 |  0.006 |      0.134 |  (fraction) |   OK
+    f |  0.30 |    0.70 |    0.695 |  0.005 |      0.084 |  (fraction) |   OK
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+[CQR]  realized vs nominal coverage on TEST  (n=3000)
+------------------------------------------------------------------------------
+param | alpha | nominal | realized | |diff| |  med width |       units | gate
+------------------------------------------------------------------------------
+    D |  0.05 |    0.95 |    0.946 |  0.004 |      0.741 | 1e-3 mm^2/s |   OK
+    D |  0.10 |    0.90 |    0.901 |  0.001 |      0.534 | 1e-3 mm^2/s |   OK
+    D |  0.20 |    0.80 |    0.815 |  0.015 |      0.373 | 1e-3 mm^2/s |   OK
+    D |  0.30 |    0.70 |    0.712 |  0.012 |      0.275 | 1e-3 mm^2/s |   OK
+------------------------------------------------------------------------------
+   D* |  0.05 |    0.95 |    0.950 |  0.000 |     73.737 | 1e-3 mm^2/s |   OK
+   D* |  0.10 |    0.90 |    0.902 |  0.002 |     63.093 | 1e-3 mm^2/s |   OK
+   D* |  0.20 |    0.80 |    0.793 |  0.007 |     47.916 | 1e-3 mm^2/s |   OK
+   D* |  0.30 |    0.70 |    0.689 |  0.011 |     36.554 | 1e-3 mm^2/s |   OK
+------------------------------------------------------------------------------
+    f |  0.05 |    0.95 |    0.942 |  0.008 |      0.145 |  (fraction) |   OK
+    f |  0.10 |    0.90 |    0.893 |  0.007 |      0.106 |  (fraction) |   OK
+    f |  0.20 |    0.80 |    0.797 |  0.003 |      0.072 |  (fraction) |   OK
+    f |  0.30 |    0.70 |    0.703 |  0.003 |      0.054 |  (fraction) |   OK
+------------------------------------------------------------------------------
+
+==============================================================================
+GATE 1: PASS -- all 24 cells within 0.03 of nominal across both methods, all parameters, all alpha.
+==============================================================================
+
+------------------------------------------------------------------------------
+SHARPNESS vs SNR  (median interval width, alpha=0.1, nominal coverage 0.90)
+with conditional (per-SNR) realized coverage -- note: conformal guarantees MARGINAL,
+not conditional, coverage; per-SNR deviations are expected and motivate Mondrian CP.
+------------------------------------------------------------------------------
+[split-conformal]
+param |         SNR 10 |         SNR 20 |         SNR 30 |         SNR 50 |         SNR100
+  (each cell: median_width [cond.coverage])
+    D |    0.949[0.65] |    0.949[0.91] |    0.949[0.94] |    0.949[1.00] |    0.949[1.00]
+   D* |  123.668[0.76] |  123.668[0.87] |  123.668[0.90] |  123.668[0.97] |  123.668[0.99]
+    f |    0.249[0.68] |    0.249[0.91] |    0.249[0.95] |    0.249[0.99] |    0.249[1.00]
+  width units: D,D* in 1e-3 mm^2/s ; f is fraction
+
+[CQR]
+param |         SNR 10 |         SNR 20 |         SNR 30 |         SNR 50 |         SNR100
+  (each cell: median_width [cond.coverage])
+    D |    0.799[0.81] |    0.577[0.86] |    0.520[0.92] |    0.481[0.95] |    0.460[0.97]
+   D* |   67.790[0.85] |   63.586[0.90] |   61.793[0.90] |   59.316[0.93] |   59.275[0.93]
+    f |    0.138[0.83] |    0.111[0.87] |    0.100[0.91] |    0.095[0.90] |    0.095[0.95]
+  width units: D,D* in 1e-3 mm^2/s ; f is fraction
+
+------------------------------------------------------------------------------
+SHARPNESS SUMMARY (alpha=0.10): ratio of low-SNR to high-SNR median width,
+and ratio of D*/f widths to D width -- where the ill-posed compartment blows up.
+------------------------------------------------------------------------------
+[split-conformal]
+    D: width(SNR10)=   0.949  width(SNR100)=   0.949  low/high ratio=   1.0x  (1e-3 mm^2/s)
+   D*: width(SNR10)= 123.668  width(SNR100)= 123.668  low/high ratio=   1.0x  (1e-3 mm^2/s)
+    f: width(SNR10)=   0.249  width(SNR100)=   0.249  low/high ratio=   1.0x  ((fraction))
+
+[CQR]
+    D: width(SNR10)=   0.799  width(SNR100)=   0.460  low/high ratio=   1.7x  (1e-3 mm^2/s)
+   D*: width(SNR10)=  67.790  width(SNR100)=  59.275  low/high ratio=   1.1x  (1e-3 mm^2/s)
+    f: width(SNR10)=   0.138  width(SNR100)=   0.095  low/high ratio=   1.4x  ((fraction))
+
+==============================================================================
+NOTE: D and D*/f live on different scales; compare widths within a parameter across SNR,
+not across parameters. The relative (width / median truth) blow-up of D* at low SNR is the
+ill-posed-compartment signal Gauge 02's conformal-vs-model-based benchmark will target.
+==============================================================================

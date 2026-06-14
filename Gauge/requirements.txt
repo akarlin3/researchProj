@@ -1,0 +1,6 @@
+# Gauge 01 — pinned to the versions used to produce results/ (Python 3.13)
+numpy==2.4.6
+scipy==1.17.1
+scikit-learn==1.9.0
+matplotlib==3.11.0
+pytest==9.1.0

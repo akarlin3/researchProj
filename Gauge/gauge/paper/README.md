@@ -37,7 +37,23 @@ warnings, no errors.
    the wall, and a **qualitative** (no-coverage-claim) in-vivo demonstration.
    *(Gauge 04)*
 
-## Out of scope (human)
-The venue call (the conditional-coverage result is methodological — candidates:
-*Magnetic Resonance in Medicine*, or a methods venue such as *Medical Image
-Analysis* / *MELBA*) and a human read of the abstract's open-problem framing.
+## Target venue: Magnetic Resonance in Medicine (MRM)
+The manuscript is formatted to MRM's content requirements:
+- **Structured abstract** (Purpose / Methods / Results / Conclusion, ≤250 words) + keywords.
+- **Numbered (Vancouver) references**, in order of first citation (`natbib`
+  `[numbers,sort&compress]` + `unsrtnat`). MRM applies its superscript house style
+  in production.
+- **Required statements**: Data & Code Availability, Conflict of Interest, Funding,
+  Author Contributions, ORCID (placeholders where author-specific).
+- **Length**: ~1,400 words of main text (Introduction–Conclusion, excluding
+  abstract, tables, figure captions, and references) — well within MRM's ~5000-word
+  limit; 8 figures + 4 tables.
+
+The robust `article` class is retained so the `tectonic` build stays
+self-contained; the Wiley/MRM LaTeX class can be swapped in at submission without
+touching the content (a non-CTAN class is not fetchable by tectonic, hence not
+hard-wired here).
+
+## Still open (human)
+A human read of the abstract's open-problem framing, and completion of the
+author-specific declaration fields (funding, author contributions, ORCID).

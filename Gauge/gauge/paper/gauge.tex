@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
-\usepackage{natbib}
+\usepackage[numbers,sort&compress]{natbib}  % MRM: numbered (Vancouver) references
 \usepackage{xcolor}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{microtype}
@@ -23,34 +23,46 @@ Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment}}
 
 \begin{abstract}
 \noindent
-Intravoxel incoherent motion (IVIM) imaging fits a bi-exponential signal model to
-recover tissue diffusion $D$, pseudo-diffusion $\Dstar$, and perfusion fraction
-$f$. The pseudo-diffusion compartment is ill-posed, and model-based uncertainty
-quantification (UQ) for IVIM is documented to be overconfident in $\Dstar$. We ask
-whether \emph{distribution-free conformal prediction} can supply the finite-sample
-coverage guarantee that model-based UQ lacks, and whether its advantage
-concentrates in the unstable compartment. On a controlled synthetic cohort built
-from our own forward model, we find that (i) model-based IVIM UQ is overconfident
-\emph{broadly} across $D$, $\Dstar$, and $f$ -- not specifically in
-pseudo-diffusion -- so the naive marginal hypothesis is \emph{rejected}; (ii)
-conformal and conformalized-model-based intervals restore near-nominal marginal
-coverage in every compartment ($|\text{gap}|\le 0.024$), and conformalizing a
-Casali-style mixture-density deep ensemble (MDN) is the sharpest valid recipe
-($0.65$--$0.79\times$ the width of pure conformalized quantile regression at equal
-coverage); and (iii) the real failure is \emph{conditional}: the high-$\Dstar$
-regime under-covers for every method at every SNR, and \emph{no label-free method
-closes the gap}. A Fisher-information analysis localizes this to an
-\textbf{irreducible identifiability limit} -- in the high-$\Dstar$ regime the
-Cram\'er--Rao bound on $\Dstar$ reaches the width of the regime bin, so no
-observable can route voxels to a wider-interval stratum. We further stress the
-guarantee under deliberate exchangeability breaks (weighted conformal recovers
-covariate shift but not forward-model misspecification; an observable deployment
-monitor fires before coverage silently fails, yet is blind to the latent
-high-$\Dstar$ gap), show that the wall is robust to the b-value scheme, and give a
-qualitative in-vivo demonstration in which the same monitor turns the absence of
-ground truth into an observable stop sign. We frame the contribution as
-\emph{characterizing} the high-$\Dstar$ limit, not solving it.
+\textbf{Purpose:} To bring distribution-free conformal prediction to intravoxel
+incoherent motion (IVIM) parameter mapping, benchmark it against model-based
+uncertainty quantification (UQ), and test whether its advantage concentrates in
+the ill-posed pseudo-diffusion compartment $\Dstar$.
+
+\noindent
+\textbf{Methods:} On a controlled, seeded synthetic cohort built from our own
+bi-exponential forward model with Rician noise, we compare split-conformal and
+conformalized quantile regression (CQR) against four model-based baselines
+(probabilistic neural network, mixture-density deep ensemble, deep ensemble,
+per-voxel Bayesian MCMC), measuring marginal and (SNR $\times$
+true-$\Dstar$-tercile) conditional coverage and sharpness. A
+Fisher-information / Cram\'er--Rao analysis diagnoses the residual gap; weighted
+(nonexchangeable) conformal and a label-free deployment monitor stress
+exchangeability; a qualitative in-vivo demonstration is included.
+
+\noindent
+\textbf{Results:} Model-based IVIM UQ is overconfident \emph{broadly} across $D$,
+$\Dstar$, and $f$ (not specifically pseudo-diffusion), so the naive marginal
+hypothesis is rejected. Conformal and conformalized methods restore near-nominal
+marginal coverage everywhere ($|\text{gap}|\le 0.024$), and conformalizing the MDN
+is the sharpest valid recipe ($0.65$--$0.79\times$ pure-CQR width). The real
+failure is conditional: the high-$\Dstar$ regime under-covers for every method at
+every SNR, and no label-free method closes the gap because the Cram\'er--Rao bound
+on $\Dstar$ reaches the regime-bin width -- an irreducible identifiability limit.
+The wall is robust to the b-value scheme; weighted conformal recovers covariate
+shift but not forward-model misspecification; the monitor fires before coverage
+fails but is blind to the latent gap.
+
+\noindent
+\textbf{Conclusion:} Conformal prediction supplies the finite-sample coverage
+guarantee model-based IVIM UQ lacks, and conformalizing a strong base is sharpest.
+The high-$\Dstar$ compartment is an identifiability limit we characterize, not
+solve.
 \end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Keywords:} intravoxel incoherent motion (IVIM); uncertainty
+quantification; conformal prediction; identifiability; pseudo-diffusion;
+quantitative MRI.
 
 \section{Introduction}
 IVIM imaging~\citep{lebihan1988} separates microcirculatory perfusion from tissue
@@ -505,7 +517,29 @@ the limit -- and provide the robustness tooling, acquisition analysis, and
 qualitative in-vivo demonstration that frame how an honest, distribution-free IVIM
 uncertainty map should be deployed and monitored.
 
-\bibliographystyle{plainnat}
+\section*{Data and Code Availability Statement}
+This study uses no human or animal data. All results are produced from a
+deterministic, seeded synthetic cohort (seed \texttt{20260613}) generated by the
+study's own forward model; no external or in-vivo dataset is required to reproduce
+them. The complete source code, the gated checkpoint outputs from which every
+number in this paper is drawn, the figures, and a machine-checked consistency
+script (\texttt{gauge/paper/consistency.py}) are openly available in the project
+repository.
+
+\section*{Conflict of Interest}
+The author(s) declare no competing interests.
+
+\section*{Funding}
+[To be completed by the authors.]
+
+\section*{Author Contributions}
+[To be completed by the authors.] All listed authors contributed to the design,
+analysis, and writing of the study.
+
+\section*{Acknowledgments / ORCID}
+ORCID identifiers to be added by the authors at submission.
+
+\bibliographystyle{unsrtnat}
 \bibliography{refs}
 
 \end{document}

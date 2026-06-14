@@ -142,3 +142,42 @@ python -m gauge.benchmark      # CP1 / GATE 1  (head-to-head)
 python -m gauge.conditional    # CP2 / GATE 2  (conditional coverage)
 python scripts/make_figures.py # CP3 figures (vector PDF)
 ```
+
+## Gauge 03 — the open problem (high-D\* conditional coverage)
+
+Gauge 03 asks whether any **label-free** conditioning can recover the high-D\*
+conditional-coverage gap. Verdict: an **irreducible identifiability limit** — no
+observable proxy routes high-D\* voxels correctly because the Cramér–Rao bound on
+D\* reaches the tercile width there. Full write-up:
+[`gauge/results_gauge03.md`](gauge/results_gauge03.md);
+module [`gauge/conditional_attack.py`](gauge/conditional_attack.py).
+
+## Gauge 04 — robustness, exchangeability, and an in-vivo demonstration
+
+Gauge 04 stresses the guarantee where it should break and grounds it on (stand-in)
+real signal. Full write-up: [`gauge/results_gauge04.md`](gauge/results_gauge04.md).
+Honest headlines:
+
+- **Coverage is fragile to exchangeability breaks, but the breaks are observably
+  detectable.** Deliberate SNR / prior / tri-exponential / noise-model shifts
+  miscalibrate coverage (D\* as low as 0.515). **Weighted conformal** (Tibshirani
+  2019; Barber–Candès–Ramdas–Tibshirani 2023) recovers the covariate shifts and is
+  honestly limited on the P(y|x) misspecification. A **Minos-style label-free
+  monitor** fires on every observable break *before* coverage fails, and is blind
+  to the latent high-D\* gap (observable-AUC≈1 / hidden-AUC≈0.5).
+- **The high-D\* wall is acquisition-ROBUST:** clinical, CRLB-optimal, and dense
+  b-schemes all keep CRLB(D\*)/tercile-width ≥ 1.05 — a concrete (negative) handoff
+  to **Vernier**.
+- **In vivo, only qualitative claims are made**, and the deployment monitor
+  enforces that by firing on the synthetic→deployment transfer. Dataset choice,
+  licensing, and framing are a human sign-off (HALT-TO-REPORT).
+
+Modules: [`gauge/robustness.py`](gauge/robustness.py) (CP0 + CP1),
+[`gauge/invivo.py`](gauge/invivo.py) (CP2), [`gauge/monitor.py`](gauge/monitor.py)
+(the Minos-style monitor, reused by both). Minos supplies the *concept*
+(label-free validity monitor under shift), not Fashion's flow.
+
+```bash
+python -m gauge.robustness     # CP0 (shift stress) + CP1 (acquisition) + figures
+python -m gauge.invivo         # CP2 in-vivo demo (synthetic stand-in; pluggable)
+```

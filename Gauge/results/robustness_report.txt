@@ -1,0 +1,70 @@
+############################################################################################
+GAUGE 04 -- CP0 / GATE 0 (HALT-TO-REPORT): exchangeability / shift stress
+############################################################################################
+seed 20260613  alpha 0.1 (nominal 0.90)  n_cal 2000  n_test 2500  b-values 22
+deployed split-conformal radius q (D,D*,f) = [0.0005, 0.0642, 0.1196]  (one Rician-cohort calibration, applied to every shift)
+--------------------------------------------------------------------------------------------
+[0.1] per-parameter coverage under each shift: NAIVE vs WEIGHTED (shift-aware) conformal
+      weighted = covariate-shift conformal, domain-classifier LR weights (Tibshirani 2019;
+      Barber-Candes-Ramdas-Tibshirani 2023). nominal = 0.90. monitor = Minos-style.
+--------------------------------------------------------------------------------------------
+                        scenario |   method |      D |     D* |      f | monitor
+--------------------------------------------------------------------------------------------
+               in-dist (control) |    naive |  0.909 |  0.900 |  0.902 | silent (AUC 0.50)
+                                 | weighted |  0.895 |  0.892 |  0.893 |
+                 SNR shift (low) |    naive |  0.610 |  0.744 |  0.616 | FIRES (AUC 0.91)
+                                 | weighted |  0.901 |  0.899 |  0.911 |
+     prior shift (harder tissue) |    naive |  0.970 |  0.515 |  0.906 | FIRES (AUC 0.71)
+                                 | weighted |  0.900 |  0.975 |  0.916 |
+                 tri-exp misspec |    naive |  0.908 |  0.846 |  0.910 | FIRES (AUC 0.51)
+                                 | weighted |  0.886 |  0.928 |  0.894 |
+ noise-model (Rician cal->Gauss) |    naive |  0.918 |  0.901 |  0.904 | FIRES (AUC 0.52)
+                                 | weighted |  0.904 |  0.898 |  0.896 |
+--------------------------------------------------------------------------------------------
+[0.1] weighted conformal cleanly RECOVERS the covariate (SNR) shift: worst-param 0.610 -> per-param (0.901, 0.899, 0.911), all within 0.011 of nominal.
+      a forward-model misspecification (tri-exp) is a P(y|x) shift, which X-space covariate-shift weights are NOT guaranteed to repair: weighting moves D* 0.846->0.928 but the per-param result stays UNEVEN (max dev 0.028 vs SNR's 0.011;
+      Barber et al. 2023 bounds this residual gap, it does not erase it).
+--------------------------------------------------------------------------------------------
+[0.3] Minos cross-link -- label-free deployment monitor (Minos-Core v3 idea: staleness from
+      observable statistics; Family-1 Mahalanobis + Family-2 residual conformal). Does it fire
+      BEFORE coverage silently fails?
+      OBSERVABLE breaks flagged: 4/4 shift scenarios fire (control stays silent: silent ).
+      HIDDEN case (in-dist, exchangeable): marginal D* coverage 0.900 OK, monitor silent (AUC 0.50) -- yet high-D* CONDITIONAL coverage 0.815
+      (worst-SNR 0.595) is below nominal. The observable monitor is BLIND to the latent
+      high-D* gap (Gauge 03 wall) -- exactly Minos v3's observable AUC~1 / hidden AUC~0.5 split.
+--------------------------------------------------------------------------------------------
+[0.3] SNR-severity sweep -- monitor drift vs realized coverage (fires-before-failure check):
+  test SNR |  min cov | cov<nom-tol? |  monitor |    maha stat/thr
+        50 |    0.967 |           ok |   silent |    1.98/2.60   
+        30 |    0.919 |           ok |   silent |    2.15/2.60   
+        20 |    0.866 |           ok |    FIRES |    2.44/2.60   
+        13 |    0.753 |         FAIL |    FIRES |    3.15/2.60   
+         9 |    0.593 |         FAIL |    FIRES |    4.09/2.60   
+         6 |    0.413 |         FAIL |    FIRES |    5.45/2.60   
+         4 |    0.283 |         FAIL |    FIRES |    7.46/2.60   
+  monitor first fires at SNR 20.0;  coverage first fails at SNR 13.0.  fires-before-failure: YES.
+============================================================================================
+GATE 0 (HALT-TO-REPORT): every exchangeability break MISCALIBRATES conformal coverage (max |cov-nominal|
+  = 0.385). The dangerous UNDER-coverage is worst under 'prior shift (harder tissue)' (min-param
+  0.515, gap 0.385); miscalibration is two-sided (the same breaks over-cover other params). Weighted
+  conformal recovers the COVARIATE shifts (SNR within 0.011 of nominal; prior D* 0.515->0.975) and is honestly limited on the P(y|x) misspec (tri-exp max dev 0.028). The
+  Minos-style monitor fires on 4/4 observable breaks before coverage fails, and is blind to the latent
+  high-D* gap -- reported, not engineered around.
+============================================================================================
+
+############################################################################################
+GAUGE 04 -- CP1 / GATE 1: acquisition sensitivity of the high-D* wall (Vernier tie-in)
+############################################################################################
+Does the high-D* identifiability wall move with the b-value scheme? Same prior/SNR/seed; b differs.
+--------------------------------------------------------------------------------------------
+                scheme | n_b |  D* marg | hi-D* marg | hi-D* worst | hi CRLB/width
+--------------------------------------------------------------------------------------------
+       clinical (11 b) |  11 |    0.912 |      0.841 |       0.595 |          1.25
+   CRLB-optimal (11 b) |  11 |    0.908 |      0.844 |       0.608 |          1.05
+          dense (22 b) |  22 |    0.913 |      0.845 |       0.596 |          1.06
+--------------------------------------------------------------------------------------------
+  CRLB-optimal scheme b-values: [  0.,  5., 10., 15., 20., 35., 65., 70., 75., 80.,800.]
+  high-D* marginal coverage clinical 0.841 -> CRLB-optimal 0.844 (delta +0.004);
+  hi-D* CRLB/tercile-width clinical 1.25 -> optimal 1.05 (improvement +0.20).
+GATE 1: the wall is acquisition-ROBUST -- even the CRLB-optimal / dense schemes keep hi-D* CRLB >= tercile width, so high-D* stays under-resolved. Acquisition shifts the wall but does not remove it (deeper identifiability limit; the Vernier bound).
+############################################################################################

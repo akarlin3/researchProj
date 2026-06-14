@@ -5,4 +5,5 @@ a labeled synthetic cohort, NLLS / quantile base estimators, and split-conformal
 + CQR prediction intervals with an empirical coverage-validation harness.
 """
 
-__all__ = ["forward", "cohort", "estimators", "conformal"]
+__all__ = ["forward", "cohort", "estimators", "conformal", "monitor",
+           "robustness", "invivo"]

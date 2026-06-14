@@ -141,6 +141,39 @@ def weighted_conformal_quantile(scores, weights, alpha, self_weight=None):
     return float(s_sorted[idx])
 
 
+def weighted_split_conformal(cal_scores, w_cal, w_test, alpha):
+    """Covariate-shift weighted split conformal (Tibshirani et al. 2019).
+
+    Per test point j with importance weight ``w_test[j]``, the calibrated radius
+    is the smallest score t at which the normalized cumulative calibration weight
+    of ``{s_i <= t}`` reaches ``1 - alpha``, with the test point's own weight
+    added as +inf mass (so the bound holds under *weighted* exchangeability):
+
+        q_j = min{ t : (sum_{s_i <= t} w_i) >= (1-alpha) (sum_i w_i + w_test_j) }.
+
+    With uniform weights this reduces to :func:`conformal_quantile`. The weights
+    ``w(x) = dP_test/dP_cal`` are estimated by a domain classifier in
+    robustness.py; this is the shift-aware fix whose guarantee, unlike plain
+    split conformal, survives a *covariate* shift. It does NOT repair a shift in
+    the conditional law ``P(y|x)`` (model misspecification) -- reported honestly
+    in CP0. Returns an ``(m,)`` array of radii (``np.inf`` where 1-alpha is
+    unreachable). Vectorized over test points.
+    """
+    cal_scores = np.asarray(cal_scores, dtype=float)
+    w_cal = np.asarray(w_cal, dtype=float)
+    w_test = np.asarray(w_test, dtype=float)
+    order = np.argsort(cal_scores, kind="mergesort")
+    s_sorted = cal_scores[order]
+    cumw = np.cumsum(w_cal[order])
+    W = float(w_cal.sum())
+    targets = (1.0 - alpha) * (W + w_test)               # (m,)
+    idx = np.searchsorted(cumw, targets, side="left")    # (m,)
+    out = np.full(w_test.shape[0], np.inf)
+    ok = idx < s_sorted.size
+    out[ok] = s_sorted[idx[ok]]
+    return out
+
+
 def localized_conformal(cal_scores, cal_feat, test_feat, alpha, bandwidth,
                         kernel="gaussian"):
     """Localized conformal prediction (Guan 2023, LCP).

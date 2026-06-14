@@ -1,0 +1,39 @@
+############################################################################################
+GAUGE 04 -- CP2 / GATE 2 (HALT-ABLE): in-vivo qualitative demonstration
+############################################################################################
+data source: synthetic stand-in (NOT in vivo)   |   voxels: 2500   |   ground truth available: True
+
+** What conformal CANNOT claim in vivo **  (kept strictly separate from the synthetic guarantees):
+  - In vivo there are NO ground-truth (D, D*, f), so realized coverage is UNMEASURABLE and the
+    finite-sample 1-alpha guarantee (Gauge 01-03, on labeled exchangeable synthetic data) is NOT
+    asserted here. Everything below is QUALITATIVE interval behavior, not a coverage claim.
+--------------------------------------------------------------------------------------------
+[2.1] Conformalized interval map (deployed CQR band; synthetic-calibrated):
+      median plug-in (D, D*, f) = (1.41, 60.5, 0.304)   [D,D* in 1e-3 mm^2/s]
+      median band width (D, D*, f) = (0.76, 64.0, 0.127)
+[2.2] D* compartment band widths (the Gauge 03 wall, on real signal): 10/50/90th pct (1e-3 mm^2/s)
+      = [47.4, 64.0, 78.9]  -- the D* band is wide and HEAVY-TAILED: the conformal
+      interval honestly balloons on the voxels where the perfusion compartment is under-identified.
+      widest-decile / narrowest-decile D* width ratio = 1.7x (vs ~1x for a homogeneous map).
+--------------------------------------------------------------------------------------------
+[2.3] Minos-style deployment monitor on the in-vivo signals (synthetic calibration vs deployment):
+      monitor: FIRES   AUC(cal vs in-vivo) = 0.84   (Family-1 Mahalanobis 3.68/thr 2.60,
+      Family-2 residual 0.358/thr 0.177; domain-weight spread 7x).
+      INTERPRETATION: synthetic-calibrated -> deployment is itself an exchangeability break, and the
+      observable monitor detects it. That firing is the honest, label-free reason the synthetic
+      coverage guarantee must NOT be transferred to this data without re-calibration on matched, LABELED
+      data -- which in vivo does not exist (the Echo tension). The monitor turns 'no ground truth' into
+      an OBSERVABLE stop sign (the Minos cross-link, CP0).
+--------------------------------------------------------------------------------------------
+[2.x] PHANTOM-ONLY sanity (this stand-in HAS ground truth; a true in-vivo run would print NOTHING here):
+      stand-in coverage (D, D*, f) = (0.805, 0.636, 0.744) at nominal 0.90 -- under-covers, consistent with the monitor firing on the transfer.
+      (Shown ONLY to validate the pipeline; it is NOT an in-vivo coverage claim and is kept separate.)
+============================================================================================
+GATE 2: the in-vivo pipeline RUNS and its qualitative outputs (interval map, heavy-tailed D* widths,
+  monitor firing on transfer) are clearly DELIMITED from the synthetic coverage guarantees. 
+  HALT-TO-REPORT (dataset gate): no clean, permissively-licensed, ground-truth-free in-vivo IVIM
+  dataset was usable in THIS environment (nibabel absent; OSIPI commits only b-value files / generators;
+  true in-vivo sits behind TCIA data-use agreements). The demo therefore runs on a transparent SYNTHETIC
+  STAND-IN. >> HUMAN SIGN-OFF NEEDED: dataset choice + licensing, and the in-vivo framing (what the
+  qualitative demo may claim). The loaders (load_dwi_nifti / load_signals_npy) are the drop-in point.
+############################################################################################

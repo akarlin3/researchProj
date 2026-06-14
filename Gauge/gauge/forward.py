@@ -60,6 +60,42 @@ def add_rician_noise(signal, snr, rng, S0=1.0):
     return np.sqrt((np.asarray(signal, dtype=float) + n_re) ** 2 + n_im ** 2)
 
 
+def add_gaussian_noise(signal, snr, rng, S0=1.0):
+    """Add additive Gaussian noise at the given SNR (sigma = S0 / snr).
+
+    measured = S + N(0, sigma). This is the high-SNR *approximation* to Rician
+    magnitude noise -- symmetric, with no noise floor. Gauge calibrates and
+    bench-tests on Rician data; swapping in Gaussian (or vice-versa) is the
+    noise-model **misspecification** used in the robustness stress (CP0): the two
+    agree at high SNR but diverge at low SNR, where the Rician floor lifts the
+    high-b signal and biases the bi-exponential fit.
+    """
+    sigma = S0 / snr
+    shape = np.shape(signal)
+    return np.asarray(signal, dtype=float) + rng.normal(0.0, sigma, size=shape)
+
+
+def ivim_signal_triexp(b, D, Dstar, f, Dstar2, g, S0=1.0):
+    """Tri-exponential IVIM signal: bi-exp plus a third very-fast compartment.
+
+    The perfusion fraction ``f`` is split between the ordinary pseudo-diffusion
+    ``Dstar`` and a faster ``Dstar2`` (e.g. larger vessels / inflow), with ``g``
+    in [0, 1] the fraction of the perfusion pool routed to the fast component:
+
+        S(b)/S0 = (1-f) e^{-bD} + f(1-g) e^{-bD*} + f g e^{-bD*2}.
+
+    At ``g = 0`` this reduces exactly to :func:`ivim_signal` with the SAME
+    (D, D*, f). That is deliberate: it lets the robustness stress (CP0) keep the
+    nominal bi-exponential truth (D, D*, f) as the coverage target while the data
+    carry structure the bi-exponential model cannot represent -- a "the tissue is
+    more complex than the model" forward-model misspecification.
+    """
+    b = np.asarray(b, dtype=float)
+    return S0 * ((1.0 - f) * np.exp(-b * D)
+                 + f * (1.0 - g) * np.exp(-b * Dstar)
+                 + f * g * np.exp(-b * Dstar2))
+
+
 # --------------------------------------------------------------------------- #
 # Fisher information / Cramer-Rao bound for IVIM (Gauge 03 identifiability).
 #
@@ -125,6 +161,31 @@ def crlb(b, D, Dstar, f, S0=1.0, snr=None, sigma=None, fix_s0=False):
     return out
 
 
+def design_crlb_dstar(b, D, Dstar, f, snr, S0=1.0, fix_s0=False,
+                      hi_mask=None):
+    """Design objective: mean CRLB(D*) over a representative voxel set.
+
+    Given a candidate b-value scheme ``b`` and matched arrays of representative
+    voxels (``D, Dstar, f, snr``), returns ``(mean_all, mean_hi)`` -- the mean
+    CRLB(D*) standard deviation across all voxels and across the high-D* subset
+    (``hi_mask``, default = top tercile of ``Dstar``). Lower is a better scheme.
+    Infinities (locally unidentifiable voxels) are dropped from the mean so a
+    scheme is not rewarded merely for making D* unidentifiable everywhere; the
+    fraction dropped is the third return value. This is the acquisition-design
+    score CP1 minimises to build the CRLB-optimal scheme (the Vernier tie-in).
+    """
+    Dstar = np.asarray(Dstar, dtype=float)
+    sd = crlb_dstar_batch(b, D, Dstar, f, snr, S0=S0, fix_s0=fix_s0)
+    if hi_mask is None:
+        hi_mask = Dstar >= np.quantile(Dstar, 2.0 / 3.0)
+    finite = np.isfinite(sd)
+    mean_all = float(np.mean(sd[finite])) if finite.any() else np.inf
+    hi_finite = finite & hi_mask
+    mean_hi = float(np.mean(sd[hi_finite])) if hi_finite.any() else np.inf
+    frac_inf = float(np.mean(~finite))
+    return mean_all, mean_hi, frac_inf
+
+
 def crlb_dstar_batch(b, D, Dstar, f, snr, S0=1.0, fix_s0=False):
     """Vectorized CRLB standard deviation for D* over many voxels.
 
@@ -162,7 +223,8 @@ def crlb_dstar_batch(b, D, Dstar, f, snr, S0=1.0, fix_s0=False):
     except np.linalg.LinAlgError:
         for i in range(N):
             try:
-                out[i] = np.sqrt(np.linalg.inv(info[i])[1, 1])
+                v = np.linalg.inv(info[i])[1, 1]
+                out[i] = np.sqrt(v) if v > 0 else np.inf
             except np.linalg.LinAlgError:
                 out[i] = np.inf
     return out

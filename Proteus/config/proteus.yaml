@@ -243,6 +243,37 @@ floor:
   # Uniform sampler reads the Foldseek DB's own representative list by HTTP Range.
   lookup_url: "https://foldcomp.steineggerlab.workers.dev/highquality_clust30.lookup"
 
+# Per-query tiering — re-tier the enriched sweep WITHIN each query anchor (not by
+#      GLOBAL bits, which let the AChE/1EA5 branch dominate the top tier: the enriched
+#      300 was 96% AChE-branch, 0% PETase-branch). Best-match-partition every Atlas
+#      target in result.m8 by its nearest query, then screen the PETase/cutinase
+#      branch the thesis cares about. Mac-only, off the GCS sweep artifacts; reuses
+#      screen/S4/S5 untouched at the pinned line. The random floor (floor.json) is the
+#      third arm — reused AS MEASURED, not re-screened.  [LOCAL]
+per_query:
+  branch_n: 300                # top hits to screen per anchor branch (or all if smaller)
+  # Pinned decision line — IDENTICAL to floor.enriched_line so PETASE/ACHE/floor are
+  # all judged at one line (local re-derivation jitters with fpocket; we pin).
+  enriched_line: -1.1587
+  fetch_workers: 16            # parallel HTTP fetches (network-bound)
+  screen_workers: 8            # parallel screens (fpocket subprocess per triad+)
+  # result.m8 alignment table (query -> Atlas target) from the enriched sweep. Pulled
+  # from GCS if absent; gitignored locally (data/**, *.m8). 8-col foldseek custom
+  # format: query, target(.pdb.gz), evalue, bits, fident, alnlen, qlen, tlen.
+  result_m8: data/interim/result.m8.gz
+  result_m8_gcs: "gs://projproteus-fold/atlas-sweep/2026-06-14/result.m8.gz"
+  # Query -> anchor-class map, keyed by the query id as it appears in result.m8 col1.
+  # PETASE = the PET-active queries (IsPETase/LCC + cutinases); ACHE = Torpedo
+  # acetylcholinesterase (deep-gorge negative, the branch that dominated by bits);
+  # OTHER_NEG = the remaining negatives. Must cover every query in result.m8.
+  anchor_classes:
+    PETASE:    [6EQE, 4EB0, 8B4U, 4WFI, 4CG1]   # IsPETase, LCC, PET46, Cut190, TfCut2
+    ACHE:      [1EA5]                            # AChE_Tc (Torpedo californica)
+    OTHER_NEG: [1TCA_A, 1CRL_A, 1EVQ]           # CalB, CRL, Est2
+  # Live ESM Atlas model fetch (structurally identical to the GCE foldcomp models —
+  # triads reproduce exactly). The foldcomp worker Range path is the documented fallback.
+  fetch_url: "https://api.esmatlas.com/fetchPredictedStructure/{acc}.pdb"
+
 # Docking (P4) — small AutoDock Vina pass on the S5/screen survivors: dock a
 #      PET-mimic ligand into the catalytic cleft and rank by binding affinity.
 #      LOCAL CPU Vina here; GPU docking (GNINA/DiffDock) is a GCE burst (see gce/).

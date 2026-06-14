@@ -393,6 +393,35 @@ def arm_rates(funnel: dict) -> dict:
     }
 
 
+def bits_gradient(pet_records: list[dict], floor_k: int, floor_n: int,
+                  tiers=(25, 50, 100)) -> list[dict]:
+    """Above-line | triad rate within the PETASE branch, STRATIFIED by closeness to a
+    PETase query (best_bits), each tier tested vs the random floor. Reveals whether any
+    PET gradient is confined to the closest neighbours rather than spread across the
+    whole top-branch_n tier (the load-bearing top-300 test averages over all of it)."""
+    def _b(r):  # noqa: ANN001
+        try:
+            return float(r.get("best_bits") or 0.0)
+        except (TypeError, ValueError):
+            return 0.0
+    tri = sorted((r for r in pet_records if r.get("triad_found")), key=_b, reverse=True)
+
+    def _tier(sub: list[dict], label: str) -> dict:
+        n = len(sub)
+        k = sum(1 for r in sub if r.get("above_threshold"))
+        return {"label": label, "k": k, "n": n,
+                "rate": (k / n if n else float("nan")),
+                "wilson95": wilson_ci(k, n),
+                "min_bits": (_b(sub[-1]) if sub else float("nan")),
+                "fisher_p_vs_floor": fisher_p(k, n - k, floor_k, floor_n - floor_k),
+                "rr_vs_floor": katz_rate_ratio(k, n, floor_k, floor_n)}
+
+    out = [_tier(tri[:t], f"top {t}") for t in tiers]
+    last = tiers[-1]
+    out.append(_tier(tri[last:], f"rank {last + 1}–{len(tri)}"))
+    return out
+
+
 def two_arm_test(k1: int, n1: int, k2: int, n2: int, name1: str, name2: str) -> dict:
     """Full two-proportion comparison of conditional rates: z-test, Fisher exact,
     Katz rate ratio (arm1/arm2)."""
@@ -559,6 +588,28 @@ def render_md(ctx: dict) -> str:
     test_block(t_pa, "PETASE branch vs ACHE branch (conditional)")
     test_block(t_af, "ACHE branch vs floor (conditional, context)")
 
+    grad = ctx.get("bits_gradient") or []
+    if grad:
+        L.append("### Gradient WITHIN the PETASE branch — above-line | triad by "
+                 "closeness to a PETase query\n")
+        L.append("The load-bearing test averages over the whole top-300 tier. Stratifying "
+                 "the PETASE triad-bearers by Foldseek bits (closeness to the nearest "
+                 "PETase query) shows where any signal actually lives:\n")
+        L.append("| tier (by bits) | min bits | above-line \\| triad | vs floor 42.9% "
+                 "(Fisher p, RR) |")
+        L.append("|---|---:|---|---|")
+        for g in grad:
+            rrg = g["rr_vs_floor"]
+            L.append(f"| {g['label']} | {g['min_bits']:.0f} | "
+                     f"{g['k']}/{g['n']} = {_pct(g['rate'])} {_ci_pct(g['wilson95'])} | "
+                     f"p = {g['fisher_p_vs_floor']:.3f}, RR {rrg['rr']:.2f}× |")
+        L.append("\nThe gradient decays monotonically with bits and crosses the floor "
+                 "(~43%) in the mid-tier: the closest PETase-neighbours clear well above "
+                 "random, the bulk at or below it. Crucially, the above-floor tail sits at "
+                 "**near-homolog bits** — where a plain sequence search already reaches — "
+                 "so it does **not** rescue the divergent-dark-tail discovery the project "
+                 "targets.\n")
+
     L.append("## Checkpoint 4 — candidates + verdict\n")
     L.append("### PETase-anchored, above-line hits — the project's best candidates "
              "from the correct branch\n")
@@ -588,6 +639,23 @@ def render_md(ctx: dict) -> str:
              "random hydrolases. No wet-lab; the S4/S5 path tests fold-class + an "
              "exposed-cleft geometry, not PET turnover. Leads are **prioritized, not "
              "verified**.\n")
+
+    L.append("## Caveats\n")
+    L.append(f"- **Floor triad+ n = {fl['triad_positive_S4']} (< 50)** — the floor "
+             "conditional CI is wide [26.5%, 60.9%]. The FLAT discovery-tier verdict is "
+             "robust regardless: PETASE top-300 sits AT/BELOW the floor point estimate, "
+             "so a tighter floor cannot manufacture a positive gradient (PETASE would "
+             "have to rise ABOVE it). The closest-neighbour tail result (top-25 vs floor) "
+             "already clears significance (p = 0.011) despite the small floor.")
+    L.append("- **fpocket is non-deterministic** run-to-run (composites swing ~±1.0; the "
+             "re-derived line wanders ~±0.01). Handled by PINNING the decision line to "
+             f"{line} and caching the screened records: the headline conditional "
+             f"({pf['above_line']}/{pf['triad_positive_S4']}) reproduced EXACTLY across "
+             "two independent screen passes.")
+    L.append("- **The above-floor signal is near-homolog.** The tail that beats the floor "
+             "sits at high Foldseek bits — sequence search already reaches there. The "
+             "divergent dark tail (lower bits) that motivates a *structure-first* "
+             "discovery is exactly where the signal is flat.\n")
 
     L.append("## Reproducibility\n")
     L.append(f"- **Seed** {seed}; **branch_n** {ctx['branch_n']}; **line** {line} "
@@ -621,9 +689,15 @@ def ensure_result_m8(cfg_pq: dict) -> str:
         f"result.m8 not found at {local} and no per_query.result_m8_gcs configured")
 
 
-def build_verdict(t_pf: dict, pr: dict, fl: dict, t_pa: dict, ar: dict) -> tuple[str, str]:
+def build_verdict(t_pf: dict, pr: dict, fl: dict, t_pa: dict, ar: dict,
+                  grad: list[dict]) -> tuple[str, str]:
     """Produce the gradient verdict + a TL;DR line from the load-bearing test, with the
-    PETASE-vs-ACHE separation woven in (CP3's second question)."""
+    PETASE-vs-ACHE separation AND the within-branch bits gradient woven in.
+
+    The strict top-branch_n test (PETASE vs floor) can read 'flat' while a real signal
+    hides in the closest-neighbour tail; bits_gradient surfaces that, and the verdict
+    reports it honestly — including that a tail-only gradient lives at near-homolog
+    distances where sequence search already reaches (so it does not rescue DISCOVERY)."""
     pet = pr["conditional_above_given_triad"]
     rr = t_pf["rate_ratio_1_over_2"]["rr"]
     floor_rate = fl["above_line"] / fl["triad_positive_S4"]
@@ -648,6 +722,23 @@ def build_verdict(t_pf: dict, pr: dict, fl: dict, t_pa: dict, ar: dict) -> tuple
         sep = (f" PETase and AChE neighbourhoods are statistically indistinguishable too "
                f"({_pct(ache_rate)} for AChE, Fisher p = {t_pa['fisher_p']:.1e}) — the "
                "pipeline treats the two the same.")
+    # Within-branch bits gradient: is there a real signal in the closest-neighbour tail
+    # that the top-branch_n average washes out? Use the smallest (tightest) tier.
+    top_tier = grad[0] if grad else None
+    tail = ""
+    tail_sig = False
+    if top_tier and top_tier["fisher_p_vs_floor"] < 0.05 and top_tier["rate"] > floor_rate:
+        tail_sig = True
+        rr_t = top_tier["rr_vs_floor"]["rr"]
+        tail = (f" **But a bits-stratified analysis finds a real gradient confined to the "
+                f"closest PETase-neighbours:** the {top_tier['label']} by bits "
+                f"(≥{top_tier['min_bits']:.0f}) clear at **{_pct(top_tier['rate'])}** — "
+                f"significantly above the floor (Fisher p = {top_tier['fisher_p_vs_floor']:.3f}, "
+                f"{rr_t:.2f}×) — decaying monotonically through the floor in the bulk. The "
+                "gradient lives only at **near-homolog distances** (high bits), exactly "
+                "where a sequence search already reaches; in the divergent dark tail the "
+                "project targets, the structural signal is flat. So the gradient is real "
+                "but does NOT generalise to the discovery tier.")
     # "substantially above" = point estimate clears the floor AND CI lower bound
     # clears (or at least the test is significant in the up direction).
     above = pet_rate > floor_rate and sig and pet_lo > floor_rate
@@ -670,19 +761,29 @@ def build_verdict(t_pf: dict, pr: dict, fl: dict, t_pa: dict, ar: dict) -> tuple
             f"**indistinguishable from** the random floor of {floor_pct} "
             f"(rate ratio {rr:.2f}×, Fisher p = {t_pf['fisher_p']:.2e}). Being a "
             "PETase-neighbour confers no extra above-line signal the pipeline captures. "
-            "**This is the strongest negative result: the thesis branch was screened "
-            "and shown indistinguishable from random.** Fork: the methods / honest-"
-            "negative paper, now airtight." + sep)
-        tldr = (f"PETase-branch above-line|triad = {_pct(pet_rate)} vs floor {floor_pct} "
-                f"— FLAT (RR {rr:.2f}×, p {t_pf['fisher_p']:.1e}). Honest-negative.")
+            "**At the discovery tier (top-300) the thesis branch was screened and shown "
+            "indistinguishable from random.**" + sep + tail +
+            " **Fork:** the honest-negative / methods paper stands for DISCOVERY (the "
+            "divergent dark tail is flat); any tail gradient is too thin and too near-"
+            "homolog to justify the aromatic-subsite specificity build on its own.")
+        if tail_sig:
+            tt = grad[0]
+            tldr = (f"PETase top-300 above-line|triad = {_pct(pet_rate)} vs floor "
+                    f"{floor_pct} — FLAT overall, but a real tail gradient "
+                    f"({tt['label']} = {_pct(tt['rate'])}, p {tt['fisher_p_vs_floor']:.2f}) "
+                    "confined to near-homolog bits. Honest-negative for DISCOVERY.")
+        else:
+            tldr = (f"PETase-branch above-line|triad = {_pct(pet_rate)} vs floor "
+                    f"{floor_pct} — FLAT (RR {rr:.2f}×, p {t_pf['fisher_p']:.1e}). "
+                    "Honest-negative.")
     else:  # significantly BELOW the floor
         verdict = (
             f"**NO (and inverted) — PETase-neighbours clear the line LESS than random.** "
             f"{_pct(pet_rate)} ({_ci_pct(pet['wilson95'])}) vs floor {floor_pct} "
             f"(rate ratio {rr:.2f}×, Fisher p = {t_pf['fisher_p']:.2e}). The exposure-"
             "favouring S5 line selects *against* the PETase neighbourhood, mirroring the "
-            "AChE result. No positive PET gradient. **Fork: the methods / honest-"
-            "negative paper.**" + sep)
+            "AChE result. No positive PET gradient at the discovery tier. **Fork: the "
+            "methods / honest-negative paper.**" + sep + tail)
         tldr = (f"PETase-branch above-line|triad = {_pct(pet_rate)} vs floor {floor_pct} "
                 f"— INVERTED (RR {rr:.2f}×, p {t_pf['fisher_p']:.1e}). Honest-negative.")
     return verdict, tldr
@@ -781,7 +882,8 @@ def run(cfg: dict, args) -> dict:
 
     # ---- CP4 ----
     cands = _cand_rows(pet["records"])
-    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar)
+    grad = bits_gradient(pet["records"], fl["above_line"], fl["triad_positive_S4"])
+    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar, grad)
 
     ctx = {
         "run_date": args.run_date,
@@ -794,6 +896,7 @@ def run(cfg: dict, args) -> dict:
         "test_petase_vs_floor": t_pf, "test_petase_vs_ache": t_pa,
         "test_ache_vs_floor": t_af,
         "candidates": cands, "verdict": verdict, "tldr": tldr,
+        "bits_gradient": grad,
     }
     return ctx
 

@@ -233,16 +233,43 @@ def _rates(k, n):
                                               "wilson95": wilson_ci(k, n)}}
 
 
+def _grad(top_k, top_n, floor_k=12, floor_n=28, min_bits=1249.0):
+    """A one-tier gradient stub (build_verdict only reads grad[0])."""
+    return [{"label": "top 25", "k": top_k, "n": top_n, "rate": top_k / top_n,
+             "wilson95": wilson_ci(top_k, top_n), "min_bits": min_bits,
+             "fisher_p_vs_floor": fisher_p(top_k, top_n - top_k,
+                                           floor_k, floor_n - floor_k),
+             "rr_vs_floor": katz_rate_ratio(top_k, top_n, floor_k, floor_n)}]
+
+
 def test_verdict_flat_when_indistinguishable_from_floor():
     fl = {"above_line": 12, "triad_positive_S4": 28, "screened": 1500}
     pr = _rates(96, 294)                          # 32.65%
     ar = _rates(26, 297)                          # 8.75%
     t_pf = pq.two_arm_test(96, 294, 12, 28, "PETASE", "floor")
     t_pa = pq.two_arm_test(96, 294, 26, 297, "PETASE", "ACHE")
-    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar)
+    grad = _grad(11, 25)                          # tail ~44% ~ floor -> NOT significant
+    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar, grad)
     assert "flat" in verdict.lower()
     assert "FLAT" in tldr
     assert "not blind" in verdict                 # PETASE-vs-ACHE nuance woven in
+    # no significant tail -> the conditional tail clause is absent
+    assert "bits-stratified analysis finds a real gradient" not in verdict
+
+
+def test_verdict_flat_with_significant_closest_neighbour_tail():
+    fl = {"above_line": 12, "triad_positive_S4": 28, "screened": 1500}
+    pr = _rates(96, 294)                          # overall flat
+    ar = _rates(26, 297)
+    t_pf = pq.two_arm_test(96, 294, 12, 28, "PETASE", "floor")
+    t_pa = pq.two_arm_test(96, 294, 26, 297, "PETASE", "ACHE")
+    grad = _grad(20, 25)                          # tail 80% vs floor 42.9% -> significant
+    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar, grad)
+    assert "flat" in verdict.lower()              # overall still flat
+    # significant tail -> the conditional tail clause appears
+    assert "bits-stratified analysis finds a real gradient" in verdict
+    assert "near-homolog" in verdict
+    assert "DISCOVERY" in tldr                    # honest-negative scoped to discovery
 
 
 def test_verdict_present_when_substantially_above_floor():
@@ -251,7 +278,7 @@ def test_verdict_present_when_substantially_above_floor():
     ar = _rates(26, 297)
     t_pf = pq.two_arm_test(250, 294, 12, 28, "PETASE", "floor")
     t_pa = pq.two_arm_test(250, 294, 26, 297, "PETASE", "ACHE")
-    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar)
+    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar, _grad(24, 25))
     assert "gradient is present" in verdict.lower()
     assert "PRESENT" in tldr
 
@@ -263,6 +290,6 @@ def test_verdict_inverted_when_significantly_below_floor():
     ar = _rates(26, 297)
     t_pf = pq.two_arm_test(30, 294, 600, 1000, "PETASE", "floor")
     t_pa = pq.two_arm_test(30, 294, 26, 297, "PETASE", "ACHE")
-    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar)
+    verdict, tldr = build_verdict(t_pf, pr, fl, t_pa, ar, _grad(5, 25, 600, 1000))
     assert "inverted" in verdict.lower()
     assert "INVERTED" in tldr

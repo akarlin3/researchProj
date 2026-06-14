@@ -7,7 +7,7 @@
 
 ## TL;DR
 
-PETase-branch above-line|triad = 32.65% vs floor 42.86% — FLAT (RR 0.76×, p 3.0e-01). Honest-negative.
+PETase top-300 above-line|triad = 32.65% vs floor 42.86% — FLAT overall, but a real tail gradient (top 25 = 80.00%, p 0.01) confined to near-homolog bits. Honest-negative for DISCOVERY.
 
 ## Checkpoint 0 — preconditions (audit)
 
@@ -75,6 +75,19 @@ Top **300** per branch by that anchor's bits (or all if smaller), fetched and ru
 - ACHE 26/297 = 8.75% [6.04%, 12.52%] vs floor 12/28 = 42.86% [26.51%, 60.93%]  
 - two-proportion z = -5.37, p = 7.94e-08; Fisher exact p = 9.50e-06  
 - rate ratio (ACHE/floor) = 0.20× [0.12, 0.36]
+
+### Gradient WITHIN the PETASE branch — above-line | triad by closeness to a PETase query
+
+The load-bearing test averages over the whole top-300 tier. Stratifying the PETASE triad-bearers by Foldseek bits (closeness to the nearest PETase query) shows where any signal actually lives:
+
+| tier (by bits) | min bits | above-line \| triad | vs floor 42.9% (Fisher p, RR) |
+|---|---:|---|---|
+| top 25 | 1251 | 20/25 = 80.00% [60.87%, 91.14%] | p = 0.011, RR 1.87× |
+| top 50 | 1180 | 32/50 = 64.00% [50.14%, 75.86%] | p = 0.096, RR 1.49× |
+| top 100 | 1090 | 44/100 = 44.00% [34.67%, 53.77%] | p = 1.000, RR 1.03× |
+| rank 101–294 | 962 | 52/194 = 26.80% [21.07%, 33.44%] | p = 0.116, RR 0.63× |
+
+The gradient decays monotonically with bits and crosses the floor (~43%) in the mid-tier: the closest PETase-neighbours clear well above random, the bulk at or below it. Crucially, the above-floor tail sits at **near-homolog bits** — where a plain sequence search already reaches — so it does **not** rescue the divergent-dark-tail discovery the project targets.
 
 ## Checkpoint 4 — candidates + verdict
 
@@ -181,11 +194,17 @@ Top **300** per branch by that anchor's bits (or all if smaller), fetched and ru
 
 ### Verdict — is there ANY PET-specific gradient in the structural signal?
 
-**NO — the structural signal is flat.** PETase-neighbours clear the cleft line at **32.65%** ([27.55%, 38.21%]), **indistinguishable from** the random floor of 42.86% (rate ratio 0.76×, Fisher p = 2.98e-01). Being a PETase-neighbour confers no extra above-line signal the pipeline captures. **This is the strongest negative result: the thesis branch was screened and shown indistinguishable from random.** Fork: the methods / honest-negative paper, now airtight. The pipeline is **not blind**: PETase-neighbours clear the line 3.7× more often than AChE-neighbours (8.75%, Fisher p = 3.3e-13) — but that separation is driven by AChE being a deep-gorge outlier sitting FAR BELOW the floor, not by PETase rising above it.
+**NO — the structural signal is flat.** PETase-neighbours clear the cleft line at **32.65%** ([27.55%, 38.21%]), **indistinguishable from** the random floor of 42.86% (rate ratio 0.76×, Fisher p = 2.98e-01). Being a PETase-neighbour confers no extra above-line signal the pipeline captures. **At the discovery tier (top-300) the thesis branch was screened and shown indistinguishable from random.** The pipeline is **not blind**: PETase-neighbours clear the line 3.7× more often than AChE-neighbours (8.75%, Fisher p = 3.3e-13) — but that separation is driven by AChE being a deep-gorge outlier sitting FAR BELOW the floor, not by PETase rising above it. **But a bits-stratified analysis finds a real gradient confined to the closest PETase-neighbours:** the top 25 by bits (≥1251) clear at **80.00%** — significantly above the floor (Fisher p = 0.011, 1.87×) — decaying monotonically through the floor in the bulk. The gradient lives only at **near-homolog distances** (high bits), exactly where a sequence search already reaches; in the divergent dark tail the project targets, the structural signal is flat. So the gradient is real but does NOT generalise to the discovery tier. **Fork:** the honest-negative / methods paper stands for DISCOVERY (the divergent dark tail is flat); any tail gradient is too thin and too near-homolog to justify the aromatic-subsite specificity build on its own.
 
 ### Scope guard (carried)
 
 **Exposure ≠ PET activity.** Even a positive gradient does not verify any candidate — it only says PETase-neighbours are more exposed-site than random hydrolases. No wet-lab; the S4/S5 path tests fold-class + an exposed-cleft geometry, not PET turnover. Leads are **prioritized, not verified**.
+
+## Caveats
+
+- **Floor triad+ n = 28 (< 50)** — the floor conditional CI is wide [26.5%, 60.9%]. The FLAT discovery-tier verdict is robust regardless: PETASE top-300 sits AT/BELOW the floor point estimate, so a tighter floor cannot manufacture a positive gradient (PETASE would have to rise ABOVE it). The closest-neighbour tail result (top-25 vs floor) already clears significance (p = 0.011) despite the small floor.
+- **fpocket is non-deterministic** run-to-run (composites swing ~±1.0; the re-derived line wanders ~±0.01). Handled by PINNING the decision line to -1.1587 and caching the screened records: the headline conditional (96/294) reproduced EXACTLY across two independent screen passes.
+- **The above-floor signal is near-homolog.** The tail that beats the floor sits at high Foldseek bits — sequence search already reaches there. The divergent dark tail (lower bits) that motivates a *structure-first* discovery is exactly where the signal is flat.
 
 ## Reproducibility
 

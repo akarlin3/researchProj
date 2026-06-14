@@ -181,3 +181,22 @@ Modules: [`gauge/robustness.py`](gauge/robustness.py) (CP0 + CP1),
 python -m gauge.robustness     # CP0 (shift stress) + CP1 (acquisition) + figures
 python -m gauge.invivo         # CP2 in-vivo demo (synthetic stand-in; pluggable)
 ```
+
+## Gauge 05 — the manuscript
+
+Gauge 05 assembles the paper for the **reframed** contribution established across
+Gauge 01–04. The full LaTeX source, figures, and an executable consistency check
+live in [`gauge/paper/`](gauge/paper/) (see its [README](gauge/paper/README.md)).
+The headline is honest and matches the gated verdicts: model-based IVIM UQ is
+**broadly overconfident**, conformal restores marginal coverage (|gap| ≤ 0.024),
+conformalizing the MDN is the **sharpest valid recipe** (0.65–0.79× pure-CQR
+width), and the high-D\* compartment is an **irreducible identifiability limit**
+(the paper *characterizes* it, it does not claim to solve it).
+
+`gauge/paper/consistency.py` (GATE 3) re-reads the committed checkpoint printouts
+and asserts every manuscript number traces verbatim — **34/34 trace**; the build
+compiles with `tectonic` to an 11-page PDF.
+
+```bash
+bash gauge/paper/build.sh      # GATE 3 consistency check + tectonic -> gauge/paper/gauge.pdf
+```

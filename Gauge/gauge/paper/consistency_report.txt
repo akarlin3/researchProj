@@ -1,0 +1,88 @@
+========================================================================================
+GAUGE 05 -- GATE 3 consistency check: manuscript numbers vs gated CP printouts
+========================================================================================
+[PASS] Clean-signal recovery (forward-model sanity)
+        value='max rel err 2.07e-7'  <-  POSITIONING.md
+[PASS] Conformal correctness: split D* coverage @a=0.10
+        value='0.897 vs 0.90'  <-  results/coverage_report.txt
+[PASS] Raw PNN-Gaussian D coverage/gap
+        value='0.789 (+0.111)'  <-  results/benchmark_report.txt
+[PASS] Raw MDN D* coverage/gap
+        value='0.868 (+0.032)'  <-  results/benchmark_report.txt
+[PASS] Raw DeepEnsemble-Point D coverage (collapses)
+        value='0.431 (+0.469)'  <-  results/benchmark_report.txt
+[PASS] Raw Bayesian-MCMC best gap; conformalized max |gap| <= 0.024
+        value='0.024'  <-  results/benchmark_report.txt
+[PASS] Marginal hypothesis rejected: 0/4 D*/f-concentrated
+        value='0/4'  <-  results/benchmark_report.txt
+[PASS] Conformalized-MDN vs pure-CQR width ratios
+        value='0.73/0.79/0.65x'  <-  results/benchmark_report.txt
+[PASS] Sharpness cost MDN
+        value='1.08-1.12x'  <-  results/benchmark_report.txt
+[PASS] Sharpness cost Bayesian
+        value='1.02-1.05x'  <-  results/benchmark_report.txt
+[PASS] Sharpness cost DeepEnsemble-Point
+        value='3.17-3.72x'  <-  results/benchmark_report.txt
+[PASS] hi-D* conformalized-MDN marginal/worst-SNR
+        value='0.877 / 0.808'  <-  results/conditional_report.txt
+[PASS] hi-D* CQR(plain) marginal/worst-SNR
+        value='0.819 / 0.767'  <-  results/conditional_report.txt
+[PASS] hi-D* raw-MDN marginal/worst-SNR
+        value='0.825 / 0.756'  <-  gauge/results.md
+[PASS] Gauge 03 verdict
+        value='IRREDUCIBLE IDENTIFIABILITY LIMIT'  <-  results/conditional_attack_report.txt
+[PASS] Best label-free method hi-D* marginal/worst-SNR
+        value='0.868 / 0.819'  <-  results/conditional_attack_report.txt
+[PASS] Plug-in routing error (31% of true-high-D* misrouted)
+        value='31%'  <-  results/conditional_attack_report.txt
+[PASS] CRLB(D*)/tercile-width 0.34 -> 0.69 -> 1.12
+        value='1.12'  <-  results/conditional_attack_report.txt
+[PASS] Absolute CRLB(D*) grows ~6x
+        value='~6x'  <-  results/conditional_attack_report.txt
+[PASS] Conformal width vs CRLB log-log r=0.75
+        value='r=0.75'  <-  results/conditional_attack_report.txt
+[PASS] Smoking gun: nominal per OBSERVED stratum
+        value='[0.90, 0.89, 0.90]'  <-  gauge/results_gauge03.md
+[PASS] Smoking gun: craters per TRUE high-D* tercile
+        value='0.76'  <-  results/conditional_attack_report.txt
+[PASS] SNR shift naive coverage (D, f)
+        value='0.610 / 0.616'  <-  results/robustness_report.txt
+[PASS] Weighted conformal recovers SNR shift
+        value='0.901/0.899/0.911'  <-  results/robustness_report.txt
+[PASS] Prior shift D* naive -> weighted
+        value='0.515 -> 0.975'  <-  results/robustness_report.txt
+[PASS] Tri-exp: weighting over-corrects D*
+        value='0.928'  <-  results/robustness_report.txt
+[PASS] Weighted SNR within 0.011 of nominal
+        value='0.011'  <-  results/robustness_report.txt
+[PASS] Monitor fires before failure (alarm SNR 20, fail SNR 13)
+        value='20.0 / 13.0'  <-  results/robustness_report.txt
+[PASS] Latent: in-dist marginal 0.900, monitor silent, hi-D* conditional 0.815
+        value='0.815 / AUC 0.50'  <-  results/robustness_report.txt
+[PASS] Acquisition hi-D* marginal by scheme
+        value='0.841/0.844/0.845'  <-  results/robustness_report.txt
+[PASS] Acquisition CRLB/tercile-width by scheme
+        value='1.25/1.05/1.06'  <-  results/robustness_report.txt
+[PASS] In-vivo D* band widths 10/50/90th pct
+        value='[47.4, 64.0, 78.9]'  <-  results/invivo_report.txt
+[PASS] In-vivo widest/narrowest decile ratio
+        value='1.7x'  <-  results/invivo_report.txt
+[PASS] In-vivo deployment monitor AUC on transfer
+        value='0.84'  <-  results/invivo_report.txt
+----------------------------------------------------------------------------------------
+34/34 claims trace verbatim to their gated CP printout; 0 failed.
+----------------------------------------------------------------------------------------
+CONSISTENCY SUMMARY (GATE 3):
+  Every one of the 34 headline numbers in gauge/paper/gauge.tex was
+  cross-checked against the committed, seeded checkpoint printouts of Gauge
+  01-04 (results/*.txt, POSITIONING.md, gauge/results*.md): 34 trace
+  verbatim, 0 do not. The manuscript's headline is the HONEST,
+  reframed contribution -- model-based IVIM UQ is broadly overconfident (not
+  specifically perfusion); conformal restores marginal coverage (|gap| <=
+  0.024) and conformalizing the MDN is the sharpest valid recipe (0.65-0.79x
+  pure-CQR width); and the high-D* compartment is an IRREDUCIBLE
+  IDENTIFIABILITY LIMIT (CRLB(D*)/tercile-width reaches 1.12), so the paper
+  says 'characterize', not 'solve'. Robustness, acquisition-robustness, and
+  the qualitative (no-coverage-claim) in-vivo demo are reported per Gauge 04.
+  GATE 3: PASS.
+========================================================================================

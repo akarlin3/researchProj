@@ -22,24 +22,24 @@ CHECKS = [
     ("Conformal correctness: split D* coverage @a=0.10", "0.897 vs 0.90",
      "results/coverage_report.txt", ["0.897"]),
     # --- Gauge 02: marginal benchmark ---------------------------------------
-    ("Raw PNN-Gaussian D coverage/gap", "0.789 (+0.111)",
-     "results/benchmark_report.txt", ["0.789 (+0.111)"]),
-    ("Raw MDN D* coverage/gap", "0.868 (+0.032)",
-     "results/benchmark_report.txt", ["0.868 (+0.032)"]),
-    ("Raw DeepEnsemble-Point D coverage (collapses)", "0.431 (+0.469)",
-     "results/benchmark_report.txt", ["0.431 (+0.469)"]),
+    ("Raw PNN-Gaussian D coverage/gap", "0.787 (+0.113)",
+     "results/benchmark_report.txt", ["0.787 (+0.113)"]),
+    ("Raw MDN D* coverage/gap", "0.876 (+0.024)",
+     "results/benchmark_report.txt", ["0.876 (+0.024)"]),
+    ("Raw DeepEnsemble-Point D coverage (collapses)", "0.436 (+0.464)",
+     "results/benchmark_report.txt", ["0.436 (+0.464)"]),
     ("Raw Bayesian-MCMC best gap; conformalized max |gap| <= 0.024", "0.024",
      "results/benchmark_report.txt", ["(+0.024)"]),
     ("Marginal hypothesis rejected: 0/4 D*/f-concentrated", "0/4",
      "results/benchmark_report.txt", ["0/4"]),
-    ("Conformalized-MDN vs pure-CQR width ratios", "0.73/0.79/0.65x",
-     "results/benchmark_report.txt", ["0.73x", "0.79x", "0.65x"]),
-    ("Sharpness cost MDN", "1.08-1.12x",
-     "results/benchmark_report.txt", ["1.08x", "1.12x"]),
+    ("Conformalized-MDN vs pure-CQR width ratios", "0.73/0.77/0.65x",
+     "results/benchmark_report.txt", ["0.73x", "0.77x", "0.65x"]),
+    ("Sharpness cost MDN", "1.05-1.07x",
+     "results/benchmark_report.txt", ["1.05x", "1.07x"]),
     ("Sharpness cost Bayesian", "1.02-1.05x",
      "results/benchmark_report.txt", ["1.02x", "1.05x"]),
-    ("Sharpness cost DeepEnsemble-Point", "3.17-3.72x",
-     "results/benchmark_report.txt", ["3.72x", "3.17x"]),
+    ("Sharpness cost DeepEnsemble-Point", "3.23-3.76x",
+     "results/benchmark_report.txt", ["3.76x", "3.23x"]),
     # --- Gauge 02: conditional finding --------------------------------------
     ("hi-D* conformalized-MDN marginal/worst-SNR", "0.877 / 0.808",
      "results/conditional_report.txt", ["0.877", "0.808"]),
@@ -95,24 +95,32 @@ CHECKS = [
 
 
 # --------------------------------------------------------------------------- #
-# Gauge-CI extension. Under the multi-seed harness (branch (b)), the torch-NN-
-# derived headline numbers are REBASELINED to the across-seed mean (the legacy
-# seed-0 init was a favourable outlier; B.0-probe decision). For those claims the
-# committed seed-0 string no longer appears verbatim -- by design -- so we drop
-# their verbatim trace and instead validate them via the multi-seed band below.
-# Every OTHER (non-NN) headline stays byte-identical (verbatim trace required).
+# Gauge-CI extension. Under the multi-seed harness, EVERY conditional/empirical (E)
+# headline ships as the across-seed MEAN (D rule change: a frozen seed-0 point can
+# fall outside its own band), validated by the multi-seed [5,95] band in [B] below
+# -- so its committed seed-0 string is intentionally not verbatim-traced. The
+# finite-sample-guaranteed marginal (G) numbers and the determinism-gated seed-0
+# quantities stay byte-identical (verbatim trace required in [A]).
 # --------------------------------------------------------------------------- #
-NN_REBASELINED = {
-    "Raw PNN-Gaussian D coverage/gap",
-    "Raw MDN D* coverage/gap",
-    "Raw DeepEnsemble-Point D coverage (collapses)",
-    "Conformalized-MDN vs pure-CQR width ratios",
-    "Sharpness cost MDN",
-    "Sharpness cost DeepEnsemble-Point",
+BAND_ONLY = {
+    # torch-NN-derived (E)
     "hi-D* conformalized-MDN marginal/worst-SNR",
     "hi-D* raw-MDN marginal/worst-SNR",
     "Best label-free method hi-D* marginal/worst-SNR",
     "Conformal width vs CRLB log-log r=0.75",
+    # data-resampling (E) -- also ship the across-seed mean
+    "hi-D* CQR(plain) marginal/worst-SNR",
+    "Plug-in routing error (31% of true-high-D* misrouted)",
+    "CRLB(D*)/tercile-width 0.34 -> 0.69 -> 1.12",
+    "Smoking gun: craters per TRUE high-D* tercile",
+    "SNR shift naive coverage (D, f)",
+    "Weighted conformal recovers SNR shift",
+    "Prior shift D* naive -> weighted",
+    "Tri-exp: weighting over-corrects D*",
+    "Weighted SNR within 0.011 of nominal",
+    "Latent: in-dist marginal 0.900, monitor silent, hi-D* conditional 0.815",
+    "Acquisition hi-D* marginal by scheme",
+    "Acquisition CRLB/tercile-width by scheme",
 }
 
 # (E) headline -> multiseed.json item key. Band assertion: the point estimate
@@ -205,7 +213,7 @@ def main():
     print("-" * 88)
     cache = {}
     for claim, value, relpath, needles in CHECKS:
-        if claim in NN_REBASELINED:
+        if claim in BAND_ONLY:
             rebaselined.append(claim)
             print(f"[REBASE] {claim}")
             print(f"        committed={value!r} -> now across-seed mean "

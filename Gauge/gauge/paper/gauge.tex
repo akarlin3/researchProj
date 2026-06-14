@@ -12,6 +12,8 @@
 
 \newcommand{\Dstar}{D^{*}}
 \newcommand{\unit}[1]{\,\mathrm{#1}}
+% Multi-seed empirical [5,95] confidence band (16 seeds; see Sec.~\ref{sec:consistency}).
+\newcommand{\band}[2]{{\scriptsize\,$[#1,\,#2]$}}
 
 \title{\textbf{Gauge: Distribution-Free Conformal Coverage for IVIM Parameter
 Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment}}
@@ -35,7 +37,8 @@ bi-exponential forward model with Rician noise, we compare split-conformal and
 conformalized quantile regression (CQR) against four model-based baselines
 (probabilistic neural network, mixture-density deep ensemble, deep ensemble,
 per-voxel Bayesian MCMC), measuring marginal and (SNR $\times$
-true-$\Dstar$-tercile) conditional coverage and sharpness. A
+true-$\Dstar$-tercile) conditional coverage and sharpness, with empirical
+$[5,95]$ confidence bands on the conditional quantities from a 16-seed re-run. A
 Fisher-information / Cram\'er--Rao analysis diagnoses the residual gap; weighted
 (nonexchangeable) conformal and a label-free deployment monitor stress
 exchangeability; a qualitative in-vivo demonstration is included.
@@ -45,9 +48,9 @@ exchangeability; a qualitative in-vivo demonstration is included.
 $\Dstar$, and $f$ (not specifically pseudo-diffusion), so the naive marginal
 hypothesis is rejected. Conformal and conformalized methods restore near-nominal
 marginal coverage everywhere ($|\text{gap}|\le 0.024$), and conformalizing the MDN
-is the sharpest valid recipe ($0.65$--$0.79\times$ pure-CQR width). The real
-failure is conditional: the high-$\Dstar$ regime under-covers for every method at
-every SNR, and no label-free method closes the gap because the Cram\'er--Rao bound
+is the sharpest valid recipe ($0.65$--$0.77\times$ pure-CQR width). The real
+failure is conditional: the high-$\Dstar$ regime under-covers for every method
+(robustly at low-to-moderate SNR), and no label-free method closes the gap because the Cram\'er--Rao bound
 on $\Dstar$ reaches the regime-bin width -- an irreducible identifiability limit.
 The wall is robust to the b-value scheme; weighted conformal recovers covariate
 shift but not forward-model misspecification; the monitor fires before coverage
@@ -194,39 +197,41 @@ the head-to-head at $\alpha=0.10$.
 \caption{Marginal coverage on test at $\alpha=0.10$ (nominal $0.90$); gap $=$
 nominal $-$ realized (positive $=$ overconfident). Model-based methods under-cover
 broadly; conformal and conformalized variants restore coverage in every
-compartment. From \texttt{results/benchmark\_report.txt}.}
+compartment. Marginal coverage is finite-sample \emph{guaranteed}; values are the
+seed-0 (multi-seed index-0) run, with 16-seed MC-precision bands available in the
+supplementary CI table. From \texttt{results/benchmark\_report.txt}.}
 \label{tab:marginal}
 \small
 \begin{tabular}{lccc}
 \toprule
 arm & $D$ cov (gap) & $\Dstar$ cov (gap) & $f$ cov (gap) \\
 \midrule
-raw: PNN-Gaussian        & 0.789 (+0.111) & 0.823 (+0.077) & 0.785 (+0.115) \\
-raw: MDN-DeepEnsemble    & 0.856 (+0.044) & 0.868 (+0.032) & 0.853 (+0.047) \\
-raw: DeepEnsemble-Point  & 0.431 (+0.469) & 0.432 (+0.468) & 0.483 (+0.417) \\
+raw: PNN-Gaussian        & 0.787 (+0.113) & 0.833 (+0.067) & 0.767 (+0.133) \\
+raw: MDN-DeepEnsemble    & 0.870 (+0.030) & 0.876 (+0.024) & 0.859 (+0.041) \\
+raw: DeepEnsemble-Point  & 0.436 (+0.464) & 0.425 (+0.475) & 0.475 (+0.425) \\
 raw: Bayesian-MCMC       & 0.876 (+0.024) & 0.870 (+0.030) & 0.855 (+0.045) \\
 \midrule
 conformal: split-NLLS    & 0.899 (+0.001) & 0.897 (+0.003) & 0.907 ($-$0.007) \\
 conformal: CQR-HGB       & 0.901 ($-$0.001) & 0.902 ($-$0.002) & 0.893 (+0.007) \\
-conformalized: MDN       & 0.891 (+0.009) & 0.908 ($-$0.008) & 0.892 (+0.008) \\
+conformalized: MDN       & 0.890 (+0.010) & 0.901 ($-$0.001) & 0.882 (+0.018) \\
 conformalized: Bayesian  & 0.895 (+0.005) & 0.894 (+0.006) & 0.876 (+0.024) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Averaging the gap over $\alpha$, the marginal under-coverage is broad, not
-$\Dstar/f$-concentrated: per-method worst compartments are $f$ (PNN, $0.112$), $D$
-(MDN, $0.048$; DeepEnsemble-Point, $0.449$), and $f$ (Bayesian, $0.045$).
-\textbf{$0/4$ methods} show $\Dstar/f$-concentrated under-coverage; for the NN
-ensembles $\Dstar$ is in fact among the \emph{better}-covered parameters
-marginally, because its large aleatoric variance widens its band. The naive
+$\Dstar/f$-concentrated: per-method worst compartments are $f$ (PNN, $0.125$), $f$
+(MDN, $0.037$), $\Dstar$ (DeepEnsemble-Point, $0.452$), and $f$ (Bayesian, $0.045$).
+\textbf{$0/4$ methods} show $\Dstar/f$-concentrated under-coverage; for the MDN
+ensemble $\Dstar$ is in fact among the \emph{better}-covered parameters
+marginally (gap $0.029$), because its large aleatoric variance widens its band. The naive
 marginal hypothesis is therefore \emph{rejected}. Conformal and conformalized
 variants restore near-nominal coverage everywhere, with maximum conformalized gap
 $0.024$ (Fig.~\ref{fig:coverage}). On sharpness (Fig.~\ref{fig:sharpness}), the
-cost of restoring coverage is cheap for strong bases (MDN $1.08$--$1.12\times$,
+cost of restoring coverage is cheap for strong bases (MDN $1.05$--$1.07\times$,
 Bayesian $1.02$--$1.05\times$ the raw width) and ruinous for the overconfident
-weak base (DeepEnsemble-Point $3.17$--$3.72\times$). Crucially, the model's band
-helps: \emph{conformalized-MDN is $0.73/0.79/0.65\times$ the width of pure CQR} for
+weak base (DeepEnsemble-Point $3.23$--$3.76\times$). Crucially, the model's band
+helps: \emph{conformalized-MDN is $0.73/0.77/0.65\times$ the width of pure CQR} for
 $D/\Dstar/f$ at equal guaranteed coverage -- the sharpest valid recipe.
 
 \begin{figure}[t]
@@ -252,7 +257,8 @@ Marginal coverage hides a compartment-specific failure
 high-$\Dstar$ tercile under-covers for \emph{every} method at \emph{every} SNR,
 while the mid-$\Dstar$ tercile over-covers ($\approx0.99$). Table~\ref{tab:hidstar}
 gives the high-$\Dstar$ slice: even the best method (conformalized-MDN) reaches
-only $0.877$ marginal-in-regime and $0.808$ in its worst-SNR cell. Critically,
+only $0.868$\band{0.856}{0.889} marginal-in-regime and $0.786$\band{0.751}{0.826}
+in its worst-SNR cell (16-seed mean and $[5,95]$ band). Critically,
 \emph{Mondrian stratification by the known SNR does not fix it} -- the failure axis
 is the \emph{unknown} true $\Dstar$, not SNR. This is the refined, IVIM-specific
 form of the original hypothesis.
@@ -260,19 +266,19 @@ form of the original hypothesis.
 \begin{table}[t]
 \centering
 \caption{High-$\Dstar$ tercile coverage ($\Dstar$ parameter, nominal $0.90$). Every
-method under-covers; SNR-Mondrian does not close it. From
-\texttt{results/conditional\_report.txt}.}
+method under-covers; SNR-Mondrian does not close it. Across-seed means with 16-seed
+$[5,95]$ bands. From \texttt{results/multiseed\_report.txt}.}
 \label{tab:hidstar}
 \small
 \begin{tabular}{lcc}
 \toprule
 arm & hi-$\Dstar$ marginal & hi-$\Dstar$ worst-SNR cell \\
 \midrule
-raw-MDN              & 0.825 & 0.756 \\
-CQR (plain)          & 0.819 & 0.767 \\
-split (Mondrian/SNR) & 0.808 & 0.764 \\
-CQR (Mondrian/SNR)   & 0.814 & 0.766 \\
-conformalized-MDN    & \textbf{0.877} & \textbf{0.808} \\
+raw-MDN              & 0.841\band{0.829}{0.857} & 0.753\band{0.719}{0.789} \\
+CQR (plain)          & 0.826\band{0.809}{0.851} & 0.761\band{0.729}{0.795} \\
+split (Mondrian/SNR) & 0.829\band{0.813}{0.844} & 0.781\band{0.743}{0.810} \\
+CQR (Mondrian/SNR)   & 0.829\band{0.811}{0.854} & 0.789\band{0.752}{0.828} \\
+conformalized-MDN    & \textbf{0.868}\band{0.856}{0.889} & \textbf{0.786}\band{0.751}{0.826} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -281,7 +287,8 @@ conformalized-MDN    & \textbf{0.877} & \textbf{0.808} \\
 \centering
 \includegraphics[width=0.72\linewidth]{figures/conditional_coverage_heatmap.pdf}
 \caption{SNR $\times$ $\Dstar$-regime conditional coverage. The high-$\Dstar$ row
-under-covers across all SNR and resists SNR-Mondrian.}
+under-covers robustly at low-to-moderate SNR (recovering toward nominal only at the
+highest SNR) and resists SNR-Mondrian.}
 \label{fig:heatmap}
 \end{figure}
 
@@ -292,23 +299,26 @@ methods -- plug-in Mondrian by estimated $\hat{\Dstar}$, localized conformal on
 observable features~\citep{guan2023}, and conditional conformal over an observable
 basis~\citep{gibbs2023} -- none of which uses the true $\Dstar$
 (Fig.~\ref{fig:attack}). \emph{None materially closes the gap.} The best label-free
-method (MDN with localized conformal) reaches $0.868$ marginal / $0.819$ worst-SNR,
-within sampling noise of the $0.808$ baseline. The reason is structural, not
+method (MDN with localized conformal) reaches $0.874$\band{0.860}{0.899} marginal /
+$0.807$\band{0.774}{0.845} worst-SNR, within sampling noise of the $0.786$ baseline.
+The reason is structural, not
 methodological:
 \begin{itemize}
-\item \textbf{Routing error.} A plug-in $\hat{\Dstar}$ misroutes $31\%$ of true
-high-$\Dstar$ voxels to a lower-$\Dstar$ (smaller-radius) stratum: the estimate is
-least reliable exactly where it must route correctly. Mondrian-by-$\hat{\Dstar}$
-attains nominal coverage \emph{conditional on the observed stratum}
-($[0.90,0.89,0.90]$) yet craters on the \emph{true} high-$\Dstar$ tercile
-($0.76$) -- it controls the observable, not the latent axis.
+\item \textbf{Routing error.} A plug-in $\hat{\Dstar}$ misroutes $\sim33\%$
+($[30,35]\%$ over 16 seeds) of true high-$\Dstar$ voxels to a lower-$\Dstar$
+(smaller-radius) stratum: the estimate is least reliable exactly where it must
+route correctly. Mondrian-by-$\hat{\Dstar}$ attains nominal coverage
+\emph{conditional on the observed stratum} ($[0.90,0.89,0.90]$) yet craters on the
+\emph{true} high-$\Dstar$ tercile ($0.78$\band{0.76}{0.80}) -- it controls the
+observable, not the latent axis.
 \item \textbf{The CRLB wall.} The CRLB on $\Dstar$ grows $\sim6\times$ from low to
-high $\Dstar$; the ratio of median CRLB($\Dstar$) to the tercile bin width rises
-$0.34\to0.69\to1.12$ across terciles (Fig.~\ref{fig:crlb}). In the high-$\Dstar$
+high $\Dstar$ (an analytic, seed-invariant bound); the ratio of median
+CRLB($\Dstar$) to the tercile bin width rises $0.34\to0.67\to1.10$ across terciles,
+the high tercile band $[1.02,1.15]$ (Fig.~\ref{fig:crlb}). In the high-$\Dstar$
 regime the CRLB \emph{exceeds} the bin width: a voxel's $\Dstar$ cannot be
 localized to its own tercile from the data, so no observable can route it to a
 wider-interval stratum. Conformal interval width correctly tracks the per-voxel
-CRLB (log--log $r=0.75$): the intervals are honest, not broken.
+CRLB (log--log $r=0.76$\band{0.72}{0.77}): the intervals are honest, not broken.
 \end{itemize}
 \textbf{Verdict.} High-$\Dstar$ regime-conditional coverage in IVIM is an
 \emph{irreducible identifiability limit}. We therefore \emph{characterize} the
@@ -327,7 +337,7 @@ conditioning methods; every bar sits below the nominal $0.90$.}
 \includegraphics[width=0.92\linewidth]{figures/crlb_identifiability.pdf}
 \caption{(Left) absolute CRLB($\Dstar$) balloons across the $\Dstar$ range per SNR
 (high-$\Dstar$ tercile shaded). (Right) conformal width vs per-voxel CRLB
-($r=0.75$): the intervals widen honestly where $\Dstar$ is under-identified.}
+($r=0.76$): the intervals widen honestly where $\Dstar$ is under-identified.}
 \label{fig:crlb}
 \end{figure}
 
@@ -336,35 +346,37 @@ conditioning methods; every bar sits below the nominal $0.90$.}
 We deploy one conformal predictor and one monitor, calibrated on the i.i.d.\ Rician
 cohort, against four deliberate breaks (Table~\ref{tab:shift},
 Fig.~\ref{fig:shift}). Every break miscalibrates coverage; the dangerous
-under-coverage reaches $\Dstar=0.515$ under a harder-tissue prior shift and the
-worst parameter $0.610$ under a low-SNR covariate shift. \emph{Weighted /
-nonexchangeable conformal}~\citep{tibshirani2019,barber2023} cleanly recovers the
-covariate shifts (SNR worst-parameter $0.610\to0.899$, all within $0.011$ of
-nominal; prior $\Dstar$ $0.515\to0.975$) and is honestly limited on the
-tri-exponential forward-model misspecification: a shift in the conditional law
-$P(y\mid x)$ is, in general, not repairable by an $x$-space likelihood ratio
-(weighting over-corrects $\Dstar$ to $0.928$, leaving a per-parameter spread of
-$0.028$).
+under-coverage reaches $\Dstar=0.508$\band{0.479}{0.543} under a harder-tissue prior
+shift and the worst parameter $0.592$\band{0.557}{0.637} under a low-SNR covariate
+shift. \emph{Weighted / nonexchangeable conformal}~\citep{tibshirani2019,barber2023}
+recovers the covariate shifts (SNR worst-parameter $0.592\to0.882$, all within
+$0.018$ of nominal; prior $\Dstar$ $0.508\to0.991$\band{0.974}{1.000}) and is
+honestly limited on the tri-exponential forward-model misspecification: a shift in
+the conditional law $P(y\mid x)$ is, in general, not repairable by an $x$-space
+likelihood ratio (weighting over-corrects $\Dstar$ to $0.933$\band{0.924}{0.941},
+leaving a per-parameter spread of $0.033$).
 
 \begin{table}[t]
 \centering
 \caption{Per-parameter coverage under each break, naive vs.\ weighted conformal
-($\alpha=0.10$, nominal $0.90$), with the deployment monitor's verdict. From
-\texttt{results/robustness\_report.txt}.}
+($\alpha=0.10$, nominal $0.90$), with the deployment monitor's verdict. Across-seed
+means (16 seeds); per-entry $[5,95]$ bands are in the supplementary CI table
+(\texttt{results/ci\_for\_latex.json}). Monitor AUCs are the deterministic seed-0
+values. From \texttt{results/multiseed\_report.txt}.}
 \label{tab:shift}
 \small
 \begin{tabular}{llccc l}
 \toprule
 scenario & method & $D$ & $\Dstar$ & $f$ & monitor \\
 \midrule
-in-dist (control)   & naive    & 0.909 & 0.900 & 0.902 & silent (AUC 0.50) \\
-SNR shift (low)      & naive    & \textbf{0.610} & 0.744 & \textbf{0.616} & FIRES (AUC 0.91) \\
-                     & weighted & 0.901 & 0.899 & 0.911 & \\
-prior shift (harder) & naive    & 0.970 & \textbf{0.515} & 0.906 & FIRES (AUC 0.71) \\
-                     & weighted & 0.900 & 0.975 & 0.916 & \\
-tri-exp misspec      & naive    & 0.908 & 0.846 & 0.910 & FIRES (AUC 0.51) \\
-                     & weighted & 0.886 & 0.928 & 0.894 & \\
-noise-model swap     & naive    & 0.918 & 0.901 & 0.904 & FIRES (AUC 0.52) \\
+in-dist (control)   & naive    & 0.898 & 0.898 & 0.901 & silent (AUC 0.50) \\
+SNR shift (low)      & naive    & \textbf{0.592} & 0.739 & \textbf{0.614} & FIRES (AUC 0.91) \\
+                     & weighted & 0.882 & 0.901 & 0.909 & \\
+prior shift (harder) & naive    & 0.972 & \textbf{0.508} & 0.909 & FIRES (AUC 0.71) \\
+                     & weighted & 0.919 & 0.991 & 0.902 & \\
+tri-exp misspec      & naive    & 0.907 & 0.843 & 0.912 & FIRES (AUC 0.51) \\
+                     & weighted & 0.891 & 0.933 & 0.898 & \\
+noise-model swap     & naive    & 0.912 & 0.893 & 0.906 & FIRES (AUC 0.52) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -375,7 +387,8 @@ SNR-severity sweep, it raises the alarm at SNR $20$ (coverage still $0.866$) whi
 coverage first crosses the failure line at SNR $13$. Yet it is constitutively
 \emph{blind} to the latent high-$\Dstar$ gap: on an in-distribution (exchangeable)
 test the monitor is silent (AUC $0.50$) and marginal $\Dstar$ coverage is nominal
-($0.900$), while the high-$\Dstar$ conditional coverage is $0.815$. Observable
+($0.898$\band{0.880}{0.913}), while the high-$\Dstar$ conditional coverage is
+$0.814$\band{0.787}{0.839}. Observable
 shifts are caught; the within-distribution latent-axis failure is not -- the same
 observable-vs-hidden split that recurs across this line of work.
 
@@ -394,25 +407,28 @@ Does the high-$\Dstar$ wall move with the b-value scheme? We compare a clinical
 ($11$-value), a CRLB-optimal ($11$-value, greedy $\Dstar$-CRLB design), and a dense
 ($22$-value) scheme at fixed prior/SNR/seed (Table~\ref{tab:acq},
 Fig.~\ref{fig:acq}). The high-$\Dstar$ marginal coverage barely moves
-($0.841\to0.844\to0.845$) and the resolution ratio CRLB($\Dstar$)/tercile-width
-stays $\ge1.05$ for \emph{every} scheme. A CRLB-optimal design lowers the absolute
-CRLB ($1.25\to1.05$) but does not remove the wall. Acquisition design \emph{shifts}
-the wall; it does not erase it -- a concrete, honestly negative handoff to
-acquisition-aware experiment design.
+($0.821\to0.835\to0.808$). The resolution ratio CRLB($\Dstar$)/tercile-width stays
+at or above unity: even a CRLB-optimal design only reaches $\sim$unity
+($1.03$\band{0.97}{1.16}); acquisition shifts the wall to threshold, not past it,
+while the clinical and dense schemes stay above it ($1.24$, $1.11$). A CRLB-optimal
+design lowers the ratio ($1.24\to1.03$) but does not remove the wall. Acquisition
+design \emph{shifts} the wall; it does not erase it -- a concrete, honestly negative
+handoff to acquisition-aware experiment design.
 
 \begin{table}[t]
 \centering
-\caption{High-$\Dstar$ coverage and resolution ratio by b-value scheme. From
-\texttt{results/robustness\_report.txt}.}
+\caption{High-$\Dstar$ coverage and resolution ratio by b-value scheme. Across-seed
+means with 16-seed $[5,95]$ bands; the CRLB-optimal ratio band crosses unity. From
+\texttt{results/multiseed\_report.txt}.}
 \label{tab:acq}
 \small
 \begin{tabular}{lcccc}
 \toprule
 scheme & $n_b$ & hi-$\Dstar$ marg & hi-$\Dstar$ worst-SNR & CRLB/tercile-width \\
 \midrule
-clinical      & 11 & 0.841 & 0.595 & 1.25 \\
-CRLB-optimal  & 11 & 0.844 & 0.608 & \textbf{1.05} \\
-dense         & 22 & 0.845 & 0.596 & 1.06 \\
+clinical      & 11 & 0.821\band{0.794}{0.845} & 0.596\band{0.542}{0.702} & 1.24\band{1.17}{1.37} \\
+CRLB-optimal  & 11 & 0.835\band{0.795}{0.862} & 0.603\band{0.541}{0.678} & \textbf{1.03}\band{0.97}{1.16} \\
+dense         & 22 & 0.808\band{0.788}{0.836} & 0.551\band{0.508}{0.597} & 1.11\band{1.05}{1.21} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -421,8 +437,9 @@ dense         & 22 & 0.845 & 0.596 & 1.06 \\
 \centering
 \includegraphics[width=0.92\linewidth]{figures/acquisition_wall.pdf}
 \caption{(Left) high-$\Dstar$ coverage vs.\ b-scheme. (Right) the resolution ratio
-CRLB($\Dstar$)/tercile-width stays $\ge1$ for every scheme: the regime is
-unresolvable regardless of acquisition.}
+CRLB($\Dstar$)/tercile-width stays at or above unity for every scheme (the
+CRLB-optimal band dips to $0.97$): acquisition moves the regime to the resolution
+threshold, not past it.}
 \label{fig:acq}
 \end{figure}
 
@@ -497,13 +514,20 @@ quantifies, but cannot by itself repair, departures from it.
 \section{Consistency check (reproducibility)}
 \label{sec:consistency}
 Every numeric claim in this manuscript is drawn from a gated, seeded checkpoint
-printout across Gauge~01--04. The script \texttt{gauge/paper/consistency.py}
-re-reads the committed report files (\texttt{results/*.txt}, \texttt{POSITIONING.md})
-and asserts that each headline number used here appears verbatim in its source; it
-prints a one-paragraph pass/fail summary. The full pipeline regenerates
-deterministically from seed \texttt{20260613} (\texttt{python -m gauge.baselines};
-\texttt{gauge.benchmark}; \texttt{gauge.conditional}; \texttt{gauge.conditional\_attack};
-\texttt{gauge.robustness}; \texttt{gauge.invivo}).
+printout. The script \texttt{gauge/paper/consistency.py} enforces two contracts:
+(i) every finite-sample-guaranteed marginal value and every determinism-gated
+quantity appears \emph{verbatim} in its seed-\texttt{20260613} report
+(\texttt{results/*.txt}, \texttt{POSITIONING.md}); and (ii) every conditional /
+empirical (E) headline ships as the \emph{across-seed mean} over a 16-seed re-run
+and is asserted to lie within its empirical $[5,95]$ band, which carries an
+\texttt{n\_seeds} (\texttt{results/multiseed.json}, \texttt{multiseed\_report.txt};
+old$\to$new point map in \texttt{results/ci\_rebaseline\_table.txt}). The full
+pipeline regenerates deterministically from seed \texttt{20260613}
+(\texttt{python -m gauge.baselines}; \texttt{gauge.benchmark};
+\texttt{gauge.conditional}; \texttt{gauge.conditional\_attack};
+\texttt{gauge.robustness}; \texttt{gauge.invivo}), and the bands from the multi-seed
+driver (\texttt{python -m gauge.multiseed}); seed-0 outputs are byte-identical
+across independent full re-runs.
 
 \section{Conclusion}
 Gauge brings distribution-free conformal coverage to the ill-posed IVIM inverse

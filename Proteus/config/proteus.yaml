@@ -221,6 +221,28 @@ atlas:
   poll_interval_s: 3           # ticket poll interval
   poll_max_s: 180              # give up on a ticket after this many seconds
 
+# ---------------------------------------------------------------------------
+# Random-floor measurement (proteus.floor) — re-measure the null + decompose lift
+# ---------------------------------------------------------------------------
+# Replaces the statistically-thin 1/60 pilot floor (1.7%) with a properly-sampled
+# uniform draw from the SAME HQ clust30 universe the enriched sweep searched, then
+# screens it through the UNCHANGED S4->S5 pipeline at the enriched run's widened
+# line and decomposes the enrichment lift into S4 (triad/fold-class) vs S5 (cleft
+# line) contributions. Runs on the Mac off the existing GCS artifacts (no GCE,
+# no re-search). See envlog/floor-measurement.md.
+floor:
+  n: 1500                      # uniform random accessions to draw from HQ clust30
+  # The enriched comparison line. Pinned to the enriched sweep's widened threshold
+  # (atlas-sweep/2026-06-14/funnel.json) so the floor and the enriched 23/300 are
+  # judged at the IDENTICAL line. Local re-derivation jitters ~+/-0.005 (fpocket
+  # non-determinism), so we pin rather than recompute to keep the comparison fair.
+  enriched_line: -1.1587
+  fetch_workers: 16            # parallel HTTP fetches (network-bound)
+  screen_workers: 8            # parallel screens (fpocket subprocess per triad+)
+  rescreen_enriched: true      # re-screen the enriched 300 locally (jitter-immune match)
+  # Uniform sampler reads the Foldseek DB's own representative list by HTTP Range.
+  lookup_url: "https://foldcomp.steineggerlab.workers.dev/highquality_clust30.lookup"
+
 # Docking (P4) — small AutoDock Vina pass on the S5/screen survivors: dock a
 #      PET-mimic ligand into the catalytic cleft and rank by binding affinity.
 #      LOCAL CPU Vina here; GPU docking (GNINA/DiffDock) is a GCE burst (see gce/).

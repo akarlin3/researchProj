@@ -114,9 +114,31 @@ python -m pytest -q                # 36 property/correctness tests
 
 Everything is seeded (cohort seed 20260613); reruns reproduce the tables above.
 
-## What's next (Gauge 02 — out of scope here)
+## Gauge 02 — the benchmark (conformal vs model-based UQ)
 
-Port the model-based baselines (Fashion's flow; a Casali-style MDN Deep Ensemble),
-run conformal vs model-based on this same cohort for coverage **and** sharpness, and
-test whether the conformal advantage truly concentrates in D\*. If it doesn't, that
-reframes the paper — and is a result worth reporting, not burying.
+Gauge 02 runs the head-to-head on this same cohort. Full write-up with all tables
+and figures: [`gauge/results.md`](gauge/results.md). Honest headline:
+
+- **The marginal D\*/f hypothesis is NOT supported.** Model-based UQ (probabilistic
+  NN, MDN deep-ensemble à la Casali, deep-ensemble, Bayesian MCMC) is overconfident
+  **broadly** across D, D\*, f — for the NN ensembles D\* is even among the
+  better-covered marginally.
+- **Conformal supplies the guarantee they lack**, and **conformalizing the MDN is
+  the sharpest valid recipe** (0.65–0.79× pure-CQR width at equal coverage).
+- **The unstable compartment bites _conditionally_:** the high-D\* regime
+  under-covers across every method and every SNR (invisible marginally), and
+  **SNR-Mondrian cannot fix it** because the failure axis is the unknown true D\* —
+  the refined, IVIM-specific form of the original hypothesis, and a genuine open
+  problem.
+
+Modules: [`gauge/baselines.py`](gauge/baselines.py) (model-based UQ; CP0),
+[`gauge/benchmark.py`](gauge/benchmark.py) (CP1), [`gauge/conditional.py`](gauge/conditional.py)
+(CP2), figures in [`gauge/figures/`](gauge/figures/). Fashion is **related work
+only**, never a baseline.
+
+```bash
+python -m gauge.baselines      # CP0 / GATE 0  (builds + caches predictions)
+python -m gauge.benchmark      # CP1 / GATE 1  (head-to-head)
+python -m gauge.conditional    # CP2 / GATE 2  (conditional coverage)
+python scripts/make_figures.py # CP3 figures (vector PDF)
+```

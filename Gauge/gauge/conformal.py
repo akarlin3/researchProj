@@ -84,3 +84,24 @@ def empirical_coverage(lower, upper, true):
 def interval_width(lower, upper):
     """Per-point interval width upper - lower."""
     return np.asarray(upper, dtype=float) - np.asarray(lower, dtype=float)
+
+
+def interval_score(lower, upper, true, alpha):
+    """Interval score for a central (1 - alpha) prediction interval.
+
+    Gneiting & Raftery (2007): a proper scoring rule for the (alpha/2, 1-alpha/2)
+    interval. Lower is better -- it rewards sharp intervals but adds a 2/alpha
+    penalty proportional to how far the truth falls outside the band:
+
+        IS = (u - l) + (2/alpha)(l - y) 1{y<l} + (2/alpha)(y - u) 1{y>u}.
+
+    This lets the benchmark score raw, conformal, and conformalized-model-based
+    methods on the same footing (coverage and sharpness combined).
+    """
+    lower = np.asarray(lower, dtype=float)
+    upper = np.asarray(upper, dtype=float)
+    true = np.asarray(true, dtype=float)
+    width = upper - lower
+    below = np.maximum(lower - true, 0.0)
+    above = np.maximum(true - upper, 0.0)
+    return width + (2.0 / alpha) * (below + above)

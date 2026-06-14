@@ -8,3 +8,6 @@ venv/
 
 # OS
 .DS_Store
+
+# Regenerable prediction caches (large; rebuilt by gauge.baselines.build_predictions)
+results/*.pkl

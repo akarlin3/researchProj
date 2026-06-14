@@ -1,0 +1,82 @@
+============================================================================================
+CP1 -- HEAD-TO-HEAD: conformal vs model-based UQ (GATE 1, HALT-TO-REPORT)
+============================================================================================
+cohort seed 20260613  sizes {'train': 4000, 'cal': 2000, 'test': 3000}  SNR grid [10, 20, 30, 50, 100]
+method classes: RAW model-based | CONFORMAL (distribution-free) | CONFORMALIZED model-based
+
+--------------------------------------------------------------------------------------------
+[A] Marginal coverage on TEST at alpha=0.1 (nominal=0.90)  [under-coverage = overconfident]
+--------------------------------------------------------------------------------------------
+                       arm |                D |               D* |                f
+                           |      cov   (gap) |      cov   (gap) |      cov   (gap)
+--------------------------------------------------------------------------------------------
+          raw:PNN-Gaussian |   0.789 (+0.111) |   0.823 (+0.077) |   0.785 (+0.115)
+      raw:MDN-DeepEnsemble |   0.856 (+0.044) |   0.868 (+0.032) |   0.853 (+0.047)
+    raw:DeepEnsemble-Point |   0.431 (+0.469) |   0.432 (+0.468) |   0.483 (+0.417)
+         raw:Bayesian-MCMC |   0.876 (+0.024) |   0.870 (+0.030) |   0.855 (+0.045)
+      conformal:split-NLLS |   0.899 (+0.001) |   0.897 (+0.003) |   0.907 (-0.007)
+         conformal:CQR-HGB |   0.901 (-0.001) |   0.902 (-0.002) |   0.893 (+0.007)
+conformalized:PNN-Gaussian |   0.891 (+0.009) |   0.900 (-0.000) |   0.896 (+0.004)
+conformalized:MDN-DeepEnsemble |   0.891 (+0.009) |   0.908 (-0.008) |   0.892 (+0.008)
+conformalized:DeepEnsemble-Point |   0.889 (+0.011) |   0.899 (+0.001) |   0.900 (+0.000)
+conformalized:Bayesian-MCMC |   0.895 (+0.005) |   0.894 (+0.006) |   0.876 (+0.024)
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+[B] Sharpness (median width) and interval score at alpha=0.1  (lower=better; D,D* in 1e-3 mm^2/s)
+--------------------------------------------------------------------------------------------
+                       arm |                      D |                     D* |                      f
+                           |         width / iscore |         width / iscore |         width / iscore
+--------------------------------------------------------------------------------------------
+          raw:PNN-Gaussian |            0.30 / 0.81 |          43.21 / 71.66 |            0.05 / 0.14
+      raw:MDN-DeepEnsemble |            0.36 / 0.69 |          46.32 / 61.63 |            0.06 / 0.12
+    raw:DeepEnsemble-Point |            0.13 / 1.40 |         15.14 / 139.52 |            0.03 / 0.22
+         raw:Bayesian-MCMC |            0.35 / 0.59 |          49.29 / 57.89 |            0.09 / 0.15
+      conformal:split-NLLS |            0.95 / 1.93 |        123.67 / 284.51 |            0.25 / 0.55
+         conformal:CQR-HGB |            0.53 / 0.78 |          63.09 / 71.21 |            0.11 / 0.15
+conformalized:PNN-Gaussian |            0.40 / 0.76 |          51.25 / 68.91 |            0.07 / 0.13
+conformalized:MDN-DeepEnsemble |            0.39 / 0.68 |          50.05 / 61.28 |            0.07 / 0.12
+conformalized:DeepEnsemble-Point |            0.48 / 0.83 |          51.91 / 75.28 |            0.08 / 0.14
+conformalized:Bayesian-MCMC |            0.36 / 0.59 |          50.51 / 57.67 |            0.09 / 0.14
+--------------------------------------------------------------------------------------------
+
+============================================================================================
+HYPOTHESIS TEST (marginal): does model-based under-coverage concentrate in D*/f?
+============================================================================================
+Per-method marginal coverage gap (nominal - realized), averaged over alpha; +large = overconfident
+                method |    D gap |   D* gap |    f gap | verdict
+--------------------------------------------------------------------------------------------
+          PNN-Gaussian |    0.108 |    0.078 |    0.112 | broad/other (worst=f)
+      MDN-DeepEnsemble |    0.048 |    0.037 |    0.048 | broad/other (worst=D)
+    DeepEnsemble-Point |    0.449 |    0.443 |    0.395 | broad/other (worst=D)
+         Bayesian-MCMC |    0.023 |    0.027 |    0.045 | broad/other (worst=f)
+--------------------------------------------------------------------------------------------
+
+CONFORMAL / CONFORMALIZED coverage (should hold nominal regardless of compartment):
+         conformal:split-NLLS: mean |gap| per param (D,D*,f) = 0.002, 0.002, 0.005
+            conformal:CQR-HGB: mean |gap| per param (D,D*,f) = 0.008, 0.005, 0.005
+   conformalized:PNN-Gaussian: mean |gap| per param (D,D*,f) = 0.007, 0.007, 0.006
+   conformalized:MDN-DeepEnsemble: mean |gap| per param (D,D*,f) = 0.006, 0.009, 0.006
+   conformalized:DeepEnsemble-Point: mean |gap| per param (D,D*,f) = 0.007, 0.005, 0.002
+   conformalized:Bayesian-MCMC: mean |gap| per param (D,D*,f) = 0.004, 0.004, 0.021
+
+SHARPNESS COST of guaranteed coverage (conformalized / raw median width, alpha=0.1):
+             PNN-Gaussian: D 1.35x  D* 1.19x  f 1.36x
+         MDN-DeepEnsemble: D 1.10x  D* 1.08x  f 1.12x
+       DeepEnsemble-Point: D 3.72x  D* 3.43x  f 3.17x
+            Bayesian-MCMC: D 1.03x  D* 1.02x  f 1.05x
+
+DOES THE MODEL'S BAND HELP? (conformalized-MDN vs pure CQR-HGB median width, alpha=0.1; <1 = model band sharper):
+     D: conformalized-MDN 0.39 vs pure-CQR 0.53  -> ratio 0.73x
+    D*: conformalized-MDN 50.05 vs pure-CQR 63.09  -> ratio 0.79x
+     f: conformalized-MDN 0.07 vs pure-CQR 0.11  -> ratio 0.65x
+
+============================================================================================
+GATE 1 VERDICT (honest):
+  Hypothesis NOT supported at the MARGINAL level: only 0/4 methods show D*/f-concentrated under-coverage.
+  Honest finding: model-based methods are overconfident BROADLY across D, D*, and f (not
+  specifically D*/f); for the NN ensembles D* is often among the better-covered params
+  marginally (its large aleatoric variance widens its band). Conformal & conformalized
+  variants restore ~nominal coverage in every compartment. Whether a D*/f-specific gap
+  exists is therefore a CONDITIONAL question (high D* / low SNR) -> tested in CP2.
+============================================================================================

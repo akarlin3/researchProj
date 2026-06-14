@@ -1,0 +1,106 @@
+================================================================================================
+CP2 -- CONDITIONAL COVERAGE (GATE 2, HALT-TO-REPORT)
+================================================================================================
+alpha=0.1 (nominal=0.90)  seed 20260613  SNR strata [10, 20, 30, 50, 100]
+
+------------------------------------------------------------------------------------------------
+[D] conditional coverage by SNR (nominal 0.90)
+                   arm |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100 |   MARG
+------------------------------------------------------------------------------------------------
+               raw-MDN |     0.77 |     0.80 |     0.84 |     0.90 |     0.98 |  0.856
+         split (plain) |     0.65 |     0.91 |     0.94 |     1.00 |     1.00 |  0.899
+           CQR (plain) |     0.81 |     0.86 |     0.92 |     0.95 |     0.97 |  0.901
+  split (Mondrian/SNR) |     0.90 |     0.93 |     0.92 |     0.88 |     0.93 |  0.910
+    CQR (Mondrian/SNR) |     0.91 |     0.90 |     0.90 |     0.91 |     0.92 |  0.907
+     conformalized-MDN |     0.80 |     0.84 |     0.89 |     0.94 |     1.00 |  0.891
+
+------------------------------------------------------------------------------------------------
+[D*] conditional coverage by SNR (nominal 0.90)
+                   arm |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100 |   MARG
+------------------------------------------------------------------------------------------------
+               raw-MDN |     0.81 |     0.83 |     0.84 |     0.91 |     0.96 |  0.868
+         split (plain) |     0.76 |     0.87 |     0.90 |     0.97 |     0.99 |  0.897
+           CQR (plain) |     0.85 |     0.90 |     0.90 |     0.93 |     0.93 |  0.902
+  split (Mondrian/SNR) |     0.90 |     0.91 |     0.88 |     0.90 |     0.89 |  0.896
+    CQR (Mondrian/SNR) |     0.89 |     0.92 |     0.90 |     0.89 |     0.90 |  0.899
+     conformalized-MDN |     0.85 |     0.88 |     0.89 |     0.95 |     0.98 |  0.908
+
+------------------------------------------------------------------------------------------------
+[f] conditional coverage by SNR (nominal 0.90)
+                   arm |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100 |   MARG
+------------------------------------------------------------------------------------------------
+               raw-MDN |     0.80 |     0.79 |     0.84 |     0.86 |     0.98 |  0.853
+         split (plain) |     0.68 |     0.91 |     0.95 |     0.99 |     1.00 |  0.907
+           CQR (plain) |     0.83 |     0.87 |     0.91 |     0.90 |     0.95 |  0.893
+  split (Mondrian/SNR) |     0.89 |     0.91 |     0.92 |     0.88 |     0.91 |  0.901
+    CQR (Mondrian/SNR) |     0.89 |     0.88 |     0.90 |     0.86 |     0.90 |  0.887
+     conformalized-MDN |     0.82 |     0.84 |     0.89 |     0.92 |     1.00 |  0.892
+
+================================================================================================
+[D*] conditional coverage on SNR x D*-regime grid (the ill-posed compartment)
+D*-regime defined by true-D* terciles (diagnostic only -- true D* is unknown at test time)
+================================================================================================
+[raw-MDN]  (nominal 0.90)
+regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
+      loD* |     0.74 |     0.82 |     0.80 |     0.89 |     0.96
+     midD* |     0.93 |     0.91 |     0.91 |     0.96 |     0.99
+      hiD* |     0.76 |     0.77 |     0.80 |     0.88 |     0.92
+
+[CQR (plain)]  (nominal 0.90)
+regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
+      loD* |     0.79 |     0.89 |     0.88 |     0.95 |     0.97
+     midD* |     1.00 |     0.99 |     0.99 |     0.99 |     1.00
+      hiD* |     0.77 |     0.83 |     0.82 |     0.87 |     0.82
+
+[CQR (Mondrian/SNR)]  (nominal 0.90)
+regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
+      loD* |     0.82 |     0.94 |     0.89 |     0.90 |     0.92
+     midD* |     1.00 |     0.99 |     0.99 |     0.98 |     1.00
+      hiD* |     0.84 |     0.84 |     0.82 |     0.80 |     0.77
+
+[conformalized-MDN]  (nominal 0.90)
+regime\SNR |   SNR 10 |   SNR 20 |   SNR 30 |   SNR 50 |   SNR100
+      loD* |     0.80 |     0.88 |     0.87 |     0.94 |     0.98
+     midD* |     0.95 |     0.92 |     0.93 |     0.98 |     1.00
+      hiD* |     0.81 |     0.83 |     0.86 |     0.93 |     0.96
+
+================================================================================================
+WORST conditional under-coverage across SNR strata (per param, alpha=0.1); nominal 0.90
+================================================================================================
+                   arm |              D |             D* |              f
+                       |   min cov @SNR |   min cov @SNR |   min cov @SNR
+               raw-MDN |       0.77 @10 |       0.81 @10 |       0.79 @20
+         split (plain) |       0.65 @10 |       0.76 @10 |       0.68 @10
+           CQR (plain) |       0.81 @10 |       0.85 @10 |       0.83 @10
+  split (Mondrian/SNR) |       0.88 @50 |       0.88 @30 |       0.88 @50
+    CQR (Mondrian/SNR) |       0.90 @20 |       0.89 @50 |       0.86 @50
+     conformalized-MDN |       0.80 @10 |       0.85 @10 |       0.82 @10
+
+================================================================================================
+HIGH-D* REGIME persistence (coverage on the hiD* tercile; the unstable compartment)
+the key test: SNR-Mondrian groups by the KNOWN SNR -- can it fix a failure driven by the
+UNKNOWN true D*?  (marginal over SNR within hiD*, and worst SNR cell within hiD*; nominal 0.90)
+------------------------------------------------------------------------------------------------
+                   arm |  hiD* marg |   hiD* worst-SNR
+               raw-MDN |      0.825 |            0.756
+           CQR (plain) |      0.819 |            0.767
+  split (Mondrian/SNR) |      0.808 |            0.764
+    CQR (Mondrian/SNR) |      0.814 |            0.766
+     conformalized-MDN |      0.877 |            0.808
+
+================================================================================================
+GATE 2 VERDICT (honest):
+  Plain split-conformal FAILS conditional coverage (under-covers at low SNR): marginal
+  coverage hides it. The unstable compartment DOES demand group-conditional conformal.
+  Fix status @tol 0.03: CQR(plain) partial; split-Mondrian/SNR OK; CQR-Mondrian/SNR partial.
+  => For the SNR axis: SNR-stratified (Mondrian) or input-adaptive CQR conformal, not plain split.
+
+  IVIM-SPECIFIC HEADLINE -- the high-D* (ill-posed) regime:
+    Even after SNR stratification, the hiD* tercile still UNDER-covers (CQR-Mondrian/SNR hiD* marg=0.81, conformalized-MDN hiD* marg=0.88 vs nominal 0.90),
+    while mid-D* OVER-covers -- a conditional failure invisible marginally. SNR-Mondrian
+    cannot fix it because the failure axis is the UNKNOWN true D*, not SNR. This is the
+    refined, IVIM-specific form of the D*/f hypothesis: the unstable compartment breaks
+    coverage CONDITIONALLY on the parameter regime, not marginally; input-adaptive CQR
+    (and conformalized-MDN) narrow the gap but do not close it -> a genuine open problem
+    (regime-conditional / Mondrian-by-estimated-D* conformal) for future work.
+================================================================================================

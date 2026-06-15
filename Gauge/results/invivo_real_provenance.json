@@ -752,7 +752,7 @@
     ],
     "seed": 20260613,
     "note": "region-level (whole-tumor ROI), unregistered same-visit exams; SUGGESTIVE at small n -- NOT validation/accuracy/calibration/coverage. D interval widens where the real ADC is least repeatable (width tracks repeatability).",
-    "computed_utc": "2026-06-14T23:50:18.129396+00:00",
+    "computed_utc": "2026-06-15T00:47:13.207157+00:00",
     "D_spearman_wD_vs_dD": 0.690909090909091,
     "D_spearman_p": 0.018565033381595007,
     "D_significance": "suggestive (small n, wide CI)",

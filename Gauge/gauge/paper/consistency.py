@@ -91,6 +91,16 @@ CHECKS = [
      "results/invivo_report.txt", ["1.7x"]),
     ("In-vivo deployment monitor AUC on transfer", "0.84",
      "results/invivo_report.txt", ["0.84"]),
+    # --- Real in-vivo cross-check (ACRIN-6698; qualitative, no coverage claim) ---
+    ("REAL in-vivo as-deployed monitor AUC on transfer", "0.97",
+     "results/invivo_real_report.txt", ["AUC(cal vs in-vivo) = 0.97"]),
+    ("REAL in-vivo D* band widths 10/50/90th pct", "[63.7, 78.7, 86.4]",
+     "results/invivo_real_report.txt", ["63.7", "78.7", "86.4"]),
+    ("REAL in-vivo test-retest D-width vs ADC repeatability (Spearman)",
+     "+0.69 (p=0.019, n=11)",
+     "results/invivo_real_retest_report.txt", ["+0.69 (p=0.019, n=11)"]),
+    ("REAL in-vivo test-retest D* not significant", "-0.49 (p=0.125, n=11)",
+     "results/invivo_real_retest_report.txt", ["-0.49 (p=0.125, n=11)"]),
 ]
 
 

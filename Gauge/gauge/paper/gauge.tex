@@ -457,10 +457,10 @@ synthetic$\to$deployment is itself a large exchangeability break, and the monito
 detects it. That firing is the honest, label-free reason the synthetic guarantee
 must not be transferred in vivo without re-calibration on matched labeled data --
 which in vivo does not exist. The monitor turns ``no ground truth'' into an
-observable stop sign. (No usable permissively-licensed, ground-truth-free in-vivo
-IVIM dataset was available for this study; the demonstration runs on a clearly
-labeled synthetic stand-in, and dataset choice/licensing and the in-vivo framing
-are deferred to human sign-off.)
+observable stop sign. The demonstration above uses a clearly labeled synthetic
+stand-in; Sec.~\ref{sec:invivo-real} repeats the \emph{as-deployed} pipeline on a
+real, permissively-licensed in-vivo collection, where the monitor fires on the
+synthetic$\to$real transfer for the same reason.
 
 \begin{figure}[t]
 \centering
@@ -469,6 +469,61 @@ are deferred to human sign-off.)
 $\Dstar$ band balloons with the plug-in $\hat{\Dstar}$. (Right) the heavy-tailed
 $\Dstar$ band-width distribution; the deployment monitor fires on the transfer.}
 \label{fig:invivo}
+\end{figure}
+
+\subsection{Real in-vivo data: the same pipeline, the monitor fires on transfer}
+\label{sec:invivo-real}
+We additionally run the as-deployed pipeline on real multi-$b$ in-vivo DWI from the
+public ACRIN-6698 / I-SPY2 Breast DWI collection (The Cancer Imaging Archive;
+CC-BY-4.0)~\cite{acrin6698,clark2013tcia}, retrieved on demand (no pixel data are
+redistributed with this work). This is a 4-$b$ ADC protocol
+($b=\{0,100,600,800\}\unit{s/mm^2}$), \emph{not} IVIM-optimized, with no
+ground-truth IVIM parameters; it therefore supports only qualitative
+pipeline/monitor behavior and makes \textbf{no in-vivo coverage claim}. A predictor
+trained on the synthetic 22-value scheme cannot ingest a 4-$b$ signal, and
+interpolation would fabricate unacquired $b$-values, so we keep the deployment
+\emph{monitor} as-deployed---its observable features are $b$-independent---and
+re-fit only the CQR band at the real 4-$b$ scheme; the resulting bands are
+qualitative, not coverage intervals.
+
+On $4000$ foreground voxels the as-deployed monitor \textbf{fires} (AUC $0.97$) and
+the $\Dstar$ band stays wide ($10/50/90$th percentile
+$=64/79/86\times10^{-3}\unit{mm^2/s}$; Fig.~\ref{fig:invivo-real}). The firing is
+carried entirely by the $b$-independent Mahalanobis family (Family-1); the residual
+family (Family-2) is silent because a 4-$b$ acquisition exactly-determines the
+four-parameter IVIM fit, collapsing the fit-residual norm to zero. The monitor has
+therefore \emph{not} half-failed---it has localized the break to the feature
+distribution. The sparse-protocol-plus-real-tissue gap is a large exchangeability
+break, which is exactly why the synthetic guarantee \emph{correctly refuses} to
+transfer.
+
+\paragraph{Test--retest repeatability (suggestive).}
+ACRIN-6698 acquired two same-visit DWI exams per patient. Across $n{=}11$ tumors we
+ask, label-free, whether the conformal interval width \emph{tracks} the scan--rescan
+variability of the plug-in estimate (region-level over the whole-tumor ROI; the two
+exams are unregistered, so this is not a per-voxel statement). For the
+well-identified tissue diffusion $D$, the conformal $D$-width is consistent with the
+measured scan--rescan $|\Delta\mathrm{ADC}|$ (Spearman $r=+0.69$, $p=0.019$): the
+interval \emph{widens where the real measurement is least repeatable}. At $n{=}11$
+this has a wide confidence interval and is \textbf{suggestive, not robust}. For
+$\Dstar$ the association is not significant ($r=-0.49$, $p=0.125$), consistent with
+the identifiability wall---the relationship is demonstrable for the parameter the
+data identify and unresolvable for the one they do not. This is a
+repeatability-tracking check, \emph{not} a statement of validation, accuracy,
+calibration, or coverage.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/invivo_real_demo.pdf}\\[2pt]
+\includegraphics[width=0.55\linewidth]{figures/invivo_real_retest.pdf}
+\caption{Real in-vivo data (ACRIN-6698 / I-SPY2 Breast DWI; qualitative, no coverage
+claim). (Top left) the re-fit conformal $\Dstar$ band vs the plug-in $\hat{\Dstar}$;
+(top right) the $\Dstar$ band-width distribution and the as-deployed monitor verdict
+(fires, AUC $0.97$, via the $b$-independent Mahalanobis family). (Bottom)
+test--retest: the conformal $D$-width vs the measured scan--rescan ADC variability
+across $n{=}11$ tumors (Spearman $r=+0.69$; suggestive, repeatability-tracking
+only---not validation or coverage).}
+\label{fig:invivo-real}
 \end{figure}
 
 \section{Discussion}
@@ -543,14 +598,27 @@ qualitative in-vivo demonstration that frame how an honest, distribution-free IV
 uncertainty map should be deployed and monitored.
 
 \section*{Data and Code Availability Statement}
-This study uses no human or animal data. All results are produced from a
-deterministic, seeded synthetic cohort (seed \texttt{20260613}) generated by the
-study's own forward model; no external or in-vivo dataset is required to reproduce
-them. The complete source code, the gated checkpoint outputs from which every
-number in this paper is drawn, the figures, and a machine-checked consistency
-script (\texttt{gauge/paper/consistency.py}) are openly available in the project
-repository and permanently archived at
+All coverage results are produced from a deterministic, seeded synthetic cohort
+(seed \texttt{20260613}) generated by the study's own forward model; no external or
+in-vivo dataset is required to reproduce them. The complete source code, the gated
+checkpoint outputs from which every number in this paper is drawn, the figures, and
+a machine-checked consistency script (\texttt{gauge/paper/consistency.py}) are
+openly available in the project repository and permanently archived at
 \href{https://doi.org/10.5281/zenodo.20686274}{https://doi.org/10.5281/zenodo.20686274}.
+The qualitative in-vivo cross-check (Sec.~\ref{sec:invivo-real}) applies the
+as-deployed predictor and monitor to real multi-$b$ DWI from the publicly available
+ACRIN-6698 / I-SPY2 Breast DWI collection (The Cancer Imaging Archive;
+DOI~\texttt{10.7937/tcia.kk02-6d95}; licensed CC-BY-4.0)~\cite{acrin6698,clark2013tcia},
+which has no ground-truth IVIM parameters and supports only qualitative
+pipeline/monitor behavior and a suggestive label-free test--retest
+repeatability-tracking check---it makes no in-vivo coverage claim. Under a
+download-on-demand posture no pixel data are redistributed here; the data are
+retrieved by \texttt{scripts/fetch\_invivo.py} into an ignored path, and only the
+provenance manifest (\texttt{results/invivo\_real\_provenance.json}, with series
+identifiers, $b$-values, license, and citation) is committed. The ACRIN-6698 imaging
+is publicly available and de-identified, requiring no additional ethical approval for
+this secondary, qualitative analysis; the synthetic coverage pipeline uses no human
+or animal data and regenerates independently of any external dataset.
 
 \section*{Conflict of Interest}
 The author declares no competing interests.

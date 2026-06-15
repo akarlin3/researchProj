@@ -64,6 +64,7 @@ _REAL_PROVENANCE = os.path.join(_RESULTS_DIR, "invivo_real_provenance.json")
 _REAL_FIG = os.path.join(_FIG_DIR, "invivo_real_demo.pdf")
 _REAL_RETEST_REPORT = os.path.join(_RESULTS_DIR, "invivo_real_retest_report.txt")
 _REAL_RETEST_FIG = os.path.join(_FIG_DIR, "invivo_real_retest.pdf")
+_REAL_MAPS_FIG = os.path.join(_FIG_DIR, "invivo_real_maps.pdf")
 
 
 # --------------------------------------------------------------------------- #
@@ -857,18 +858,112 @@ def _make_figure_retest(wD, dD, spearman_r, n):
         print(f"[figures] skipped ({e})")
         return
     os.makedirs(_FIG_DIR, exist_ok=True)
-    fig, ax = plt.subplots(figsize=(5.4, 4.6))
+    fig, ax = plt.subplots(figsize=(6.2, 4.8))
     ax.scatter(wD, dD, s=28, alpha=0.8, color="#2c3e50")
     ax.set_xlabel("conformal D band width (test+retest mean)  (1e-3 mm^2/s)")
     ax.set_ylabel("|scan-rescan ΔD|  (1e-3 mm^2/s)")
-    ax.set_title(f"REAL in-vivo test-retest (ACRIN-6698, n={n} tumors; suggestive)\n"
-                 f"D interval widens where ADC is least repeatable  "
-                 f"(Spearman r={spearman_r:+.2f})\n"
-                 f"repeatability-tracking only -- NOT validation / coverage")
+    ax.set_title(f"Real in-vivo test-retest (ACRIN-6698)\n"
+                 f"n={n} tumors;  Spearman r={spearman_r:+.2f}  (suggestive)\n"
+                 f"width tracks ADC repeatability -- not coverage", fontsize=9)
     fig.tight_layout()
     fig.savefig(_REAL_RETEST_FIG)
     plt.close(fig)
     print(f"[figures] wrote {os.path.basename(_REAL_RETEST_FIG)} -> {_FIG_DIR}")
+
+
+# --------------------------------------------------------------------------- #
+# Actual in-vivo IMAGE MAPS (spatial), so the manuscript shows the real signal
+# and the per-voxel uncertainty -- not only summary plots. Qualitative; no
+# coverage claim. Maps are built on one representative slice with a tumor ROI.
+# --------------------------------------------------------------------------- #
+def make_real_image_maps(exam_dir, slice_idx=None, seed=SEED):
+    """Render real DWI + plug-in D* map + conformal D*-band-width map for a slice.
+
+    Picks the slice with the largest tumor ROI (unless ``slice_idx`` is given),
+    fits the deployed pipeline per foreground voxel, and draws spatial maps with
+    the whole-tumor ROI outlined. Writes ``figures/invivo_real_maps.pdf`` and
+    returns the slice index used.
+    """
+    vol = np.asarray(np.load(os.path.join(exam_dir, "signals_4d.npy")), float)
+    b = np.loadtxt(os.path.join(exam_dir, "bvals.txt")).ravel()
+    mp = os.path.join(exam_dir, "tumor_mask.npy")
+    tmask3d = np.asarray(np.load(mp)) > 0 if os.path.exists(mp) else None
+    if slice_idx is None:
+        slice_idx = (int(tmask3d.reshape(-1, tmask3d.shape[-1]).sum(0).argmax())
+                     if tmask3d is not None else vol.shape[2] // 2)
+    sl = vol[:, :, slice_idx, :]                           # (X, Y, B)
+    nx, ny = sl.shape[:2]
+    b0 = sl[:, :, b == b.min()].mean(2)                    # anatomical b=0 image
+    flat = sl.reshape(-1, sl.shape[-1])
+    s0 = flat[:, b == b.min()].mean(1)
+    fg = (s0 > 0.25 * np.percentile(s0, 99)) & np.isfinite(flat).all(1) & (s0 > 0)
+
+    sig = _normalize_to_s0(flat[fg], b)
+    cal = deployed_calibration(b=b, seed=seed)             # re-fit CQR at real b
+    theta, _, _ = _observe(sig, b)
+    widths, _, _ = _cqr_band_widths(sig, cal)              # (Nfg, 3)
+
+    dstar = np.full(nx * ny, np.nan)
+    wstar = np.full(nx * ny, np.nan)
+    dstar[fg] = theta[:, 1] * 1e3
+    wstar[fg] = widths[:, 1] * 1e3
+    dstar = dstar.reshape(nx, ny)
+    wstar = wstar.reshape(nx, ny)
+    tmask = tmask3d[:, :, slice_idx] if tmask3d is not None else None
+
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except Exception as e:                                  # pragma: no cover
+        print(f"[figures] skipped ({e})")
+        return slice_idx
+    os.makedirs(_FIG_DIR, exist_ok=True)
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4.4))
+    # crop to the foreground bounding box (+margin) so the breast fills the panel
+    ys, xs = np.where(fg.reshape(nx, ny))
+    r0, r1 = max(ys.min() - 8, 0), min(ys.max() + 8, nx)
+    c0, c1 = max(xs.min() - 8, 0), min(xs.max() + 8, ny)
+    slc = (slice(r0, r1), slice(c0, c1))
+
+    def _roi(ax):
+        if tmask is not None and tmask[slc].any():
+            ax.contour(tmask[slc], levels=[0.5], colors="r", linewidths=1.0)
+
+    ax = axes[0]
+    b0c = b0[slc]
+    ax.imshow(b0c, cmap="gray", origin="lower", vmin=0,
+              vmax=np.percentile(b0c[b0c > 0], 99) if (b0c > 0).any() else None)
+    _roi(ax)
+    ax.set_title("real DWI ($b{=}0$), ACRIN-6698\n(tumor ROI in red)")
+    ax.axis("off")
+
+    ax = axes[1]
+    im = ax.imshow(dstar[slc], cmap="magma", origin="lower", vmin=0,
+                   vmax=np.nanpercentile(dstar, 98))
+    _roi(ax)
+    ax.set_title("plug-in $\\hat{D}^{*}$ map\n($10^{-3}$ mm$^2$/s)")
+    ax.axis("off")
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+
+    ax = axes[2]
+    im = ax.imshow(wstar[slc], cmap="viridis", origin="lower",
+                   vmin=np.nanpercentile(wstar, 2),
+                   vmax=np.nanpercentile(wstar, 98))
+    _roi(ax)
+    ax.set_title("conformal $D^{*}$ band-width map\n(wide = under-identified)")
+    ax.axis("off")
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+
+    fig.suptitle("Gauge in vivo (real DWI, qualitative -- NO coverage claim): "
+                 "anatomy, perfusion estimate, and per-voxel conformal uncertainty",
+                 fontsize=9)
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
+    fig.savefig(_REAL_MAPS_FIG)
+    plt.close(fig)
+    print(f"[figures] wrote {os.path.basename(_REAL_MAPS_FIG)} -> {_FIG_DIR} "
+          f"(slice {slice_idx})")
+    return slice_idx
 
 
 if __name__ == "__main__":

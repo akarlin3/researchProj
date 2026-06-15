@@ -18,10 +18,10 @@
 \title{\textbf{Gauge: Distribution-Free Conformal Coverage for IVIM Parameter
 Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment}}
 \author{Avery Karlin\\[2pt]
-\small The AnnealSignet Institute\\[2pt]
-\small \textit{Avery Karlin is a graduate student at Columbia University, Department
-of Applied Physics and Mathematics, and the University of Colorado Boulder,
-Department of Computer Science.}\\[2pt]
+\small The AnnealSignet Institute\\[3pt]
+\small \textit{Avery Karlin is a graduate student at Columbia University,}\\[1pt]
+\small \textit{Department of Applied Physics and Mathematics, and the}\\[1pt]
+\small \textit{University of Colorado Boulder, Department of Computer Science.}\\[3pt]
 \small ORCID: \href{https://orcid.org/0000-0003-3848-6782}{0000-0003-3848-6782}}
 \date{}
 
@@ -489,6 +489,25 @@ interpolation would fabricate unacquired $b$-values, so we keep the deployment
 \emph{monitor} as-deployed---its observable features are $b$-independent---and
 re-fit only the CQR band at the real 4-$b$ scheme; the resulting bands are
 qualitative, not coverage intervals.
+
+Figure~\ref{fig:invivo-maps} shows the actual images on a representative slice: the
+real $b{=}0$ breast DWI, the plug-in $\hat{\Dstar}$ map, and the per-voxel conformal
+$\Dstar$ band-width (uncertainty) map, with the whole-tumor ROI outlined. The
+uncertainty map is spatially heterogeneous and widens exactly where the perfusion
+compartment is under-identified---the identifiability wall, now visible on real
+tissue.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/invivo_real_maps.pdf}
+\caption{Actual in-vivo images (ACRIN-6698 / I-SPY2 Breast DWI; one slice;
+qualitative, no coverage claim). (Left) real $b{=}0$ DWI with the whole-tumor ROI in
+red; (middle) the plug-in $\hat{\Dstar}$ perfusion map; (right) the per-voxel
+conformal $\Dstar$ band-width map---wider where the perfusion compartment is
+under-identified. The synthetic 22-value-calibrated monitor (not shown here) fires
+on this data; see Fig.~\ref{fig:invivo-real}.}
+\label{fig:invivo-maps}
+\end{figure}
 
 On $4000$ foreground voxels the as-deployed monitor \textbf{fires} (AUC $0.97$) and
 the $\Dstar$ band stays wide ($10/50/90$th percentile

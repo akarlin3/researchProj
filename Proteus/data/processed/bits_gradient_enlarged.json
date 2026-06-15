@@ -1,0 +1,53 @@
+{
+  "enlarged_floor": {
+    "k": 105,
+    "n": 209,
+    "rate": 0.5023923444976076
+  },
+  "tiers": [
+    {
+      "label": "top 25",
+      "k": 20,
+      "n": 25,
+      "rate": 0.8,
+      "min_bits": 1251.0,
+      "rr_vs_enlarged_floor": 1.5923809523809527,
+      "fisher_p_vs_enlarged_floor": 0.005348865056043879,
+      "above_floor": true,
+      "below_floor": false
+    },
+    {
+      "label": "top 50",
+      "k": 32,
+      "n": 50,
+      "rate": 0.64,
+      "min_bits": 1180.0,
+      "rr_vs_enlarged_floor": 1.273904761904762,
+      "fisher_p_vs_enlarged_floor": 0.08520670061175914,
+      "above_floor": false,
+      "below_floor": false
+    },
+    {
+      "label": "top 100",
+      "k": 44,
+      "n": 100,
+      "rate": 0.44,
+      "min_bits": 1090.0,
+      "rr_vs_enlarged_floor": 0.8758095238095239,
+      "fisher_p_vs_enlarged_floor": 0.3315470005992069,
+      "above_floor": false,
+      "below_floor": false
+    },
+    {
+      "label": "rank 101\u2013294",
+      "k": 52,
+      "n": 194,
+      "rate": 0.26804123711340205,
+      "min_bits": 962.0,
+      "rr_vs_enlarged_floor": 0.5335297005400098,
+      "fisher_p_vs_enlarged_floor": 1.4647088952908172e-06,
+      "above_floor": false,
+      "below_floor": true
+    }
+  ]
+}

@@ -1,0 +1,699 @@
+{
+  "seed": 1729,
+  "line": -1.1587,
+  "enriched_line": -1.1587,
+  "local_widened_rederivation": -1.1452,
+  "anchor_mode": "percentile",
+  "anchor_ids": [
+    "IsPETase",
+    "LCC_WT"
+  ],
+  "sample_meta": {
+    "seed": 1729,
+    "n": 1500,
+    "lookup_url": "https://steineggerlab.s3.amazonaws.com/foldcomp/highquality_clust30.lookup",
+    "lookup_bytes": 1030274634,
+    "offsets_drawn": 1875,
+    "window_bytes": 256
+  },
+  "floor_funnel": {
+    "attempted": 1500,
+    "fetched": 1500,
+    "screened": 1500,
+    "triad_positive_S4": 28,
+    "pocket_ok_S5": 26,
+    "above_line": 12,
+    "above_line_accessions": [
+      "MGYP000060527517",
+      "MGYP000078033438",
+      "MGYP000313359214",
+      "MGYP000567727857",
+      "MGYP001067721237",
+      "MGYP001302934565",
+      "MGYP001319055111",
+      "MGYP001359663924",
+      "MGYP001560567859",
+      "MGYP001795340448",
+      "MGYP002047001896",
+      "MGYP003131150232"
+    ]
+  },
+  "enriched_funnel_canonical": {
+    "screened": 300,
+    "triad_positive_S4": 298,
+    "above_line": 23,
+    "line": -1.1587,
+    "conditional_above_given_triad": 0.07718120805369127
+  },
+  "floor_conditional_above_given_triad": {
+    "k": 12,
+    "n": 28,
+    "rate": 0.42857142857142855,
+    "wilson95": [
+      0.26508547124123694,
+      0.6092921437253123
+    ]
+  },
+  "stats": {
+    "tightened_floor": {
+      "k": 12,
+      "n": 1500,
+      "rate": 0.008,
+      "wilson95": [
+        0.0045822256095402435,
+        0.013931334219118342
+      ],
+      "old_thin_floor": 0.017
+    },
+    "overall_above_line": {
+      "label": "enriched vs floor: above-line / screened",
+      "group1": {
+        "k": 23,
+        "n": 300,
+        "rate": 0.07666666666666666,
+        "wilson95": [
+          0.051627611786607464,
+          0.1124101038501748
+        ]
+      },
+      "group2": {
+        "k": 12,
+        "n": 1500,
+        "rate": 0.008,
+        "wilson95": [
+          0.0045822256095402435,
+          0.013931334219118342
+        ]
+      },
+      "fisher_p": 7.330899136154642e-11,
+      "two_proportion_z": {
+        "z": 7.862888153685093,
+        "p_value": 3.7537616541531675e-15
+      },
+      "rate_ratio_g1_over_g2": {
+        "ratio": 9.583333333333332,
+        "ci": [
+          4.821891075054776,
+          19.04652683941735
+        ]
+      }
+    },
+    "S4_triad_rate": {
+      "label": "enriched vs floor: triad+ / screened",
+      "group1": {
+        "k": 298,
+        "n": 300,
+        "rate": 0.9933333333333333,
+        "wilson95": [
+          0.9760224167496929,
+          0.998169851642088
+        ]
+      },
+      "group2": {
+        "k": 28,
+        "n": 1500,
+        "rate": 0.018666666666666668,
+        "wilson95": [
+          0.01294606406020905,
+          0.02684633457975234
+        ]
+      },
+      "fisher_p": 6.085001843790179e-305,
+      "two_proportion_z": {
+        "z": 40.016682472358916,
+        "p_value": 0.0
+      },
+      "rate_ratio_g1_over_g2": {
+        "ratio": 53.21428571428571,
+        "ci": [
+          36.865817266871886,
+          76.81262519104084
+        ]
+      }
+    },
+    "S5_conditional_rate": {
+      "label": "enriched vs floor: above-line / triad+ (GIVEN a triad)",
+      "group1": {
+        "k": 23,
+        "n": 298,
+        "rate": 0.07718120805369127,
+        "wilson95": [
+          0.05197785247130618,
+          0.11314677625076058
+        ]
+      },
+      "group2": {
+        "k": 12,
+        "n": 28,
+        "rate": 0.42857142857142855,
+        "wilson95": [
+          0.26508547124123694,
+          0.6092921437253123
+        ]
+      },
+      "fisher_p": 3.3052189484076967e-06,
+      "two_proportion_z": {
+        "z": -5.742554183258465,
+        "p_value": 9.32590235530471e-09
+      },
+      "rate_ratio_g1_over_g2": {
+        "ratio": 0.18008948545861297,
+        "ci": [
+          0.10077485151296392,
+          0.321828534459074
+        ]
+      }
+    },
+    "matched_local": {
+      "note": "enriched re-screened in the SAME local pass (same anchor, line, fpocket session) -> jitter-immune vs the floor.",
+      "overall_above_line": {
+        "label": "enriched(local) vs floor: above/screened",
+        "group1": {
+          "k": 27,
+          "n": 300,
+          "rate": 0.09,
+          "wilson95": [
+            0.06259022560547936,
+            0.12777701079864834
+          ]
+        },
+        "group2": {
+          "k": 12,
+          "n": 1500,
+          "rate": 0.008,
+          "wilson95": [
+            0.0045822256095402435,
+            0.013931334219118342
+          ]
+        },
+        "fisher_p": 2.0151777609634835e-13,
+        "two_proportion_z": {
+          "z": 8.90521440864857,
+          "p_value": 5.328296050888301e-19
+        },
+        "rate_ratio_g1_over_g2": {
+          "ratio": 11.25,
+          "ci": [
+            5.764760577128908,
+            21.954511086223363
+          ]
+        }
+      },
+      "S4_triad_rate": {
+        "label": "enriched(local) vs floor: triad+/screened",
+        "group1": {
+          "k": 298,
+          "n": 300,
+          "rate": 0.9933333333333333,
+          "wilson95": [
+            0.9760224167496929,
+            0.998169851642088
+          ]
+        },
+        "group2": {
+          "k": 28,
+          "n": 1500,
+          "rate": 0.018666666666666668,
+          "wilson95": [
+            0.01294606406020905,
+            0.02684633457975234
+          ]
+        },
+        "fisher_p": 6.085001843790179e-305,
+        "two_proportion_z": {
+          "z": 40.016682472358916,
+          "p_value": 0.0
+        },
+        "rate_ratio_g1_over_g2": {
+          "ratio": 53.21428571428571,
+          "ci": [
+            36.865817266871886,
+            76.81262519104084
+          ]
+        }
+      },
+      "S5_conditional_rate": {
+        "label": "enriched(local) vs floor: above-line / triad+",
+        "group1": {
+          "k": 27,
+          "n": 298,
+          "rate": 0.09060402684563758,
+          "wilson95": [
+            0.06301542906412286,
+            0.1286131796985132
+          ]
+        },
+        "group2": {
+          "k": 12,
+          "n": 28,
+          "rate": 0.42857142857142855,
+          "wilson95": [
+            0.26508547124123694,
+            0.6092921437253123
+          ]
+        },
+        "fisher_p": 1.2604011472778416e-05,
+        "two_proportion_z": {
+          "z": -5.268627674546464,
+          "p_value": 1.37447428466392e-07
+        },
+        "rate_ratio_g1_over_g2": {
+          "ratio": 0.21140939597315436,
+          "ci": [
+            0.12089805222786246,
+            0.3696828185577146
+          ]
+        }
+      },
+      "enriched_local_funnel": {
+        "attempted": 300,
+        "fetched": 300,
+        "screened": 300,
+        "triad_positive_S4": 298,
+        "pocket_ok_S5": 295,
+        "above_line": 27,
+        "above_line_accessions": [
+          "MGYP000081732636",
+          "MGYP000110442245",
+          "MGYP000132551385",
+          "MGYP000277311816",
+          "MGYP000470279205",
+          "MGYP000629412681",
+          "MGYP000722399737",
+          "MGYP000972677333",
+          "MGYP001040063565",
+          "MGYP001106599919",
+          "MGYP001157270821",
+          "MGYP001186425567",
+          "MGYP001322344942",
+          "MGYP001408300504",
+          "MGYP001444862274",
+          "MGYP001447824542",
+          "MGYP001485209774",
+          "MGYP001597021366",
+          "MGYP002291380453",
+          "MGYP002631768132",
+          "MGYP003111492016",
+          "MGYP003342763746",
+          "MGYP003471396836",
+          "MGYP003566963303",
+          "MGYP003586195323",
+          "MGYP003609331536",
+          "MGYP003774245873"
+        ]
+      },
+      "reproduces_canonical": {
+        "canonical_above": 23,
+        "local_above": 27,
+        "canonical_triad": 298,
+        "local_triad": 298
+      }
+    }
+  },
+  "floor_candidates": [
+    {
+      "id": "MGYP000313359214",
+      "mean_plddt": 0.9301,
+      "triad_found": true,
+      "catalytic_ser": 272,
+      "his": 274,
+      "acid": 258,
+      "pocket_ok": true,
+      "composite": 6.0945,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.982,
+        "aromatics": 2.0,
+        "volume": 252.901,
+        "hydrophobicity": -3.286,
+        "polarity": 4.0,
+        "druggability": 0.0,
+        "depth": 0.39
+      },
+      "z": {
+        "exposure": 13.662,
+        "druggability": -0.009,
+        "depth": -10.056,
+        "volume": 0.106,
+        "hydrophobicity": -4.845,
+        "polarity": -0.478,
+        "aromatics": 0.643
+      },
+      "accession": "MGYP000313359214",
+      "n_res": 281
+    },
+    {
+      "id": "MGYP001359663924",
+      "mean_plddt": 0.839,
+      "triad_found": true,
+      "catalytic_ser": 162,
+      "his": 165,
+      "acid": 160,
+      "pocket_ok": true,
+      "composite": 5.5269,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.825,
+        "aromatics": 0.0,
+        "volume": 317.086,
+        "hydrophobicity": -8.6,
+        "polarity": 5.0,
+        "druggability": 0.0,
+        "depth": 0.265
+      },
+      "z": {
+        "exposure": 10.776,
+        "druggability": -0.009,
+        "depth": -17.119,
+        "volume": 0.52,
+        "hydrophobicity": -5.506,
+        "polarity": 0.0,
+        "aromatics": -0.643
+      },
+      "accession": "MGYP001359663924",
+      "n_res": 177
+    },
+    {
+      "id": "MGYP001795340448",
+      "mean_plddt": 0.9156,
+      "triad_found": true,
+      "catalytic_ser": 192,
+      "his": 143,
+      "acid": 196,
+      "pocket_ok": true,
+      "composite": 4.7397,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.78,
+        "aromatics": 0.0,
+        "volume": 341.45,
+        "hydrophobicity": -5.857,
+        "polarity": 4.0,
+        "druggability": 0.001,
+        "depth": 0.341
+      },
+      "z": {
+        "exposure": 9.949,
+        "druggability": -0.005,
+        "depth": -12.825,
+        "volume": 0.677,
+        "hydrophobicity": -5.165,
+        "polarity": -0.478,
+        "aromatics": -0.643
+      },
+      "accession": "MGYP001795340448",
+      "n_res": 246
+    },
+    {
+      "id": "MGYP000078033438",
+      "mean_plddt": 0.9527,
+      "triad_found": true,
+      "catalytic_ser": 273,
+      "his": 252,
+      "acid": 277,
+      "pocket_ok": true,
+      "composite": 3.5629,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.538,
+        "aromatics": 2.0,
+        "volume": 214.013,
+        "hydrophobicity": 41.0,
+        "polarity": 4.0,
+        "druggability": 0.0,
+        "depth": 0.315
+      },
+      "z": {
+        "exposure": 5.5,
+        "druggability": -0.009,
+        "depth": -14.294,
+        "volume": -0.145,
+        "hydrophobicity": 0.668,
+        "polarity": -0.478,
+        "aromatics": 0.643
+      },
+      "accession": "MGYP000078033438",
+      "n_res": 299
+    },
+    {
+      "id": "MGYP001067721237",
+      "mean_plddt": 0.9322,
+      "triad_found": true,
+      "catalytic_ser": 649,
+      "his": 643,
+      "acid": 653,
+      "pocket_ok": true,
+      "composite": 1.2031,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.387,
+        "aromatics": 1.0,
+        "volume": 336.34,
+        "hydrophobicity": 5.889,
+        "polarity": 7.0,
+        "druggability": 0.0,
+        "depth": 0.475
+      },
+      "z": {
+        "exposure": 2.724,
+        "druggability": -0.009,
+        "depth": -5.254,
+        "volume": 0.644,
+        "hydrophobicity": -3.703,
+        "polarity": 0.957,
+        "aromatics": 0.0
+      },
+      "accession": "MGYP001067721237",
+      "n_res": 706
+    },
+    {
+      "id": "MGYP001560567859",
+      "mean_plddt": 0.9125,
+      "triad_found": true,
+      "catalytic_ser": 43,
+      "his": 25,
+      "acid": 50,
+      "pocket_ok": true,
+      "composite": 0.5098,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.15,
+        "aromatics": 2.0,
+        "volume": 121.906,
+        "hydrophobicity": 50.4,
+        "polarity": 1.0,
+        "druggability": 0.002,
+        "depth": 0.305
+      },
+      "z": {
+        "exposure": -1.632,
+        "druggability": 0.0,
+        "depth": -14.859,
+        "volume": -0.739,
+        "hydrophobicity": 1.838,
+        "polarity": -1.914,
+        "aromatics": 0.643
+      },
+      "accession": "MGYP001560567859",
+      "n_res": 240
+    },
+    {
+      "id": "MGYP000060527517",
+      "mean_plddt": 0.8928,
+      "triad_found": true,
+      "catalytic_ser": 246,
+      "his": 231,
+      "acid": 229,
+      "pocket_ok": true,
+      "composite": -0.227,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.137,
+        "aromatics": 2.0,
+        "volume": 228.157,
+        "hydrophobicity": -21.286,
+        "polarity": 7.0,
+        "druggability": 0.0,
+        "depth": 0.374
+      },
+      "z": {
+        "exposure": -1.871,
+        "druggability": -0.009,
+        "depth": -10.96,
+        "volume": -0.054,
+        "hydrophobicity": -7.085,
+        "polarity": 0.957,
+        "aromatics": 0.643
+      },
+      "accession": "MGYP000060527517",
+      "n_res": 255
+    },
+    {
+      "id": "MGYP000567727857",
+      "mean_plddt": 0.8889,
+      "triad_found": true,
+      "catalytic_ser": 142,
+      "his": 243,
+      "acid": 198,
+      "pocket_ok": true,
+      "composite": -0.7639,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.151,
+        "aromatics": 2.0,
+        "volume": 392.092,
+        "hydrophobicity": 18.667,
+        "polarity": 8.0,
+        "druggability": 0.013,
+        "depth": 0.528
+      },
+      "z": {
+        "exposure": -1.614,
+        "druggability": 0.05,
+        "depth": -2.26,
+        "volume": 1.003,
+        "hydrophobicity": -2.112,
+        "polarity": 1.435,
+        "aromatics": 0.643
+      },
+      "accession": "MGYP000567727857",
+      "n_res": 265
+    },
+    {
+      "id": "MGYP001302934565",
+      "mean_plddt": 0.7574,
+      "triad_found": true,
+      "catalytic_ser": 240,
+      "his": 345,
+      "acid": 297,
+      "pocket_ok": true,
+      "composite": -0.9169,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.189,
+        "aromatics": 5.0,
+        "volume": 733.698,
+        "hydrophobicity": 15.556,
+        "polarity": 11.0,
+        "druggability": 0.528,
+        "depth": 0.475
+      },
+      "z": {
+        "exposure": -0.915,
+        "druggability": 2.407,
+        "depth": -5.254,
+        "volume": 3.206,
+        "hydrophobicity": -2.499,
+        "polarity": 2.871,
+        "aromatics": 2.573
+      },
+      "accession": "MGYP001302934565",
+      "n_res": 381
+    },
+    {
+      "id": "MGYP002047001896",
+      "mean_plddt": 0.8078,
+      "triad_found": true,
+      "catalytic_ser": 74,
+      "his": 153,
+      "acid": 122,
+      "pocket_ok": true,
+      "composite": -0.9779,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.083,
+        "aromatics": 2.0,
+        "volume": 277.865,
+        "hydrophobicity": 32.25,
+        "polarity": 3.0,
+        "druggability": 0.002,
+        "depth": 0.521
+      },
+      "z": {
+        "exposure": -2.864,
+        "druggability": 0.0,
+        "depth": -2.655,
+        "volume": 0.267,
+        "hydrophobicity": -0.421,
+        "polarity": -0.957,
+        "aromatics": 0.643
+      },
+      "accession": "MGYP002047001896",
+      "n_res": 193
+    },
+    {
+      "id": "MGYP001319055111",
+      "mean_plddt": 0.8899,
+      "triad_found": true,
+      "catalytic_ser": 38,
+      "his": 299,
+      "acid": 296,
+      "pocket_ok": true,
+      "composite": -0.9809,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.088,
+        "aromatics": 5.0,
+        "volume": 326.377,
+        "hydrophobicity": 24.75,
+        "polarity": 8.0,
+        "druggability": 0.001,
+        "depth": 0.521
+      },
+      "z": {
+        "exposure": -2.772,
+        "druggability": -0.005,
+        "depth": -2.655,
+        "volume": 0.58,
+        "hydrophobicity": -1.355,
+        "polarity": 1.435,
+        "aromatics": 2.573
+      },
+      "accession": "MGYP001319055111",
+      "n_res": 341
+    },
+    {
+      "id": "MGYP003131150232",
+      "mean_plddt": 0.7867,
+      "triad_found": true,
+      "catalytic_ser": 220,
+      "his": 222,
+      "acid": 163,
+      "pocket_ok": true,
+      "composite": -1.0291,
+      "above_threshold": true,
+      "petase_like_hit": true,
+      "metrics": {
+        "exposure": 0.088,
+        "aromatics": 3.0,
+        "volume": 389.681,
+        "hydrophobicity": 3.562,
+        "polarity": 11.0,
+        "druggability": 0.0,
+        "depth": 0.457
+      },
+      "z": {
+        "exposure": -2.772,
+        "druggability": -0.009,
+        "depth": -6.271,
+        "volume": 0.988,
+        "hydrophobicity": -3.992,
+        "polarity": 2.871,
+        "aromatics": 1.287
+      },
+      "accession": "MGYP003131150232",
+      "n_res": 442
+    }
+  ]
+}

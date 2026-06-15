@@ -1,0 +1,230 @@
+{
+  "run_date": "2026-06-14",
+  "line": -1.1587,
+  "queries": [
+    "6EQE",
+    "4EB0",
+    "8B4U",
+    "4WFI",
+    "4CG1"
+  ],
+  "fident_cut": 0.25,
+  "n_unique_targets": 9810546,
+  "rows": 20056560,
+  "bins_fident": [
+    {
+      "bin": "<20%",
+      "n": 9050775
+    },
+    {
+      "bin": "20-25%",
+      "n": 515693
+    },
+    {
+      "bin": "25-30%",
+      "n": 168245
+    },
+    {
+      "bin": "30-40%",
+      "n": 63673
+    },
+    {
+      "bin": "40-60%",
+      "n": 11716
+    },
+    {
+      "bin": ">60%",
+      "n": 444
+    }
+  ],
+  "orig_bins_fident": [
+    {
+      "bin": "<20%",
+      "n": 175252
+    },
+    {
+      "bin": "20-25%",
+      "n": 23981
+    },
+    {
+      "bin": "25-30%",
+      "n": 2555
+    },
+    {
+      "bin": "30-40%",
+      "n": 450
+    },
+    {
+      "bin": "40-60%",
+      "n": 56
+    },
+    {
+      "bin": ">60%",
+      "n": 12
+    }
+  ],
+  "n_new_targets_vs_original": 9608240,
+  "new_targets_by_band": {
+    "<20%": 8879402,
+    "20-25%": 488362,
+    "25-30%": 165225,
+    "30-40%": 63161,
+    "40-60%": 11658,
+    ">60%": 432
+  },
+  "n_sub_cut_total": 9566468,
+  "n_screened": 2100,
+  "screen_capped": true,
+  "screen_cap": 2500,
+  "selection_strata": [
+    {
+      "band": "0-12% fident",
+      "available": 5217272,
+      "took": 700
+    },
+    {
+      "band": "12-18% fident",
+      "available": 3464698,
+      "took": 700
+    },
+    {
+      "band": "18-25% fident",
+      "available": 884498,
+      "took": 700
+    }
+  ],
+  "funnel": {
+    "fetched": 2100,
+    "triad_S4": 1710,
+    "pocket_S5": 1702,
+    "above_line": 198,
+    "above_credible_cov": 151,
+    "above_lowcov": 47,
+    "lowcov_cov_median": 0.075
+  },
+  "divergent_tail_biotite": {
+    "<25%": {
+      "fetched": 724,
+      "triad": 619,
+      "above": 70
+    },
+    "<20%": {
+      "fetched": 29,
+      "triad": 22,
+      "above": 0
+    }
+  },
+  "band_rates_vs_floor": [
+    {
+      "bin": "<20%",
+      "n_screened": 29,
+      "n_triad": 22,
+      "k_above": 0,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.14865487460862087
+      ],
+      "fisher_p_vs_floor": 0.00041862144198534696,
+      "rr_vs_floor": {
+        "rr": 0.0,
+        "ci": [
+          0.0,
+          NaN
+        ]
+      }
+    },
+    {
+      "bin": "20-25%",
+      "n_screened": 695,
+      "n_triad": 597,
+      "k_above": 70,
+      "rate": 0.11725293132328309,
+      "wilson95": [
+        0.09385931170604692,
+        0.145540710893958
+      ],
+      "fisher_p_vs_floor": 6.292827831590814e-05,
+      "rr_vs_floor": {
+        "rr": 0.27359017308766054,
+        "ci": [
+          0.1691222665000523,
+          0.44258857428517795
+        ]
+      }
+    },
+    {
+      "bin": "25-30%",
+      "n_screened": 745,
+      "n_triad": 661,
+      "k_above": 78,
+      "rate": 0.11800302571860817,
+      "wilson95": [
+        0.09558832862069733,
+        0.14483208544948314
+      ],
+      "fisher_p_vs_floor": 6.299893359227305e-05,
+      "rr_vs_floor": {
+        "rr": 0.2753403933434191,
+        "ci": [
+          0.17109694852786136,
+          0.4430957586257799
+        ]
+      }
+    },
+    {
+      "bin": "30-40%",
+      "n_screened": 57,
+      "n_triad": 45,
+      "k_above": 3,
+      "rate": 0.06666666666666667,
+      "wilson95": [
+        0.022932032599250987,
+        0.17856601963591895
+      ],
+      "fisher_p_vs_floor": 0.0005607334728429181,
+      "rr_vs_floor": {
+        "rr": 0.15555555555555556,
+        "ci": [
+          0.04809125807031676,
+          0.5031586162461595
+        ]
+      }
+    },
+    {
+      "bin": "40-60%",
+      "n_screened": 1,
+      "n_triad": 1,
+      "k_above": 0,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.7934506856227626
+      ],
+      "fisher_p_vs_floor": 1.0,
+      "rr_vs_floor": {
+        "rr": 0.0,
+        "ci": [
+          0.0,
+          NaN
+        ]
+      }
+    },
+    {
+      "bin": ">60%",
+      "n_screened": 0,
+      "n_triad": 0,
+      "k_above": 0,
+      "rate": null,
+      "wilson95": null,
+      "fisher_p_vs_floor": null,
+      "rr_vs_floor": null
+    }
+  ],
+  "floor": {
+    "k": 12,
+    "n": 28,
+    "rate": 0.42857142857142855
+  },
+  "verdict_kind": "UNREACHABILITY"
+}

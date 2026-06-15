@@ -1,0 +1,53 @@
+{
+  "pinned_line": -1.1587,
+  "delta_pp": 10.0,
+  "alpha": 0.05,
+  "baseline_source": "enlarged pool (complete=True)",
+  "pet_branch": {
+    "k": 96,
+    "n": 294,
+    "rate": 0.32653061224489793,
+    "wilson95": [
+      0.2754640236394967,
+      0.3820719003253203
+    ]
+  },
+  "baseline": {
+    "k": 105,
+    "n": 209,
+    "rate": 0.5023923444976076,
+    "wilson95": [
+      0.43517765806807973,
+      0.5695206746981998
+    ]
+  },
+  "ache_branch": {
+    "k": 26,
+    "n": 297,
+    "rate": 0.08754208754208755,
+    "wilson95": [
+      0.06044043278012084,
+      0.12517713149972942
+    ]
+  },
+  "difference_pet_minus_baseline": -0.17586173225270968,
+  "se_unpooled": 0.044092318182860274,
+  "tost": {
+    "z_upper": -6.256457896104535,
+    "p_upper_not_enriched_above_delta": 1.9690968062970757e-10,
+    "z_lower": -1.7205203849363249,
+    "p_lower_not_below_delta": 0.9573310542611153,
+    "ci90_diff": [
+      -0.24838714173648574,
+      -0.1033363227689336
+    ],
+    "equivalent_within_delta": false
+  },
+  "one_sided_95_upper_bound_on_enrichment": -0.1033363227689336,
+  "legacy_tests": {
+    "two_proportion_z": -3.9682648238817055,
+    "two_proportion_p": 7.239785532437196e-05,
+    "fisher_p": 0.00010009563438332385
+  },
+  "verdict": "NON-SUPERIORITY established and the PET branch is DEPLETED: its rate is significantly below the random floor by more than 10.0 pp (two-sided equivalence therefore fails on the lower side \u2014 PET is not merely 'not enriched', it is below the hydrolase floor). The largest plausible enrichment (one-sided 95% upper bound) is -10.3 pp."
+}

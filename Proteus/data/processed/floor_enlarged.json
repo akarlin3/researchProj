@@ -1,0 +1,82 @@
+{
+  "pinned_line": -1.1587,
+  "orig_seed": 1729,
+  "enlarge_seed_base": 20260614,
+  "seed_scheme": "block k drawn under seed ENLARGE_SEED + k",
+  "target_triad_pooled": 200,
+  "complete": true,
+  "lookup_final_url": "https://steineggerlab.s3.amazonaws.com/foldcomp/highquality_clust30.lookup",
+  "lookup_bytes": 1030274634,
+  "blocks": [
+    {
+      "block": 0,
+      "seed": 20260614,
+      "drawn": 2000,
+      "fresh": 2000,
+      "fetched_ok": 2000,
+      "screened": 2000,
+      "triad_positive_S4": 36,
+      "above_line": 21
+    },
+    {
+      "block": 1,
+      "seed": 20260615,
+      "drawn": 2000,
+      "fresh": 2000,
+      "fetched_ok": 2000,
+      "screened": 2000,
+      "triad_positive_S4": 44,
+      "above_line": 21
+    },
+    {
+      "block": 2,
+      "seed": 20260616,
+      "drawn": 2000,
+      "fresh": 2000,
+      "fetched_ok": 2000,
+      "screened": 2000,
+      "triad_positive_S4": 34,
+      "above_line": 19
+    },
+    {
+      "block": 3,
+      "seed": 20260617,
+      "drawn": 2000,
+      "fresh": 2000,
+      "fetched_ok": 2000,
+      "screened": 2000,
+      "triad_positive_S4": 37,
+      "above_line": 20
+    },
+    {
+      "block": 4,
+      "seed": 20260618,
+      "drawn": 2000,
+      "fresh": 1998,
+      "fetched_ok": 1998,
+      "screened": 1998,
+      "triad_positive_S4": 30,
+      "above_line": 12
+    }
+  ],
+  "original_floor": {
+    "screened": 1500,
+    "triad_positive_S4": 28,
+    "above_line": 12
+  },
+  "new_draws": {
+    "screened": 9998,
+    "triad_positive_S4": 181,
+    "above_line": 93
+  },
+  "pooled_floor": {
+    "screened": 11498,
+    "triad_positive_S4": 209,
+    "above_line": 105,
+    "conditional_above_given_triad": 0.5023923444976076,
+    "wilson95": [
+      0.43517765806807973,
+      0.5695206746981998
+    ]
+  }
+}

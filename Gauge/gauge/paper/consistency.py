@@ -131,6 +131,10 @@ CHECKS = [
     ("Arm-2 zero-deviation recovery (dispersion family recovers control)",
      "within 0.05 of nominal: True", "results/altmodel_report.txt",
      ["[dispersion] deviation scalar = CV", "within 0.05 of nominal: True"]),
+    ("Arm-1 second-kernel confirmation: wall persists under log-normal dispersion "
+     "(not gamma-parametrisation-specific)", "Branch-A persists = True",
+     "results/altmodel_report.txt",
+     ["SECOND-KERNEL CONFIRMATION (log-normal): Branch-A persists = True"]),
 ]
 
 
@@ -235,6 +239,10 @@ ALTMODEL_BAND_ASSERTIONS = [
     ("Arm2 triexp dev4 cov D* (degraded)", "altmodel/arm2/triexp/dev4/cov/D*"),
     ("Arm2 triexp dev4 monitor AUC", "altmodel/arm2/triexp/dev4/auc"),
     ("Arm2 stretched dev4 cov D* (degraded)", "altmodel/arm2/stretched/dev4/cov/D*"),
+    # second-kernel (log-normal) Arm-1 confirmation on the non-circular surrogate-A axis
+    ("Arm1 log-normal recal hi-D*eff (2nd-kernel confirm)", "altmodel/arm1_lognormal/A/recal/cqr_hiDstar"),
+    ("Arm1 log-normal recal marg D*eff (holds)", "altmodel/arm1_lognormal/A/recal/cqr_marg/D*"),
+    ("Arm1 log-normal naive monitor AUC", "altmodel/arm1_lognormal/A/naive/monitor_auc"),
 ]
 
 

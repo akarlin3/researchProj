@@ -145,6 +145,53 @@ def dispersion_dstar_eff(mu, k=None):
     return np.asarray(mu, dtype=float)
 
 
+def _lognormal_perfusion_kernel(b, mu, cv, n_quad=64):
+    """E[exp(-b D*)] for D* ~ LogNormal(mean=mu, CV=cv), by Gauss-Hermite quadrature.
+
+    A second, independent dispersion-kernel SHAPE (companion to the gamma kernel
+    :func:`_gamma_perfusion_kernel`): heavier-tailed, with no closed-form Laplace
+    transform, so it is computed by ``n_quad``-point Gauss-Hermite quadrature. The
+    log-normal of mean ``mu`` and coefficient of variation ``cv`` has
+    ``sigma^2 = log(1 + cv^2)`` and ``mu_ln = log(mu) - sigma^2/2``. ``cv = 0`` is the
+    zero-dispersion limit ``exp(-b mu)`` (handled explicitly). The low-b initial
+    log-slope of this kernel is the mean ``mu`` as well, so the same effective
+    pseudo-diffusion surrogate :func:`dispersion_dstar_eff` (= ``mu``) applies
+    unchanged -- which is what lets the circularity verdict be re-tested under a
+    DIFFERENT kernel shape without changing the stratification axis.
+    """
+    cv = float(cv)
+    b = np.asarray(b, dtype=float)
+    mu = np.asarray(mu, dtype=float)
+    if cv == 0.0:
+        return np.exp(-b * mu)
+    bA, muA = np.broadcast_arrays(b, mu)
+    sig2 = np.log1p(cv * cv)
+    sig = np.sqrt(sig2)
+    mu_ln = np.log(muA) - 0.5 * sig2
+    nodes, weights = np.polynomial.hermite.hermgauss(int(n_quad))
+    dstar_q = np.exp(mu_ln[..., None] + sig * np.sqrt(2.0) * nodes)   # (..., Q)
+    return (weights * np.exp(-bA[..., None] * dstar_q)).sum(-1) / np.sqrt(np.pi)
+
+
+def ivim_signal_lognormal_dispersion(b, D, mu, cv, f, S0=1.0, n_quad=64):
+    """Log-normal velocity-dispersion IVIM signal (companion to the gamma model).
+
+    Identical structure to :func:`ivim_signal_dispersion` but the pseudo-diffusivity
+    kernel is LogNormal(mean=mu, CV=cv) instead of Gamma:
+
+        S(b)/S0 = (1 - f) exp(-b D) + f * E_{D*~LogNormal(mu, cv)}[exp(-b D*)].
+
+    It is a genuinely non-bi-exponential perfusion physics with a kernel shape
+    DISTINCT from the gamma model, used as a second Arm-1 confirmation that the
+    circularity verdict is not specific to one dispersion parametrisation. The
+    effective pseudo-diffusion is the kernel mean ``mu`` (= the low-b log-slope), and
+    ``cv = 0`` reduces to :func:`ivim_signal` with ``D* = mu`` exactly (continuity).
+    """
+    b = np.asarray(b, dtype=float)
+    perf = _lognormal_perfusion_kernel(b, mu, cv, n_quad=n_quad)
+    return S0 * ((1.0 - f) * np.exp(-b * D) + f * perf)
+
+
 def ivim_signal_stretched(b, D, Dstar, f, beta, S0=1.0):
     """Stretched-exponential (anomalous) perfusion IVIM signal.
 

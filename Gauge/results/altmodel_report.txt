@@ -18,8 +18,8 @@ ARM 1 -- CIRCULARITY: within-distribution recalibration on dispersion truth (OSI
 
   [surrogate B]  D*eff = best-fit bi-exp D*
     naive-transfer  CQR marginal (D, D*eff, f) = [0.898, 0.955, 0.872]
-    recalibrated    CQR marginal (D, D*eff, f) = [0.901, 0.913, 0.910]  vs nominal 0.90
-    recalibrated CQR coverage by true-D*eff tercile [lo, mid, hi] = [0.895, 0.994, 0.850]
+    recalibrated    CQR marginal (D, D*eff, f) = [0.901, 0.904, 0.910]  vs nominal 0.90
+    recalibrated CQR coverage by true-D*eff tercile [lo, mid, hi] = [0.889, 0.994, 0.829]
     naive-transfer deployment monitor: FIRES (AUC=0.51)
 
   wall (CRLB/tercile-width [lo, mid, hi]):
@@ -33,7 +33,13 @@ ARM 1 -- CIRCULARITY: within-distribution recalibration on dispersion truth (OSI
 
   >>> ARM 1 VERDICT
       BRANCH A -- WALL IS GENERAL / CIRCULARITY BROKEN: the high-D*eff conditional gap PERSISTS after within-distribution recalibration on the non-bi-exponential dispersion ground truth (surrogate A recal hi-D*eff = 0.850, gap +0.050 vs nominal 0.90). The wall is a property of perfusion estimation, not of Eq. (1).
-      concordance: surrogate A recal hi-D*eff 0.850 (gap +0.050); surrogate B 0.850 (gap +0.050); Branch-A persists A=True / B=True.
+      concordance: surrogate A recal hi-D*eff 0.850 (gap +0.050); surrogate B 0.829 (gap +0.071); Branch-A persists A=True / B=True.
+
+  SECOND-KERNEL CONFIRMATION (log-normal dispersion, same CV, surrogate-A axis): the wall is
+  not specific to the gamma parametrisation --
+    log-normal recalibrated CQR coverage by D*eff tercile [lo, mid, hi] = [0.916, 0.982, 0.841]
+    log-normal recal hi-D*eff = 0.841 (gap +0.059 vs nominal 0.90); Branch-A persists = True
+    log-normal naive-transfer monitor AUC = 0.51
 
 ------------------------------------------------------------------------------------------------
 ARM 2 -- ENVELOPE: deployed bi-exp calibration, naive transfer across increasing deviation
@@ -70,4 +76,5 @@ ARM 2 -- ENVELOPE: deployed bi-exp calibration, naive transfer across increasing
 
 ================================================================================================
 HEADLINE: Arm-1 Branch A (circularity broken -- wall general); continuity gate gen-err 0.0e+00.
+SECOND-KERNEL CONFIRMATION (log-normal): Branch-A persists = True (recal hi-D*eff 0.841).
 ================================================================================================

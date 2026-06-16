@@ -30,7 +30,7 @@
      0.8502994011976048
     ],
     "naive_monitor_fires": true,
-    "naive_monitor_auc": 0.508739
+    "naive_monitor_auc": 0.508731
    },
    "B": {
     "naive_cqr_marg": [
@@ -40,28 +40,42 @@
     ],
     "recal_cqr_marg": [
      0.901,
-     0.913,
+     0.904,
      0.91
     ],
     "recal_cqr_tercile_lo_mid_hi": [
-     0.8948948948948949,
+     0.8888888888888888,
      0.993993993993994,
-     0.8502994011976048
+     0.8293413173652695
     ],
     "naive_monitor_fires": true,
-    "naive_monitor_auc": 0.508739
+    "naive_monitor_auc": 0.508731
    }
   },
   "arm1_wall_dispersion_jacobian": [
    0.49086953799606226,
-   0.7481025429445157,
+   0.7481025429445161,
    1.2582071336565
   ],
   "arm1_wall_biexp_fitted_jacobian": [
-   0.4043699321809948,
-   0.6775441848922252,
-   1.0690004600461662
+   0.4043699300557466,
+   0.6775441529617133,
+   1.0690004709170426
   ],
+  "arm1_lognormal_confirmation": {
+   "kernel": "log-normal dispersion (mean=mu, CV=ARM1_CV), surrogate-A axis",
+   "recal_cqr_marg": [
+    0.895,
+    0.913,
+    0.905
+   ],
+   "recal_cqr_tercile_lo_mid_hi": [
+    0.9159159159159159,
+    0.9819819819819819,
+    0.8413173652694611
+   ],
+   "naive_monitor_auc": 0.508297
+  },
   "continuity_gen_max_abs_err": 0.0,
   "continuity_cv0_recal_hiDstar_A": 0.8383233532934131,
   "arm2": {
@@ -73,7 +87,7 @@
       0.909,
       0.908
      ],
-     "monitor_auc": 0.5108955,
+     "monitor_auc": 0.510893,
      "monitor_fires": true
     },
     {
@@ -83,7 +97,7 @@
       0.92,
       0.887
      ],
-     "monitor_auc": 0.51115,
+     "monitor_auc": 0.5111455,
      "monitor_fires": true
     },
     {
@@ -135,7 +149,7 @@
       0.872,
       0.9
      ],
-     "monitor_auc": 0.49663349999999995,
+     "monitor_auc": 0.4966465,
      "monitor_fires": false
     },
     {
@@ -155,7 +169,7 @@
       0.823,
       0.908
      ],
-     "monitor_auc": 0.5122015,
+     "monitor_auc": 0.5117345,
      "monitor_fires": true
     },
     {
@@ -165,7 +179,7 @@
       0.762,
       0.897
      ],
-     "monitor_auc": 0.5403215,
+     "monitor_auc": 0.5401455,
      "monitor_fires": true
     }
    ],
@@ -177,7 +191,7 @@
       0.914,
       0.9
      ],
-     "monitor_auc": 0.49969349999999996,
+     "monitor_auc": 0.4996205,
      "monitor_fires": true
     },
     {
@@ -207,7 +221,7 @@
       0.799,
       0.84
      ],
-     "monitor_auc": 0.5169855,
+     "monitor_auc": 0.5169865,
      "monitor_fires": true
     },
     {
@@ -217,11 +231,11 @@
       0.792,
       0.754
      ],
-     "monitor_auc": 0.5294545,
+     "monitor_auc": 0.5291379999999999,
      "monitor_fires": true
     }
    ]
   },
-  "computed_utc": "2026-06-15T21:19:57.887475+00:00"
+  "computed_utc": "2026-06-16T04:05:19.607194+00:00"
  }
 }

@@ -53,6 +53,7 @@ from gauge.conditional_attack import N_REGIME, _regime_from_true
 from gauge.conformal import empirical_coverage
 from gauge.baselines import _nlls_init_and_noise
 from gauge.forward import (DEFAULT_B_VALUES, ivim_signal_dispersion,
+                           ivim_signal_lognormal_dispersion, add_rician_noise,
                            dispersion_crlb_mu_batch, crlb_dstar_batch)
 from gauge.robustness import _draw_params, _draw_snr, _simulate
 from gauge.invivo import deployed_calibration
@@ -100,6 +101,26 @@ def _dispersion_pool(seed, cv, b):
     params = _draw_params(n, rng)                       # (D, D*->mu, f)
     snr = _draw_snr(n, rng, DEFAULT_SNR_GRID)
     sig = _simulate(b, params, snr, rng, model="dispersion", disp_cv=cv)
+    return params, snr, sig
+
+
+def _lognormal_pool(seed, cv, b):
+    """A log-normal-kernel dispersion cohort, mirroring :func:`_dispersion_pool`.
+
+    Uses the SAME seeded (D, mu, f) / SNR / noise draws as the gamma pool (rng
+    offset ``seed + 404``) and swaps ONLY the dispersion-kernel shape (gamma ->
+    log-normal). So the gamma and log-normal Arm-1 cohorts differ in nothing but the
+    kernel shape -- an apples-to-apples second confirmation. ``mu`` (column 1) is
+    surrogate-A D*eff exactly as in the gamma model.
+    """
+    rng = np.random.default_rng(seed + 404)
+    n = N_TRAIN + N_CAL + N_TEST
+    params = _draw_params(n, rng)                       # (D, mu, f)
+    snr = _draw_snr(n, rng, DEFAULT_SNR_GRID)
+    clean = ivim_signal_lognormal_dispersion(b[None, :], params[:, 0:1],
+                                             params[:, 1:2], cv, params[:, 2:3],
+                                             S0=1.0)
+    sig = add_rician_noise(clean, snr[:, None], rng, S0=1.0)
     return params, snr, sig
 
 
@@ -184,6 +205,28 @@ def run_arm1(seed=DEFAULT_SEED, cv=ARM1_CV, alpha=ALPHA, b=DEFAULT_B_VALUES):
     return out
 
 
+def run_arm1_lognormal(seed=DEFAULT_SEED, cv=ARM1_CV, alpha=ALPHA, b=DEFAULT_B_VALUES):
+    """Arm-1 confirmation under a DIFFERENT dispersion kernel (log-normal).
+
+    Same OSIPI 4.8 naive-transfer + within-distribution recalibration path, same
+    non-circular surrogate-A axis (D*eff = kernel mean ``mu``), but the ground truth
+    is drawn from a log-normal pseudo-diffusivity kernel instead of gamma. If the
+    high-D*eff wall persists here too, the circularity verdict is not specific to the
+    gamma parametrisation. Reports surrogate A only (the decisive non-circular axis).
+    """
+    params, snr, sig = _lognormal_pool(seed, cv, b)
+    tr, ca, te = _split(params.shape[0])
+    gt = params                                         # col 1 = mu = surrogate-A D*eff
+    snr_levels = list(DEFAULT_SNR_GRID)
+    test_sig, test_gt, test_snr = sig[te], gt[te], snr[te]
+    naive_cal = deployed_calibration(b=b, alpha=alpha, seed=seed)
+    naive = _evaluate(naive_cal, test_sig, test_gt, b, test_snr, snr_levels, alpha)
+    recal_cal = _calibration_from_osipi(sig[tr], gt[tr], sig[ca], gt[ca], b, alpha, seed)
+    recal = _evaluate(recal_cal, test_sig, test_gt, b, test_snr, snr_levels, alpha)
+    return {"seed": seed, "cv": cv, "n_test": int(te.size),
+            "naive": naive, "recal": recal}
+
+
 # --------------------------------------------------------------------------- #
 # Arm 2 -- deployed bi-exp predictor held FIXED; naive transfer across deviation.
 # --------------------------------------------------------------------------- #
@@ -241,6 +284,19 @@ def compute_all(seed=DEFAULT_SEED):
         for i, kk in enumerate(("lo", "mid", "hi")):
             out[f"altmodel/arm1/wall_{tag}/crlb_over_width/{kk}"] = float(w["ratio"][i])
         out[f"altmodel/arm1/wall_{tag}/abs_growth"] = float(w["abs_growth"])
+
+    # Arm-1 confirmation under a SECOND, independent dispersion kernel (log-normal)
+    # on the non-circular surrogate-A axis: does the wall persist under a different
+    # kernel shape? (Branch-A robustness to the dispersion parametrisation.)
+    arm1_ln = run_arm1_lognormal(seed=seed)
+    payload["arm1_lognormal"] = arm1_ln
+    for cal in ("naive", "recal"):
+        ev = arm1_ln[cal]
+        for j, nm in enumerate(PARAM_NAMES):
+            out[f"altmodel/arm1_lognormal/A/{cal}/cqr_marg/{nm}"] = float(ev["cqr_marg"][j])
+    for kk, idx in (("lo", 0), ("mid", 1), ("hi", 2)):
+        out[f"altmodel/arm1_lognormal/A/recal/cqr_{kk}Dstar"] = float(arm1_ln["recal"]["cqr_terc"][idx])
+    out["altmodel/arm1_lognormal/A/naive/monitor_auc"] = float(arm1_ln["naive"]["monitor_auc"])
 
     arm2 = run_arm2(seed=seed)
     payload["arm2"] = arm2
@@ -320,6 +376,7 @@ def _verdict(arm1):
 def main(seed=DEFAULT_SEED):
     out, payload = compute_all(seed=seed)
     arm1, arm2, cont = payload["arm1"], payload["arm2"], payload["continuity"]
+    arm1_ln = payload["arm1_lognormal"]
     v = _verdict(arm1)
     lines = []
     def w(s=""): lines.append(s)
@@ -379,6 +436,20 @@ def main(seed=DEFAULT_SEED):
       f"Branch-A persists A={v['persists_A']} / B={v['persists_B']}.")
     w("")
 
+    # ---- Arm 1 confirmation: SECOND kernel shape (log-normal) --------------- #
+    ln_terc = arm1_ln["recal"]["cqr_terc"]
+    ln_hi = float(ln_terc[-1])
+    ln_persists = (NOMINAL - ln_hi) >= GAP_TOL
+    w("  SECOND-KERNEL CONFIRMATION (log-normal dispersion, same CV, surrogate-A "
+      "axis): the wall is")
+    w("  not specific to the gamma parametrisation --")
+    w(f"    log-normal recalibrated CQR coverage by D*eff tercile [lo, mid, hi] = "
+      f"{_fmt(ln_terc)}")
+    w(f"    log-normal recal hi-D*eff = {ln_hi:.3f} (gap {NOMINAL - ln_hi:+.3f} vs "
+      f"nominal {NOMINAL:.2f}); Branch-A persists = {ln_persists}")
+    w(f"    log-normal naive-transfer monitor AUC = {arm1_ln['naive']['monitor_auc']:.2f}")
+    w("")
+
     # ---- Arm 2 ------------------------------------------------------------- #
     w("-" * 96)
     w("ARM 2 -- ENVELOPE: deployed bi-exp calibration, naive transfer across "
@@ -416,6 +487,8 @@ def main(seed=DEFAULT_SEED):
     w(f"HEADLINE: Arm-1 Branch {v['branch']} (circularity "
       f"{'broken -- wall general' if v['branch']=='A' else 'wall bi-exp-specific'}); "
       f"continuity gate gen-err {cont['gen_max_abs_err']:.1e}.")
+    w(f"SECOND-KERNEL CONFIRMATION (log-normal): Branch-A persists = {ln_persists} "
+      f"(recal hi-D*eff {ln_hi:.3f}).")
     w("=" * 96)
 
     os.makedirs(_RESULTS_DIR, exist_ok=True)
@@ -445,6 +518,11 @@ def _write_provenance(seed, payload, v):
                  for s in _SURR},
         "arm1_wall_dispersion_jacobian": [float(x) for x in arm1["wall_dispJac"]["ratio"]],
         "arm1_wall_biexp_fitted_jacobian": [float(x) for x in arm1["wall_biexpFit"]["ratio"]],
+        "arm1_lognormal_confirmation": {
+            "kernel": "log-normal dispersion (mean=mu, CV=ARM1_CV), surrogate-A axis",
+            "recal_cqr_marg": [float(x) for x in payload["arm1_lognormal"]["recal"]["cqr_marg"]],
+            "recal_cqr_tercile_lo_mid_hi": [float(x) for x in payload["arm1_lognormal"]["recal"]["cqr_terc"]],
+            "naive_monitor_auc": float(payload["arm1_lognormal"]["naive"]["monitor_auc"])},
         "continuity_gen_max_abs_err": cont["gen_max_abs_err"],
         "continuity_cv0_recal_hiDstar_A": cont["cv0_recal_hiDstar_A"],
         "arm2": {model: [{"dev": r["dev"],

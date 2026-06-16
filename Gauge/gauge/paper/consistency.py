@@ -135,6 +135,18 @@ CHECKS = [
      "(not gamma-parametrisation-specific)", "Branch-A persists = True",
      "results/altmodel_report.txt",
      ["SECOND-KERNEL CONFIRMATION (log-normal): Branch-A persists = True"]),
+    # --- Bayesian-shrinkage dissociation (point accuracy vs conditional coverage) ---
+    # The numeric dissociation values ship as 16-seed bands (see [B] dissoc/* keys);
+    # only the seed-robust qualitative verdict + pre-registered sanity gates trace
+    # verbatim here.
+    ("Dissociation verdict: wall holds (Branch A); point precision != coverage",
+     "A -- DISSOCIATION / WALL HOLDS", "results/dissociation_report.txt",
+     ["A -- DISSOCIATION / WALL HOLDS"]),
+    ("Dissociation sanity gate: biased-shrinkage interval does not collapse",
+     "no collapse", "results/dissociation_report.txt", ["no collapse"]),
+    ("Dissociation sanity gate: coverage must rise despite routing, not by fixing it",
+     "DESPITE routing", "results/dissociation_report.txt",
+     ["DESPITE routing, not by fixing it"]),
 ]
 
 

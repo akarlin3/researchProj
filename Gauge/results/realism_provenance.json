@@ -58,6 +58,49 @@
    "uniform_eta0_max_abs_err": 0.0,
    "clean_eta0_max_abs_err": 0.0
   },
-  "computed_utc": "2026-06-16T06:15:56.168029+00:00"
+  "prior_spec": {
+   "provenance": "hand-set design constants shaped to approximate published abdominal/liver IVIM cohorts; not fitted",
+   "D_lognormal_mean": 0.0011,
+   "D_cv": 0.3,
+   "Dstar_lognormal_mean": 0.028,
+   "Dstar_cv": 0.8,
+   "f_logit_mean": -1.3862943611198906,
+   "f_logit_sd": 0.55,
+   "corr_D_Dstar_f": [
+    [
+     1.0,
+     0.0,
+     -0.2
+    ],
+    [
+     0.0,
+     1.0,
+     0.35
+    ],
+    [
+     -0.2,
+     0.35,
+     1.0
+    ]
+   ],
+   "snr_mean": 35.0,
+   "snr_cv": 0.4,
+   "snr_clip": [
+    8.0,
+    120.0
+   ]
+  },
+  "nf1_control": {
+   "native_hi_count": 79,
+   "uniform_target_count": 512,
+   "matched_hi_count": 512,
+   "native_hiDstar_fixed": 0.4514285714285714,
+   "countmatch_hiDstar_fixed": 0.56,
+   "uniform_anchor_hiDstar_fixed": 0.7993779160186625,
+   "frac_gap_closed": 0.3120322836053434,
+   "branch": "PARTIAL",
+   "fidelity_passes": true
+  },
+  "computed_utc": "2026-06-16T06:59:35.490752+00:00"
  }
 }

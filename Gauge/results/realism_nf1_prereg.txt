@@ -1,0 +1,29 @@
+NF1 CALIBRATION-SIZE CONTROL -- PRE-REGISTERED PREDICTION
+=========================================================
+Recorded BEFORE evaluating the count-matched control (seed 20260613).
+
+CONTROL
+  Up-sample the FIXED hi-D* (D* >= 0.07 mm^2/s) CALIBRATION count to the uniform-prior
+  level, drawing additional voxels from the REALISTIC generator (never uniform, never
+  re-weighted) and keeping only the fixed hi-D* bin. Train, test set, prior and alpha
+  held identical to Arm A. Recovery anchor = uniform-prior fixed-edge hi-D* recal
+  coverage, computed in-harness (the "~0.79 of every earlier section").
+
+BRANCHES
+  Branch A (sparsity-dominated): count-matched calibration recovers fixed-edge hi-D*
+    coverage materially toward the uniform anchor (>= 50% of the native->uniform gap
+    closed) => the 0.533 is largely a finite-sample artifact of the rare hi-D*
+    calibration bin; Sec 4.12 must separate "wall (~0.79)" from "rare-bin sparsity
+    (0.533)".
+  Branch B (wall-dominated): count-matched calibration does NOT recover coverage
+    (<= 25% of the gap closed) => the under-coverage is a genuine identifiability wall,
+    not sparsity; Sec 4.12 framing stands and the control strengthens it.
+  PARTIAL: between 25% and 50% of the gap closed => both contribute.
+
+ILLEGITIMATE THIRD READING (blocked by the distribution-fidelity gate)
+  Recovery achieved by importing uniform-prior voxels or by re-weighting changes the
+  within-bin distribution and DOES NOT count. The up-sampled hi-D* calibration voxels
+  must be KS-closer to the native realistic hi-D* (D, D*, f) distribution than to the
+  uniform one (all params), and significantly differ from uniform (D*, f).
+
+Report whichever branch fires.

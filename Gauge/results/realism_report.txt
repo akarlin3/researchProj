@@ -14,6 +14,19 @@ PRE-REGISTERED PREDICTIONS (recorded before evaluating):
      monitor partly catches the acquisition nuisance (predicted more observable than signal-model drift).
 
 ------------------------------------------------------------------------------------------------
+REALISTIC PRIOR SPECIFICATION & PROVENANCE (NF3) -- the joint prior used in Arm A / count-match
+------------------------------------------------------------------------------------------------
+  Gaussian copula on latent normals: log-normal D & D*, logit-normal f, plus a realistic log-normal SNR.
+  PROVENANCE: documented design constants SHAPED TO APPROXIMATE representative published abdominal/liver
+  IVIM cohorts (Gurney-Champion 2018; Barbieri 2020; Kaandorp 2021) -- NOT fitted to any source (the
+  circular plug-in source is avoided); they reproduce the qualitative shape the realism test needs.
+    D       : log-normal   mean 1.1e-3 mm^2/s, CV 0.30
+    D*      : log-normal   mean 28.0e-3 mm^2/s, CV 0.80  (within-subject CV target band 0.50-1.10)
+    f       : logit-normal logit-mean ln(0.20/0.80), logit-sd 0.55  (median f ~ 0.20)
+    corr    : latent-normal (D, D*, f) = [[1.00, 0.00, -0.20], [0.00, 1.00, 0.35], [-0.20, 0.35, 1.00]]
+    SNR(b0) : log-normal   mean 35.0, CV 0.40, clipped to [8.0, 120.0]
+
+------------------------------------------------------------------------------------------------
 CONTINUITY GATE (uniform prior + zero nuisance must reproduce the cohort)
 ------------------------------------------------------------------------------------------------
   uniform prior + zero nuisance reproduces generate_cohort: max |.| = 0.00e+00 (numerically exact)
@@ -36,6 +49,27 @@ ARM A -- realistic PUBLISHED prior, clean acquisition (n_test=4000)
   VERDICT [ROBUST]: WALL ROBUST TO REALISTIC PRIOR: the high-D* conditional gap PERSISTS after within-distribution recalibration in BOTH tercile framings (fixed-edge recal hi-D* = 0.451, gap +0.449; per-distribution recal hi-D* = 0.786, gap +0.114; nominal 0.90). The wall is parameter-intrinsic, not an artifact of the uniform prior. The most severe under-coverage concentrates in a clinically RARE high-D* tail (fixed hi-D* prevalence = 0.044 < 0.05) -- a scoping caveat, not a refutation.
 
   (ii) OSIPI sensitivity cross-check SKIPPED (DRO absent; run `python scripts/fetch_osipi.py`).
+
+------------------------------------------------------------------------------------------------
+NF1 CALIBRATION-SIZE CONTROL -- rare-bin sparsity vs genuine wall (fixed-edge hi-D*)
+------------------------------------------------------------------------------------------------
+  Up-sample the FIXED hi-D* CALIBRATION count to the uniform-prior level, at fixed (realistic) within-bin
+  distribution; train / test / prior held identical. Isolates calibration COUNT, not distribution.
+    hi-D* calibration count: native (realistic) = 79  ->  count-matched = 512
+      (uniform-prior target = 512; calibration size 1500 -> 1933)
+    fixed-edge hi-D* recalibrated coverage:
+        native realistic       = 0.451
+        count-matched          = 0.560
+        uniform anchor (~0.79) = 0.799
+    fraction of the native->uniform gap closed by count-matching = 31%
+    count-matched fixed-edge terciles [lo, mid, hi] = [0.997, 0.938, 0.560]
+    count-matched marginal coverage  (D, D*, f)     = [0.903, 0.970, 0.905]
+  DISTRIBUTION-FIDELITY GATE (up-sampled hi-D* vs native realistic vs uniform; n_ref=3464):
+      KS stat vs REALISTIC (D, D*, f) = [0.039, 0.039, 0.033]
+      KS stat vs UNIFORM   (D, D*, f) = [0.485, 0.342, 0.235]
+      closer to realistic than uniform (all params) = True; differs from uniform (D*, f) = True
+      FIDELITY GATE: PASSES (calibration COUNT isolated; within-bin distribution preserved as realistic)
+  CONTROL VERDICT [PARTIAL]: PARTIAL RECOVERY: count-matching the fixed hi-D* calibration closes 31% of the native->uniform gap (native 0.451 -> count-matched 0.560; uniform anchor 0.799). Both rare-bin calibration sparsity AND a residual wall contribute.
 
 ------------------------------------------------------------------------------------------------
 ARM B -- measurement-nuisance envelope (deployed predictor held fixed)

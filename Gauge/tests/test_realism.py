@@ -176,3 +176,65 @@ def test_regime_fixed_vs_perdist_differ_on_skewed_prior():
     # fixed hi-bin is rarer than the per-distribution hi tercile (~1/3 by design).
     prev_fixed = float(np.mean(dstar >= R.FIXED_DSTAR_EDGES[-1]))
     assert prev_fixed < 1.0 / 3.0
+
+
+# --------------------------------------------------------------------------- #
+# NF1 calibration-size control: up-sample only the hi-D* CALIBRATION count, at
+# fixed (realistic) within-bin distribution. Fast mechanism tests only.
+# --------------------------------------------------------------------------- #
+def test_upsample_hi_dstar_only_fixed_bin_and_deterministic():
+    """The up-sampler returns exactly n_target realistic voxels, all in the fixed
+    hi-D* bin, and is a pure function of the rng."""
+    n = 600
+    p1, s1 = R._draw_hi_dstar_realistic(n, np.random.default_rng(909))
+    p2, s2 = R._draw_hi_dstar_realistic(n, np.random.default_rng(909))
+    assert p1.shape == (n, 3) and s1.shape == (n,)
+    assert np.array_equal(p1, p2) and np.array_equal(s1, s2)        # deterministic
+    assert np.all(p1[:, 1] >= R.FIXED_DSTAR_EDGES[-1])             # all hi-D*
+    assert R._draw_hi_dstar_realistic(0, np.random.default_rng(0))[0].shape == (0, 3)
+
+
+def test_upsampled_hi_matches_native_realistic_not_uniform():
+    """Up-sampled hi-D* voxels share the NATIVE realistic hi-D* law, not the uniform
+    one: the (D, D*, f) marginals are KS-closer to a realistic hi-D* reference than to
+    a uniform hi-D* reference (the fidelity gate's discriminator)."""
+    edge = R.FIXED_DSTAR_EDGES[-1]
+    up, _ = R._draw_hi_dstar_realistic(3000, np.random.default_rng(909))
+    ref_real, _ = R._draw_hi_dstar_realistic(12000, np.random.default_rng(123))
+    # uniform hi-D* reference.
+    up_u, have, acc = None, 0, []
+    rng = np.random.default_rng(456)
+    while have < 12000:
+        p, _ = R._draw_prior(8000, rng, "uniform")
+        m = p[:, 1] >= edge
+        acc.append(p[m]); have += int(m.sum())
+    ref_unif = np.concatenate(acc)[:12000]
+    from scipy.stats import ks_2samp
+    for j in range(3):
+        d_real = ks_2samp(up[:, j], ref_real[:, j]).statistic
+        d_unif = ks_2samp(up[:, j], ref_unif[:, j]).statistic
+        assert d_real < d_unif                          # closer to realistic
+
+
+def test_fidelity_gate_passes_on_realistic_upsample():
+    """The fidelity gate PASSES for genuine realistic-generator hi-D* draws and FAILS
+    if the up-sampled voxels are (illegitimately) uniform hi-D* voxels."""
+    up_real, _ = R._draw_hi_dstar_realistic(2000, np.random.default_rng(909))
+    assert R._fidelity_gate(up_real, seed=20260613)["passes"] is True
+    # illegitimate substitute: uniform hi-D* voxels must NOT pass.
+    edge = R.FIXED_DSTAR_EDGES[-1]
+    rng, acc, have = np.random.default_rng(99), [], 0
+    while have < 2000:
+        p, _ = R._draw_prior(8000, rng, "uniform")
+        m = p[:, 1] >= edge
+        acc.append(p[m]); have += int(m.sum())
+    up_unif = np.concatenate(acc)[:2000]
+    assert R._fidelity_gate(up_unif, seed=20260613)["passes"] is False
+
+
+def test_control_verdict_branches():
+    """The control verdict thresholds map gap-closed fraction -> A / PARTIAL / B."""
+    # native 0.50, uniform anchor 0.80 -> gap 0.30.
+    assert R._control_verdict(0.50, 0.80, 0.80)["branch"] == "A"      # 100% closed
+    assert R._control_verdict(0.50, 0.515, 0.80)["branch"] == "B"     # 5% closed
+    assert R._control_verdict(0.50, 0.62, 0.80)["branch"] == "PARTIAL"  # 40% closed

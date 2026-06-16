@@ -129,6 +129,25 @@ LMAX = 8                # up to 8-coil non-central-chi noise at eta=1
 NUISANCE_GRID = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
 RECAL_ETAS = (0.6, 1.0)
 
+# --------------------------------------------------------------------------- #
+# NF1 -- calibration-size control. The realistic prior puts only ~4.9% of voxels
+# in the FIXED hi-D* bin, so the within-distribution recalibration split holds very
+# few hi-D* examples and the single global CQR offset barely "sees" them. This
+# control up-samples the fixed hi-D* CALIBRATION count to the uniform-prior level,
+# AT FIXED (realistic) within-bin distribution, holding train/test/prior identical,
+# to separate "rare-bin calibration sparsity" (Branch A) from "genuine deepened
+# wall" (Branch B). The up-sampled voxels are drawn from the REALISTIC generator
+# (never imported uniform voxels, never re-weighted) and a distribution-fidelity
+# gate asserts their (D, D*, f) law matches the native realistic hi-D*, not uniform.
+# --------------------------------------------------------------------------- #
+CM_UPSAMPLE_OFFSET = 909     # rng stream for the up-sampled realistic hi-D* draws
+CM_UNIF_TARGET_OFFSET = 911  # rng stream for reading the uniform hi-D* cal count
+CM_FIDELITY_OFFSET = 4242    # rng stream for the fidelity-gate reference samples
+CM_FIDELITY_REF_MULT = 8     # reference-sample size = mult x up-sampled count
+CM_KS_ALPHA = 0.05           # KS reject threshold for "differs from uniform"
+CM_RECOVERY_FRAC_A = 0.50    # >= 50% of the gap-to-uniform closed -> Branch A
+CM_RECOVERY_FRAC_B = 0.25    # <= 25% closed -> Branch B (wall-dominated)
+
 
 def _lognormal_from(z, mean, cv):
     """Map standard-normal ``z`` to a log-normal with the given mean and CV."""
@@ -290,6 +309,155 @@ def run_arm_a(seed=DEFAULT_SEED, source="published", alpha=ALPHA, b=DEFAULT_B_VA
 
 
 # --------------------------------------------------------------------------- #
+# NF1 calibration-size control: up-sample the fixed hi-D* CALIBRATION count to the
+# uniform-prior level, at fixed (realistic) within-bin distribution.
+# --------------------------------------------------------------------------- #
+def _draw_hi_dstar_realistic(n_target, rng, batch=8000):
+    """Draw realistic-prior voxels, keep only the FIXED hi-D* bin (D* >= upper edge),
+    accumulate until at least ``n_target`` collected; return the first ``n_target``
+    ``(params, snr)`` in draw order. Deterministic from ``rng``. ``n_target == 0``
+    returns empty arrays."""
+    edge = FIXED_DSTAR_EDGES[-1]
+    if n_target <= 0:
+        return np.empty((0, 3)), np.empty((0,))
+    P, S, have = [], [], 0
+    while have < n_target:
+        params, snr = sample_published_prior(batch, rng)
+        m = params[:, DSTAR] >= edge
+        if m.any():
+            P.append(params[m]); S.append(snr[m]); have += int(m.sum())
+    return np.concatenate(P)[:n_target], np.concatenate(S)[:n_target]
+
+
+def _fidelity_gate(upsampled_hi, seed):
+    """Distribution-fidelity gate for the up-sampled hi-D* calibration voxels.
+
+    Asserts their (D, D*, f) law matches the NATIVE realistic hi-D* distribution and
+    NOT the uniform one, isolating calibration *count* from calibration *distribution*
+    (blocks the illegitimate "import uniform voxels / re-weight" reading). For each
+    parameter we compute the two-sample KS distance of the up-sampled voxels against
+    a fresh realistic hi-D* reference and against a uniform hi-D* reference; the gate
+    PASSES iff every parameter is KS-closer to the realistic reference than to the
+    uniform one (a scale-free, non-flaky discriminator) AND the up-sampled vs uniform
+    difference is significant (p < CM_KS_ALPHA) for D* and f.
+    """
+    from scipy.stats import ks_2samp
+    n_ref = max(2000, CM_FIDELITY_REF_MULT * int(upsampled_hi.shape[0]))
+    edge = FIXED_DSTAR_EDGES[-1]
+    rng_r = np.random.default_rng(seed + CM_FIDELITY_OFFSET)
+    ref_real, _ = _draw_hi_dstar_realistic(n_ref, rng_r)
+    rng_u = np.random.default_rng(seed + CM_FIDELITY_OFFSET + 1)
+    uP, have = [], 0
+    while have < n_ref:
+        p, _ = _draw_prior(8000, rng_u, "uniform")
+        m = p[:, DSTAR] >= edge
+        if m.any():
+            uP.append(p[m]); have += int(m.sum())
+    ref_unif = np.concatenate(uP)[:n_ref]
+
+    ks_real, ks_unif, closer = {}, {}, {}
+    for j, nm in enumerate(PARAM_NAMES):
+        kr = ks_2samp(upsampled_hi[:, j], ref_real[:, j])
+        ku = ks_2samp(upsampled_hi[:, j], ref_unif[:, j])
+        ks_real[nm] = {"stat": float(kr.statistic), "p": float(kr.pvalue)}
+        ks_unif[nm] = {"stat": float(ku.statistic), "p": float(ku.pvalue)}
+        closer[nm] = bool(kr.statistic < ku.statistic)
+    pass_closer = all(closer.values())
+    differ_unif = all(ks_unif[nm]["p"] < CM_KS_ALPHA for nm in ("D*", "f"))
+    moments = {nm: {"up_mean": float(upsampled_hi[:, j].mean()),
+                    "up_sd": float(upsampled_hi[:, j].std()),
+                    "real_mean": float(ref_real[:, j].mean()),
+                    "real_sd": float(ref_real[:, j].std()),
+                    "unif_mean": float(ref_unif[:, j].mean()),
+                    "unif_sd": float(ref_unif[:, j].std())}
+               for j, nm in enumerate(PARAM_NAMES)}
+    return {"ks_vs_realistic": ks_real, "ks_vs_uniform": ks_unif,
+            "closer_to_realistic": closer, "n_ref": int(n_ref),
+            "passes": bool(pass_closer and differ_unif),
+            "matches_realistic": bool(pass_closer),
+            "differs_from_uniform": bool(differ_unif), "moments": moments}
+
+
+def run_arm_a_countmatch(seed=DEFAULT_SEED, source="published", alpha=ALPHA,
+                         b=DEFAULT_B_VALUES):
+    """NF1 control: recalibrate under the realistic prior with the FIXED hi-D*
+    calibration count up-sampled to the uniform-prior level, at fixed (realistic)
+    within-bin distribution. Train / test / prior held identical to ``run_arm_a``;
+    only the calibration split's hi-D* COUNT changes (lo/mid voxels untouched).
+    Returns the count-matched evaluation (carrying ``cqr_terc_fixed``), the native /
+    target / matched hi-D* counts, and the distribution-fidelity gate result.
+    """
+    sizes = (N_TRAIN_A, N_CAL_A, N_TEST_A)
+    sig, par, sn = _build_cohort(seed, source, 0.0, sizes, b)   # identical to run_arm_a
+    train_sig, train_gt = sig["train"], par["train"]
+    cal_sig, cal_gt = sig["cal"], par["cal"]
+    test_sig, test_gt, test_snr = sig["test"], par["test"], sn["test"]
+    edge = FIXED_DSTAR_EDGES[-1]
+
+    native_hi = int(np.sum(cal_gt[:, DSTAR] >= edge))
+    # target = the uniform-prior cohort's hi-D* calibration count at the same N_CAL.
+    urng = np.random.default_rng(seed + CM_UNIF_TARGET_OFFSET)
+    u_params, _ = _draw_prior(N_CAL_A, urng, "uniform")
+    target_hi = int(np.sum(u_params[:, DSTAR] >= edge))
+    extra = max(0, target_hi - native_hi)
+
+    drng = np.random.default_rng(seed + CM_UPSAMPLE_OFFSET)
+    ex_params, ex_snr = _draw_hi_dstar_realistic(extra, drng)
+    ex_sig = (nuisance_signal(b, ex_params, ex_snr, drng, 0.0) if extra > 0
+              else np.empty((0, np.asarray(b).shape[0])))
+    aug_cal_sig = np.vstack([cal_sig, ex_sig]) if extra > 0 else cal_sig
+    aug_cal_gt = np.vstack([cal_gt, ex_params]) if extra > 0 else cal_gt
+    matched_hi = int(np.sum(aug_cal_gt[:, DSTAR] >= edge))
+
+    cm_cal = _calibration_from_osipi(train_sig, train_gt, aug_cal_sig, aug_cal_gt,
+                                     b, alpha, seed)
+    cm = _evaluate(cm_cal, test_sig, test_gt, b, test_snr, None, alpha,
+                   fixed_edges=FIXED_DSTAR_EDGES)
+    fidelity = _fidelity_gate(ex_params, seed)
+    return {"seed": seed, "source": source, "cm": cm,
+            "native_hi_count": native_hi, "uniform_target_count": target_hi,
+            "matched_hi_count": matched_hi, "extra_added": int(extra),
+            "cal_size_native": int(cal_gt.shape[0]),
+            "cal_size_matched": int(aug_cal_gt.shape[0]),
+            "fidelity": fidelity}
+
+
+def _control_verdict(native_hi, cm_hi, unif_hi):
+    """Branch the NF1 control: does count-matched calibration recover fixed-edge
+    hi-D* coverage toward the uniform-prior anchor? ``frac`` = fraction of the
+    native->uniform gap closed by count-matching."""
+    gap = unif_hi - native_hi
+    closed = cm_hi - native_hi
+    frac = (closed / gap) if gap > 1e-9 else 0.0
+    if frac >= CM_RECOVERY_FRAC_A:
+        branch = "A"  # sparsity-dominated
+        text = ("BRANCH A -- SPARSITY-DOMINATED: count-matching the fixed hi-D* "
+                "calibration to the uniform level recovers fixed-edge hi-D* coverage "
+                f"materially toward the uniform anchor (native {native_hi:.3f} -> "
+                f"count-matched {cm_hi:.3f}; uniform anchor {unif_hi:.3f}; "
+                f"{frac*100:.0f}% of the gap closed). The 0.533 is largely a "
+                "finite-sample artifact of the rare hi-D* calibration bin, not a "
+                "deepened identifiability wall.")
+    elif frac <= CM_RECOVERY_FRAC_B:
+        branch = "B"  # wall-dominated
+        text = ("BRANCH B -- WALL-DOMINATED: count-matching the fixed hi-D* "
+                "calibration to the uniform level does NOT recover fixed-edge hi-D* "
+                f"coverage (native {native_hi:.3f} -> count-matched {cm_hi:.3f}; "
+                f"uniform anchor {unif_hi:.3f}; only {frac*100:.0f}% of the gap "
+                "closed). The under-coverage is a genuine identifiability wall, not "
+                "rare-bin calibration sparsity.")
+    else:
+        branch = "PARTIAL"
+        text = ("PARTIAL RECOVERY: count-matching the fixed hi-D* calibration closes "
+                f"{frac*100:.0f}% of the native->uniform gap (native {native_hi:.3f} "
+                f"-> count-matched {cm_hi:.3f}; uniform anchor {unif_hi:.3f}). Both "
+                "rare-bin calibration sparsity AND a residual wall contribute.")
+    return {"branch": branch, "text": text, "frac_gap_closed": float(frac),
+            "native_hi": float(native_hi), "countmatch_hi": float(cm_hi),
+            "uniform_anchor_hi": float(unif_hi)}
+
+
+# --------------------------------------------------------------------------- #
 # Arm B -- measurement-nuisance envelope (deployed predictor held fixed).
 # --------------------------------------------------------------------------- #
 def run_arm_b(seed=DEFAULT_SEED, alpha=ALPHA, b=DEFAULT_B_VALUES, source="uniform"):
@@ -431,6 +599,39 @@ def compute_all(seed=DEFAULT_SEED):
             out[f"realism/armA/published/wall_{tag}/crlb_over_width/{kk}"] = float(w["ratio"][i])
         out[f"realism/armA/published/wall_{tag}/abs_growth"] = float(w["abs_growth"])
 
+    # --- NF1 calibration-size control + uniform-prior recovery anchor ---------
+    # Uniform-prior Arm A supplies the in-harness fixed-edge hi-D* "recovery anchor"
+    # (the ~0.79 of every earlier section, computed here so the control is
+    # self-contained). The count-match arm up-samples the realistic fixed hi-D*
+    # CALIBRATION count to the uniform level at fixed within-bin distribution.
+    a_unif = run_arm_a(seed=seed, source="uniform")
+    payload["armA_uniform"] = a_unif
+    out["realism/armA/uniform/recal/cqr_hiDstar_fixed"] = float(a_unif["recal"]["cqr_terc_fixed"][-1])
+    out["realism/armA/uniform/recal/cqr_hiDstar_perdist"] = float(a_unif["recal"]["cqr_terc"][-1])
+    out["realism/armA/uniform/hiDstar_prevalence_fixed"] = float(a_unif["hi_prevalence_fixed"])
+
+    cm = run_arm_a_countmatch(seed=seed, source="published")
+    payload["armA_countmatch"] = cm
+    ev_cm = cm["cm"]
+    for j, nm in enumerate(PARAM_NAMES):
+        out[f"realism/armA/published/recal_countmatch/cqr_marg/{nm}"] = float(ev_cm["cqr_marg"][j])
+    out["realism/armA/published/recal_countmatch/cqr_hiDstar_fixed"] = float(ev_cm["cqr_terc_fixed"][-1])
+    out["realism/armA/published/recal_countmatch/cqr_midDstar_fixed"] = float(ev_cm["cqr_terc_fixed"][1])
+    out["realism/armA/published/recal_countmatch/cqr_loDstar_fixed"] = float(ev_cm["cqr_terc_fixed"][0])
+    out["realism/armA/published/countmatch/native_hi_count"] = float(cm["native_hi_count"])
+    out["realism/armA/published/countmatch/uniform_target_count"] = float(cm["uniform_target_count"])
+    out["realism/armA/published/countmatch/matched_hi_count"] = float(cm["matched_hi_count"])
+    fid = cm["fidelity"]
+    out["realism/armA/published/countmatch/fidelity_passes"] = float(fid["passes"])
+    for nm in PARAM_NAMES:
+        out[f"realism/armA/published/countmatch/ks_real_stat/{nm}"] = float(fid["ks_vs_realistic"][nm]["stat"])
+        out[f"realism/armA/published/countmatch/ks_unif_stat/{nm}"] = float(fid["ks_vs_uniform"][nm]["stat"])
+    cverd = _control_verdict(float(a_pub["recal"]["cqr_terc_fixed"][-1]),
+                             float(ev_cm["cqr_terc_fixed"][-1]),
+                             float(a_unif["recal"]["cqr_terc_fixed"][-1]))
+    payload["control_verdict"] = cverd
+    out["realism/armA/published/countmatch/frac_gap_closed"] = float(cverd["frac_gap_closed"])
+
     # Arm A -- (ii) OSIPI sensitivity cross-check (only when the DRO is present).
     rng_probe = np.random.default_rng(seed)
     if sample_osipi_prior(4, rng_probe) is not None:
@@ -475,6 +676,78 @@ def _fmt(a):
     return "[" + ", ".join(f"{v:.3f}" for v in np.asarray(a, float)) + "]"
 
 
+def _prior_spec_lines(w):
+    """Write the verbatim realistic-prior specification + provenance (NF3)."""
+    w("-" * 96)
+    w("REALISTIC PRIOR SPECIFICATION & PROVENANCE (NF3) -- the joint prior used in "
+      "Arm A / count-match")
+    w("-" * 96)
+    w("  Gaussian copula on latent normals: log-normal D & D*, logit-normal f, plus "
+      "a realistic log-normal SNR.")
+    w("  PROVENANCE: documented design constants SHAPED TO APPROXIMATE representative "
+      "published abdominal/liver")
+    w("  IVIM cohorts (Gurney-Champion 2018; Barbieri 2020; Kaandorp 2021) -- NOT "
+      "fitted to any source (the")
+    w("  circular plug-in source is avoided); they reproduce the qualitative shape "
+      "the realism test needs.")
+    w("    D       : log-normal   mean 1.1e-3 mm^2/s, CV 0.30")
+    w("    D*      : log-normal   mean 28.0e-3 mm^2/s, CV 0.80  (within-subject CV "
+      "target band 0.50-1.10)")
+    w("    f       : logit-normal logit-mean ln(0.20/0.80), logit-sd 0.55  (median "
+      "f ~ 0.20)")
+    w("    corr    : latent-normal (D, D*, f) = [[1.00, 0.00, -0.20], [0.00, 1.00, "
+      "0.35], [-0.20, 0.35, 1.00]]")
+    w("    SNR(b0) : log-normal   mean 35.0, CV 0.40, clipped to [8.0, 120.0]")
+    w("")
+
+
+def _control_lines(w, payload):
+    """Write the NF1 calibration-size control + distribution-fidelity gate block."""
+    a = payload["armA_published"]
+    cm = payload["armA_countmatch"]
+    a_unif = payload["armA_uniform"]
+    cv = payload["control_verdict"]
+    ev = cm["cm"]
+    fid = cm["fidelity"]
+    native_hi_cov = float(a["recal"]["cqr_terc_fixed"][-1])
+    cm_hi_cov = float(ev["cqr_terc_fixed"][-1])
+    unif_hi_cov = float(a_unif["recal"]["cqr_terc_fixed"][-1])
+    w("-" * 96)
+    w("NF1 CALIBRATION-SIZE CONTROL -- rare-bin sparsity vs genuine wall (fixed-edge "
+      "hi-D*)")
+    w("-" * 96)
+    w("  Up-sample the FIXED hi-D* CALIBRATION count to the uniform-prior level, at "
+      "fixed (realistic) within-bin")
+    w("  distribution; train / test / prior held identical. Isolates calibration "
+      "COUNT, not distribution.")
+    w(f"    hi-D* calibration count: native (realistic) = {cm['native_hi_count']}  "
+      f"->  count-matched = {cm['matched_hi_count']}")
+    w(f"      (uniform-prior target = {cm['uniform_target_count']}; calibration size "
+      f"{cm['cal_size_native']} -> {cm['cal_size_matched']})")
+    w(f"    fixed-edge hi-D* recalibrated coverage:")
+    w(f"        native realistic       = {native_hi_cov:.3f}")
+    w(f"        count-matched          = {cm_hi_cov:.3f}")
+    w(f"        uniform anchor (~0.79) = {unif_hi_cov:.3f}")
+    w(f"    fraction of the native->uniform gap closed by count-matching = "
+      f"{cv['frac_gap_closed']*100:.0f}%")
+    w(f"    count-matched fixed-edge terciles [lo, mid, hi] = "
+      f"{_fmt(ev['cqr_terc_fixed'])}")
+    w(f"    count-matched marginal coverage  (D, D*, f)     = {_fmt(ev['cqr_marg'])}")
+    w("  DISTRIBUTION-FIDELITY GATE (up-sampled hi-D* vs native realistic vs uniform; "
+      f"n_ref={fid['n_ref']}):")
+    w(f"      KS stat vs REALISTIC (D, D*, f) = "
+      f"{_fmt([fid['ks_vs_realistic'][n]['stat'] for n in PARAM_NAMES])}")
+    w(f"      KS stat vs UNIFORM   (D, D*, f) = "
+      f"{_fmt([fid['ks_vs_uniform'][n]['stat'] for n in PARAM_NAMES])}")
+    w(f"      closer to realistic than uniform (all params) = {fid['matches_realistic']}; "
+      f"differs from uniform (D*, f) = {fid['differs_from_uniform']}")
+    gate = "PASSES" if fid["passes"] else "FAILS"
+    w(f"      FIDELITY GATE: {gate} (calibration COUNT isolated; within-bin "
+      "distribution preserved as realistic)")
+    w(f"  CONTROL VERDICT [{cv['branch']}]: {cv['text']}")
+    w("")
+
+
 def main(seed=DEFAULT_SEED):
     out, payload = compute_all(seed=seed)
     a = payload["armA_published"]
@@ -511,6 +784,9 @@ def main(seed=DEFAULT_SEED):
     w("     monitor partly catches the acquisition nuisance (predicted more "
       "observable than signal-model drift).")
     w("")
+
+    # ---- realistic prior specification + provenance (NF3) --------------------
+    _prior_spec_lines(w)
 
     # ---- continuity gate ----------------------------------------------------
     w("-" * 96)
@@ -559,6 +835,9 @@ def main(seed=DEFAULT_SEED):
         w("  (ii) OSIPI sensitivity cross-check SKIPPED (DRO absent; run "
           "`python scripts/fetch_osipi.py`).")
     w("")
+
+    # ---- NF1 calibration-size control ---------------------------------------
+    _control_lines(w, payload)
 
     # ---- Arm B --------------------------------------------------------------
     w("-" * 96)
@@ -636,7 +915,7 @@ def _make_figure(payload, v):
         return
     a = payload["armA_published"]
     arm_b = payload["armB"]
-    fig, ax = plt.subplots(1, 3, figsize=(13.0, 4.2))
+    fig, ax = plt.subplots(1, 4, figsize=(17.2, 4.2))
 
     # Panel A -- Arm A marginal coverage naive vs recal.
     x = np.arange(3)
@@ -674,6 +953,28 @@ def _make_figure(payload, v):
     ax[2].set_title("(C) Arm B: nuisance degradation + monitor")
     ax[2].legend(fontsize=8, loc="lower left")
 
+    # Panel D -- NF1 calibration-size control: fixed-edge hi-D* coverage under
+    # native vs count-matched calibration, against the uniform-prior anchor.
+    cm = payload["armA_countmatch"]
+    cv = payload["control_verdict"]
+    bars = [float(a["recal"]["cqr_terc_fixed"][-1]),
+            float(cm["cm"]["cqr_terc_fixed"][-1]),
+            float(payload["armA_uniform"]["recal"]["cqr_terc_fixed"][-1])]
+    labels = [f"native\n(hi cal={cm['native_hi_count']})",
+              f"count-matched\n(hi cal={cm['matched_hi_count']})",
+              "uniform\nanchor"]
+    cols = ["#c0392b", "#2c7fb8", "#7f8c8d"]
+    xb = np.arange(3)
+    ax[3].bar(xb, bars, 0.6, color=cols)
+    ax[3].axhline(NOMINAL, ls="--", c="k", lw=1, label=f"nominal {NOMINAL:.2f}")
+    for xi, vi in zip(xb, bars):
+        ax[3].text(xi, vi + 0.02, f"{vi:.2f}", ha="center", fontsize=8)
+    ax[3].set_xticks(xb); ax[3].set_xticklabels(labels, fontsize=7)
+    ax[3].set_ylim(0, 1.02); ax[3].set_ylabel("fixed-edge hi-D* coverage (recal)")
+    ax[3].set_title(f"(D) NF1 control [{cv['branch']}]: "
+                    f"{cv['frac_gap_closed']*100:.0f}% gap closed")
+    ax[3].legend(fontsize=8, loc="lower left")
+
     fig.suptitle(f"Realism cohort -- VERDICT: {v['branch']} "
                  f"(realistic synthetic; no in-vivo coverage claim)", fontsize=10)
     fig.tight_layout(rect=[0, 0, 1, 0.95])
@@ -708,6 +1009,27 @@ def _write_provenance(seed, payload, v):
         "armB_zero_nuisance_cov": [float(x) for x in payload["armB"][0]["cqr_marg"]],
         "armB_monitor_auc_curve": [float(r["monitor_auc"]) for r in payload["armB"]],
         "continuity": payload["continuity"],
+        "prior_spec": {
+            "provenance": ("hand-set design constants shaped to approximate "
+                           "published abdominal/liver IVIM cohorts; not fitted"),
+            "D_lognormal_mean": _PUB["D_mean"], "D_cv": _PUB["D_cv"],
+            "Dstar_lognormal_mean": _PUB["Dstar_mean"], "Dstar_cv": _PUB["Dstar_cv"],
+            "f_logit_mean": _PUB["f_logit_mean"], "f_logit_sd": _PUB["f_logit_sd"],
+            "corr_D_Dstar_f": _PUB["corr"].tolist(),
+            "snr_mean": _PUB["snr_mean"], "snr_cv": _PUB["snr_cv"],
+            "snr_clip": list(_PUB["snr_clip"]),
+        },
+        "nf1_control": {
+            "native_hi_count": payload["armA_countmatch"]["native_hi_count"],
+            "uniform_target_count": payload["armA_countmatch"]["uniform_target_count"],
+            "matched_hi_count": payload["armA_countmatch"]["matched_hi_count"],
+            "native_hiDstar_fixed": float(a["recal"]["cqr_terc_fixed"][-1]),
+            "countmatch_hiDstar_fixed": float(payload["armA_countmatch"]["cm"]["cqr_terc_fixed"][-1]),
+            "uniform_anchor_hiDstar_fixed": float(payload["armA_uniform"]["recal"]["cqr_terc_fixed"][-1]),
+            "frac_gap_closed": payload["control_verdict"]["frac_gap_closed"],
+            "branch": payload["control_verdict"]["branch"],
+            "fidelity_passes": bool(payload["armA_countmatch"]["fidelity"]["passes"]),
+        },
         "computed_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     }
     prov = {}

@@ -168,6 +168,23 @@ CHECKS = [
      ["monitor sub-prediction", "NOT SUPPORTED"]),
     ("Realism wall verdict: robust to realistic prior",
      "VERDICT [ROBUST]", "results/realism_report.txt", ["VERDICT [ROBUST]"]),
+    # --- NF1 calibration-size control + NF3 prior provenance (committed verbatim) --
+    ("Realism NF1 control present (calibration-size control section)",
+     "NF1 CALIBRATION-SIZE CONTROL", "results/realism_report.txt",
+     ["NF1 CALIBRATION-SIZE CONTROL"]),
+    ("Realism NF1 distribution-fidelity gate passes",
+     "FIDELITY GATE: PASSES", "results/realism_report.txt",
+     ["FIDELITY GATE: PASSES"]),
+    ("NF3 prior provenance: shaped-to-approximate (not fitted)",
+     "SHAPED TO APPROXIMATE ... NOT fitted", "results/realism_report.txt",
+     ["SHAPED TO APPROXIMATE", "NOT fitted to any source"]),
+    ("NF3 prior params committed verbatim (D, D*, f, corr, SNR)",
+     "log-normal/logit-normal hyperparameters", "results/realism_report.txt",
+     ["mean 1.1e-3 mm^2/s, CV 0.30",
+      "mean 28.0e-3 mm^2/s, CV 0.80",
+      "logit-sd 0.55",
+      "[[1.00, 0.00, -0.20], [0.00, 1.00, 0.35], [-0.20, 0.35, 1.00]]",
+      "mean 35.0, CV 0.40, clipped to [8.0, 120.0]"]),
 ]
 
 
@@ -309,6 +326,15 @@ REALISM_BAND_ASSERTIONS = [
     ("Realism fixed hi-D* clinical prevalence", "realism/armA/published/hiDstar_prevalence_fixed"),
     ("Realism naive monitor AUC", "realism/armA/published/naive/monitor_auc"),
     ("Realism wall FIXED CRLB/width hi", "realism/armA/published/wall_fixed/crlb_over_width/hi"),
+    # --- NF1 calibration-size control: native vs count-matched fixed-edge hi-D*,
+    #     against the uniform-prior recovery anchor; the fraction of the gap closed
+    #     is the decisive sparsity-vs-wall number. --------------------------------
+    ("Realism NF1 count-match recal hi-D* FIXED", "realism/armA/published/recal_countmatch/cqr_hiDstar_fixed"),
+    ("Realism NF1 uniform-anchor recal hi-D* FIXED", "realism/armA/uniform/recal/cqr_hiDstar_fixed"),
+    ("Realism NF1 fraction of gap closed", "realism/armA/published/countmatch/frac_gap_closed"),
+    ("Realism NF1 matched hi-D* cal count", "realism/armA/published/countmatch/matched_hi_count"),
+    ("Realism NF1 native hi-D* cal count", "realism/armA/published/countmatch/native_hi_count"),
+    ("Realism NF1 fidelity gate passes (==1)", "realism/armA/published/countmatch/fidelity_passes"),
     ("Realism Arm-B eta=1 cov D (degrades)", "realism/armB/eta5/cov/D"),
     ("Realism Arm-B eta=1 monitor AUC", "realism/armB/eta5/auc"),
     ("Realism Arm-B recal eta=1 cov D* (recovers)", "realism/armB/recal_eta100/cqr_marg/D*"),

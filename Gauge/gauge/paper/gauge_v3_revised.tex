@@ -894,8 +894,11 @@ The cohort so far draws $(D,\Dstar,f)$ uniformly over published ranges with clea
 Rician noise. As a capstone robustness check we replace both idealizations at once:
 a clinically realistic \emph{joint} prior -- correlated, right-skewed marginals
 (log-normal $D,\Dstar$; logit-normal $f$) with a within-subject $\Dstar$
-coefficient of variation in the published $50$--$110\%$ band, shaped to
-representative abdominal IVIM distributions -- and a measurement-level nuisance
+coefficient of variation in the published $50$--$110\%$ band, with hyperparameters
+\emph{shaped to approximate} (not fitted to) representative abdominal IVIM patient
+cohorts~\citep{gurneychampion2018,kaandorp2021,barbieri2020}; the exact joint
+specification is documented design constants (Table~\ref{tab:realism-prior}) that
+deliberately avoid any circular plug-in source -- and a measurement-level nuisance
 layer on the bi-exponential signal under a single magnitude scalar $\eta$:
 partial-volume mixing of a free-fluid compartment, bulk-motion phase, and
 non-Rician (multi-coil noncentral-$\chi$) noise. This is still a synthetic cohort
@@ -916,10 +919,30 @@ $0.767$\band{0.735}{0.805}). The high-$\Dstar$ wall persists after recalibration
 \emph{both} stratifications -- fixed-edge tercile coverage $0.533$\band{0.480}{0.594}
 and per-distribution $0.786$\band{0.749}{0.823}, against nominal $0.90$ -- with the
 fixed-edge CRLB-to-bin-width ratio reaching $0.895$\band{0.849}{0.961} at high
-$\Dstar$ (Fig.~\ref{fig:realism}A,B). The severest under-coverage concentrates in a
-clinically \emph{rare} high-$\Dstar$ tail (fixed high-$\Dstar$ prevalence
-$0.049$\band{0.044}{0.056}): under a liver-like prior the ill-posed regime is
-sparsely populated -- a scoping caveat we report as such, not as a weakened wall.
+$\Dstar$ (Fig.~\ref{fig:realism}A,B). As in the shrinkage dissociation
+(Sec.~\ref{sec:dissociation-shrinkage}), a sub-unity CRLB-to-width ratio coexisting
+with a large conditional-coverage gap is expected, not contradictory: the ratio
+bounds \emph{point} precision, whereas the gap is a \emph{conditional-coverage}
+failure on a latent axis. The severest under-coverage concentrates in a clinically
+\emph{rare} high-$\Dstar$ tail (fixed high-$\Dstar$ prevalence
+$0.049$\band{0.044}{0.056}), which entangles two effects: the rarity of the bin
+leaves the recalibration split few high-$\Dstar$ examples for the single global
+conformal offset, and the identifiability wall itself. A calibration-size control
+separates them. Up-sampling the fixed high-$\Dstar$ \emph{calibration} count to the
+uniform-prior level ($\sim\!73\to504$ voxels), drawn from the realistic generator at
+fixed within-bin distribution -- a fidelity gate confirms the up-sampled voxels match
+the realistic, not the uniform, high-$\Dstar$ law -- with train, test and prior held
+fixed, lifts fixed-edge high-$\Dstar$ coverage from $0.533$ only to
+$0.661$\band{0.580}{0.721}, closing $\approx\!47\%$ of the way to the uniform-prior
+anchor $0.807$\band{0.774}{0.831} and never reaching it (count-matched coverage stays
+$\le0.72$ in every seed; Fig.~\ref{fig:realism}D). Rare-bin calibration sparsity thus
+accounts for roughly half of the fixed-edge deficit; the remainder is a genuine
+identifiability wall that survives count-matching -- a scoping caveat on
+\emph{prevalence} and a partial contributor to the fixed-edge number, not an
+explanation of the wall. That the regime is rare does not make it low-stakes: a
+high-$\Dstar$ voxel is often the salient finding (brisk lesion perfusion), so
+under-coverage concentrated in the rare tail falls exactly where a wide, honest
+interval matters most.
 The realistic prior is a within-support covariate shift, so the label-free monitor
 does not flag it (naive-transfer AUC $0.480$\band{0.470}{0.494}, at chance);
 recalibration, not monitoring, is what restores coverage.
@@ -929,7 +952,11 @@ marginal coverage degrades monotonically: $D$ coverage falls from
 $0.903$\band{0.889}{0.912} at $\eta=0$ to $0.570$\band{0.548}{0.589} at $\eta=1$,
 while the already-wide $\Dstar$ interval stays near nominal
 ($0.899$\band{0.888}{0.911}), and recalibrating within the nuisance-laden
-distribution restores it ($\Dstar$ $0.899$\band{0.886}{0.914} at $\eta=1$).
+distribution restores it ($\Dstar$ $0.899$\band{0.886}{0.914} at $\eta=1$). This
+$\Dstar$ stability reflects interval \emph{width}, not robust identification: the
+high-$\Dstar$ band is already wide enough to absorb the added nuisance, so flat
+$\Dstar$ coverage is the characterized-but-unresolved wall showing through, not
+evidence that $\Dstar$ is well determined under nuisance.
 Notably, this acquisition nuisance is \emph{not} more observable than pure
 signal-model drift: the monitor's AUC stays at chance across the sweep
 ($0.493$\band{0.482}{0.507} at $\eta=1$, cf.\ the off-model envelope's
@@ -949,6 +976,10 @@ wall persists in both, concentrated in a clinically rare high-$\Dstar$ tail (fix
 prevalence $\approx0.05$). (C)~Arm~B -- the measurement-nuisance envelope: marginal
 $D$ coverage degrades with the nuisance magnitude (the wider $\Dstar$ interval is
 held) while the deployment monitor's AUC stays at chance, a silent channel.
+(D)~NF1 calibration-size control: fixed-edge high-$\Dstar$ recalibrated coverage
+under native vs.\ count-matched calibration (hi-$\Dstar$ calibration count
+$73\to504$), against the uniform-prior anchor; only $\approx47\%$ of the
+native$\to$uniform gap is closed by count-matching, isolating a residual wall.
 Seed-\texttt{20260613} panel (across-seed [5,95] bands quoted in text); from
 \texttt{results/realism\_report.txt}.}
 \label{fig:realism}
@@ -1048,8 +1079,9 @@ pipeline regenerates deterministically from seed \texttt{20260613}
 core bands from the multi-seed driver (\texttt{python -m gauge.multiseed}) and the
 external-phantom, alternative-forward-model, and realism bands from their own
 seed sweeps (\texttt{python -m gauge.osipi sweep 16}; \texttt{gauge.altmodel sweep
-16}; \texttt{gauge.realism sweep 16}); seed-0 outputs are byte-identical across
-independent full re-runs.
+16}; \texttt{gauge.realism sweep 16}); the realism run also emits the NF1
+calibration-size control and the verbatim prior-provenance table. Seed-0 outputs are
+byte-identical across independent full re-runs.
 
 \section{Conclusion}
 This work brings distribution-free conformal coverage to the ill-posed IVIM inverse
@@ -1125,8 +1157,32 @@ Avery Karlin \quad \href{https://orcid.org/0000-0003-3848-6782}{https://orcid.or
 \renewcommand{\thefigure}{S\arabic{figure}}
 \setcounter{figure}{0}
 \section*{Supporting Information}
-\noindent The following figures support the main text and are provided as
+\noindent The following table and figures support the main text and are provided as
 Supporting Information.
+
+\begin{table}[h]
+\centering
+\caption{Realistic joint-prior specification (\S\ref{sec:realism}, Arm~A and the NF1
+calibration-size control). Hyperparameters are documented design constants
+\emph{shaped to approximate} representative abdominal IVIM patient
+cohorts~\citep{gurneychampion2018,kaandorp2021,barbieri2020}, not fitted; the joint
+is a Gaussian copula on latent normals with the marginals below. Committed verbatim
+in \texttt{results/realism\_report.txt} and \texttt{results/realism\_provenance.json}.}
+\label{tab:realism-prior}
+\begin{tabular}{lll}
+\toprule
+Parameter & Marginal & Hyperparameters \\
+\midrule
+$D$          & log-normal   & mean $1.1\times10^{-3}$ mm$^2$/s, CV $0.30$ \\
+$\Dstar$     & log-normal   & mean $28.0\times10^{-3}$ mm$^2$/s, CV $0.80$ (target band $0.50$--$1.10$) \\
+$f$          & logit-normal & logit-mean $\ln(0.20/0.80)$, logit-sd $0.55$ (median $f\approx0.20$) \\
+SNR$(b{=}0)$ & log-normal   & mean $35.0$, CV $0.40$, clipped to $[8.0, 120.0]$ \\
+\midrule
+\multicolumn{3}{l}{latent-normal correlation $(D,\Dstar,f)=
+\left(\begin{smallmatrix}1.00 & 0.00 & -0.20\\ 0.00 & 1.00 & 0.35\\ -0.20 & 0.35 & 1.00\end{smallmatrix}\right)$}\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure}[h]
 \centering

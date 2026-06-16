@@ -1,0 +1,66 @@
+================================================================================================
+GAUGE REALISM COHORT -- realistic joint prior (Arm A) + measurement-nuisance envelope (Arm B)
+================================================================================================
+A realistic synthetic cohort is still synthetic: NO in-vivo coverage claim is made here.
+seed=20260613; nominal coverage 0.90; fixed D* tercile edges (0.04, 0.07) (mm^2/s).
+
+PRE-REGISTERED PREDICTIONS (recorded before evaluating):
+  P1 GUARANTEE (sanity): within-distribution recalibration restores the finite-sample marginal coverage.
+  P2 WALL (the real test): the high-D* tercile-conditional under-coverage PERSISTS after recalibration,
+     because the identifiability structure is parameter-intrinsic, not prior-intrinsic. Falsifier: if the
+     realistic D* distribution does not densely populate the ill-posed high-D* regime, the wall may APPEAR
+     to weaken -- that is 'regime clinically rare', NOT 'wall gone'.
+  P3 NUISANCE: naive transfer breaks, recalibration restores marginal coverage, the wall persists, and the
+     monitor partly catches the acquisition nuisance (predicted more observable than signal-model drift).
+
+------------------------------------------------------------------------------------------------
+CONTINUITY GATE (uniform prior + zero nuisance must reproduce the cohort)
+------------------------------------------------------------------------------------------------
+  uniform prior + zero nuisance reproduces generate_cohort: max |.| = 0.00e+00 (numerically exact)
+  clean (noiseless) nuisance signal at eta=0 == bi-exp: max |.| = 0.00e+00 (numerically exact)
+
+------------------------------------------------------------------------------------------------
+ARM A -- realistic PUBLISHED prior, clean acquisition (n_test=4000)
+------------------------------------------------------------------------------------------------
+  naive-transfer  CQR marginal coverage (D, D*, f) = [0.880, 0.782, 0.748]  vs nominal 0.90
+  recalibrated    CQR marginal coverage (D, D*, f) = [0.898, 0.906, 0.898]  vs nominal 0.90
+  high-D* tercile coverage (recalibrated):
+      FIXED edges (0.04, 0.07)  [lo, mid, hi] = [0.953, 0.785, 0.451]
+      per-distribution quantiles    [lo, mid, hi] = [0.975, 0.958, 0.786]
+  fixed hi-D* clinical prevalence (fraction of voxels with D* >= 0.07) = 0.044
+  deployment monitor on naive transfer: does NOT fire (AUC=0.49) -- the realistic prior shift is near-invisible to the label-free monitor (a within-support covariate shift) -- recalibration, not monitoring, is what restores coverage
+  identifiability wall CRLB(D*)/tercile-width [lo, mid, hi]:
+      FIXED bins     = [0.290, 0.481, 0.931]  (hi_ratio=0.93, abs-growth 3.2x)
+      per-distribution = [0.542, 0.663, 0.062]
+
+  VERDICT [ROBUST]: WALL ROBUST TO REALISTIC PRIOR: the high-D* conditional gap PERSISTS after within-distribution recalibration in BOTH tercile framings (fixed-edge recal hi-D* = 0.451, gap +0.449; per-distribution recal hi-D* = 0.786, gap +0.114; nominal 0.90). The wall is parameter-intrinsic, not an artifact of the uniform prior. The most severe under-coverage concentrates in a clinically RARE high-D* tail (fixed hi-D* prevalence = 0.044 < 0.05) -- a scoping caveat, not a refutation.
+
+  (ii) OSIPI sensitivity cross-check SKIPPED (DRO absent; run `python scripts/fetch_osipi.py`).
+
+------------------------------------------------------------------------------------------------
+ARM B -- measurement-nuisance envelope (deployed predictor held fixed)
+------------------------------------------------------------------------------------------------
+    eta |   cov D  cov D*   cov f |  mon AUC | fires
+   0.00 |   0.908   0.906   0.901 |     0.51 | YES
+   0.20 |   0.853   0.911   0.895 |     0.49 | no
+   0.40 |   0.763   0.916   0.865 |     0.49 | no
+   0.60 |   0.698   0.922   0.843 |     0.49 | no
+   0.80 |   0.606   0.920   0.806 |     0.49 | no
+   1.00 |   0.573   0.918   0.754 |     0.49 | no
+  zero-nuisance sanity: eta=0 coverage [0.908, 0.906, 0.901] (within 0.05 of nominal: True)
+  recalibration-within-nuisance recovery (marginal coverage returns):
+      eta=0.60: recal coverage [0.893, 0.884, 0.895] (within 0.05 of nominal: True)
+      eta=1.00: recal coverage [0.885, 0.900, 0.892] (within 0.05 of nominal: True)
+  monitor AUC vs nuisance magnitude: [0.506, 0.492, 0.490, 0.488, 0.487, 0.488] (eta [0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+
+------------------------------------------------------------------------------------------------
+PRE-REGISTRATION SCORECARD (report whichever way each landed):
+------------------------------------------------------------------------------------------------
+  P1 GUARANTEE: HOLDS -- recalibrated marginal coverage [0.898, 0.906, 0.898] within 0.05 of nominal.
+  P2 WALL: HOLDS -- recal hi-D* under-covers (fixed 0.451, per-dist 0.786 vs nominal 0.90); severity concentrates in a RARE hi-D* tail (prevalence 0.044).
+  P3 NUISANCE: naive-transfer breaks under nuisance = True; recalibration-within-nuisance recovers marginal coverage = True.
+     monitor sub-prediction ('more observable than signal-model drift, ref AUC~0.53'): NOT SUPPORTED (max nuisance monitor AUC = 0.51).
+     -> the measurement nuisance is observationally SUBTLE: it breaks coverage substantially yet is
+        near-invisible to the label-free monitor (a SILENT coverage breaker) -- recalibration, not
+        monitoring, is the remedy. Reported as it landed, against the prediction.
+================================================================================================

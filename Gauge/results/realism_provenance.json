@@ -1,0 +1,63 @@
+{
+ "run": {
+  "seed": 20260613,
+  "alpha": 0.1,
+  "nominal_coverage": 0.9,
+  "no_in_vivo_coverage_claim": true,
+  "fixed_dstar_edges": [
+   0.04,
+   0.07
+  ],
+  "armA_published": {
+   "n_test": 4000,
+   "naive_cqr_marg": [
+    0.8805,
+    0.78175,
+    0.748
+   ],
+   "recal_cqr_marg": [
+    0.898,
+    0.9065,
+    0.89775
+   ],
+   "recal_hiDstar_fixed": 0.4514285714285714,
+   "recal_hiDstar_perdist": 0.7863568215892054,
+   "hi_prevalence_fixed": 0.04375,
+   "naive_monitor_auc": 0.487006375,
+   "naive_monitor_fires": false,
+   "wall_fixed_ratio": [
+    0.29028909831200167,
+    0.48145243883575367,
+    0.9310537108917811
+   ]
+  },
+  "verdict": {
+   "branch": "ROBUST",
+   "recal_hi_fixed": 0.4514285714285714,
+   "recal_hi_perdist": 0.7863568215892054,
+   "gap_fixed": 0.4485714285714286,
+   "gap_perdist": 0.11364317841079463,
+   "prevalence": 0.04375
+  },
+  "armB_zero_nuisance_cov": [
+   0.908,
+   0.9063333333333333,
+   0.9013333333333333
+  ],
+  "armB_monitor_auc_curve": [
+   0.5061268333333333,
+   0.49210883333333333,
+   0.4900293333333333,
+   0.48821099999999995,
+   0.4871068333333333,
+   0.4880875
+  ],
+  "continuity": {
+   "uniform_eta0_signal_err": 0.0,
+   "uniform_eta0_param_err": 0.0,
+   "uniform_eta0_max_abs_err": 0.0,
+   "clean_eta0_max_abs_err": 0.0
+  },
+  "computed_utc": "2026-06-16T06:15:56.168029+00:00"
+ }
+}

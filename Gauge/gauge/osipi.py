@@ -142,12 +142,20 @@ def _tercile_cov(lo, hi, true, regime):
             for r in range(N_REGIME)]
 
 
-def _evaluate(cal, test_sig, test_gt, b, test_snr, snr_levels, alpha):
+def _evaluate(cal, test_sig, test_gt, b, test_snr, snr_levels, alpha,
+              fixed_edges=None):
     """Coverage of one calibration on OSIPI test (with ground truth).
 
     Returns split-conformal and CQR marginal coverage (D, D*, f), per-D*-tercile
     conditional coverage for both, the CQR regime x SNR grid (for the figure), and
     the monitor decision. ``test_gt`` is used ONLY to measure coverage.
+
+    ``fixed_edges`` (optional 2-vector of D* tercile boundaries): when given, the
+    per-distribution tercile coverage is reported as usual AND a second set keyed
+    ``*_terc_fixed`` is computed on FIXED physical boundaries, so "hi D*" denotes
+    the same physical regime across priors. ``hi_prevalence_fixed`` is the fraction
+    of test voxels in the fixed hi-D* bin -- the clinical-prevalence number that
+    separates "regime rare" from "wall gone".
     """
     theta, feat, resid = _observe(test_sig, b)
     q = cal["q"]
@@ -184,7 +192,7 @@ def _evaluate(cal, test_sig, test_gt, b, test_snr, snr_levels, alpha):
                                     regime, test_snr, snr_levels)
 
     mon = cal["monitor"].evaluate(feat, resid)
-    return {
+    out = {
         "split_marg": np.array(split_marg), "cqr_marg": np.array(cqr_marg),
         "split_terc": np.array(split_terc), "cqr_terc": np.array(cqr_terc),
         "cqr_dstar_width_med": float(np.median(interval_width(cqr_lo[:, DSTAR],
@@ -194,23 +202,45 @@ def _evaluate(cal, test_sig, test_gt, b, test_snr, snr_levels, alpha):
         "monitor_maha": float(mon["maha"]["stat"]),
         "monitor_maha_thr": float(mon["maha"]["threshold"]),
     }
+    # --- second tercile framing on FIXED physical boundaries (cross-prior honest) -
+    if fixed_edges is not None:
+        regime_f, edges_f = _regime_from_true(dtrue, edges=fixed_edges)
+        out["split_terc_fixed"] = np.array(
+            _tercile_cov(split_lo[:, DSTAR], split_hi[:, DSTAR], dtrue, regime_f))
+        out["cqr_terc_fixed"] = np.array(
+            _tercile_cov(cqr_lo[:, DSTAR], cqr_hi[:, DSTAR], dtrue, regime_f))
+        out["regime_edges_fixed"] = np.asarray(edges_f, float)
+        out["hi_counts_fixed"] = np.array(
+            [int((regime_f == r).sum()) for r in range(N_REGIME)])
+        out["hi_prevalence_fixed"] = float(np.mean(regime_f == N_REGIME - 1))
+    return out
 
 
 # --------------------------------------------------------------------------- #
 # The identifiability wall on OSIPI ground truth.
 # --------------------------------------------------------------------------- #
-def wall_metric(gt, b, snr):
+def wall_metric(gt, b, snr, edges=None, bin_endpoints=None):
     """CRLB(D*) vs the D*-tercile width on OSIPI ground truth.
 
     ``snr`` is per-voxel (controlled) or a scalar (native). Returns per-tercile
     median CRLB(D*), tercile widths, the CRLB/width ratio (>= 1 => the regime is
     unresolvable, the wall), and the low->high absolute-CRLB growth.
+
+    With ``edges=None`` the terciles and bin widths are per-distribution (the
+    quantiles of this set's D*). Pass ``edges`` (2-vector of fixed interior
+    boundaries) and ``bin_endpoints`` (the fixed lo/hi outer endpoints) to hold the
+    bins at FIXED physical D* boundaries -- so the CRLB/width ratio is comparable
+    across priors instead of rescaling with each distribution's own spread.
     """
     D, Dstar, f = gt[:, 0], gt[:, DSTAR], gt[:, 2]
     snr = np.broadcast_to(np.asarray(snr, float), (gt.shape[0],))
     sd = crlb_dstar_batch(b, D, Dstar, f, snr)
-    regime, edges = _regime_from_true(Dstar)
-    bin_edges = np.concatenate([[float(Dstar.min())], edges, [float(Dstar.max())]])
+    regime, edges = _regime_from_true(Dstar, edges=edges)
+    if bin_endpoints is None:
+        lo_end, hi_end = float(Dstar.min()), float(Dstar.max())
+    else:
+        lo_end, hi_end = float(bin_endpoints[0]), float(bin_endpoints[-1])
+    bin_edges = np.concatenate([[lo_end], np.asarray(edges, float), [hi_end]])
     bin_w = np.diff(bin_edges)
     finite = np.isfinite(sd)
     med, ratio = [], []

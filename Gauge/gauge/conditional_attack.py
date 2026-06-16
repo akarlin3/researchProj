@@ -106,8 +106,15 @@ def _proxy_matrix(signals, b, theta, s0, sigma, snr_known, cqr_dstar_width):
 # CHECKPOINT 0 (part 2) -- the conditional-coverage metric.
 # Realized coverage binned by TRUE D* regime x SNR. Headline = high-D* slice.
 # --------------------------------------------------------------------------- #
-def _regime_from_true(dstar_true, n=N_REGIME):
-    edges = np.quantile(dstar_true, [(i + 1) / n for i in range(n - 1)])
+def _regime_from_true(dstar_true, n=N_REGIME, edges=None):
+    """Tercile (regime) labels for true D*. With ``edges=None`` the boundaries are
+    the per-distribution quantiles (equal counts, bins shift with the prior); pass
+    explicit ``edges`` to hold FIXED physical boundaries (comparable bins, possibly
+    unequal counts) -- the honest cross-prior wall comparison."""
+    if edges is None:
+        edges = np.quantile(dstar_true, [(i + 1) / n for i in range(n - 1)])
+    else:
+        edges = np.asarray(edges, dtype=float)
     return np.digitize(dstar_true, edges), edges
 
 

@@ -76,7 +76,9 @@ identified terciles without lifting high-$\Dstar$ conditional coverage, and the 
 replicates when the ground truth is a genuinely non-bi-exponential
 (velocity-dispersion) mechanism; we additionally chart the off-model validity
 envelope across three deviation families, with a graceful, partly monitored
-degradation and a recovered bi-exponential origin.
+degradation and a recovered bi-exponential origin, and confirm the wall persists
+under a clinically realistic correlated, skewed prior with measurement-level
+nuisance, where it concentrates in a clinically rare high-$\Dstar$ tail.
 
 \noindent
 \textbf{Conclusion:} The central finding is an IVIM-specific identifiability
@@ -886,6 +888,72 @@ discrimination of off-model drift is weak and family-dependent. Across-seed mean
 \label{fig:altmodel}
 \end{figure}
 
+\subsection{A clinically realistic cohort: correlated prior and measurement nuisance}
+\label{sec:realism}
+The cohort so far draws $(D,\Dstar,f)$ uniformly over published ranges with clean
+Rician noise. As a capstone robustness check we replace both idealizations at once:
+a clinically realistic \emph{joint} prior -- correlated, right-skewed marginals
+(log-normal $D,\Dstar$; logit-normal $f$) with a within-subject $\Dstar$
+coefficient of variation in the published $50$--$110\%$ band, shaped to
+representative abdominal IVIM distributions -- and a measurement-level nuisance
+layer on the bi-exponential signal under a single magnitude scalar $\eta$:
+partial-volume mixing of a free-fluid compartment, bulk-motion phase, and
+non-Rician (multi-coil noncentral-$\chi$) noise. This is still a synthetic cohort
+and makes no in-vivo coverage claim; a continuity gate confirms the construction
+reduces to the existing cohort exactly at the uniform prior with $\eta=0$ (max
+$|\cdot|=0.00\mathrm{e}{+}00$, numerically exact). Because a skewed prior moves the
+tercile boundaries, we report the high-$\Dstar$ regime on two stratifications: the
+\emph{fixed} physical boundaries inherited from the uniform cohort -- so ``high
+$\Dstar$'' denotes the same physical regime across priors (primary) -- and the
+per-distribution quantiles (secondary), with the clinical prevalence of the fixed
+high-$\Dstar$ bin reported so a rare regime is never mistaken for a vanished wall.
+
+Under the realistic prior with clean acquisition (Arm~A), recalibrating
+\emph{within} the distribution restores marginal coverage to nominal ($D/\Dstar/f =
+0.903$\band{0.896}{0.913}, $0.900$\band{0.884}{0.917}, $0.898$\band{0.885}{0.912}),
+while naive transfer of the uniform-calibrated predictor breaks ($\Dstar$ marginal
+$0.767$\band{0.735}{0.805}). The high-$\Dstar$ wall persists after recalibration in
+\emph{both} stratifications -- fixed-edge tercile coverage $0.533$\band{0.480}{0.594}
+and per-distribution $0.786$\band{0.749}{0.823}, against nominal $0.90$ -- with the
+fixed-edge CRLB-to-bin-width ratio reaching $0.895$\band{0.849}{0.961} at high
+$\Dstar$ (Fig.~\ref{fig:realism}A,B). The severest under-coverage concentrates in a
+clinically \emph{rare} high-$\Dstar$ tail (fixed high-$\Dstar$ prevalence
+$0.049$\band{0.044}{0.056}): under a liver-like prior the ill-posed regime is
+sparsely populated -- a scoping caveat we report as such, not as a weakened wall.
+The realistic prior is a within-support covariate shift, so the label-free monitor
+does not flag it (naive-transfer AUC $0.480$\band{0.470}{0.494}, at chance);
+recalibration, not monitoring, is what restores coverage.
+
+Holding the deployed predictor fixed and sweeping the nuisance magnitude (Arm~B),
+marginal coverage degrades monotonically: $D$ coverage falls from
+$0.903$\band{0.889}{0.912} at $\eta=0$ to $0.570$\band{0.548}{0.589} at $\eta=1$,
+while the already-wide $\Dstar$ interval stays near nominal
+($0.899$\band{0.888}{0.911}), and recalibrating within the nuisance-laden
+distribution restores it ($\Dstar$ $0.899$\band{0.886}{0.914} at $\eta=1$).
+Notably, this acquisition nuisance is \emph{not} more observable than pure
+signal-model drift: the monitor's AUC stays at chance across the sweep
+($0.493$\band{0.482}{0.507} at $\eta=1$, cf.\ the off-model envelope's
+$\le0.53$), so a measurement nuisance that substantially breaks coverage is a
+largely \emph{silent} channel -- again locating the operative safeguard in
+recalibration rather than the observable monitor.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/realism_cohort.pdf}
+\caption{Realism cohort (realistic synthetic; no in-vivo coverage claim).
+(A)~Arm~A -- marginal coverage under a realistic correlated/skewed prior: naive
+transfer of the uniform-calibrated predictor breaks, within-distribution
+recalibration restores nominal coverage. (B)~Arm~A -- recalibrated high-$\Dstar$
+tercile coverage on fixed physical boundaries vs.\ per-distribution quantiles; the
+wall persists in both, concentrated in a clinically rare high-$\Dstar$ tail (fixed
+prevalence $\approx0.05$). (C)~Arm~B -- the measurement-nuisance envelope: marginal
+$D$ coverage degrades with the nuisance magnitude (the wider $\Dstar$ interval is
+held) while the deployment monitor's AUC stays at chance, a silent channel.
+Seed-\texttt{20260613} panel (across-seed [5,95] bands quoted in text); from
+\texttt{results/realism\_report.txt}.}
+\label{fig:realism}
+\end{figure}
+
 \section{Discussion}
 The thread connecting these results is an \emph{observable-vs-latent} distinction.
 Conformal prediction guarantees \emph{marginal} coverage and, with weighting or
@@ -897,14 +965,17 @@ ill-posed regime: the Fisher information there collapses, the CRLB exceeds the b
 width, and no observable proxy -- including the plug-in $\hat{\Dstar}$ -- recovers
 the regime. This is why an observable deployment monitor catches every
 \emph{distribution} shift but is blind to the \emph{within-distribution} high-$\Dstar$
-gap. Three independent stresses corroborate that this split is information, not an
+gap. Four independent stresses corroborate that this split is information, not an
 artifact of our estimator or generator: a deliberately biased shrinkage prior buys
 $\Dstar$ point precision but not high-$\Dstar$ conditional coverage
 (Sec.~\ref{sec:dissociation-shrinkage}); the gap replicates when the ground truth is
 a non-bi-exponential velocity-dispersion process, a forward-model break that is
-itself a hidden channel the monitor cannot see (Sec.~\ref{sec:altmodel}); and the
+itself a hidden channel the monitor cannot see (Sec.~\ref{sec:altmodel}); the
 off-model validity envelope degrades gracefully with a recovered bi-exponential
-origin (Sec.~\ref{sec:envelope}).
+origin (Sec.~\ref{sec:envelope}); and the wall persists under a clinically realistic
+correlated, skewed prior with measurement-level nuisance, where it concentrates in a
+clinically rare high-$\Dstar$ tail and the nuisance proves a silent channel the
+monitor does not see (Sec.~\ref{sec:realism}).
 
 The same wall appears in adjacent label-free problems: deployment-validity
 monitoring is provably blind to shifts that leave observable statistics unchanged
@@ -936,15 +1007,21 @@ principle, so a distribution-free coverage guarantee can only ever be
 synthetic-established and then transported under an explicitly monitored
 exchangeability assumption -- precisely what the real-data section
 (Sec.~\ref{sec:invivo-real}) exercises, rather than a coverage claim it could never
-support. The synthetic cohort uses uniform priors over published
-ranges and Rician noise; real tissue is more heterogeneous. The off-model behavior
-is now characterized rather than probed at a single point: the high-$\Dstar$ wall
-replicates under a non-bi-exponential velocity-dispersion generator
-(Sec.~\ref{sec:altmodel}) and we map a validity envelope across three deviation
-families with a monitored, graceful degradation and a recovered bi-exponential
-origin (Sec.~\ref{sec:envelope}). These remain schematic deviations spanning the
-neighbourhood of the bi-exponential model, not a validated tissue model, and the
-in-vivo unverifiability above is unchanged by them. The
+support. The base synthetic cohort uses uniform priors over published
+ranges and Rician noise; real tissue is more heterogeneous. We address this directly
+with a capstone realism cohort (Sec.~\ref{sec:realism}) that draws a correlated,
+right-skewed joint prior with a published-range $\Dstar$ coefficient of variation and
+adds measurement-level nuisance (partial-volume mixing, bulk-motion phase, non-Rician
+multi-coil noise): the marginal guarantee returns on recalibration and the
+high-$\Dstar$ wall persists, concentrated in a clinically rare high-$\Dstar$ tail.
+The off-model behavior is likewise characterized rather than probed at a single
+point: the high-$\Dstar$ wall replicates under a non-bi-exponential
+velocity-dispersion generator (Sec.~\ref{sec:altmodel}) and we map a validity
+envelope across three deviation families with a monitored, graceful degradation and a
+recovered bi-exponential origin (Sec.~\ref{sec:envelope}). These remain schematic
+deviations and a still-synthetic cohort spanning the neighbourhood of the
+bi-exponential model, not a validated tissue model, and the in-vivo unverifiability
+above is unchanged by them. The
 CRLB diagnostic uses the high-SNR Gaussian approximation to Rician noise; the
 qualitative under-identification of $\Dstar$ is noise-model-independent (the
 $\Dstar$ Jacobian column vanishes as $\Dstar$ grows), but absolute bound values at
@@ -967,9 +1044,12 @@ pipeline regenerates deterministically from seed \texttt{20260613}
 (\texttt{python -m gauge.baselines}; \texttt{gauge.benchmark};
 \texttt{gauge.conditional}; \texttt{gauge.conditional\_attack};
 \texttt{gauge.robustness}; \texttt{gauge.invivo}; \texttt{gauge.dissociation};
-\texttt{gauge.altmodel}), and the bands from the multi-seed
-driver (\texttt{python -m gauge.multiseed}); seed-0 outputs are byte-identical
-across independent full re-runs.
+\texttt{gauge.altmodel}; \texttt{gauge.osipi}; \texttt{gauge.realism}), with the
+core bands from the multi-seed driver (\texttt{python -m gauge.multiseed}) and the
+external-phantom, alternative-forward-model, and realism bands from their own
+seed sweeps (\texttt{python -m gauge.osipi sweep 16}; \texttt{gauge.altmodel sweep
+16}; \texttt{gauge.realism sweep 16}); seed-0 outputs are byte-identical across
+independent full re-runs.
 
 \section{Conclusion}
 This work brings distribution-free conformal coverage to the ill-posed IVIM inverse

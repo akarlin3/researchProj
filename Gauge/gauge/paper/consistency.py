@@ -147,6 +147,27 @@ CHECKS = [
     ("Dissociation sanity gate: coverage must rise despite routing, not by fixing it",
      "DESPITE routing", "results/dissociation_report.txt",
      ["DESPITE routing, not by fixing it"]),
+    # --- Realism cohort: realistic joint prior + measurement-nuisance envelope ---
+    # Numeric coverage/wall/prevalence values ship as 16-seed bands (see
+    # [B-REALISM]); only the seed-robust qualitative claims + the built-in continuity
+    # gate trace verbatim here.
+    ("Realism cohort is synthetic, NO in-vivo coverage claim",
+     "no in-vivo coverage claim", "results/realism_report.txt",
+     ["A realistic synthetic cohort is still synthetic: NO in-vivo coverage claim "
+      "is made here."]),
+    ("Realism continuity gate: uniform prior + zero nuisance == generate_cohort (exact)",
+     "max |.| = 0.00e+00", "results/realism_report.txt",
+     ["uniform prior + zero nuisance reproduces generate_cohort: max |.| = "
+      "0.00e+00 (numerically exact)"]),
+    ("Realism P1 GUARANTEE holds (recalibration restores marginal coverage)",
+     "P1 GUARANTEE: HOLDS", "results/realism_report.txt", ["P1 GUARANTEE: HOLDS"]),
+    ("Realism P2 WALL holds (high-D* under-covers after recalibration)",
+     "P2 WALL: HOLDS", "results/realism_report.txt", ["P2 WALL: HOLDS"]),
+    ("Realism P3 monitor sub-prediction NOT SUPPORTED (nuisance is a silent breaker)",
+     "NOT SUPPORTED", "results/realism_report.txt",
+     ["monitor sub-prediction", "NOT SUPPORTED"]),
+    ("Realism wall verdict: robust to realistic prior",
+     "VERDICT [ROBUST]", "results/realism_report.txt", ["VERDICT [ROBUST]"]),
 ]
 
 
@@ -270,6 +291,28 @@ ALTMODEL_BAND_ASSERTIONS = [
     ("Arm1 log-normal recal hi-D*eff (2nd-kernel confirm)", "altmodel/arm1_lognormal/A/recal/cqr_hiDstar"),
     ("Arm1 log-normal recal marg D*eff (holds)", "altmodel/arm1_lognormal/A/recal/cqr_marg/D*"),
     ("Arm1 log-normal naive monitor AUC", "altmodel/arm1_lognormal/A/naive/monitor_auc"),
+]
+
+# Realism-cohort (E) headlines -> realism_multiseed.json item keys. Arm A (realistic
+# PUBLISHED joint prior, clean acquisition) reports the recalibrated high-D* tercile
+# coverage in BOTH the FIXED-edge framing (the decisive cross-prior wall number) and
+# the per-distribution framing, with the fixed hi-D* clinical prevalence; Arm B is the
+# measurement-nuisance envelope (degradation extreme + monitor AUC + recalibration
+# recovery). Banded across seeds exactly like the OSIPI / alt-model numbers.
+REALISM_BAND_ASSERTIONS = [
+    ("Realism recal marg D", "realism/armA/published/recal/cqr_marg/D"),
+    ("Realism recal marg D*", "realism/armA/published/recal/cqr_marg/D*"),
+    ("Realism recal marg f", "realism/armA/published/recal/cqr_marg/f"),
+    ("Realism naive marg D* (breaks)", "realism/armA/published/naive/cqr_marg/D*"),
+    ("Realism recal hi-D* FIXED (decisive)", "realism/armA/published/recal/cqr_hiDstar_fixed"),
+    ("Realism recal hi-D* per-distribution", "realism/armA/published/recal/cqr_hiDstar_perdist"),
+    ("Realism fixed hi-D* clinical prevalence", "realism/armA/published/hiDstar_prevalence_fixed"),
+    ("Realism naive monitor AUC", "realism/armA/published/naive/monitor_auc"),
+    ("Realism wall FIXED CRLB/width hi", "realism/armA/published/wall_fixed/crlb_over_width/hi"),
+    ("Realism Arm-B eta=1 cov D (degrades)", "realism/armB/eta5/cov/D"),
+    ("Realism Arm-B eta=1 monitor AUC", "realism/armB/eta5/auc"),
+    ("Realism Arm-B recal eta=1 cov D* (recovers)", "realism/armB/recal_eta100/cqr_marg/D*"),
+    ("Realism continuity uniform-eta0 err (==0)", "realism/continuity/uniform_eta0_max_abs_err"),
 ]
 
 
@@ -399,7 +442,21 @@ def main():
               f"{len(ALTMODEL_BAND_ASSERTIONS)} valid (n_seeds={alt_n}); "
               f"{alt_fail} failed.")
 
-    gate_fail = failed + band_fail + osipi_fail + alt_fail
+    print("-" * 88)
+    print("[B-REALISM] BAND VALIDITY -- realism-cohort (E) headlines (Arm-A realistic "
+          "prior + Arm-B nuisance envelope) lie in their [5,95] band and carry an n_seeds")
+    print("-" * 88)
+    real_lines, real_fail, real_n = _band_checks(
+        "results/realism_multiseed.json", REALISM_BAND_ASSERTIONS,
+        "python -m gauge.realism sweep 16")
+    for ln in real_lines:
+        print(ln)
+    if real_n is not None:
+        print(f"[B-REALISM] band checks: {len(REALISM_BAND_ASSERTIONS)-real_fail}/"
+              f"{len(REALISM_BAND_ASSERTIONS)} valid (n_seeds={real_n}); "
+              f"{real_fail} failed.")
+
+    gate_fail = failed + band_fail + osipi_fail + alt_fail + real_fail
     verdict = "PASS" if gate_fail == 0 else "FAIL"
     print("=" * 88)
     print("CONSISTENCY SUMMARY (GATE 3, Gauge-CI):")

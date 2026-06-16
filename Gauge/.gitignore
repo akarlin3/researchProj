@@ -37,3 +37,7 @@ gauge/paper/Gauge_MRM_cover_letter*.pdf
 # Regenerable per-seed alt-forward-model raw quantities (aggregated into
 # results/altmodel_multiseed.json)
 results/altmodel_seeds/
+
+# Regenerable per-seed realism-cohort raw quantities (aggregated into
+# results/realism_multiseed.json)
+results/realism_seeds/

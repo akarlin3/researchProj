@@ -75,6 +75,63 @@ def add_gaussian_noise(signal, snr, rng, S0=1.0):
     return np.asarray(signal, dtype=float) + rng.normal(0.0, sigma, size=shape)
 
 
+def add_ncchi_noise(signal, snr, rng, L=1, S0=1.0):
+    """Add non-central chi noise (L-coil sum-of-squares magnitude reconstruction).
+
+    Parallel-imaging / multi-coil magnitude MRI with an ``L``-channel
+    sum-of-squares combination follows a non-central chi distribution with ``2L``
+    degrees of freedom: ``measured = sqrt(sum_{l=1..L} (S_l + n_re,l)^2 + n_im,l^2)``
+    with the true signal carried by the first channel only and ``sigma = S0/snr``
+    per channel. ``L = 1`` is the ordinary Rician case and -- because the first two
+    Gaussian draws are taken in the SAME order and with the SAME parameterisation as
+    :func:`add_rician_noise` -- reduces to it **byte-identically** (the realism
+    continuity gate relies on this). Larger ``L`` lifts the noise floor and makes the
+    magnitude statistics progressively non-Rician.
+    """
+    L = int(L)
+    sigma = S0 / snr
+    shape = np.shape(signal)
+    n_re = rng.normal(0.0, sigma, size=shape)
+    n_im = rng.normal(0.0, sigma, size=shape)
+    acc = (np.asarray(signal, dtype=float) + n_re) ** 2 + n_im ** 2
+    for _ in range(L - 1):
+        acc = acc + rng.normal(0.0, sigma, size=shape) ** 2 \
+            + rng.normal(0.0, sigma, size=shape) ** 2
+    return np.sqrt(acc)
+
+
+# Free-fluid (CSF / edema-like) diffusivity for the partial-volume compartment,
+# mm^2/s -- free water at body temperature (~3.0e-3). The contaminating compartment
+# is a slow mono-exponential decay, the dominant partial-volume confound in
+# abdominal DWI (vessel / fluid spill-in lifts the high-b signal).
+D_FREE_FLUID = 3.0e-3
+
+
+def partial_volume_mix(signal, b, frac, D_free=D_FREE_FLUID):
+    """Blend a free-fluid mono-exponential compartment into a clean IVIM signal.
+
+    ``S_mix = (1 - frac) * S_tissue + frac * exp(-b * D_free)`` with ``frac`` a
+    scalar or per-voxel ``(N, 1)`` mixing fraction. ``frac = 0`` returns the input
+    unchanged. Models partial-volume contamination by a slowly decaying free-fluid
+    compartment -- a measurement-level nuisance that biases the bi-exponential fit,
+    distinct from any change in the tissue parameter prior.
+    """
+    b = np.asarray(b, dtype=float)
+    s_free = np.exp(-b[None, :] * D_free)
+    return (1.0 - frac) * np.asarray(signal, dtype=float) + frac * s_free
+
+
+def apply_motion_phase(signal, phase):
+    """Return the complex signal ``S * exp(i*phase)`` (bulk-motion phase).
+
+    Bulk / pulsatile motion imparts a voxelwise, b-dependent phase on the complex
+    signal before magnitude detection; combined with the complex noise draw and the
+    magnitude operation it produces a motion-induced signal perturbation absent from
+    a clean Rician model. ``phase = 0`` is the no-motion limit (``exp(0) = 1``).
+    """
+    return np.asarray(signal, dtype=float) * np.exp(1j * np.asarray(phase, dtype=float))
+
+
 def _gamma_perfusion_kernel(b, mu, k):
     """E[exp(-b D*)] for D* ~ Gamma(shape=k, mean=mu): ``(1 + b mu/k) ** (-k)``.
 

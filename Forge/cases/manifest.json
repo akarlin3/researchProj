@@ -1,0 +1,618 @@
+{
+  "num_cases": 12,
+  "base_seed": 1000,
+  "cases": [
+    {
+      "case_id": 1,
+      "seed": 1001,
+      "bin_file": "case_1.bin",
+      "deck_file": "case_1.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          21,
+          30,
+          48
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_LUNG_ICRP",
+          "G4_BONE_COMPACT_ICRU"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 1.6491544442931494,
+        "isocenter_offset_cm": [
+          -1.873862538708422,
+          2.14734038724675
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 2,
+      "seed": 1002,
+      "bin_file": "case_2.bin",
+      "deck_file": "case_2.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          19,
+          27,
+          47
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_WATER",
+          "G4_BONE_COMPACT_ICRU"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 4.893298707873996,
+        "isocenter_offset_cm": [
+          1.4856739024091468,
+          -0.6630484853705307
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 3,
+      "seed": 1003,
+      "bin_file": "case_3.bin",
+      "deck_file": "case_3.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          17,
+          24,
+          43
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_LUNG_ICRP",
+          "G4_LUNG_ICRP"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 3.93870519707881,
+        "isocenter_offset_cm": [
+          -0.031924036866891825,
+          0.9647493449051119
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 4,
+      "seed": 1004,
+      "bin_file": "case_4.bin",
+      "deck_file": "case_4.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          20,
+          26,
+          37
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_LUNG_ICRP",
+          "G4_LUNG_ICRP"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 2.7364374652124983,
+        "isocenter_offset_cm": [
+          -2.169135808208452,
+          -0.7160721783165753
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 5,
+      "seed": 1005,
+      "bin_file": "case_5.bin",
+      "deck_file": "case_5.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          18,
+          24,
+          49
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_BONE_COMPACT_ICRU",
+          "G4_BONE_COMPACT_ICRU"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 10.340339402691734,
+        "isocenter_offset_cm": [
+          -1.2762958297933773,
+          0.8313482917229917
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 6,
+      "seed": 1006,
+      "bin_file": "case_6.bin",
+      "deck_file": "case_6.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          18,
+          26,
+          38
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_WATER",
+          "G4_BONE_COMPACT_ICRU"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 7.208140966096721,
+        "isocenter_offset_cm": [
+          -1.2130122035449469,
+          -1.574565331826561
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 7,
+      "seed": 1007,
+      "bin_file": "case_7.bin",
+      "deck_file": "case_7.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          15,
+          21,
+          44
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_BONE_COMPACT_ICRU",
+          "G4_BONE_COMPACT_ICRU"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 9.251813279190461,
+        "isocenter_offset_cm": [
+          0.8575710775119436,
+          -1.8204285310341093
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 8,
+      "seed": 1008,
+      "bin_file": "case_8.bin",
+      "deck_file": "case_8.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          17,
+          24,
+          41
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_BONE_COMPACT_ICRU",
+          "G4_BONE_COMPACT_ICRU"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 9.223982103423403,
+        "isocenter_offset_cm": [
+          -1.6954030247145493,
+          2.9026167272931644
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 9,
+      "seed": 1009,
+      "bin_file": "case_9.bin",
+      "deck_file": "case_9.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          20,
+          26,
+          44
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_LUNG_ICRP",
+          "G4_LUNG_ICRP"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 4.605698082892187,
+        "isocenter_offset_cm": [
+          -2.7008912275608106,
+          -1.3120414894420453
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 10,
+      "seed": 1010,
+      "bin_file": "case_10.bin",
+      "deck_file": "case_10.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          19,
+          25,
+          45
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_WATER",
+          "G4_LUNG_ICRP"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 6.590154446750014,
+        "isocenter_offset_cm": [
+          2.5060603986807646,
+          2.888795093332819
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 11,
+      "seed": 1011,
+      "bin_file": "case_11.bin",
+      "deck_file": "case_11.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          17,
+          24,
+          35
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_WATER",
+          "G4_LUNG_ICRP"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 6.851573587339257,
+        "isocenter_offset_cm": [
+          -1.7243991920760615,
+          -2.5077661150699964
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "case_id": 12,
+      "seed": 1012,
+      "bin_file": "case_12.bin",
+      "deck_file": "case_12.txt",
+      "phantom_meta": {
+        "slab_boundaries_z": [
+          20,
+          27,
+          38
+        ],
+        "materials": [
+          "G4_WATER",
+          "G4_AIR",
+          "G4_BONE_COMPACT_ICRU",
+          "G4_LUNG_ICRP"
+        ]
+      },
+      "magnetic_field": {
+        "strength_tesla": 1.5,
+        "direction": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "source": {
+        "particle": "gamma",
+        "modality": "photon",
+        "spectrum": "7 MV FFF bremsstrahlung (synthesized, APPROXIMATE)",
+        "spectrum_mean_mev": 2.0909567303105767,
+        "spectrum_endpoint_mv": 7.0,
+        "energy_mev": 2.0909567303105767,
+        "field_half_cm": 8.916143501590927,
+        "isocenter_offset_cm": [
+          -1.569381482677946,
+          2.162404070802233
+        ],
+        "histories": 500000
+      },
+      "dimensions": [
+        60,
+        60,
+        60
+      ],
+      "voxel_sizes_mm": [
+        2.5,
+        2.5,
+        2.5
+      ]
+    }
+  ]
+}

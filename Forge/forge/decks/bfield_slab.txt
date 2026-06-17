@@ -1,0 +1,125 @@
+# TOPAS Parameter Deck for FORGE ERE Benchmark
+# Parameterized layered slab phantom (Water - Air - Lung - Water) in a 1.5T transverse B-field
+
+# ====================================================================
+# WORLD GEOMETRY
+# ====================================================================
+d:Ge/World/HLX = 10.0 cm
+d:Ge/World/HLY = 10.0 cm
+d:Ge/World/HLZ = 15.0 cm
+s:Ge/World/Material = "G4_AIR"
+
+# ====================================================================
+# PHANTOM PARENT BOX (To bound our scorer and magnetic field)
+# ====================================================================
+s:Ge/Phantom/Type = "TsBox"
+s:Ge/Phantom/Parent = "World"
+s:Ge/Phantom/Material = "G4_AIR"
+d:Ge/Phantom/HLX = 7.5 cm
+d:Ge/Phantom/HLY = 7.5 cm
+d:Ge/Phantom/HLZ = 10.0 cm
+d:Ge/Phantom/TransX = 0.0 cm
+d:Ge/Phantom/TransY = 0.0 cm
+d:Ge/Phantom/TransZ = 0.0 cm
+d:Ge/Phantom/RotX = 0.0 deg
+d:Ge/Phantom/RotY = 0.0 deg
+d:Ge/Phantom/RotZ = 0.0 deg
+
+# ====================================================================
+# SLAB GEOMETRY (Water -> Air Gap -> Lung -> Water)
+# ====================================================================
+# Slab 1: Water (5 cm thickness)
+s:Ge/Slab1/Type = "TsBox"
+s:Ge/Slab1/Parent = "Phantom"
+s:Ge/Slab1/Material = "G4_WATER"
+d:Ge/Slab1/HLX = 7.5 cm
+d:Ge/Slab1/HLY = 7.5 cm
+d:Ge/Slab1/HLZ = 2.5 cm
+d:Ge/Slab1/TransX = 0.0 cm
+d:Ge/Slab1/TransY = 0.0 cm
+d:Ge/Slab1/TransZ = -7.5 cm
+
+# Slab 2: Air Gap (2 cm thickness)
+s:Ge/Slab2/Type = "TsBox"
+s:Ge/Slab2/Parent = "Phantom"
+s:Ge/Slab2/Material = "G4_AIR"
+d:Ge/Slab2/HLX = 7.5 cm
+d:Ge/Slab2/HLY = 7.5 cm
+d:Ge/Slab2/HLZ = 1.0 cm
+d:Ge/Slab2/TransX = 0.0 cm
+d:Ge/Slab2/TransY = 0.0 cm
+d:Ge/Slab2/TransZ = -4.0 cm
+
+# Slab 3: Lung (5 cm thickness)
+s:Ge/Slab3/Type = "TsBox"
+s:Ge/Slab3/Parent = "Phantom"
+s:Ge/Slab3/Material = "G4_LUNG_ICRP"
+d:Ge/Slab3/HLX = 7.5 cm
+d:Ge/Slab3/HLY = 7.5 cm
+d:Ge/Slab3/HLZ = 2.5 cm
+d:Ge/Slab3/TransX = 0.0 cm
+d:Ge/Slab3/TransY = 0.0 cm
+d:Ge/Slab3/TransZ = -0.5 cm
+
+# Slab 4: Water (8 cm thickness)
+s:Ge/Slab4/Type = "TsBox"
+s:Ge/Slab4/Parent = "Phantom"
+s:Ge/Slab4/Material = "G4_WATER"
+d:Ge/Slab4/HLX = 7.5 cm
+d:Ge/Slab4/HLY = 7.5 cm
+d:Ge/Slab4/HLZ = 4.0 cm
+d:Ge/Slab4/TransX = 0.0 cm
+d:Ge/Slab4/TransY = 0.0 cm
+d:Ge/Slab4/TransZ = +6.0 cm
+
+# ====================================================================
+# MAGNETIC FIELD (Transverse Y-direction)
+# ====================================================================
+s:Ge/Phantom/Field = "DipoleMagnet"
+u:Ge/Phantom/MagneticFieldDirectionX = 0.0
+u:Ge/Phantom/MagneticFieldDirectionY = 1.0
+u:Ge/Phantom/MagneticFieldDirectionZ = 0.0
+d:Ge/Phantom/MagneticFieldStrength = 1.5 tesla
+
+# ====================================================================
+# BEAM SOURCE (20 MeV Electron Beam)
+# ====================================================================
+s:So/Beam/Type = "Beam"
+s:So/Beam/Component = "World"
+s:So/Beam/BeamParticle = "e-"
+d:So/Beam/BeamEnergy = 20.0 MeV
+u:So/Beam/BeamEnergySpread = 0.0
+s:So/Beam/BeamPositionDistribution = "Gaussian"
+s:So/Beam/BeamPositionCutoffShape = "Rectangle"
+d:So/Beam/BeamPositionCutoffX = 10.0 cm
+d:So/Beam/BeamPositionCutoffY = 10.0 cm
+d:So/Beam/BeamPositionSpreadX = 5.0 mm
+d:So/Beam/BeamPositionSpreadY = 5.0 mm
+s:So/Beam/BeamAngularDistribution = "None"
+d:So/Beam/TransX = 0.0 cm
+d:So/Beam/TransY = 0.0 cm
+d:So/Beam/TransZ = -12.0 cm
+d:So/Beam/RotX = 0.0 deg
+d:So/Beam/RotY = 0.0 deg
+d:So/Beam/RotZ = 0.0 deg
+i:So/Beam/NumberOfHistoriesInRun = 5000
+
+# ====================================================================
+# SCORING (3D Dose to Medium binned on Phantom)
+# ====================================================================
+s:Sc/Dose/Quantity = "DoseToMedium"
+s:Sc/Dose/Component = "Phantom"
+s:Sc/Dose/OutputFile = "dose_bfield_slab"
+s:Sc/Dose/OutputType = "csv"
+s:Sc/Dose/IfOutputFileAlreadyExists = "Overwrite"
+i:Sc/Dose/XBins = 60
+i:Sc/Dose/YBins = 60
+i:Sc/Dose/ZBins = 60
+b:Sc/Dose/PropagateToChildren = "True"
+
+# ====================================================================
+# TIMING & CONTROLS
+# ====================================================================
+b:Gr/View/Active = "False"
+i:Ts/ShowHistoryCountAtInterval = 1000
+i:Ts/Seed = 42

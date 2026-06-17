@@ -1,0 +1,137 @@
+import numpy as np
+from dipy.core.gradients import gradient_table
+from src.wrappers.OsipiBase import OsipiBase
+from src.original.fitting.IAR_LundUniversity.ivim_fit_method_biexp import IvimModelBiExp
+
+
+class IAR_LU_biexp(OsipiBase):
+    """
+    Bi-exponential fitting algorithm by Ivan A. Rashid, Lund University
+    """
+    
+    # I'm thinking that we define default attributes for each submission like this
+    # And in __init__, we can call the OsipiBase control functions to check whether
+    # the user inputs fulfil the requirements
+    
+    # Some basic stuff that identifies the algorithm
+    id_author = "Ivan A. Rashid, LU"
+    id_algorithm_type = "Bi-exponential fit"
+    id_return_parameters = "f, D*, D"
+    id_units = "seconds per milli metre squared or milliseconds per micro metre squared"
+    
+    # Algorithm requirements
+    required_bvalues = 4
+    required_thresholds = [0,0] # Interval from "at least" to "at most", in case submissions allow a custom number of thresholds
+    required_bounds = False
+    required_bounds_optional = True # Bounds may not be required but are optional
+    required_initial_guess = False
+    required_initial_guess_optional = True
+
+    # Supported inputs in the standardized class
+    supported_bounds = True
+    supported_initial_guess = True
+    supported_thresholds = False
+    supported_dimensions = 1
+    supported_priors = False
+    
+    def __init__(self, bvalues=None, thresholds=None, bounds=None, initial_guess=None, weighting=None, stats=False):
+        """
+            Everything this algorithm requires should be implemented here.
+            Number of segmentation thresholds, bounds, etc.
+            
+            Our OsipiBase object could contain functions that compare the inputs with
+            the requirements.
+        """
+        super(IAR_LU_biexp, self).__init__(bvalues, thresholds, bounds, initial_guess)
+        if bounds is None:
+            self.use_bounds = {"f": False, "Dp": False, "D": False}
+        else:
+            self.use_bounds = {"f": True, "Dp": True, "D": True}
+
+        if initial_guess is None:
+            self.use_initial_guess = {"f": False, "Dp": False, "D": False}
+        else:
+            self.use_initial_guess = {"f": True, "Dp": True, "D": True}
+
+        # Check the inputs
+
+        # Initialize the algorithm
+        if self.bvalues is not None:
+            bvec = np.zeros((self.bvalues.size, 3))
+            bvec[:,2] = 1
+            gtab = gradient_table(self.bvalues, bvecs=bvec, b0_threshold=0)
+
+            # Convert dict bounds/initial_guess to list-of-lists as expected by IvimModelBiExp
+            bounds_list = [[self.bounds["S0"][0], self.bounds["f"][0], self.bounds["Dp"][0], self.bounds["D"][0]],
+                           [self.bounds["S0"][1], self.bounds["f"][1], self.bounds["Dp"][1], self.bounds["D"][1]]]
+            initial_guess_list = [self.initial_guess["S0"], self.initial_guess["f"], self.initial_guess["Dp"], self.initial_guess["D"]]
+
+            self.IAR_algorithm = IvimModelBiExp(gtab, bounds=bounds_list, initial_guess=initial_guess_list)
+        else:
+            self.IAR_algorithm = None
+        
+    
+    def ivim_fit(self, signals, **kwargs):
+        """Perform the IVIM fit
+
+        Args:
+            signals (array-like)
+
+        Returns:
+            _type_: _description_
+        """
+
+        # Make sure bounds and initial guess conform to the algorithm requirements
+        bounds = [[self.bounds["S0"][0], self.bounds["f"][0], self.bounds["Dp"][0], self.bounds["D"][0]], 
+                       [self.bounds["S0"][1], self.bounds["f"][1], self.bounds["Dp"][1], self.bounds["D"][1]]]
+        initial_guess = [self.initial_guess["S0"], self.initial_guess["f"], self.initial_guess["Dp"], self.initial_guess["D"]]
+        
+        if self.IAR_algorithm is None:
+            
+            bvec = np.zeros((self.bvalues.size, 3))
+            bvec[:,2] = 1
+            gtab = gradient_table(self.bvalues, bvecs=bvec, b0_threshold=0)
+            
+            self.IAR_algorithm = IvimModelBiExp(gtab, bounds=bounds, initial_guess=initial_guess)
+            
+        fit_results = self.IAR_algorithm.fit(signals)
+        
+        results = {}
+        results["f"] = fit_results.model_params[1]
+        results["Dp"] = fit_results.model_params[2]
+        results["D"] = fit_results.model_params[3]
+        results = self.D_and_Ds_swap(results)
+
+        return results
+
+
+    def ivim_fit_full_volume(self, signals, **kwargs):
+        """Perform the IVIM fit
+
+        Args:
+            signals (array-like)
+
+        Returns:
+            _type_: _description_
+        """
+        # Make sure bounds and initial guess conform to the algorithm requirements
+        bounds = [[self.bounds["S0"][0], self.bounds["f"][0], self.bounds["Dp"][0], self.bounds["D"][0]],
+                       [self.bounds["S0"][1], self.bounds["f"][1], self.bounds["Dp"][1], self.bounds["D"][1]]]
+        initial_guess = [self.initial_guess["S0"], self.initial_guess["f"], self.initial_guess["Dp"], self.initial_guess["D"]]
+        if self.IAR_algorithm is None:
+            
+            bvec = np.zeros((self.bvalues.size, 3))
+            bvec[:,2] = 1
+            gtab = gradient_table(self.bvalues, bvecs=bvec, b0_threshold=0)
+            
+            self.IAR_algorithm = IvimModelBiExp(gtab, bounds=bounds, initial_guess=initial_guess)
+        b0_index = np.where(self.bvalues == 0)[0][0]
+        mask = signals[...,b0_index]>0
+        fit_results = self.IAR_algorithm.fit(signals, mask=mask)
+        
+        results = {}
+        results["f"] = fit_results.model_params[..., 1]
+        results["Dp"] = fit_results.model_params[..., 2]
+        results["D"] = fit_results.model_params[..., 3]
+
+        return results

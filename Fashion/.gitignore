@@ -1,0 +1,82 @@
+.idea*
+.github/*
+.github/ISSUE_TEMPLATE/
+.github/pull_request_template.md
+__pycache__/
+*.nii.gz
+*.nii
+*.bval
+*.bvec
+*.npy
+*.dcm
+*.npy
+*.mat
+*.raw
+bvals.txt
+download
+.Introduction_to_TF24_IVIM-MRI_CodeCollection_github_and_IVIM_Analysis_using_Python.ipynb
+.ipynb_checkpoints
+md5sums.txt
+*.gz
+*.zip
+*.tmp
+*.asv
+src/original/ASD_MemorialSloanKettering/MRI-QAMPER_IVIM/test_data
+src/original/ASD_MemorialSloanKettering/MRI-QAMPER_IVIM/output_files
+tests/IVIMmodels/unit_tests/*.log
+junit/*
+ivim_simulation.bval
+ivim_simulation.bvec
+*.pt
+papers/paper1/figs
+papers/paper1/test-results*.xml
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.pyc
+phantoms/MR_XCAT_qMRI/*.json
+phantoms/MR_XCAT_qMRI/*.txt
+phantoms/brain/data/*.nii.gz
+phantoms/brain/ground_truth/*.nii.gz
+tests/IVIMmodels/unit_tests/models
+models
+temp
+.vscode
+.env
+
+# Virtual environment
+.venv/
+
+# Local run/benchmark files (logs and data)
+calib_w1.csv
+diag_conv_output.txt
+diag_result.txt
+ivim_benchmark_results.csv
+ivim_raw_v2.npz
+ivim_summary_v2.csv
+ivim_raw_v3.npz
+ivim_summary_v3.csv
+calib_w3.csv
+rgv2_output.txt
+run_p2_result.txt
+run_p3_result.txt
+runw1_output.txt
+smoke_output.txt
+
+# --- uq analysis layer artifacts ---------------------------------------------
+# make_figures.py writes to cwd by default; ignore stray root-level copies so
+# only the curated headline figures under figures/ are committed.
+/fig_reliability.png
+/fig_calibration_heatmap.png
+/reliability_diagrams.jsx
+/calibration_heatmap.jsx
+# Keep the small committed headline figures; never commit bulky raw artifacts.
+figures/*.npz
+figures/*.csv
+!figures/*.png
+!figures/*.jsx
+.venv-npe/

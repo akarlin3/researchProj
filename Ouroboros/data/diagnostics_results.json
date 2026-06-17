@@ -1,0 +1,11 @@
+{
+  "embedding": {
+    "m": 2,
+    "tau": 39,
+    "dt": 0.050008334722453744
+  },
+  "benettin_lle": -0.073362,
+  "rosenstein_lle_with_transient": 0.010285350012123374,
+  "rosenstein_lle_without_transient": 0.043278234899888524,
+  "artifact_explained": "When the system decays monotonically to a stable fixed point, the trajectory contracts. Because we exclude self-neighbors using the Theiler window, nearest neighbors must be chosen from different parts of the transient curve. As the transient relaxes, the distance between these segments temporarily expands (geometrically separating along the curve) before both eventually cluster near the fixed point. The Rosenstein algorithm interprets this expansion as sensitive dependence on initial conditions (LLE > 0). Once the transient is removed, the trajectories stay clustered at the fixed point, and the false positive shrinks or vanishes (LLE = -0.003)."
+}

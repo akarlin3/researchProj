@@ -1,0 +1,895 @@
+{
+  "sweep": {
+    "0.5": {
+      "pointwise": {
+        "10": {
+          "success_rate": 0.0,
+          "mean_error": 0.29999999999999993,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "15": {
+          "success_rate": 0.0,
+          "mean_error": 0.29999999999999993,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "20": {
+          "success_rate": 0.0,
+          "mean_error": 0.2,
+          "std_error": 0.0,
+          "n_fail": 500
+        },
+        "25": {
+          "success_rate": 0.0,
+          "mean_error": 0.2,
+          "std_error": 0.0,
+          "n_fail": 500
+        },
+        "30": {
+          "success_rate": 0.0,
+          "mean_error": 0.1,
+          "std_error": 2.7755575615628914e-17,
+          "n_fail": 500
+        },
+        "35": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "weak": {
+        "10": {
+          "success_rate": 0.316,
+          "mean_error": 0.0856,
+          "std_error": 0.0761093949522659,
+          "n_fail": 342
+        },
+        "15": {
+          "success_rate": 0.79,
+          "mean_error": 0.0348,
+          "std_error": 0.07993097021805752,
+          "n_fail": 105
+        },
+        "20": {
+          "success_rate": 0.994,
+          "mean_error": 0.001,
+          "std_error": 0.014798648586948744,
+          "n_fail": 3
+        },
+        "25": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "30": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "35": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "tikhonov": {
+        "10": {
+          "success_rate": 0.0,
+          "mean_error": 0.39120000000000005,
+          "std_error": 0.10508358577817946,
+          "n_fail": 500
+        },
+        "15": {
+          "success_rate": 0.136,
+          "mean_error": 0.257,
+          "std_error": 0.10719608201795437,
+          "n_fail": 432
+        },
+        "20": {
+          "success_rate": 0.254,
+          "mean_error": 0.0746,
+          "std_error": 0.04352975993501456,
+          "n_fail": 373
+        },
+        "25": {
+          "success_rate": 0.002,
+          "mean_error": 0.0998,
+          "std_error": 0.0044676615807377335,
+          "n_fail": 499
+        },
+        "30": {
+          "success_rate": 0.156,
+          "mean_error": 0.08439999999999999,
+          "std_error": 0.03628553430776511,
+          "n_fail": 422
+        },
+        "35": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "ensemble": {
+        "10": {
+          "success_rate": 0.0,
+          "mean_error": 0.29999999999999993,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "15": {
+          "success_rate": 0.0,
+          "mean_error": 0.29999999999999993,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "20": {
+          "success_rate": 0.0,
+          "mean_error": 0.2,
+          "std_error": 0.0,
+          "n_fail": 500
+        },
+        "25": {
+          "success_rate": 0.0,
+          "mean_error": 0.2,
+          "std_error": 0.0,
+          "n_fail": 500
+        },
+        "30": {
+          "success_rate": 0.0,
+          "mean_error": 0.1,
+          "std_error": 2.7755575615628914e-17,
+          "n_fail": 500
+        },
+        "35": {
+          "success_rate": 0.986,
+          "mean_error": 0.0013999999999999998,
+          "std_error": 0.011749042514179612,
+          "n_fail": 7
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      }
+    },
+    "0.7": {
+      "pointwise": {
+        "10": {
+          "success_rate": 0.0,
+          "mean_error": 0.4086,
+          "std_error": 0.028036404905051573,
+          "n_fail": 500
+        },
+        "15": {
+          "success_rate": 0.0,
+          "mean_error": 0.4,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "20": {
+          "success_rate": 0.0,
+          "mean_error": 0.2999999999999999,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "25": {
+          "success_rate": 0.0,
+          "mean_error": 0.2,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "30": {
+          "success_rate": 0.0,
+          "mean_error": 0.1,
+          "std_error": 2.7755575615628914e-17,
+          "n_fail": 500
+        },
+        "35": {
+          "success_rate": 0.0,
+          "mean_error": 0.1,
+          "std_error": 2.7755575615628914e-17,
+          "n_fail": 500
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "weak": {
+        "10": {
+          "success_rate": 0.332,
+          "mean_error": 0.076,
+          "std_error": 0.06183849933496124,
+          "n_fail": 334
+        },
+        "15": {
+          "success_rate": 0.88,
+          "mean_error": 0.011999999999999997,
+          "std_error": 0.03249615361854383,
+          "n_fail": 60
+        },
+        "20": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "25": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "30": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "35": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "tikhonov": {
+        "10": {
+          "success_rate": 0.134,
+          "mean_error": 0.08659999999999998,
+          "std_error": 0.03406523154185216,
+          "n_fail": 433
+        },
+        "15": {
+          "success_rate": 0.874,
+          "mean_error": 0.012600000000000012,
+          "std_error": 0.03318493634165963,
+          "n_fail": 63
+        },
+        "20": {
+          "success_rate": 0.168,
+          "mean_error": 0.08320000000000008,
+          "std_error": 0.03738662862575338,
+          "n_fail": 416
+        },
+        "25": {
+          "success_rate": 0.612,
+          "mean_error": 0.038800000000000036,
+          "std_error": 0.04872945721019273,
+          "n_fail": 194
+        },
+        "30": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "35": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "ensemble": {
+        "10": {
+          "success_rate": 0.0,
+          "mean_error": 0.42540000000000006,
+          "std_error": 0.04352975993501457,
+          "n_fail": 500
+        },
+        "15": {
+          "success_rate": 0.0,
+          "mean_error": 0.4,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "20": {
+          "success_rate": 0.0,
+          "mean_error": 0.2999999999999999,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "25": {
+          "success_rate": 0.0,
+          "mean_error": 0.2,
+          "std_error": 5.551115123125783e-17,
+          "n_fail": 500
+        },
+        "30": {
+          "success_rate": 0.0,
+          "mean_error": 0.1,
+          "std_error": 2.7755575615628914e-17,
+          "n_fail": 500
+        },
+        "35": {
+          "success_rate": 0.002,
+          "mean_error": 0.09979999999999999,
+          "std_error": 0.0044676615807377335,
+          "n_fail": 499
+        },
+        "40": {
+          "success_rate": 0.998,
+          "mean_error": 0.00019999999999999996,
+          "std_error": 0.0044676615807377335,
+          "n_fail": 1
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      }
+    },
+    "0.9": {
+      "pointwise": {
+        "10": {
+          "success_rate": 0.0,
+          "mean_error": 0.5999999999999999,
+          "std_error": 2.220446049250313e-16,
+          "n_fail": 500
+        },
+        "15": {
+          "success_rate": 0.0,
+          "mean_error": 0.5,
+          "std_error": 0.0,
+          "n_fail": 500
+        },
+        "20": {
+          "success_rate": 0.0,
+          "mean_error": 0.3996,
+          "std_error": 0.006311893535223802,
+          "n_fail": 500
+        },
+        "25": {
+          "success_rate": 0.0,
+          "mean_error": 0.29999999999999993,
+          "std_error": 1.1102230246251565e-16,
+          "n_fail": 500
+        },
+        "30": {
+          "success_rate": 0.0,
+          "mean_error": 0.19980000000000012,
+          "std_error": 0.0044676615807377395,
+          "n_fail": 500
+        },
+        "35": {
+          "success_rate": 0.0,
+          "mean_error": 0.1,
+          "std_error": 2.7755575615628914e-17,
+          "n_fail": 500
+        },
+        "40": {
+          "success_rate": 0.588,
+          "mean_error": 0.04119999999999999,
+          "std_error": 0.04921950832749144,
+          "n_fail": 206
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "weak": {
+        "10": {
+          "success_rate": 0.494,
+          "mean_error": 0.050599999999999985,
+          "std_error": 0.04999639987039065,
+          "n_fail": 253
+        },
+        "15": {
+          "success_rate": 0.944,
+          "mean_error": 0.005599999999999999,
+          "std_error": 0.02299217258111986,
+          "n_fail": 28
+        },
+        "20": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "25": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "30": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "35": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "tikhonov": {
+        "10": {
+          "success_rate": 0.996,
+          "mean_error": 0.0003999999999999999,
+          "std_error": 0.006311893535223801,
+          "n_fail": 2
+        },
+        "15": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "20": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "25": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "30": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "35": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "40": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      },
+      "ensemble": {
+        "10": {
+          "success_rate": 0.0,
+          "mean_error": 0.5999999999999999,
+          "std_error": 2.220446049250313e-16,
+          "n_fail": 500
+        },
+        "15": {
+          "success_rate": 0.0,
+          "mean_error": 0.5,
+          "std_error": 0.0,
+          "n_fail": 500
+        },
+        "20": {
+          "success_rate": 0.0,
+          "mean_error": 0.397,
+          "std_error": 0.01705872210923198,
+          "n_fail": 500
+        },
+        "25": {
+          "success_rate": 0.0,
+          "mean_error": 0.2996,
+          "std_error": 0.0063118935352238,
+          "n_fail": 500
+        },
+        "30": {
+          "success_rate": 0.0,
+          "mean_error": 0.19940000000000016,
+          "std_error": 0.007722693830523135,
+          "n_fail": 500
+        },
+        "35": {
+          "success_rate": 0.0,
+          "mean_error": 0.1,
+          "std_error": 2.7755575615628914e-17,
+          "n_fail": 500
+        },
+        "40": {
+          "success_rate": 0.432,
+          "mean_error": 0.05679999999999998,
+          "std_error": 0.049535441857320686,
+          "n_fail": 284
+        },
+        "45": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "50": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "55": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        },
+        "60": {
+          "success_rate": 1.0,
+          "mean_error": 0.0,
+          "std_error": 0.0,
+          "n_fail": 0
+        }
+      }
+    }
+  },
+  "brackets": {
+    "0.5": {
+      "pointwise": [
+        30,
+        35
+      ],
+      "weak": [
+        15,
+        20
+      ],
+      "tikhonov": [
+        30,
+        35
+      ],
+      "ensemble": [
+        30,
+        35
+      ]
+    },
+    "0.7": {
+      "pointwise": [
+        35,
+        40
+      ],
+      "weak": [
+        15,
+        20
+      ],
+      "tikhonov": [
+        25,
+        30
+      ],
+      "ensemble": [
+        35,
+        40
+      ]
+    },
+    "0.9": {
+      "pointwise": [
+        40,
+        45
+      ],
+      "weak": [
+        15,
+        20
+      ],
+      "tikhonov": [
+        null,
+        10
+      ],
+      "ensemble": [
+        40,
+        45
+      ]
+    }
+  },
+  "grid": [
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ]
+}

@@ -1,0 +1,983 @@
+{
+  "floor": {
+    "0.5": {
+      "pointwise": {
+        "-5": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        },
+        "0": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        },
+        "5": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        }
+      },
+      "weak": {
+        "-5": {
+          "hist": {
+            "0.2": 220,
+            "0.3": 249,
+            "0.4": 26,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 2,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 3
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.006,
+          "modal": "0.3"
+        },
+        "0": {
+          "hist": {
+            "0.2": 19,
+            "0.3": 330,
+            "0.4": 148,
+            "0.5": 2,
+            "0.6": 1,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.004,
+          "frac_high": 0.0,
+          "modal": "0.3"
+        },
+        "5": {
+          "hist": {
+            "0.2": 0,
+            "0.3": 97,
+            "0.4": 285,
+            "0.5": 71,
+            "0.6": 32,
+            "0.7": 12,
+            "0.8": 2,
+            "0.9": 0,
+            "1.0": 1
+          },
+          "success_rate": 0.142,
+          "frac_high": 0.006,
+          "modal": "0.4"
+        }
+      }
+    },
+    "0.7": {
+      "pointwise": {
+        "-5": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        },
+        "0": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        },
+        "5": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        }
+      },
+      "weak": {
+        "-5": {
+          "hist": {
+            "0.2": 0,
+            "0.3": 188,
+            "0.4": 182,
+            "0.5": 35,
+            "0.6": 28,
+            "0.7": 35,
+            "0.8": 19,
+            "0.9": 10,
+            "1.0": 3
+          },
+          "success_rate": 0.07,
+          "frac_high": 0.064,
+          "modal": "0.3"
+        },
+        "0": {
+          "hist": {
+            "0.2": 0,
+            "0.3": 4,
+            "0.4": 89,
+            "0.5": 39,
+            "0.6": 104,
+            "0.7": 170,
+            "0.8": 78,
+            "0.9": 14,
+            "1.0": 2
+          },
+          "success_rate": 0.34,
+          "frac_high": 0.188,
+          "modal": "0.7"
+        },
+        "5": {
+          "hist": {
+            "0.2": 0,
+            "0.3": 0,
+            "0.4": 8,
+            "0.5": 93,
+            "0.6": 92,
+            "0.7": 136,
+            "0.8": 117,
+            "0.9": 44,
+            "1.0": 10
+          },
+          "success_rate": 0.272,
+          "frac_high": 0.342,
+          "modal": "0.7"
+        }
+      }
+    },
+    "0.9": {
+      "pointwise": {
+        "-5": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        },
+        "0": {
+          "hist": {
+            "0.2": 500,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.2"
+        },
+        "5": {
+          "hist": {
+            "0.2": 246,
+            "0.3": 254,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 0,
+            "0.9": 0,
+            "1.0": 0
+          },
+          "success_rate": 0.0,
+          "frac_high": 0.0,
+          "modal": "0.3"
+        }
+      },
+      "weak": {
+        "-5": {
+          "hist": {
+            "0.2": 0,
+            "0.3": 78,
+            "0.4": 24,
+            "0.5": 0,
+            "0.6": 0,
+            "0.7": 9,
+            "0.8": 125,
+            "0.9": 191,
+            "1.0": 73
+          },
+          "success_rate": 0.382,
+          "frac_high": 0.778,
+          "modal": "0.9"
+        },
+        "0": {
+          "hist": {
+            "0.2": 0,
+            "0.3": 0,
+            "0.4": 12,
+            "0.5": 8,
+            "0.6": 0,
+            "0.7": 0,
+            "0.8": 49,
+            "0.9": 241,
+            "1.0": 190
+          },
+          "success_rate": 0.482,
+          "frac_high": 0.96,
+          "modal": "0.9"
+        },
+        "5": {
+          "hist": {
+            "0.2": 0,
+            "0.3": 0,
+            "0.4": 0,
+            "0.5": 0,
+            "0.6": 49,
+            "0.7": 87,
+            "0.8": 59,
+            "0.9": 138,
+            "1.0": 167
+          },
+          "success_rate": 0.276,
+          "frac_high": 0.728,
+          "modal": "1.0"
+        }
+      }
+    }
+  },
+  "wilson_rows": [
+    {
+      "system": "primary oracle a=0.5",
+      "method": "pointwise",
+      "snr": 35,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "primary oracle a=0.5",
+      "method": "pointwise",
+      "snr": 30,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "primary oracle a=0.5",
+      "method": "weak",
+      "snr": 20,
+      "k": 497,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.994,
+      "ci_lo": 0.9825097478959467,
+      "ci_hi": 0.9979574037280398
+    },
+    {
+      "system": "primary oracle a=0.7",
+      "method": "pointwise",
+      "snr": 40,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "primary oracle a=0.7",
+      "method": "pointwise",
+      "snr": 35,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "primary oracle a=0.7",
+      "method": "weak",
+      "snr": 20,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "primary oracle a=0.7",
+      "method": "weak",
+      "snr": 15,
+      "k": 440,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.88,
+      "ci_lo": 0.8485804013755894,
+      "ci_hi": 0.9056250998736309
+    },
+    {
+      "system": "primary oracle a=0.9",
+      "method": "pointwise",
+      "snr": 45,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "primary oracle a=0.9",
+      "method": "pointwise",
+      "snr": 40,
+      "k": 294,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.588,
+      "ci_lo": 0.5443465920099858,
+      "ci_hi": 0.630311524068781
+    },
+    {
+      "system": "primary oracle a=0.9",
+      "method": "weak",
+      "snr": 20,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "primary oracle a=0.9",
+      "method": "weak",
+      "snr": 15,
+      "k": 472,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.944,
+      "ci_lo": 0.920255206353293,
+      "ci_hi": 0.9609743793168485
+    },
+    {
+      "system": "primary oracle a=0.5",
+      "method": "weak",
+      "snr": 15,
+      "k": 395,
+      "n": 500,
+      "note": "15 dB edge (flagged)",
+      "p": 0.79,
+      "ci_lo": 0.7521551530407024,
+      "ci_hi": 0.8234227294915976
+    },
+    {
+      "system": "primary oracle a=0.7",
+      "method": "weak",
+      "snr": 15,
+      "k": 440,
+      "n": 500,
+      "note": "15 dB edge (flagged)",
+      "p": 0.88,
+      "ci_lo": 0.8485804013755894,
+      "ci_hi": 0.9056250998736309
+    },
+    {
+      "system": "primary oracle a=0.9",
+      "method": "weak",
+      "snr": 15,
+      "k": 472,
+      "n": 500,
+      "note": "15 dB edge (flagged)",
+      "p": 0.944,
+      "ci_lo": 0.920255206353293,
+      "ci_hi": 0.9609743793168485
+    },
+    {
+      "system": "realistic a=0.5",
+      "method": "pointwise",
+      "snr": 60,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "realistic a=0.5",
+      "method": "pointwise",
+      "snr": 55,
+      "k": 442,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.884,
+      "ci_lo": 0.8529581630365658,
+      "ci_hi": 0.9091863434889621
+    },
+    {
+      "system": "realistic a=0.5",
+      "method": "weak",
+      "snr": 35,
+      "k": 495,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.99,
+      "ci_lo": 0.9768069002442693,
+      "ci_hi": 0.9957212461034096
+    },
+    {
+      "system": "realistic a=0.5",
+      "method": "weak",
+      "snr": 30,
+      "k": 157,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.314,
+      "ci_lo": 0.27486785583609774,
+      "ci_hi": 0.35596839881559983
+    },
+    {
+      "system": "realistic a=0.7",
+      "method": "pointwise",
+      "snr": 70,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "realistic a=0.7",
+      "method": "pointwise",
+      "snr": 65,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "realistic a=0.7",
+      "method": "weak",
+      "snr": 45,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "realistic a=0.7",
+      "method": "weak",
+      "snr": 40,
+      "k": 469,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.938,
+      "ci_lo": 0.9133402868983618,
+      "ci_hi": 0.9559807908573184
+    },
+    {
+      "system": "realistic a=0.9",
+      "method": "pointwise",
+      "snr": 65,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "realistic a=0.9",
+      "method": "pointwise",
+      "snr": 60,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "realistic a=0.9",
+      "method": "weak",
+      "snr": 35,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "realistic a=0.9",
+      "method": "weak",
+      "snr": 30,
+      "k": 91,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.182,
+      "ci_lo": 0.1506464452041556,
+      "ci_hi": 0.2182026353293916
+    },
+    {
+      "system": "VdP oracle a=0.5",
+      "method": "pointwise",
+      "snr": 15,
+      "k": 499,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.998,
+      "ci_lo": 0.9887592932948532,
+      "ci_hi": 0.9996468636054407
+    },
+    {
+      "system": "VdP oracle a=0.5",
+      "method": "pointwise",
+      "snr": 10,
+      "k": 22,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.044,
+      "ci_lo": 0.02923395562860718,
+      "ci_hi": 0.06571944287232845
+    },
+    {
+      "system": "VdP oracle a=0.5",
+      "method": "weak",
+      "snr": 15,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "VdP oracle a=0.5",
+      "method": "weak",
+      "snr": 10,
+      "k": 391,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.782,
+      "ci_lo": 0.743733598415673,
+      "ci_hi": 0.8159662735640116
+    },
+    {
+      "system": "VdP oracle a=0.7",
+      "method": "pointwise",
+      "snr": 20,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "VdP oracle a=0.7",
+      "method": "pointwise",
+      "snr": 15,
+      "k": 206,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.412,
+      "ci_lo": 0.369688475931219,
+      "ci_hi": 0.4556534079900142
+    },
+    {
+      "system": "VdP oracle a=0.7",
+      "method": "weak",
+      "snr": 10,
+      "k": 493,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.986,
+      "ci_lo": 0.9713869308622147,
+      "ci_hi": 0.9932022102091564
+    },
+    {
+      "system": "VdP oracle a=0.7",
+      "method": "weak",
+      "snr": 5,
+      "k": 330,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.66,
+      "ci_lo": 0.6173990695060175,
+      "ci_hi": 0.700161141546286
+    },
+    {
+      "system": "VdP oracle a=0.9",
+      "method": "pointwise",
+      "snr": 25,
+      "k": 498,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.996,
+      "ci_lo": 0.9855342847848231,
+      "ci_hi": 0.9989023694773173
+    },
+    {
+      "system": "VdP oracle a=0.9",
+      "method": "pointwise",
+      "snr": 20,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "VdP oracle a=0.9",
+      "method": "weak",
+      "snr": 20,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "VdP oracle a=0.9",
+      "method": "weak",
+      "snr": 15,
+      "k": 463,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.926,
+      "ci_lo": 0.8996652466777695,
+      "ci_hi": 0.945838815248988
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "pointwise",
+      "snr": 35,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "pointwise",
+      "snr": 30,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "weak",
+      "snr": 20,
+      "k": 497,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.994,
+      "ci_lo": 0.9825097478959467,
+      "ci_hi": 0.9979574037280398
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "weak",
+      "snr": 15,
+      "k": 395,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.79,
+      "ci_lo": 0.7521551530407024,
+      "ci_hi": 0.8234227294915976
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "tikhonov",
+      "snr": 35,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "tikhonov",
+      "snr": 30,
+      "k": 78,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.156,
+      "ci_lo": 0.126830791403845,
+      "ci_hi": 0.19041475483370296
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "ensemble",
+      "snr": 35,
+      "k": 493,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.986,
+      "ci_lo": 0.9713869308622147,
+      "ci_hi": 0.9932022102091564
+    },
+    {
+      "system": "fair grid a=0.5",
+      "method": "ensemble",
+      "snr": 30,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "pointwise",
+      "snr": 40,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "pointwise",
+      "snr": 35,
+      "k": 0,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.0,
+      "ci_lo": 4.336808689942018e-19,
+      "ci_hi": 0.007624340461552241
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "weak",
+      "snr": 20,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "weak",
+      "snr": 15,
+      "k": 440,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.88,
+      "ci_lo": 0.8485804013755894,
+      "ci_hi": 0.9056250998736309
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "tikhonov",
+      "snr": 30,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "tikhonov",
+      "snr": 25,
+      "k": 306,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.612,
+      "ci_lo": 0.568588177086666,
+      "ci_hi": 0.6537039706499462
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "ensemble",
+      "snr": 40,
+      "k": 499,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.998,
+      "ci_lo": 0.9887592932948532,
+      "ci_hi": 0.9996468636054407
+    },
+    {
+      "system": "fair grid a=0.7",
+      "method": "ensemble",
+      "snr": 35,
+      "k": 1,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.002,
+      "ci_lo": 0.00035313639455927456,
+      "ci_hi": 0.011240706705146758
+    },
+    {
+      "system": "fair grid a=0.9",
+      "method": "pointwise",
+      "snr": 45,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.9",
+      "method": "pointwise",
+      "snr": 40,
+      "k": 294,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.588,
+      "ci_lo": 0.5443465920099858,
+      "ci_hi": 0.630311524068781
+    },
+    {
+      "system": "fair grid a=0.9",
+      "method": "weak",
+      "snr": 20,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.9",
+      "method": "weak",
+      "snr": 15,
+      "k": 472,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.944,
+      "ci_lo": 0.920255206353293,
+      "ci_hi": 0.9609743793168485
+    },
+    {
+      "system": "fair grid a=0.9",
+      "method": "tikhonov",
+      "snr": 10,
+      "k": 498,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 0.996,
+      "ci_lo": 0.9855342847848231,
+      "ci_hi": 0.9989023694773173
+    },
+    {
+      "system": "fair grid a=0.9",
+      "method": "ensemble",
+      "snr": 45,
+      "k": 500,
+      "n": 500,
+      "note": "succeed edge",
+      "p": 1.0,
+      "ci_lo": 0.9923756595384479,
+      "ci_hi": 1.0
+    },
+    {
+      "system": "fair grid a=0.9",
+      "method": "ensemble",
+      "snr": 40,
+      "k": 216,
+      "n": 500,
+      "note": "fail edge",
+      "p": 0.432,
+      "ci_lo": 0.3892622537365845,
+      "ci_hi": 0.47577465656618667
+    }
+  ]
+}

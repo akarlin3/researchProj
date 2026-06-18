@@ -1,0 +1,74 @@
+cff-version: 1.2.0
+message: >-
+  If you use Caliper, please cite the software below. Caliper also ships
+  synthetic, qualitative reproductions of two associated IVIM manuscripts; both
+  are PRE-PUBLICATION (no publication DOI yet) and are listed under `references`
+  with their true status. Do not cite either as published until a real DOI is
+  filled in (see caliper.publication, the single source of truth, and
+  docs/citing.md).
+title: "Caliper: an IVIM uncertainty-quantification calibration toolkit"
+abstract: >-
+  Caliper is a model-agnostic Python toolkit for measuring and correcting the
+  calibration of uncertainty estimates in intravoxel incoherent motion (IVIM)
+  diffusion MRI: a numpy-only calibration ruler, split-conformal / CQR / Mondrian
+  coverage correction, a synthetic IVIM data generator, and two estimators under
+  one quantile contract. All data is synthetic and PHI-free.
+type: software
+authors:
+  - given-names: Avery
+    family-names: Karlin
+    orcid: "https://orcid.org/0000-0003-3848-6782"
+version: "0.1.0"
+date-released: "2026-06-18"
+license: MIT
+repository-code: "https://github.com/akarlin3/ResearchProj/tree/main/Caliper"
+keywords:
+  - IVIM
+  - calibration
+  - conformal-prediction
+  - uncertainty-quantification
+  - normalizing-flows
+# --------------------------------------------------------------------------- #
+# Associated manuscripts. BOTH ARE PRE-PUBLICATION: no `doi:` field is set
+# because no publication DOI exists yet. `status: submitted` is the closest
+# valid CFF token; the precise status is in `notes`. The Zenodo DOIs in `notes`
+# are SOFTWARE code-archive DOIs for the sibling repositories -- they are NOT
+# publication DOIs and must not be cited as such.
+# --------------------------------------------------------------------------- #
+references:
+  - type: article
+    title: >-
+      Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the
+      Identifiability Wall in the Pseudo-Diffusion Compartment
+    authors:
+      - given-names: Avery
+        family-names: Karlin
+        orcid: "https://orcid.org/0000-0003-3848-6782"
+    journal: "Magnetic Resonance in Medicine"
+    year: 2026
+    status: submitted
+    notes: >-
+      PRE-PUBLICATION: submitted to Magnetic Resonance in Medicine (2026); no
+      publication DOI yet (placeholder 10.XXXX/XXXXX -- fill in once published).
+      Software archive (NOT a publication DOI): doi:10.5281/zenodo.20686273.
+      Reproduced qualitatively on synthetic data by caliper.repro_gauge
+      (examples/gauge_repro.py); not a published or validated result.
+  - type: article
+    title: >-
+      Calibration and Efficiency of Uncertainty Estimates in Intravoxel
+      Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison,
+      and a Cramer-Rao Audit of Amortized Posteriors
+    authors:
+      - given-names: Avery
+        family-names: Karlin
+        orcid: "https://orcid.org/0000-0003-3848-6782"
+    journal: "Magnetic Resonance in Medicine"
+    year: 2026
+    status: submitted
+    notes: >-
+      PRE-PUBLICATION: in review at Magnetic Resonance in Medicine (2026,
+      Manuscript ID MRM-26-27109); no publication DOI yet (placeholder
+      10.XXXX/XXXXX -- fill in once published). Software archive (NOT a
+      publication DOI): doi:10.5281/zenodo.20649669. Reproduced qualitatively on
+      synthetic data by caliper.baselines (examples/fashion_repro.py); not a
+      published or validated result.

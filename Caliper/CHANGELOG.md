@@ -10,6 +10,21 @@ deferred and gated on a separate publication (see [ROADMAP.md](ROADMAP.md)).
 ## [Unreleased]
 
 ### Added
+- **Optional, publication-gated reproduction & citation feature (OFF by default).**
+  - `caliper.repro_gauge` + `examples/gauge_repro.py` — a numpy-only synthetic
+    reproduction of the Gauge conformal-coverage result (marginal CQR restores
+    pooled D\* coverage; the high-D\* tercile stays under-covered — the
+    identifiability wall; Mondrian buys it back only by inflating width). Reuses
+    `caliper.conformal` + `caliper.metrics`; adds no new method. Sits beside the
+    existing Fashion reproduction (`caliper.baselines` / `examples/fashion_repro.py`).
+  - `caliper.publication` — the single source of truth for the two associated
+    manuscripts' (pre-publication) status. A paper is `published` **iff** it has a
+    real `paper_doi` (`None` by default), so `publication_enabled()` ships `False`
+    and nothing renders as published until a real DOI is filled in. Real Zenodo
+    *software* code-archive DOIs are recorded separately and never flip the gate.
+  - `CITATION.cff`, `docs/citing.md`, `docs/gauge_reproduction.md` — software +
+    pre-publication manuscript citations (`@unpublished` while DOI-less) and the
+    Gauge claim → synthetic-result map.
 - `caliper.benchmark` — a reproducible evaluation harness sweeping
   `{estimator} × {raw, split, CQR, Mondrian} × {SNR} × {seed}`, scoring each
   cell with the ruler plus D\*-tercile conditional coverage and mean width. Emits

@@ -35,11 +35,24 @@ pip install -e ".[dev]"          # + pytest, ruff
 | `python -m caliper.benchmark` | the full eval grid → `results/benchmark.csv` | no |
 | `examples/benchmark_report.py` | regenerate figures from the CSV | no |
 | `examples/fashion_repro.py` | Fashion repro: NLLS railing + flow-vs-NLLS calibration | **yes** (+scipy) |
+| `examples/gauge_repro.py` | Gauge repro: marginal CQR + the high-D\* conditional wall | no |
+
+## Reproductions & citations (optional, publication-gated — OFF by default)
+
+Caliper ships *synthetic, qualitative* reproductions of two **pre-publication**
+IVIM manuscripts. The feature is dormant by default
+(`caliper.publication.publication_enabled()` is `False`); nothing is presented as
+published until a real DOI is filled in.
+
+- [Citing Caliper](citing.md) — how to cite the software and the (pre-publication)
+  manuscripts.
+- [Gauge reproduction](gauge_reproduction.md) — the conformal-coverage claim →
+  synthetic-result map (submitted; synthetic only).
+- [Fashion reproduction](fashion_reproduction.md) — the calibration claim →
+  synthetic-result map (in review; synthetic only).
 
 ## Reference
 
 - [API reference](api.md) — the public surface of each module.
-- [Fashion reproduction](fashion_reproduction.md) — Caliper as the manuscript's
-  companion code: the claim → synthetic-result map (in review; synthetic only).
 - [`../README.md`](../README.md) — quickstart, the conformal result, and the
   benchmark summary, with every number traced to the script that produced it.

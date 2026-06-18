@@ -210,6 +210,36 @@ the high-D\* tercile remains under-covered post-conformal (D\* g2 = 0.812 vs
 
 ---
 
+## Reproductions & citations (optional, publication-gated — **OFF by default**)
+
+Caliper ships *synthetic, qualitative* reproductions of two associated IVIM
+manuscripts. **Both are pre-publication** — there is no publication DOI for either —
+so this feature is **dormant by default**: `caliper.publication.publication_enabled()`
+returns `False`, and nothing in the repo presents either paper as published or
+accepted. The reproductions run on in-repo synthetic phantoms only; they are **not**
+published or independently validated results, and the manuscripts' clinical numbers
+stay in the papers.
+
+| Paper | Status (true) | Synthetic reproduction | Reproduces |
+|---|---|---|---|
+| **Gauge** — *Distribution-Free Conformal Coverage for IVIM Parameter Maps…* | **submitted** to MRM (2026) | `python examples/gauge_repro.py` ([map](docs/gauge_reproduction.md)) | marginal CQR restores pooled D\* coverage; the high-D\* tercile stays under-covered (the identifiability wall); Mondrian buys it back only by inflating width |
+| **Fashion** — *Calibration and Efficiency of Uncertainty Estimates in IVIM…* | **in review** at MRM (2026) | `python examples/fashion_repro.py` ([map](docs/fashion_reproduction.md)) | NLLS rails the weakly-identified D\* and under-covers; a normalizing-flow posterior is better-calibrated, scored by the ruler |
+
+See [docs/citing.md](docs/citing.md) and [`CITATION.cff`](CITATION.cff) for how to
+cite the software and the (pre-publication) manuscripts — both render as
+`@unpublished` while a real DOI is absent.
+
+**How the feature activates.** It is deliberately manual and per-paper: when a
+paper publishes, fill its real `paper_doi` in `caliper.publication.PUBLICATION`
+(replacing `None`). That single edit flips `PaperRef.published` and
+`publication_enabled()` to `True`, turns the bibtex into `@article` with the DOI,
+and re-renders the reproduction's provenance as *"validated against the published
+result."* Until then it stays OFF and honest by construction. (The Zenodo DOIs in
+the config are **software** code-archive DOIs, not publication DOIs, and never flip
+the gate.)
+
+---
+
 ## What's in the box
 
 ```
@@ -220,15 +250,22 @@ caliper/
   estimator_reference.py # over-confident segmented-fit IVIM estimator  [numpy]
   estimator_maf.py       # conditional MAF posterior over (D, f, D*)    [torch]
   benchmark.py           # reproducible evaluation harness (tool demo)  [numpy]
+  baselines.py           # box-constrained NLLS IVIM baseline           [scipy]
+  repro_gauge.py         # Gauge reproduction (conformal D* wall)       [numpy]
+  publication.py         # publication-gated citation layer (OFF)       [numpy]
 examples/
   ruler_demo.py          # the model-agnostic ruler                     [numpy]
   conformal_demo.py      # conformal + D* tercile result                [numpy]
   benchmark_report.py    # regenerate figures from results/benchmark.csv [numpy]
   demo.py                # MAF end-to-end pipeline                       [torch]
+  gauge_repro.py         # Gauge synthetic reproduction                 [numpy]
+  fashion_repro.py       # Fashion synthetic reproduction         [torch+scipy]
   figures/               # PNGs regenerated from the benchmark CSV
-docs/                    # index + API reference (plain Markdown)
+docs/                    # index, API ref, reproduction maps, citing (Markdown)
+CITATION.cff             # software + pre-publication manuscript citations
 results/benchmark.csv    # the benchmark table (every number traces to a run)
-tests/                   # pytest: metrics, forward, conformal, reference, benchmark
+tests/                   # pytest: metrics, forward, conformal, reference, benchmark,
+                         #         baselines, repro_gauge, publication
                          #         + estimator_maf (auto-skips without torch)
 ```
 
@@ -236,8 +273,8 @@ Run the tests:
 
 ```bash
 pip install -e ".[dev]"
-pytest -q          # 46 passed, 1 skipped (the MAF test group needs torch)
-# with the [estimator] extra installed: 50 passed (MAF tests included)
+pytest -q          # 77 passed, 1 skipped (the MAF test group needs torch)
+# with the [estimator] extra installed: 81 passed (MAF tests included)
 ```
 
 ## License

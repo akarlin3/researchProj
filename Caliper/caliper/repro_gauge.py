@@ -6,7 +6,7 @@ synthetic data only* -- the central phenomenon of the Gauge manuscript:
 
     Karlin, A. "Distribution-Free Conformal Coverage for IVIM Parameter Maps,
     and the Identifiability Wall in the Pseudo-Diffusion Compartment."
-    Submitted to Magnetic Resonance in Medicine (2026). Pre-publication; no
+    In review at Magnetic Resonance in Medicine (2026). Pre-publication; no
     publication DOI yet -- see caliper.publication.
 
 The paper's headline, in its own words:

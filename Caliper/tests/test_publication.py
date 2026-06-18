@@ -46,7 +46,7 @@ def test_default_flag_is_off_and_nothing_published():
 
 
 def test_default_statuses_are_pre_publication():
-    assert "submitted" in P.PUBLICATION["gauge"].status_label
+    assert "in review" in P.PUBLICATION["gauge"].status_label
     assert "in review" in P.PUBLICATION["fashion"].status_label
     for key in ("gauge", "fashion"):
         assert "published" not in P.PUBLICATION[key].status_label

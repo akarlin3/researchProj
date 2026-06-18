@@ -47,7 +47,7 @@ published until a real DOI is filled in.
 - [Citing Caliper](citing.md) — how to cite the software and the (pre-publication)
   manuscripts.
 - [Gauge reproduction](gauge_reproduction.md) — the conformal-coverage claim →
-  synthetic-result map (submitted; synthetic only).
+  synthetic-result map (in review; synthetic only).
 - [Fashion reproduction](fashion_reproduction.md) — the calibration claim →
   synthetic-result map (in review; synthetic only).
 

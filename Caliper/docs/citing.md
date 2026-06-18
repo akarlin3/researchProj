@@ -2,8 +2,8 @@
 
 Caliper is open-source tooling. If you use it, please cite the **software**. The
 toolkit also ships *synthetic, qualitative* reproductions of two associated IVIM
-manuscripts — but **both are pre-publication**, so this page renders them as
-*submitted / in review*, never as *published*.
+manuscripts — but **both are pre-publication** (in review at MRM), so this page
+renders them as *in review*, never as *published*.
 
 > **Single source of truth.** Everything below is generated from
 > [`caliper.publication`](../caliper/publication.py). A paper counts as
@@ -42,7 +42,7 @@ publishes.
 
 ### Gauge — conformal coverage & the D\* identifiability wall
 
-- **Status:** submitted to *Magnetic Resonance in Medicine* (2026); pre-publication.
+- **Status:** in review at *Magnetic Resonance in Medicine* (2026); pre-publication.
 - **Software archive (NOT a publication DOI):** `doi:10.5281/zenodo.20686273`.
 - **Reproduced (synthetic, qualitative):** `caliper.repro_gauge` —
   `python examples/gauge_repro.py`. This is *not* a published or independently
@@ -53,7 +53,7 @@ publishes.
   author = {Karlin, Avery},
   title  = {Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment},
   year   = {2026},
-  note   = {Submitted to Magnetic Resonance in Medicine (2026); pre-publication -- no publication DOI yet (placeholder 10.XXXX/XXXXX). Software archive: doi:10.5281/zenodo.20686273.}
+  note   = {In review at Magnetic Resonance in Medicine (2026); pre-publication -- no publication DOI yet (placeholder 10.XXXX/XXXXX). Software archive: doi:10.5281/zenodo.20686273.}
 }
 ```
 

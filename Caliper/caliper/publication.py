@@ -20,7 +20,7 @@ construction.
     >>> PUBLICATION["gauge"].published   # False
     False
     >>> PUBLICATION["gauge"].status_label
-    'submitted to Magnetic Resonance in Medicine (2026)'
+    'in review at Magnetic Resonance in Medicine (2026)'
 
 How the feature activates (deliberately manual, one paper at a time): fill the
 real ``paper_doi`` on a :class:`PaperRef` below once the paper publishes, and the
@@ -163,7 +163,7 @@ PUBLICATION: dict[str, PaperRef] = {
             "the Identifiability Wall in the Pseudo-Diffusion Compartment"
         ),
         citation_key="Karlin_Gauge_IVIM_Conformal",
-        status="submitted",
+        status="in_review",
         repro_module="caliper.repro_gauge",
         repro_example="examples/gauge_repro.py",
         claim=(

@@ -1,8 +1,8 @@
 # Gauge reproduction — Caliper as the manuscript's companion code
 
-> **SUBMITTED / SYNTHETIC ONLY.** The Gauge manuscript ("Distribution-Free
+> **IN REVIEW / SYNTHETIC ONLY.** The Gauge manuscript ("Distribution-Free
 > Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the
-> Pseudo-Diffusion Compartment") is **submitted to Magnetic Resonance in Medicine
+> Pseudo-Diffusion Compartment") is **in review at Magnetic Resonance in Medicine
 > (2026) and pre-publication** — there is no publication DOI yet. This module
 > reproduces only the **qualitative phenomenon** the manuscript reports, on
 > Caliper's **in-repo synthetic phantoms**. It is **not** a published or

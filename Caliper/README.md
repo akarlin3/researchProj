@@ -222,7 +222,7 @@ stay in the papers.
 
 | Paper | Status (true) | Synthetic reproduction | Reproduces |
 |---|---|---|---|
-| **Gauge** — *Distribution-Free Conformal Coverage for IVIM Parameter Maps…* | **submitted** to MRM (2026) | `python examples/gauge_repro.py` ([map](docs/gauge_reproduction.md)) | marginal CQR restores pooled D\* coverage; the high-D\* tercile stays under-covered (the identifiability wall); Mondrian buys it back only by inflating width |
+| **Gauge** — *Distribution-Free Conformal Coverage for IVIM Parameter Maps…* | **in review** at MRM (2026) | `python examples/gauge_repro.py` ([map](docs/gauge_reproduction.md)) | marginal CQR restores pooled D\* coverage; the high-D\* tercile stays under-covered (the identifiability wall); Mondrian buys it back only by inflating width |
 | **Fashion** — *Calibration and Efficiency of Uncertainty Estimates in IVIM…* | **in review** at MRM (2026) | `python examples/fashion_repro.py` ([map](docs/fashion_reproduction.md)) | NLLS rails the weakly-identified D\* and under-covers; a normalizing-flow posterior is better-calibrated, scored by the ruler |
 
 See [docs/citing.md](docs/citing.md) and [`CITATION.cff`](CITATION.cff) for how to

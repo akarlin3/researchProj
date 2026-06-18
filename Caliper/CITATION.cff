@@ -29,11 +29,11 @@ keywords:
   - uncertainty-quantification
   - normalizing-flows
 # --------------------------------------------------------------------------- #
-# Associated manuscripts. BOTH ARE PRE-PUBLICATION: no `doi:` field is set
-# because no publication DOI exists yet. `status: submitted` is the closest
-# valid CFF token; the precise status is in `notes`. The Zenodo DOIs in `notes`
-# are SOFTWARE code-archive DOIs for the sibling repositories -- they are NOT
-# publication DOIs and must not be cited as such.
+# Associated manuscripts. BOTH ARE PRE-PUBLICATION (in review at MRM): no `doi:`
+# field is set because no publication DOI exists yet. `status: submitted` is the
+# closest valid CFF token for "in review"; the precise status is in `notes`. The
+# Zenodo DOIs in `notes` are SOFTWARE code-archive DOIs for the sibling
+# repositories -- they are NOT publication DOIs and must not be cited as such.
 # --------------------------------------------------------------------------- #
 references:
   - type: article
@@ -48,7 +48,7 @@ references:
     year: 2026
     status: submitted
     notes: >-
-      PRE-PUBLICATION: submitted to Magnetic Resonance in Medicine (2026); no
+      PRE-PUBLICATION: in review at Magnetic Resonance in Medicine (2026); no
       publication DOI yet (placeholder 10.XXXX/XXXXX -- fill in once published).
       Software archive (NOT a publication DOI): doi:10.5281/zenodo.20686273.
       Reproduced qualitatively on synthetic data by caliper.repro_gauge

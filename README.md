@@ -10,6 +10,7 @@ project is preserved in its own subdirectory **with full commit history**.
 | `Minos/` | projMinos | full history |
 | `Ouroboros/` | projOuroboros | full history |
 | `Proteus/` | projProteus | full history |
+| `Anneal/` | annealMusic (science subtree split) | full history |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |
 
 Each subdirectory's history was rewritten with `git-filter-repo` and combined with

@@ -15,3 +15,13 @@ project is preserved in its own subdirectory **with full commit history**.
 Each subdirectory's history was rewritten with `git-filter-repo` and combined with
 `git merge --allow-unrelated-histories`, so `git log -- <Subfolder>/` shows that
 project's original commits, authors, and dates.
+
+## License
+
+This repository is licensed under the **GNU Affero General Public License v3.0**
+(AGPL-3.0); see [`LICENSE`](LICENSE) for the full text.
+
+Some subdirectories ship their own `LICENSE` file, which governs that
+subproject and takes precedence for its contents (for example, `Caliper/` is
+released under the MIT License). Where a subproject carries no license file, the
+repository-level AGPL-3.0 applies.

@@ -82,9 +82,11 @@ class Cohort:
 
     @property
     def param_names(self) -> tuple[str, ...]:
+        """Output parameter names, ``("D", "f", "Dstar")``."""
         return PARAM_NAMES
 
     def __len__(self) -> int:
+        """Number of samples (voxels) in the cohort."""
         return self.params.shape[0]
 
 

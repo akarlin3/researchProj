@@ -11,11 +11,29 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Caliper project" }]
 keywords = ["IVIM", "calibration", "conformal-prediction", "uncertainty-quantification", "normalizing-flows"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
 dependencies = ["numpy>=1.23"]
 
 [project.optional-dependencies]
 estimator = ["torch>=2.0"]
-dev = ["pytest>=7", "ruff>=0.4"]
+dev = ["pytest>=7", "ruff>=0.4", "matplotlib>=3.5"]
+
+[project.urls]
+Homepage = "https://github.com/akarlin3/ResearchProj/tree/main/Caliper"
+Repository = "https://github.com/akarlin3/ResearchProj"
+Issues = "https://github.com/akarlin3/ResearchProj/issues"
+Changelog = "https://github.com/akarlin3/ResearchProj/blob/main/Caliper/CHANGELOG.md"
 
 [tool.setuptools]
 packages = ["caliper"]

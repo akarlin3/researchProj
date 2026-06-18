@@ -197,6 +197,7 @@ class ParamScore:
 
     @property
     def nominal(self) -> float:
+        """Nominal central coverage, ``1 - alpha``."""
         return 1.0 - self.alpha
 
     @property

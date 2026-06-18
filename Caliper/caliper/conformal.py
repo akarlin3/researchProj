@@ -103,6 +103,11 @@ class SplitConformalQuantile:
         self._n_params: int | None = None
 
     def calibrate(self, q_pred_cal, y_cal) -> "SplitConformalQuantile":
+        """Fit per-parameter, per-level-pair CQR offsets on a calibration split.
+
+        ``q_pred_cal`` is ``(n_cal, P, L)`` raw quantiles; ``y_cal`` is
+        ``(n_cal, P)`` truth. Returns ``self``.
+        """
         q_pred_cal = np.asarray(q_pred_cal, dtype=float)
         y_cal = np.asarray(y_cal, dtype=float)
         n, P, L = q_pred_cal.shape
@@ -124,6 +129,7 @@ class SplitConformalQuantile:
         return self
 
     def apply(self, q_pred) -> np.ndarray:
+        """Apply the fitted offsets to ``(n, P, L)`` quantiles; re-sorted monotone."""
         if not self.offsets_:
             raise RuntimeError("call calibrate() before apply()")
         q_pred = np.asarray(q_pred, dtype=float)
@@ -170,6 +176,10 @@ class SplitConformalResidual:
         self.offsets_: np.ndarray | None = None  # (P,)
 
     def calibrate(self, point_cal, y_cal) -> "SplitConformalResidual":
+        """Fit per-parameter absolute-residual offsets on a calibration split.
+
+        ``point_cal`` and ``y_cal`` are both ``(n_cal, P)``. Returns ``self``.
+        """
         point_cal = np.asarray(point_cal, dtype=float)
         y_cal = np.asarray(y_cal, dtype=float)
         if point_cal.shape != y_cal.shape or point_cal.ndim != 2:
@@ -181,6 +191,7 @@ class SplitConformalResidual:
         return self
 
     def apply(self, point):
+        """Return ``(lo, hi)`` = ``point -/+ Q`` for ``(n, P)`` point predictions."""
         if self.offsets_ is None:
             raise RuntimeError("call calibrate() before apply()")
         point = np.asarray(point, dtype=float)
@@ -228,6 +239,12 @@ class MondrianConformalQuantile:
         self.global_: SplitConformalQuantile | None = None
 
     def calibrate(self, q_pred_cal, y_cal, groups_cal) -> "MondrianConformalQuantile":
+        """Fit an independent CQR correction within each calibration group label.
+
+        ``groups_cal`` is ``(n_cal,)`` integer labels (e.g. true-D* terciles). A
+        pooled CQR is also fit as a fallback for groups unseen at test time.
+        Returns ``self``.
+        """
         q_pred_cal = np.asarray(q_pred_cal, dtype=float)
         y_cal = np.asarray(y_cal, dtype=float)
         groups_cal = np.asarray(groups_cal)
@@ -243,6 +260,7 @@ class MondrianConformalQuantile:
         return self
 
     def apply(self, q_pred, groups) -> np.ndarray:
+        """Correct ``(n, P, L)`` quantiles per test-row group (pooled fallback)."""
         if self.global_ is None:
             raise RuntimeError("call calibrate() before apply()")
         q_pred = np.asarray(q_pred, dtype=float)

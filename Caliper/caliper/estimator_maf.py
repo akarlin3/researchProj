@@ -216,6 +216,11 @@ class MAFPosterior:
 
     # ----- training ------------------------------------------------------ #
     def fit(self, signals: np.ndarray, params: np.ndarray, verbose: bool = False):
+        """Train the flow by maximum likelihood on ``(signals, params)``.
+
+        ``signals`` is ``(n, n_bvalues)``; ``params`` is ``(n, 3)`` = (D, f, D*).
+        Seeded for reproducibility; raises if the NLL diverges. Returns ``self``.
+        """
         signals = np.asarray(signals, dtype=np.float32)
         params = np.asarray(params, dtype=np.float64)
         if signals.shape[1] != self.n_bvalues:
@@ -250,18 +255,21 @@ class MAFPosterior:
         return self
 
     # ----- prediction ---------------------------------------------------- #
-    @torch.no_grad()
     def posterior_samples(self, signals: np.ndarray) -> np.ndarray:
         """Return posterior samples in natural units: (n, n_posterior, 3)."""
         if not self._trained:
             raise RuntimeError("call fit() before predicting")
         self.flow.eval()
         signals = np.asarray(signals, dtype=np.float32)
-        ctx = torch.as_tensor(self._standardize_ctx(signals), dtype=torch.float32)
-        u_std = self.flow.sample(ctx, self.n_posterior)  # (n, S, 3) standardised
-        u = u_std * torch.as_tensor(self._u_std, dtype=torch.float32) \
-            + torch.as_tensor(self._u_mean, dtype=torch.float32)
-        nat = _from_unconstrained_torch(u)
+        # no_grad as a context (not a decorator): a decorator would dereference
+        # torch at class-definition time, breaking import in a torch-free env --
+        # the module must import cleanly and only raise on construction.
+        with torch.no_grad():
+            ctx = torch.as_tensor(self._standardize_ctx(signals), dtype=torch.float32)
+            u_std = self.flow.sample(ctx, self.n_posterior)  # (n, S, 3) standardised
+            u = u_std * torch.as_tensor(self._u_std, dtype=torch.float32) \
+                + torch.as_tensor(self._u_mean, dtype=torch.float32)
+            nat = _from_unconstrained_torch(u)
         return nat.cpu().numpy()
 
     def predict_quantiles(self, signals: np.ndarray, q_levels) -> np.ndarray:

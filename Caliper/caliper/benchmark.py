@@ -393,17 +393,19 @@ def summarize(rows: Sequence[dict], param: str = "Dstar") -> str:
                 cells.append(f"{_mean([r['coverage'] for r in sel]):>9.3f}")
             out.append(f"{calib:>14} | " + " | ".join(cells))
 
-        # D*-tercile conditional coverage at the most-stressed (lowest) SNR
-        s_lo = snrs[0]
-        out.append(f"\nconditional coverage by D* tercile @ SNR={s_lo:g} "
-                   f"(low/mid/high):")
-        for calib in calibs:
-            tri = []
-            for g in (0, 1, 2):
-                sel = _select(rows, estimator=est, calibration=calib, snr=s_lo,
-                              param=param, stratum=STRATUM_NAMES[g])
-                tri.append(f"{_mean([r['coverage'] for r in sel]):.3f}")
-            out.append(f"{calib:>14}  {'/'.join(tri)}")
+        # D*-tercile conditional coverage at both SNR extremes: the gap is an
+        # identifiability effect, widest at high SNR and washed out by noise at
+        # low SNR.
+        for snr_c in sorted({snrs[0], snrs[-1]}):
+            out.append(f"\nconditional coverage by D* tercile @ SNR={snr_c:g} "
+                       f"(low/mid/high):")
+            for calib in calibs:
+                tri = []
+                for g in (0, 1, 2):
+                    sel = _select(rows, estimator=est, calibration=calib, snr=snr_c,
+                                  param=param, stratum=STRATUM_NAMES[g])
+                    tri.append(f"{_mean([r['coverage'] for r in sel]):.3f}")
+                out.append(f"{calib:>14}  {'/'.join(tri)}")
 
         # width inflation: high/low D* width ratio for CQR vs Mondrian, by SNR
         out.append("\nhigh/low D* mean-width ratio (CQR vs Mondrian), by SNR:")
@@ -463,6 +465,7 @@ def check_reproducible(**grid_kwargs) -> bool:
 # CLI
 # --------------------------------------------------------------------------- #
 def main(argv: Optional[Sequence[str]] = None) -> None:
+    """CLI entry point: run the grid, write the CSV, print the summary."""
     ap = argparse.ArgumentParser(description="Caliper evaluation harness (tool demo).")
     ap.add_argument("--out", default=DEFAULT_CSV_PATH, help="output CSV path")
     ap.add_argument("--estimators", nargs="+", default=None,

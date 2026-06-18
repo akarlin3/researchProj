@@ -100,6 +100,7 @@ class ReferenceIVIMEstimator:
 
     # API symmetry with MAFPosterior -- the segmented fit needs no training.
     def fit(self, signals=None, params=None) -> "ReferenceIVIMEstimator":
+        """No-op (the segmented fit is closed-form); returns ``self`` for API parity."""
         return self
 
     def predict_point(self, signals: np.ndarray) -> np.ndarray:

@@ -1,60 +1,71 @@
 # Caliper
 
+[![Caliper CI](https://github.com/akarlin3/ResearchProj/actions/workflows/caliper-ci.yml/badge.svg)](https://github.com/akarlin3/ResearchProj/actions/workflows/caliper-ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10–3.12](https://img.shields.io/badge/python-3.10%E2%80%933.12-blue.svg)](pyproject.toml)
+
 **An IVIM uncertainty-quantification calibration toolkit.**
 
 Caliper is a small, reviewer-oriented Python package for *measuring and
 correcting* the calibration of uncertainty estimates in intravoxel incoherent
-motion (IVIM) diffusion MRI. It ships three composable pieces:
+motion (IVIM) diffusion MRI. It ships four composable pieces:
 
 1. **`caliper.metrics`** — a **model-agnostic calibration ruler** (numpy-only):
    coverage, quantile ECE, sharpness, pinball/interval score, and
    group-conditional coverage. It knows nothing about IVIM or any particular
    estimator — feed it true values and predicted quantiles.
-2. **`caliper.estimator_maf`** — a conditional **masked-autoregressive-flow**
-   posterior over `(D, f, D*)` given the multi-b signal decay (optional torch
-   extra). **`caliper.estimator_reference`** is a torch-free stand-in: an
-   over-confident segmented-fit IVIM estimator exposing the same
-   `predict_quantiles` contract, so the calibration story runs on numpy alone.
+2. **estimators under one contract** — **`caliper.estimator_maf`**, a conditional
+   **masked-autoregressive-flow** posterior over `(D, f, D*)` (optional torch
+   extra), and **`caliper.estimator_reference`**, a torch-free over-confident
+   segmented-fit stand-in. Both expose `predict_quantiles(signals, q_levels)`,
+   so the whole calibration story runs on numpy alone.
 3. **`caliper.conformal`** — **split-conformal**, **CQR**, and **Mondrian
    (group-conditional) CQR** wrappers that coverage-correct *any* estimator
    exposing `predict_quantiles`, plus `conditional_coverage_by_strata` for
    reading coverage *and width* per stratum.
+4. **`caliper.benchmark`** — a reproducible **evaluation harness** that sweeps
+   estimators × calibration methods × SNR × seeds and scores every cell with the
+   ruler. *This is internal tool infrastructure / a reproducible demo — not a
+   citable benchmark or dataset release.*
 
 All data is **synthetic and PHI-free**, generated in-repo with fixed seeds
 (`caliper.forward`). There are no clinical-data dependencies.
 
-> Every number in this README is produced by a fixed-seed script in this repo:
-> the MAF results by `examples/demo.py` (torch), and the **Conformal
-> calibration** numbers below by `examples/conformal_demo.py` (numpy only).
-> Re-run them to reproduce exactly.
+> **Every number in this README is produced by a fixed-seed script in this
+> repo**, named at each section. The torch-free numbers
+> (`examples/conformal_demo.py`, `python -m caliper.benchmark`) reproduce on the
+> numpy-only core; the MAF numbers (`examples/demo.py`) require the `[estimator]`
+> extra.
+
+> **Scope.** This is the *un-gated* calibration tooling, released for public use
+> but **not** as a citable software release. Value-of-information scoring, the
+> deployment validity monitor, and a citable JOSS/DOI release are deferred and
+> gated on a separate publication — see [ROADMAP.md](ROADMAP.md).
 
 ---
 
 ## Install
 
 ```bash
-# core ruler + forward model + conformal wrapper (numpy only)
-pip install -e .
-
-# add the MAF estimator (pulls in torch)
-pip install -e ".[estimator]"
+pip install -e .                 # numpy-only core: ruler + forward + conformal + reference
+pip install -e ".[estimator]"    # + the MAF posterior (pulls in torch)
+pip install -e ".[dev]"          # + pytest, ruff
 ```
 
-Python 3.10–3.12. The core (`metrics`, `forward`, `conformal`) is numpy-only;
-torch is required only for `estimator_maf`.
+Python 3.10–3.12. The core (`metrics`, `forward`, `conformal`, `benchmark`,
+`estimator_reference`) is numpy-only; torch is required only for `estimator_maf`.
 
 ---
 
 ## Quickstart
 
 ```bash
-python examples/demo.py
+python examples/ruler_demo.py        # the model-agnostic ruler           [numpy]
+python examples/conformal_demo.py    # raw → CQR → Mondrian, D* result    [numpy]
+python -m caliper.benchmark          # the eval grid → results/benchmark.csv [numpy]
+python examples/benchmark_report.py  # regenerate figures from the CSV    [numpy]
+python examples/demo.py              # MAF → split-conformal under SNR shift [torch]
 ```
-
-This runs the full pipeline — synthetic IVIM → MAF posterior → split-conformal →
-calibration scorecard — under a realistic **deployment shift** (the flow is
-trained for high-SNR fitting but evaluated at lower SNR, where model-based IVIM
-UQ is known to be over-confident).
 
 ### The model-agnostic ruler API
 
@@ -84,47 +95,118 @@ q_corrected = cq.apply(q_test)   # coverage-corrected quantiles, same shape
 
 ---
 
-## Results (from `examples/demo.py`)
+## The conformal result (torch-free — `examples/conformal_demo.py`)
 
-Nominal central coverage **0.900** (90% intervals, α = 0.10). Held-out synthetic
-test set, deployment shift train-SNR 60 → test-SNR 25.
+The calibration story runs **without torch**, using the over-confident
+segmented-fit `ReferenceIVIMEstimator`. Nominal central coverage **0.900** (90%
+intervals, α = 0.10); cohorts at SNR 40 (cal n=4000 seed=1, test n=9000 seed=2).
 
-### Raw MAF is over-confident (the known model-based UQ result)
+### CQR restores **marginal** coverage
 
-| param | coverage | gap | ECE | sharpness |
-|-------|---------:|------:|------:|----------:|
-| D     | 0.528 | −0.372 | 0.139 | 0.281 |
-| f     | 0.550 | −0.350 | 0.133 | 0.072 |
-| D\*   | 0.555 | −0.345 | 0.124 | 26.86 |
+| param | raw coverage | CQR coverage | raw \|gap\| | CQR \|gap\| |
+|-------|-------------:|-------------:|------------:|------------:|
+| D     | 0.676 | 0.902 | 0.224 | **0.002** |
+| f     | 0.435 | 0.901 | 0.465 | **0.001** |
+| D\*   | 0.359 | 0.903 | 0.541 | **0.003** |
 
-The raw posterior intervals are far too tight: ~53–56% empirical coverage
-against a 90% target. This is expected and is reported honestly — **not** tuned.
+The raw reference estimator is over-confident on every parameter (reported
+quantiles too narrow); CQR restores marginal coverage to within **≤0.003** of
+nominal. (`SplitConformalResidual` does the same from the point estimate alone;
+for this homoscedastic estimator the two coincide.)
 
-### Split-conformal restores **marginal** coverage
+### …but **conditional** coverage is not — the D\* tercile result
+
+Coverage **and mean interval width** of the 90% `D*` interval, stratified by
+true-D\* tercile:
+
+| method | low-D\* cov | width | mid-D\* cov | width | high-D\* cov | width |
+|--------|------:|------:|------:|------:|------:|------:|
+| raw          | 0.655 | 19.7 | 0.359 | 19.7 | 0.062 | 19.7 |
+| marginal CQR | 0.951 | 215  | 0.875 | 215  | 0.882 | 215  |
+| Mondrian CQR | 0.893 | 58.7 | 0.909 | 261  | 0.902 | 227  |
+
+- **Marginal CQR** restores *pooled* D\* coverage (0.903) but applies one global
+  width everywhere, so the well-identified **low-D\* tercile over-covers
+  (0.951)** while the poorly-identified **high-D\* tercile under-covers (0.882)**.
+- **Mondrian CQR** restores per-tercile coverage (0.893 / 0.909 / 0.902) **only
+  by inflating width**: high-D\* intervals are **3.87×** the low-D\* width.
+
+Conformal guarantees marginal coverage unconditionally; conditional coverage
+costs sharpness, and at high `D*` — the identifiability wall — the trade is
+steep. The gap is the finding, reported as-is, not tuned away.
+
+---
+
+## Benchmark summary (`python -m caliper.benchmark`)
+
+The harness sweeps `{reference} × {raw, split, CQR, Mondrian} × {SNR 10/20/40/80}
+× {3 seeds}`, scores each cell with the ruler, and writes a tidy long-form table
+to `results/benchmark.csv` (576 rows; fixed seeds reproduce it exactly). Figures
+below regenerate **solely from that CSV** via `examples/benchmark_report.py`.
+*Internal tool demo, not a benchmark release.*
+
+**Marginal D\* coverage degrades as SNR drops; conformal restores it** (nominal
+0.900, seed-averaged):
+
+| calibration | SNR 10 | SNR 20 | SNR 40 | SNR 80 |
+|-------------|-------:|-------:|-------:|-------:|
+| raw         | 0.155  | 0.233  | 0.352  | 0.506  |
+| split       | 0.896  | 0.903  | 0.899  | 0.903  |
+| CQR         | 0.896  | 0.903  | 0.899  | 0.903  |
+| Mondrian    | 0.896  | 0.903  | 0.899  | 0.900  |
+
+![Calibration vs SNR](examples/figures/calibration_vs_snr.png)
+
+**The high-D\* conditional gap is an identifiability effect — widest at high SNR,
+washed out by noise at low SNR.** D\* coverage by true-D\* tercile (low/mid/high):
+
+| calibration | @ SNR 10 | @ SNR 80 |
+|-------------|----------|----------|
+| raw         | 0.308 / 0.130 / 0.027 | 0.837 / 0.563 / 0.119 |
+| CQR         | 0.895 / 0.874 / 0.917 | 0.980 / 0.912 / **0.817** |
+| Mondrian    | 0.894 / 0.901 / 0.894 | 0.890 / 0.905 / 0.904 |
+
+At SNR 80, marginal CQR leaves a **0.16 coverage gap** between the low- and
+high-D\* terciles that it cannot close; Mondrian equalizes them.
+
+![Coverage by D* tercile](examples/figures/coverage_by_dstar_tercile.png)
+
+**Mondrian's per-tercile validity costs sharpness.** High-D\* / low-D\* mean
+interval-width ratio:
+
+| calibration | SNR 10 | SNR 20 | SNR 40 | SNR 80 |
+|-------------|-------:|-------:|-------:|-------:|
+| CQR         | 1.00×  | 1.00×  | 1.00×  | 1.00×  |
+| Mondrian    | 0.93×  | 1.31×  | 3.35×  | **8.77×** |
+
+CQR holds one width across terciles; Mondrian must inflate the high-D\* interval
+up to **8.8×** the low-D\* width to equalize coverage — the steeper the SNR, the
+steeper the price.
+
+![Mondrian width cost](examples/figures/mondrian_width_cost.png)
+
+---
+
+## The MAF posterior (`examples/demo.py` — requires `[estimator]`: torch)
+
+The same calibration story runs with the conditional MAF posterior in place of
+the reference estimator, under a realistic **deployment shift** (flow trained at
+SNR 60, evaluated at SNR 25). Numbers below are produced by `examples/demo.py`
+(re-run with the `[estimator]` extra to reproduce); nominal coverage 0.900.
 
 | param | raw coverage | conformal coverage | raw \|gap\| | conformal \|gap\| |
 |-------|-------------:|-------------------:|------------:|------------------:|
-| D     | 0.528 | 0.890 | 0.372 | **0.010** |
+| D     | 0.526 | 0.891 | 0.374 | **0.009** |
 | f     | 0.550 | 0.876 | 0.350 | **0.024** |
-| D\*   | 0.555 | 0.903 | 0.345 | **0.003** |
+| D\*   | 0.554 | 0.904 | 0.346 | **0.004** |
 
-Marginal coverage is restored to within ≤0.024 of nominal for every parameter.
+Raw MAF posterior intervals are far too tight (~53–55% empirical coverage against
+a 90% target — the known model-based-UQ failure); split-conformal restores
+marginal coverage to within ≤0.024 of nominal. As with the reference estimator,
+the high-D\* tercile remains under-covered post-conformal (D\* g2 = 0.812 vs
+0.900 nominal — the identifiability limit, not a wrapper bug).
 
-### Honest caveat: **conditional** coverage is *not* restored
-
-Conformal applies a single marginal offset, so it cannot fix coverage that
-varies across the parameter range. Post-conformal conditional coverage by
-true-D\* tercile:
-
-```
-   Dstar  g0(low)=0.972  g1(mid)=0.929  g2(high)=0.810
-```
-
-The high-D\* tercile still under-covers (0.810 vs 0.900) while low-D\*
-over-covers (0.972). This is the **irreducible identifiability limit** of IVIM
-`D*` — pseudo-diffusion is weakly constrained by the signal — and it is a
-property of the data, not a bug in the wrapper. Caliper's job is to *measure*
-this faithfully, which it does.
+*(MAF training is stochastic; exact values vary slightly across torch builds.)*
 
 ---
 
@@ -208,13 +290,19 @@ steep. The gap is the finding, reported as-is, not tuned away.
 caliper/
   metrics.py             # numpy-only calibration ruler (the canonical core)
   forward.py             # bi-exponential IVIM model + synthetic cohorts
+  conformal.py           # split-conformal / CQR / Mondrian + strata diagnostics
   estimator_reference.py # over-confident segmented-fit IVIM estimator  [numpy]
   estimator_maf.py       # conditional MAF posterior over (D, f, D*)    [torch]
-  conformal.py           # split-conformal / CQR / Mondrian + strata diagnostics
+  benchmark.py           # reproducible evaluation harness (tool demo)  [numpy]
 examples/
-  demo.py                # MAF end-to-end pipeline (fixed seeds)        [torch]
-  conformal_demo.py      # conformal + D* tercile result (fixed seeds)  [numpy]
-tests/                   # pytest: metrics, forward, conformal, reference (numpy)
+  ruler_demo.py          # the model-agnostic ruler                     [numpy]
+  conformal_demo.py      # conformal + D* tercile result                [numpy]
+  benchmark_report.py    # regenerate figures from results/benchmark.csv [numpy]
+  demo.py                # MAF end-to-end pipeline                       [torch]
+  figures/               # PNGs regenerated from the benchmark CSV
+docs/                    # index + API reference (plain Markdown)
+results/benchmark.csv    # the benchmark table (every number traces to a run)
+tests/                   # pytest: metrics, forward, conformal, reference, benchmark
                          #         + estimator_maf (auto-skips without torch)
 ```
 
@@ -222,7 +310,8 @@ Run the tests:
 
 ```bash
 pip install -e ".[dev]"
-pytest -q          # 38 tests (1 MAF test auto-skips without torch)
+pytest -q          # 46 passed, 1 skipped (the MAF test group needs torch)
+# with the [estimator] extra installed: 50 passed (MAF tests included)
 ```
 
 ## License
@@ -231,6 +320,6 @@ MIT — see [LICENSE](LICENSE).
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md). Value-of-information, decision-gap, and
-deployment validity-monitor functionality are **deliberately deferred** and not
-implemented here.
+See [ROADMAP.md](ROADMAP.md). Value-of-information, decision-gap, and deployment
+validity-monitor functionality — and any citable JOSS/DOI release — are
+**deliberately deferred** and not implemented here.

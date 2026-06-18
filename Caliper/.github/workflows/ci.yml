@@ -1,18 +1,18 @@
 name: CI
 
+# Standalone-extraction workflow: correct if the Caliper/ directory is pulled out
+# into its own repository (it then sits at that repo's root). DORMANT inside the
+# ResearchProj monorepo -- GitHub only runs workflows under the *repository* root
+# .github/workflows/, so here the active workflow is ../../.github/workflows/
+# caliper-ci.yml. Kept in sync with it.
+
 on:
   push:
-    branches: ["**"]
-    paths: ["Caliper/**"]
   pull_request:
-    paths: ["Caliper/**"]
-
-defaults:
-  run:
-    working-directory: Caliper
 
 jobs:
-  test:
+  core:
+    name: core (numpy) py${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -31,3 +31,26 @@ jobs:
         run: ruff check .
       - name: Test (pytest, numpy-only core)
         run: pytest -q
+      - name: Examples (numpy, fixed seed)
+        run: |
+          python examples/ruler_demo.py
+          python examples/conformal_demo.py
+          python -m caliper.benchmark --quick
+          python examples/benchmark_report.py
+
+  estimator:
+    name: estimator (torch) py3.11
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install (core + estimator + dev)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[estimator,dev]"
+      - name: Test (pytest, full incl. MAF)
+        run: pytest -q
+      - name: MAF example (fixed seed)
+        run: python examples/demo.py

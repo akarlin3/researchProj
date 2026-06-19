@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from datum.task import TASK_V1, QUANTILE_LEVELS
 from datum.baselines import BASELINES, panel_keys
+from datum.task import QUANTILE_LEVELS, TASK_V1
 
 
 def test_task_spec_well_formed():

@@ -1,4 +1,4 @@
-"""The curated baseline panel -- Datum's reference methods.
+r"""The curated baseline panel -- Datum's reference methods.
 
 A benchmark is only as meaningful as its baselines. Datum curates a panel that
 spans the calibration story the IVIM literature tells: a parametric error bar that

@@ -34,8 +34,8 @@ def _wiring_smoke() -> bool:
     output is NOT a baseline and NOT a reference number. It only proves that the
     substrate and ruler adapters resolve end to end.
     """
-    from datum.substrate import gauge_cohort
     from datum import ruler
+    from datum.substrate import gauge_cohort
     from datum.task import TASK_V1
 
     sub = gauge_cohort(n_train=4, n_cal=4, n_test=32)

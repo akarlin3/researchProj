@@ -12,8 +12,9 @@ from datum import _paths
 
 _paths.ensure_deps()
 
-from gauge.forward import DEFAULT_B_VALUES as GB, ivim_signal as g_sig  # noqa: E402
 from caliper.forward import ivim_signal as c_sig  # noqa: E402
+from gauge.forward import DEFAULT_B_VALUES as GB  # noqa: E402
+from gauge.forward import ivim_signal as g_sig  # noqa: E402
 
 from datum import convert  # noqa: E402
 

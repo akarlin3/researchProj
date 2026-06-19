@@ -151,7 +151,6 @@ def score_submission(name: str, q_test, task=TASK_V1, substrate_name="gauge_coho
     n_boot = task.n_bootstrap if n_boot is None else n_boot
     levels = np.asarray(task.quantile_levels, dtype=float)
     alpha = task.alpha
-    nominal = 1.0 - alpha
 
     q_test = np.asarray(q_test, dtype=float)
     expected = (task.n_test, 3, levels.size)

@@ -1,4 +1,4 @@
-"""Convention adapter between the Gauge substrate and the Caliper estimators.
+r"""Convention adapter between the Gauge substrate and the Caliper estimators.
 
 The two reused dependencies speak different IVIM conventions:
 

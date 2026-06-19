@@ -1,4 +1,4 @@
-"""Bootstrap confidence intervals for the load-bearing reference numbers.
+r"""Bootstrap confidence intervals for the load-bearing reference numbers.
 
 No voxel-level bootstrap-CI helper exists in Caliper or Gauge, so Datum provides
 one here. It is a standard nonparametric bootstrap over the test voxels: resample
@@ -19,7 +19,7 @@ from datum import _paths
 
 _paths.ensure_deps()
 
-from caliper.metrics import central_interval, empirical_coverage, ece_quantile  # noqa: E402
+from caliper.metrics import central_interval, ece_quantile, empirical_coverage  # noqa: E402
 
 
 @dataclass

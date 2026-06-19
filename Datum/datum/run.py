@@ -1,4 +1,4 @@
-"""The Datum benchmark runner -- produce the (PROVISIONAL) reference numbers.
+r"""The Datum benchmark runner -- produce the (PROVISIONAL) reference numbers.
 
 Runs the curated baseline panel through Fashion's calibration ruler (via Caliper)
 on the data substrate, and writes long-form reference numbers with bootstrap CIs on
@@ -20,12 +20,17 @@ from datum import _paths
 
 _paths.ensure_deps()
 
-from caliper import metrics as M  # noqa: E402
 from caliper import conformal as C  # noqa: E402
+from caliper import metrics as M  # noqa: E402
 from caliper.forward import PARAM_NAMES as CAL_PARAM_NAMES  # ("D", "f", "Dstar")  # noqa: E402
 
 from datum import convert, ruler, substrate  # noqa: E402
-from datum.baselines import BASELINES, ESTIMATORS, cells_for_estimator, estimators_in_panel  # noqa: E402
+from datum.baselines import (  # noqa: E402
+    BASELINES,
+    ESTIMATORS,
+    cells_for_estimator,
+    estimators_in_panel,
+)
 from datum.ci import bootstrap_reference  # noqa: E402
 from datum.manifest import RULER, SUBSTRATE  # noqa: E402
 from datum.task import TASK_V1  # noqa: E402
@@ -271,7 +276,6 @@ def write_report(rows, meta, path=None):
             and r["substrate"] == "gauge_cohort"]
 
     def line(r, ci=True):
-        s = f"{r['coverage']:+.3f}" if False else f"{r['coverage']:.3f}"
         gap = r["coverage_gap"]
         c = (f" [{r['coverage_gap_lo']:+.3f}, {r['coverage_gap_hi']:+.3f}]"
              if ci and r.get("coverage_gap_lo") is not None else "")
@@ -285,14 +289,14 @@ def write_report(rows, meta, path=None):
                  "with `python revalidate.py --full`.\n")
     lines.append(f"- Ruler: **{RULER['name']} v{RULER['version']} @ {RULER['commit']}** "
                  f"({RULER['manuscript_status']})")
-    lines.append(f"- Ruler implementation: `caliper.metrics` (read-only)")
+    lines.append("- Ruler implementation: `caliper.metrics` (read-only)")
     lines.append(f"- Substrate: **{SUBSTRATE['primary']['name']}** "
                  f"(seed {meta['seed']}), converted to Caliper `(D, f, D*)` convention")
     lines.append(f"- Task: `{TASK_V1.name}` {meta['task_version']}; "
                  f"nominal central interval = {1 - rows[0]['alpha']:.2f}; "
                  f"bootstrap CIs: {meta['n_boot']} resamples, 95%")
-    lines.append(f"- Honest gate: numbers are reported as run; **no tuning**, no "
-                 f"cherry-picking. All baselines reused from Caliper.\n")
+    lines.append("- Honest gate: numbers are reported as run; **no tuning**, no "
+                 "cherry-picking. All baselines reused from Caliper.\n")
     if meta["skipped"]:
         lines.append("- Skipped cells: " + ", ".join(f"`{k}` ({why})"
                      for k, why in meta["skipped"]) + "\n")

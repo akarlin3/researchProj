@@ -6,9 +6,8 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from datum.task import TASK_V1
 from datum import submit
-
+from datum.task import TASK_V1
 
 TASK = replace(TASK_V1, n_train=100, n_cal=300, n_test=300, n_bootstrap=50)
 

@@ -13,7 +13,6 @@ in-vivo / MSK data is ever materialised in this tree.
 """
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -23,7 +22,7 @@ from datum import _paths
 
 _paths.ensure_deps()
 
-from gauge.cohort import generate_cohort, DEFAULT_SEED, DEFAULT_SNR_GRID  # noqa: E402
+from gauge.cohort import DEFAULT_SEED, DEFAULT_SNR_GRID, generate_cohort  # noqa: E402
 from gauge.forward import DEFAULT_B_VALUES  # noqa: E402
 
 from datum.manifest import SUBSTRATE  # noqa: E402

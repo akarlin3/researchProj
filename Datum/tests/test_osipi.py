@@ -12,7 +12,6 @@ import pytest
 
 from datum import substrate
 
-
 _DRO = Path(substrate.__file__).resolve().parent.parent / "data" / "osipi" / "DRO.npy"
 _have_dro = _DRO.exists()
 

@@ -19,6 +19,7 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Forge/` — Monte Carlo dose-simulation feasibility benchmark](#forge--monte-carlo-dose-simulation-feasibility-benchmark)
   - [`Gauge/` — Distribution-free conformal coverage for IVIM](#gauge--distribution-free-conformal-coverage-for-ivim)
   - [`Lattice/` — A UQ-calibration reference object (DRO) for IVIM](#lattice--a-uq-calibration-reference-object-dro-for-ivim)
+  - [`Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)](#lethe--constrained-validation-results-echo-portion-repeatability-scale-check)
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
   - [`Proteus/` — Structure-first mining of the dark proteome](#proteus--structure-first-mining-of-the-dark-proteome)
@@ -38,6 +39,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Forge/`](Forge/) | *(no manuscript — feasibility benchmark)* Monte Carlo dose-simulation timing & Electron Return Effect validation | Medical physics — MR-Linac simulation infrastructure |
 | [`Gauge/`](Gauge/) | *Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment* | IVIM diffusion-MRI — conformal coverage & the D\* identifiability limit |
 | [`Lattice/`](Lattice/) | *(research software — no standalone paper)* IVIM UQ-calibration digital reference object (DRO) | Research software — synthetic ground-truth cohorts & alternative-model generators |
+| [`Lethe/`](Lethe/) | *(constrained-validation results; Echo portion — verdict: **Lethe**)* What test–retest repeatability validates about conformal interval **scale** in IVIM | IVIM diffusion-MRI — does the error bar have the right *size*? |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
@@ -217,6 +219,38 @@ worst in the high-D\* tercile (0.52).
 - `examples/` — `make_cohort.py`, `continuity_demo.py`, `evaluate_demo.py` (Caliper-free), `evaluate_with_caliper.py` (optional one-way consumption demo).
 - `docs/` — `DRO_SPEC.md`, `POSITIONING.md`, `CLEANROOM.md`. `tests/` — 37 cases (continuity, round-trip, schema, interface, publication gate). `scripts/fetch_osipi.py`.
 
+### `Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)
+
+*Constrained-validation / honest-limitation home for the IVIM uncertainty program; no
+standalone paper yet. First portion: **Echo** (verdict-routed here). Manuscript:
+[`Lethe/paper/lethe.tex`](Lethe/paper/lethe.tex).* **Lethe** collects results where a
+validation is run faithfully and the verdict is a sharply-scoped negative. The directory was
+named `Echo/` during the build and renamed `Lethe/` once the verdict made Echo part of Lethe;
+the *method* keeps the name **Echo**.
+
+The **Echo portion** asks one ground-truth-free question about a deployed conformal IVIM
+interval: **is it the right *size* to capture a measurement's own irreproducibility?** It
+answers with *test–retest interval coverage* — does one scan's parameter estimate fall inside
+the *other* scan's deployed conformal interval — with a BCa bootstrap CI on public same-day
+scan–rescan data (**ACRIN-6698**, n=76, CC-BY-4.0, download-on-demand). It clears two hard
+legitimacy constraints. **Precision, not accuracy:** `Δ = est_B − est_A = ε_B − ε_A` cancels
+any bias common to both scans, so it certifies an interval is correctly *sized to measurement
+noise* and is provably blind to accuracy/bias. **Distinct from Gauge:** Gauge §4.2.2 measures
+the *rank* (Spearman) of width vs scan–rescan scatter; Echo measures *scale* (a coverage
+rate), and a pure width rescale leaves Spearman fixed while moving coverage. It reuses
+Caliper's conformal ruler (read-only) and Gauge's download-on-demand data posture.
+
+**Verdict (rendered): Lethe.** On real ACRIN-6698 (n=76) the conformal D interval is ~4× too
+narrow to cover real test–retest variation (coverage 0.263 [0.158, 0.355] vs the 0.755
+target; scale ratio R≈0.25), robustly across the SNR grid. The finding sharpens Gauge §4.2.2:
+width *rank*-tracks repeatability (r=+0.60) but its *scale*, calibrated conventionally,
+under-covers it — region-level repeatability is non-thermal-dominated. See
+[`Lethe/LETHE.md`](Lethe/LETHE.md) and the manuscript [`Lethe/paper/lethe.pdf`](Lethe/paper/lethe.pdf).
+
+- `echo_repeat/` — `statistic.py` (test–retest coverage + standardized-residual scale check + numpy-only BCa bootstrap), `harness.py` (synthetic test–retest generator + SOLID method self-test, also the Reverb fallback), `invivo.py` (IVIM forward + segmented fit + Caliper-conformal deployer), `provenance.py`, `_paths.py` (read-only import chokepoint).
+- `scripts/` — `run_harness.py` (CP1 method self-test), `fetch_invivo.py` (CP2 download-on-demand, reuses Gauge's data template), `run_validation.py` (CP3 real-data gate → PASS / Lethe).
+- `paper/` — `lethe.tex` (`ebgaramond`+`microtype`) + `consistency.py` (numbers traced to seeded results). `ASSUMPTIONS.md`, `PROMOTION.md`, `VERIFICATION.md`, `LETHE.md`, `reproduce.sh` (one-command), `tests/`.
+
 ### `Minos/` — The decision value of a calibrated error bar
 
 *Paper:* **"Minos: the decision value of a calibrated uncertainty — A
@@ -327,7 +361,7 @@ downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
 
 ## How the IVIM projects fit together
 
-Seven folders form one IVIM diffusion-MRI uncertainty program:
+Eight folders form one IVIM diffusion-MRI uncertainty program:
 
 - **Fashion** establishes *which* uncertainty paradigms actually cover D\* and pins Gaussian error bars as the culprit.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
@@ -336,6 +370,7 @@ Seven folders form one IVIM diffusion-MRI uncertainty program:
 - **Datum** is the benchmark layer: it freezes that ruler into a fixed task with curated baselines and a submission interface, scored over **Lattice's** cohorts (with an OSIPI DRO as external validation), so any IVIM uncertainty method can be ranked on one standard (reference numbers PROVISIONAL until Fashion's ruler locks).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
 - **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. A feasibility question under test: it either becomes a standalone paper or folds into Minos.
+- **Lethe** (the *Echo* portion; speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos.
 
 ## Provenance
 
@@ -352,6 +387,7 @@ Each project was imported into the monorepo with its own history preserved:
 | `Caliper/` | created in-repo | n/a |
 | `Datum/` | created in-repo (clean synthetic-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |
 | `Lattice/` | projLattice | clean synthetic-only history (own root, merged via `--allow-unrelated-histories`) |
+| `Lethe/` | projEcho (new — synthetic/open); built as `Echo/`, renamed `Echo/`→`Lethe/` by verdict | full history (own clean history; `git log --follow -- Lethe/`) |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |
 | `Vernier/` | projVernier | full history |
 

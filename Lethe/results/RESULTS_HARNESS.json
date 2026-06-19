@@ -1,0 +1,61 @@
+{
+  "provisional": false,
+  "kind": "method-self-test",
+  "seed": 0,
+  "n": 20000,
+  "level": 0.1,
+  "checks": {
+    "n": 20000,
+    "level": 0.1,
+    "scaled_recovers_analytic": {
+      "value": 0.7585,
+      "target": 0.7552058558251984,
+      "pass": true
+    },
+    "bias_invariance": {
+      "value": 0.7585,
+      "target": 0.7552058558251984,
+      "pass": true
+    },
+    "scale_sensitivity": [
+      {
+        "scale": 0.5,
+        "value": 0.43545,
+        "target": 0.4391258418416544,
+        "pass": true
+      },
+      {
+        "scale": 0.75,
+        "value": 0.61805,
+        "target": 0.6169636419061308,
+        "pass": true
+      },
+      {
+        "scale": 1.0,
+        "value": 0.7627,
+        "target": 0.7552058558251984,
+        "pass": true
+      },
+      {
+        "scale": 1.5,
+        "value": 0.9186,
+        "target": 0.918950831640234,
+        "pass": true
+      },
+      {
+        "scale": 2.0,
+        "value": 0.9795,
+        "target": 0.9799907461467963,
+        "pass": true
+      }
+    ],
+    "distinct_from_gauge": {
+      "spearman_before": 0.3728009961560025,
+      "spearman_after_rescale": 0.3728009961560025,
+      "coverage_before": 0.75915,
+      "coverage_after_rescale": 0.4435,
+      "pass": true
+    },
+    "ALL_PASS": true
+  }
+}

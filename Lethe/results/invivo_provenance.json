@@ -1,0 +1,721 @@
+{
+  "echo_provenance_version": 1,
+  "dataset": {
+    "name": "ACRIN-6698 / I-SPY2 Breast DWI (same-day test-retest arm, TrT0/TrT1)",
+    "source": "TCIA (The Cancer Imaging Archive), NBIA REST API",
+    "collection_page": "https://www.cancerimagingarchive.net/collection/acrin-6698/",
+    "doi": "10.7937/tcia.kk02-6d95",
+    "license": "CC-BY-4.0",
+    "citation": "Newitt, D. C., Partridge, S. C., Zhang, Z., Gibbs, J., Chenevert, T., Rosen, M., et al. (2021). ACRIN 6698/I-SPY2 Breast DWI [Data set]. The Cancer Imaging Archive. DOI 10.7937/tcia.kk02-6d95.",
+    "modality": "MR DWI (real in-vivo, breast); NO ground-truth IVIM parameters",
+    "b_values_s_per_mm2": [
+      0.0,
+      100.0,
+      600.0,
+      800.0
+    ],
+    "test_retest_arm": "same-day coffee-break repeats (TrT0/TrT1); ~76 tumor pairs",
+    "posture": "download-on-demand; pixel data NOT committed (data/ git-ignored); provenance manifest only"
+  },
+  "exams": [
+    {
+      "tumor": "ACRIN-6698-107700",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 393,
+      "n_tumor_voxels_b": 200,
+      "sha_a": "b1d373241c78c0eb",
+      "sha_b": "1373310e8491b769"
+    },
+    {
+      "tumor": "ACRIN-6698-155058",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 440,
+      "n_tumor_voxels_b": 278,
+      "sha_a": "30cb22305a4b57b0",
+      "sha_b": "5f744bbac5398068"
+    },
+    {
+      "tumor": "ACRIN-6698-156163",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 4807,
+      "n_tumor_voxels_b": 4937,
+      "sha_a": "800e232e0a7cf117",
+      "sha_b": "fdbc1acea23f11ee"
+    },
+    {
+      "tumor": "ACRIN-6698-169600",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 226,
+      "n_tumor_voxels_b": 414,
+      "sha_a": "60859b6756744c43",
+      "sha_b": "4506a6d987599fc1"
+    },
+    {
+      "tumor": "ACRIN-6698-169918",
+      "timepoint": "T1",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 935,
+      "n_tumor_voxels_b": 647,
+      "sha_a": "bf5e4fa910bd440b",
+      "sha_b": "23db6c336c9f20c1"
+    },
+    {
+      "tumor": "ACRIN-6698-188700",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 672,
+      "n_tumor_voxels_b": 555,
+      "sha_a": "5944c6bddbb3c53b",
+      "sha_b": "47e23ca6c3e336cd"
+    },
+    {
+      "tumor": "ACRIN-6698-221686",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 2248,
+      "n_tumor_voxels_b": 445,
+      "sha_a": "fad05d521b987dc6",
+      "sha_b": "d0b781eb6bf7cdb9"
+    },
+    {
+      "tumor": "ACRIN-6698-222135",
+      "timepoint": "T1",
+      "manufacturer": "Philips Healthcare",
+      "n_tumor_voxels_a": 257,
+      "n_tumor_voxels_b": 279,
+      "sha_a": "47ca96e0a2631102",
+      "sha_b": "aba2042e00164150"
+    },
+    {
+      "tumor": "ACRIN-6698-234723",
+      "timepoint": "T1",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 1172,
+      "n_tumor_voxels_b": 1526,
+      "sha_a": "68243f9eb18908a7",
+      "sha_b": "37eb48edc46fcb31"
+    },
+    {
+      "tumor": "ACRIN-6698-237158",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 5145,
+      "n_tumor_voxels_b": 4260,
+      "sha_a": "69e84d8435737255",
+      "sha_b": "054fb1c7705e906c"
+    },
+    {
+      "tumor": "ACRIN-6698-240812",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 58,
+      "n_tumor_voxels_b": 77,
+      "sha_a": "a5f45d31557488a9",
+      "sha_b": "a4b28c85a84a7f50"
+    },
+    {
+      "tumor": "ACRIN-6698-255388",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 1411,
+      "n_tumor_voxels_b": 311,
+      "sha_a": "4df0e46e86fcaf0a",
+      "sha_b": "7ee9ebece9a04eef"
+    },
+    {
+      "tumor": "ACRIN-6698-264305",
+      "timepoint": "T1",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 762,
+      "n_tumor_voxels_b": 709,
+      "sha_a": "b801b2fcc1270e4d",
+      "sha_b": "c034fdb9550f08e4"
+    },
+    {
+      "tumor": "ACRIN-6698-275034",
+      "timepoint": "T1",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 181,
+      "n_tumor_voxels_b": 255,
+      "sha_a": "44cfe74070cac851",
+      "sha_b": "8b334a49aff63631"
+    },
+    {
+      "tumor": "ACRIN-6698-278666",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 81,
+      "n_tumor_voxels_b": 82,
+      "sha_a": "01eafc5f3f3bf888",
+      "sha_b": "d7ec8f96864b225a"
+    },
+    {
+      "tumor": "ACRIN-6698-283070",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 4558,
+      "n_tumor_voxels_b": 1698,
+      "sha_a": "1e0ee29067f23868",
+      "sha_b": "236fc9a44ae7bada"
+    },
+    {
+      "tumor": "ACRIN-6698-284593",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 640,
+      "n_tumor_voxels_b": 265,
+      "sha_a": "701a6c9176295c89",
+      "sha_b": "1f4bb0230288120a"
+    },
+    {
+      "tumor": "ACRIN-6698-285339",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 762,
+      "n_tumor_voxels_b": 440,
+      "sha_a": "9ba582fc9c6bca01",
+      "sha_b": "7b8d08d8ea70b1b1"
+    },
+    {
+      "tumor": "ACRIN-6698-289420",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 728,
+      "n_tumor_voxels_b": 1032,
+      "sha_a": "f3a4bd35a3bca318",
+      "sha_b": "2981ad1f1cb1e426"
+    },
+    {
+      "tumor": "ACRIN-6698-292294",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 492,
+      "n_tumor_voxels_b": 691,
+      "sha_a": "928ebe8820c60b48",
+      "sha_b": "d06d0490be5e6d1c"
+    },
+    {
+      "tumor": "ACRIN-6698-298101",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 984,
+      "n_tumor_voxels_b": 471,
+      "sha_a": "3e507116b178f31e",
+      "sha_b": "0b0f04d020206ca6"
+    },
+    {
+      "tumor": "ACRIN-6698-317402",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 160,
+      "n_tumor_voxels_b": 152,
+      "sha_a": "588cf09a38d1a0ac",
+      "sha_b": "2071b7451aba1f45"
+    },
+    {
+      "tumor": "ACRIN-6698-343898",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 2075,
+      "n_tumor_voxels_b": 2576,
+      "sha_a": "1b9b44b685255a37",
+      "sha_b": "6481cab8140cdef7"
+    },
+    {
+      "tumor": "ACRIN-6698-355942",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 127,
+      "n_tumor_voxels_b": 99,
+      "sha_a": "de9d5d0d3b5f9c59",
+      "sha_b": "123e05e306b51782"
+    },
+    {
+      "tumor": "ACRIN-6698-359408",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 1991,
+      "n_tumor_voxels_b": 2087,
+      "sha_a": "ba618f5ccae1bfe2",
+      "sha_b": "17c43ad6c0fc0ec6"
+    },
+    {
+      "tumor": "ACRIN-6698-373346",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 529,
+      "n_tumor_voxels_b": 635,
+      "sha_a": "110d9cca2ecdddd7",
+      "sha_b": "54256667e94a654e"
+    },
+    {
+      "tumor": "ACRIN-6698-375954",
+      "timepoint": "T1",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 3099,
+      "n_tumor_voxels_b": 2803,
+      "sha_a": "0a31a691181b2707",
+      "sha_b": "9448de3f1ed6b884"
+    },
+    {
+      "tumor": "ACRIN-6698-376676",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 481,
+      "n_tumor_voxels_b": 406,
+      "sha_a": "3f863667587f744b",
+      "sha_b": "ac574641fe4378a4"
+    },
+    {
+      "tumor": "ACRIN-6698-412296",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 271,
+      "n_tumor_voxels_b": 309,
+      "sha_a": "01959da447e1728e",
+      "sha_b": "8fcc6a19a5eb48c4"
+    },
+    {
+      "tumor": "ACRIN-6698-412772",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 48,
+      "n_tumor_voxels_b": 15,
+      "sha_a": "5a3cd3f657f3b825",
+      "sha_b": "00de9e22c1a968e8"
+    },
+    {
+      "tumor": "ACRIN-6698-421551",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 237,
+      "n_tumor_voxels_b": 204,
+      "sha_a": "a32cc6fe4c75668b",
+      "sha_b": "00c2228f0e12aabe"
+    },
+    {
+      "tumor": "ACRIN-6698-422013",
+      "timepoint": "T1",
+      "manufacturer": "Philips Healthcare",
+      "n_tumor_voxels_a": 2537,
+      "n_tumor_voxels_b": 2677,
+      "sha_a": "7256fab3219a81f6",
+      "sha_b": "b94c9584788184fd"
+    },
+    {
+      "tumor": "ACRIN-6698-430441",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 597,
+      "n_tumor_voxels_b": 1571,
+      "sha_a": "18fe9ae81e8864da",
+      "sha_b": "403a3662fb88e2f2"
+    },
+    {
+      "tumor": "ACRIN-6698-461915",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 203,
+      "n_tumor_voxels_b": 184,
+      "sha_a": "78bfa6ec4be8c52c",
+      "sha_b": "167bfab50496b248"
+    },
+    {
+      "tumor": "ACRIN-6698-511851",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 3235,
+      "n_tumor_voxels_b": 646,
+      "sha_a": "2a319f8d37dedf62",
+      "sha_b": "fdecbdb65a82c3b4"
+    },
+    {
+      "tumor": "ACRIN-6698-520471",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 1175,
+      "n_tumor_voxels_b": 526,
+      "sha_a": "6143eb908e4f1cf6",
+      "sha_b": "7f1d039dc7db44ce"
+    },
+    {
+      "tumor": "ACRIN-6698-547892",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 1558,
+      "n_tumor_voxels_b": 1449,
+      "sha_a": "a5fd89b191c3b4d7",
+      "sha_b": "4b530da134a28449"
+    },
+    {
+      "tumor": "ACRIN-6698-579572",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 5528,
+      "n_tumor_voxels_b": 6168,
+      "sha_a": "25f1fe40b36f8d18",
+      "sha_b": "18356fdbd4aad311"
+    },
+    {
+      "tumor": "ACRIN-6698-584258",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 215,
+      "n_tumor_voxels_b": 254,
+      "sha_a": "04f6768737c77452",
+      "sha_b": "9ea84f81b33fc22e"
+    },
+    {
+      "tumor": "ACRIN-6698-584561",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 1766,
+      "n_tumor_voxels_b": 1824,
+      "sha_a": "159783bcc20a283a",
+      "sha_b": "7810e501552db6df"
+    },
+    {
+      "tumor": "ACRIN-6698-587604",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 519,
+      "n_tumor_voxels_b": 376,
+      "sha_a": "40d341a9e94e6edc",
+      "sha_b": "c784f91e731fd108"
+    },
+    {
+      "tumor": "ACRIN-6698-587691",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 469,
+      "n_tumor_voxels_b": 342,
+      "sha_a": "060130068319c488",
+      "sha_b": "864026242a17ac97"
+    },
+    {
+      "tumor": "ACRIN-6698-591810",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 227,
+      "n_tumor_voxels_b": 144,
+      "sha_a": "2537ff2d188361c7",
+      "sha_b": "1fd350e6cc1112f6"
+    },
+    {
+      "tumor": "ACRIN-6698-597907",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 444,
+      "n_tumor_voxels_b": 576,
+      "sha_a": "4721c6458defd449",
+      "sha_b": "64eb44782d6416d4"
+    },
+    {
+      "tumor": "ACRIN-6698-609151",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 657,
+      "n_tumor_voxels_b": 360,
+      "sha_a": "db4576e74046751e",
+      "sha_b": "546f773d2272da98"
+    },
+    {
+      "tumor": "ACRIN-6698-615989",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 66,
+      "n_tumor_voxels_b": 82,
+      "sha_a": "27bac94f0aebcae1",
+      "sha_b": "dc048486a71a9450"
+    },
+    {
+      "tumor": "ACRIN-6698-618860",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 645,
+      "n_tumor_voxels_b": 533,
+      "sha_a": "2bf6fc36b1d92819",
+      "sha_b": "6443a8e94d4d8ea3"
+    },
+    {
+      "tumor": "ACRIN-6698-628788",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 2097,
+      "n_tumor_voxels_b": 2245,
+      "sha_a": "43f6b49cc17f6902",
+      "sha_b": "453ee9c659077779"
+    },
+    {
+      "tumor": "ACRIN-6698-629606",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 3466,
+      "n_tumor_voxels_b": 1078,
+      "sha_a": "ca8e98e8204ae8e1",
+      "sha_b": "40c4b7911d95d690"
+    },
+    {
+      "tumor": "ACRIN-6698-653325",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 1251,
+      "n_tumor_voxels_b": 1523,
+      "sha_a": "2568344ae347fab2",
+      "sha_b": "14268f0436506fd5"
+    },
+    {
+      "tumor": "ACRIN-6698-671590",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 442,
+      "n_tumor_voxels_b": 156,
+      "sha_a": "3e84ad682e7d4649",
+      "sha_b": "4eddd849c2e8949b"
+    },
+    {
+      "tumor": "ACRIN-6698-680881",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 4683,
+      "n_tumor_voxels_b": 897,
+      "sha_a": "a6b098b819100c78",
+      "sha_b": "b7affdb55bedf454"
+    },
+    {
+      "tumor": "ACRIN-6698-689076",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 970,
+      "n_tumor_voxels_b": 129,
+      "sha_a": "f6f6534a5813fda6",
+      "sha_b": "5e64e8fd8841182a"
+    },
+    {
+      "tumor": "ACRIN-6698-689452",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 290,
+      "n_tumor_voxels_b": 312,
+      "sha_a": "ad915a5676528bd6",
+      "sha_b": "153942160250e0ff"
+    },
+    {
+      "tumor": "ACRIN-6698-700549",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 2786,
+      "n_tumor_voxels_b": 1000,
+      "sha_a": "b452a8bd07facce3",
+      "sha_b": "69ea917daddd85ea"
+    },
+    {
+      "tumor": "ACRIN-6698-728182",
+      "timepoint": "T1",
+      "manufacturer": "Philips Healthcare",
+      "n_tumor_voxels_a": 9978,
+      "n_tumor_voxels_b": 13033,
+      "sha_a": "c306bdefa28fd6de",
+      "sha_b": "33f1ceb6f7a7f474"
+    },
+    {
+      "tumor": "ACRIN-6698-755914",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 441,
+      "n_tumor_voxels_b": 516,
+      "sha_a": "242e2ea33b8293bb",
+      "sha_b": "e27f659723927063"
+    },
+    {
+      "tumor": "ACRIN-6698-765671",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 265,
+      "n_tumor_voxels_b": 154,
+      "sha_a": "65abf7032268544c",
+      "sha_b": "2d096f7f03a92b14"
+    },
+    {
+      "tumor": "ACRIN-6698-771151",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 342,
+      "n_tumor_voxels_b": 332,
+      "sha_a": "dd30669ab376eeda",
+      "sha_b": "ac0df199e8d5f0d4"
+    },
+    {
+      "tumor": "ACRIN-6698-775346",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 2220,
+      "n_tumor_voxels_b": 739,
+      "sha_a": "fdcd5059ae8fb3c9",
+      "sha_b": "3ae2d077bc7d3027"
+    },
+    {
+      "tumor": "ACRIN-6698-779739",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 1169,
+      "n_tumor_voxels_b": 644,
+      "sha_a": "1b109cbef1cad905",
+      "sha_b": "d7576bcd3ed50258"
+    },
+    {
+      "tumor": "ACRIN-6698-786753",
+      "timepoint": "T1",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 666,
+      "n_tumor_voxels_b": 950,
+      "sha_a": "4ffcab39916af225",
+      "sha_b": "7a1432a36f97ce37"
+    },
+    {
+      "tumor": "ACRIN-6698-801641",
+      "timepoint": "T0",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 1519,
+      "n_tumor_voxels_b": 383,
+      "sha_a": "0b3a7572080819e8",
+      "sha_b": "9cc8ddab81c97e40"
+    },
+    {
+      "tumor": "ACRIN-6698-805136",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 2170,
+      "n_tumor_voxels_b": 3435,
+      "sha_a": "5652601796433526",
+      "sha_b": "75b4174a0de420db"
+    },
+    {
+      "tumor": "ACRIN-6698-839274",
+      "timepoint": "T1",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 592,
+      "n_tumor_voxels_b": 893,
+      "sha_a": "75b49b64fc56783b",
+      "sha_b": "a1b68e769f9f1872"
+    },
+    {
+      "tumor": "ACRIN-6698-861745",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 137,
+      "n_tumor_voxels_b": 154,
+      "sha_a": "0d0358e9eb43bf94",
+      "sha_b": "49c6f30e603e6aa6"
+    },
+    {
+      "tumor": "ACRIN-6698-863161",
+      "timepoint": "T1",
+      "manufacturer": "SIEMENS",
+      "n_tumor_voxels_a": 345,
+      "n_tumor_voxels_b": 438,
+      "sha_a": "5d0fa10e558e06d3",
+      "sha_b": "493facf0857f30f2"
+    },
+    {
+      "tumor": "ACRIN-6698-866891",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 380,
+      "n_tumor_voxels_b": 374,
+      "sha_a": "4f6dd1e92745103c",
+      "sha_b": "97cb93ea42c03480"
+    },
+    {
+      "tumor": "ACRIN-6698-875089",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 330,
+      "n_tumor_voxels_b": 346,
+      "sha_a": "65c1666aebdf16ab",
+      "sha_b": "3362ce1f744a7b4b"
+    },
+    {
+      "tumor": "ACRIN-6698-879224",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 387,
+      "n_tumor_voxels_b": 193,
+      "sha_a": "7e624ee01a2673f5",
+      "sha_b": "f19e5f965d7b4e47"
+    },
+    {
+      "tumor": "ACRIN-6698-882553",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 623,
+      "n_tumor_voxels_b": 287,
+      "sha_a": "2b186bdc1cba09fe",
+      "sha_b": "646d8e4c43b2a505"
+    },
+    {
+      "tumor": "ACRIN-6698-924071",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 462,
+      "n_tumor_voxels_b": 342,
+      "sha_a": "5b5920e025a9a362",
+      "sha_b": "55ffc5b9034eeabe"
+    },
+    {
+      "tumor": "ACRIN-6698-942017",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 2422,
+      "n_tumor_voxels_b": 785,
+      "sha_a": "d2dd24e7197f23ae",
+      "sha_b": "ecc257242595827b"
+    },
+    {
+      "tumor": "ACRIN-6698-963303",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 1350,
+      "n_tumor_voxels_b": 348,
+      "sha_a": "b1af1669b87b6a0a",
+      "sha_b": "a89f30d5b710aab4"
+    },
+    {
+      "tumor": "ACRIN-6698-973837",
+      "timepoint": "T0",
+      "manufacturer": "Philips Medical Systems",
+      "n_tumor_voxels_a": 752,
+      "n_tumor_voxels_b": 952,
+      "sha_a": "923a32cd3889fe4b",
+      "sha_b": "40bd7f953438f019"
+    },
+    {
+      "tumor": "ACRIN-6698-980397",
+      "timepoint": "T0",
+      "manufacturer": "GE MEDICAL SYSTEMS",
+      "n_tumor_voxels_a": 986,
+      "n_tumor_voxels_b": 1807,
+      "sha_a": "62be83941b04b0f6",
+      "sha_b": "fac20e1f7bfa2d63"
+    }
+  ],
+  "n_exams": 76,
+  "reduction": "whole-tumor ROI mean per b per repeat (S0-normalised)",
+  "derived_via": "Gauge/scripts/fetch_invivo.py (read-only importlib reuse)",
+  "n_pairs": 76,
+  "n_skipped": 2,
+  "skips": [
+    {
+      "patient": "ACRIN-6698-663144",
+      "reason": "bad S0 for ACRIN-6698-663144 TrT1"
+    },
+    {
+      "patient": "ACRIN-6698-950742",
+      "reason": "bad S0 for ACRIN-6698-950742 TrT1"
+    }
+  ]
+}

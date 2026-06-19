@@ -1,11 +1,11 @@
 """Data substrates for Datum -- read-only adapters over Gauge (and, later, Lattice).
 
-Datum benchmarks methods *on data*. The natural substrate, **Lattice**, is not
-built yet, so the primary substrate is **Gauge's synthetic cohort**; an OSIPI
-digital reference object (DRO) is wired as an external-validation substrate via
-Gauge's fetch/provenance scripts. Both are reused, not reinvented. A ``lattice()``
-swap-in point is reserved so that when Lattice exists it replaces ``gauge_cohort``
-as ``primary`` (the build-order dependency recorded in ``datum.manifest``).
+Datum benchmarks methods *on data*. The primary substrate is now **Lattice**, the
+synthetic IVIM digital reference object (the intended substrate, built after the
+Gauge bootstrap -- the build-order swap recorded in ``datum.manifest``). **Gauge's
+cohort** remains runnable as the bootstrap/cross-check substrate, and an **OSIPI**
+DRO is wired as an external-validation substrate via Gauge's fetch/provenance
+scripts. All are reused, not reinvented.
 
 Guardrail: synthetic-only. The OSIPI DRO is itself synthetic; it is downloaded on
 demand and git-ignored (only its provenance manifest is tracked). No clinical /
@@ -46,23 +46,24 @@ class Substrate:
 def gauge_cohort(n_train: int = 3000, n_cal: int = 2000, n_test: int = 3000,
                  snr_grid=DEFAULT_SNR_GRID, b=DEFAULT_B_VALUES,
                  seed: int = DEFAULT_SEED) -> Substrate:
-    """Primary substrate: Gauge's seeded synthetic IVIM cohort (read-only).
+    """Bootstrap substrate: Gauge's seeded synthetic IVIM cohort (read-only).
 
-    Wraps ``gauge.cohort.generate_cohort`` unchanged. Defaults reproduce Gauge's
-    production cohort; pass smaller sizes for smoke tests.
+    The pre-Lattice substrate, kept runnable for continuity/cross-checks. Wraps
+    ``gauge.cohort.generate_cohort`` unchanged. The primary substrate is now
+    :func:`lattice`. Pass smaller sizes for smoke tests.
     """
     c = generate_cohort(n_train, n_cal, n_test, snr_grid=snr_grid, b=b, seed=seed)
     return Substrate(
-        name=SUBSTRATE["primary"]["name"],
+        name=SUBSTRATE["bootstrap"]["name"],
         b=np.asarray(c.b, dtype=float),
         signals=c.signals, params=c.params, snr=c.snr,
         provenance={
-            "kind": "synthetic (Gauge cohort)",
+            "kind": "synthetic (Gauge bootstrap cohort)",
             "entrypoint": "gauge.cohort.generate_cohort",
             "seed": seed,
             "snr_grid": tuple(snr_grid),
             "n_b": int(np.asarray(c.b).shape[0]),
-            "commit": SUBSTRATE["primary"]["commit"],
+            "commit": SUBSTRATE["bootstrap"]["commit"],
         },
     )
 
@@ -124,17 +125,65 @@ def osipi_dro(n_cal: int | None = None, seed: int = 20260613) -> Substrate:
     )
 
 
-def lattice(*args, **kwargs) -> Substrate:
-    """Reserved swap-in point for the Lattice substrate (NOT BUILT yet)."""
-    raise NotImplementedError(
-        "Lattice substrate is not built yet. " + SUBSTRATE["planned"]["note"]
-        + " Until then, use gauge_cohort() (primary) or osipi_dro() (validation)."
+LATTICE_SNR_GRID = (10.0, 20.0, 30.0, 50.0, 100.0)  # mirror Gauge's grid for comparability
+
+
+def _even_split(n: int, k: int) -> list[int]:
+    base, rem = divmod(int(n), k)
+    return [base + (1 if i < rem else 0) for i in range(k)]
+
+
+def lattice(n_train: int = 3000, n_cal: int = 2000, n_test: int = 3000,
+            snr_grid=LATTICE_SNR_GRID, seed: int | None = None) -> Substrate:
+    """Primary substrate: Lattice's synthetic IVIM digital reference object (read-only).
+
+    Lattice's ``make_cohort`` produces one labeled cohort per call; Datum builds
+    train/cal/test as independent seeded draws and -- to match the SNR diversity of
+    the Gauge bootstrap -- concatenates sub-cohorts across an SNR grid within each
+    split. Ground truth is returned in (D, D*, f) physical convention, the same as
+    :func:`gauge_cohort`, so the same downstream conversion applies.
+    """
+    _paths.ensure_deps(names=("lattice",))
+    from lattice import DEFAULT_SEED, make_cohort
+
+    seed = DEFAULT_SEED if seed is None else int(seed)
+    grid = tuple(float(s) for s in snr_grid)
+    signals, params, snr = {}, {}, {}
+    b = None
+    for si, (name, n) in enumerate((("train", n_train), ("cal", n_cal), ("test", n_test))):
+        counts = _even_split(n, len(grid))
+        sig_parts, par_parts, snr_parts = [], [], []
+        for gi, s in enumerate(grid):
+            if counts[gi] == 0:
+                continue
+            c = make_cohort(family="biexp", n=counts[gi], snr=s,
+                            seed=seed + 1000 * si + gi, prior="realistic", noise="rician")
+            sig_parts.append(c.signals)
+            par_parts.append(c.params)
+            snr_parts.append(np.full(counts[gi], s))
+            b = c.bvalues
+        signals[name] = np.concatenate(sig_parts)
+        params[name] = np.concatenate(par_parts)
+        snr[name] = np.concatenate(snr_parts)
+    return Substrate(
+        name=SUBSTRATE["primary"]["name"],
+        b=np.asarray(b, dtype=float),
+        signals=signals, params=params, snr=snr,
+        provenance={
+            "kind": "synthetic (Lattice DRO, biexp family)",
+            "entrypoint": "lattice.make_cohort",
+            "seed": seed,
+            "snr_grid": grid,
+            "n_b": int(np.asarray(b).size),
+            "version": SUBSTRATE["primary"]["version"],
+            "commit": SUBSTRATE["primary"]["commit"],
+        },
     )
 
 
 # Registry the task spec references by name.
 SUBSTRATES = {
+    "lattice": lattice,
     "gauge_cohort": gauge_cohort,
     "osipi_dro": osipi_dro,
-    "lattice": lattice,
 }

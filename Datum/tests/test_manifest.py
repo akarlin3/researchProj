@@ -6,7 +6,7 @@ from datum import manifest
 
 def test_manifest_check_passes():
     report = manifest.check()
-    assert report["substrate_seed"] == 20260613
+    assert report["substrate_seed"] == 20260619       # Lattice DRO seed (now primary)
     assert "Fashion" in report["ruler"]
 
 
@@ -29,9 +29,12 @@ def test_provisional_policy_present():
     assert "revalidate.py" in manifest.PROVISIONAL_POLICY
 
 
-def test_substrate_records_lattice_dependency():
-    assert manifest.SUBSTRATE["planned"]["name"] == "Lattice"
-    assert "NOT BUILT" in manifest.SUBSTRATE["planned"]["status"]
+def test_substrate_primary_is_lattice():
+    # Lattice is now built and is the primary substrate; Gauge is the bootstrap.
+    assert manifest.SUBSTRATE["primary"]["name"] == "Lattice IVIM DRO"
+    assert manifest.SUBSTRATE["primary"]["entrypoint"] == "lattice.make_cohort"
+    assert manifest.SUBSTRATE["bootstrap"]["entrypoint"] == "gauge.cohort.generate_cohort"
+    assert "planned" not in manifest.SUBSTRATE
     assert manifest.SUBSTRATE["external_validation"]["doi"] == "10.5281/zenodo.14605039"
 
 

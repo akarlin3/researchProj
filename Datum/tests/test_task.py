@@ -4,7 +4,7 @@ from __future__ import annotations
 import numpy as np
 
 from datum.baselines import BASELINES, panel_keys
-from datum.task import QUANTILE_LEVELS, TASK_V1
+from datum.task import CURRENT_TASK, QUANTILE_LEVELS, TASK_V1, TASK_V2
 
 
 def test_task_spec_well_formed():
@@ -19,6 +19,16 @@ def test_task_spec_well_formed():
 def test_task_central_level_is_a_fashion_nominal_level():
     central = round(1.0 - TASK_V1.alpha, 3)
     assert central in TASK_V1.nominal_levels  # 0.90 is one of Fashion's LEVELS
+
+
+def test_current_task_is_lattice_v2():
+    # v2 supersedes v1 by swapping the substrate to the now-built Lattice DRO.
+    assert CURRENT_TASK is TASK_V2
+    assert TASK_V2.version == "v2"
+    assert TASK_V2.substrate == "lattice"
+    assert TASK_V2.seed == 20260619           # lattice.DEFAULT_SEED
+    assert TASK_V1.substrate == "gauge_cohort"  # v1 kept frozen for provenance
+    assert set(TASK_V2.baselines) == set(panel_keys())
 
 
 def test_baseline_registry_covers_task():
@@ -44,3 +54,15 @@ def test_gauge_cohort_smoke():
     assert sub.signals["test"].shape[0] == 8
     assert np.all(np.isfinite(sub.signals["test"]))
     assert sub.provenance["seed"] == 20260613
+
+
+def test_lattice_cohort_smoke():
+    """Primary substrate (Lattice DRO) -> train/cal/test with right shapes."""
+    from datum.substrate import lattice
+    sub = lattice(n_train=10, n_cal=10, n_test=10)
+    assert set(sub.signals) == {"train", "cal", "test"}
+    assert sub.params["test"].shape == (10, 3)         # (D, D*, f) physical
+    assert sub.signals["test"].shape[1] == sub.b.size  # Lattice 22-b scheme
+    assert np.all(np.isfinite(sub.signals["test"]))
+    assert sub.provenance["entrypoint"] == "lattice.make_cohort"
+    assert sub.provenance["seed"] == 20260619

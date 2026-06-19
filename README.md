@@ -333,7 +333,7 @@ Seven folders form one IVIM diffusion-MRI uncertainty program:
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
 - **Caliper** is the reusable toolkit that packages the calibration ruler and wraps both papers' methods under one contract (deliberately un-gated pending Minos).
 - **Lattice** is the reusable *reference object* (DRO): the synthetic ground-truth cohorts and alternative-model generators the scorer and papers benchmark against — the data complement to Caliper's ruler.
-- **Datum** is the benchmark layer: it freezes that ruler into a fixed task with curated baselines and a submission interface, so any IVIM uncertainty method can be scored on one standard (reference numbers PROVISIONAL until Fashion's ruler locks).
+- **Datum** is the benchmark layer: it freezes that ruler into a fixed task with curated baselines and a submission interface, scored over **Lattice's** cohorts (with an OSIPI DRO as external validation), so any IVIM uncertainty method can be ranked on one standard (reference numbers PROVISIONAL until Fashion's ruler locks).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
 - **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. A feasibility question under test: it either becomes a standalone paper or folds into Minos.
 

@@ -13,7 +13,7 @@ level -- and how wide they have to be to do so.
 
 | field | value |
 |---|---|
-| substrate | Gauge synthetic cohort (seed `20260613`); OSIPI DRO for external validation |
+| substrate | Lattice IVIM DRO (`lattice.make_cohort`, seed `20260619`); Gauge cohort as bootstrap; OSIPI DRO for external validation |
 | splits | train 3000 / cal 2000 / test 3000 |
 | signal | bi-exponential IVIM, 22-b scheme (0–800 s/mm²), Rician noise |
 | prediction | quantiles `(n, 3, L)` for `(D, D*, f)` at `quantile_levels` (13 levels) |
@@ -39,20 +39,21 @@ Fashion's coverage / ECE / sharpness recipe model-agnostically:
 All scored **marginally and per-D\* tercile**. The high-D\* tercile is where the
 identifiability wall lives.
 
-## The substrate (and the Lattice build-order note)
+## The substrate (Lattice primary; Gauge bootstrap; OSIPI external)
 
-The intended substrate, **Lattice**, is not built yet, so the primary substrate is
-**Gauge's synthetic cohort** (`gauge.cohort.generate_cohort`, read-only). When
-Lattice is built it replaces the primary substrate via the swap-in point in
-`datum/substrate.py`. The **OSIPI DRO** (an independent synthetic phantom, DOI
-`10.5281/zenodo.14605039`) is wired as an external-validation substrate via
+The primary substrate is the **Lattice IVIM DRO** (`lattice.make_cohort`, read-only)
+— the intended substrate, now built; task **v2** swapped it in for the **v1 Gauge
+bootstrap** (`gauge.cohort.generate_cohort`), which is kept runnable as a
+cross-check. Lattice's convention matches Gauge's exactly, so `datum.convert` is
+unchanged. The **OSIPI DRO** (an independent synthetic phantom, DOI
+`10.5281/zenodo.14605039`) is the external-validation substrate via
 `python -m datum.osipi_fetch` (download-on-demand, provenance-tracked, raw arrays
 git-ignored). Everything is synthetic and PHI-free by construction.
 
 ## Convention
 
 Internally the curated baselines run in Caliper's `(D, f, D*)` / 1e-3 convention
-(the Gauge cohort is converted once, proven exact in `tests/test_convert.py`). The
+(the substrate cohort is converted once, proven exact in `tests/test_convert.py`). The
 **public submission interface** speaks the IVIM-natural physical convention
 `(D, D*, f)` — submitters never touch the internal convention, and coverage / gap /
 ECE are scale-invariant so the comparison is sound.

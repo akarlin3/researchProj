@@ -33,7 +33,7 @@ from datum.baselines import (  # noqa: E402
 )
 from datum.ci import bootstrap_reference  # noqa: E402
 from datum.manifest import RULER, SUBSTRATE  # noqa: E402
-from datum.task import TASK_V1  # noqa: E402
+from datum.task import CURRENT_TASK  # noqa: E402
 
 DSTAR = 2  # index of D* in Caliper convention (D, f, D*)
 STRATUM_NAMES = {0: "dstar_low", 1: "dstar_mid", 2: "dstar_high"}
@@ -87,20 +87,27 @@ def _apply_calibration(name, levels, q_cal, y_cal, q_test, groups_cal, groups_te
 # --------------------------------------------------------------------------- #
 # Run
 # --------------------------------------------------------------------------- #
-def run_benchmark(task=TASK_V1, *, substrate_name="gauge_cohort", n_boot=None,
+def run_benchmark(task=CURRENT_TASK, *, n_boot=None,
                   seed=None, include=None, verbose=True):
-    """Run the panel and return (rows, meta). ``include`` optionally restricts cells."""
+    """Run the panel on the task's substrate; return (rows, meta).
+
+    The substrate is selected by ``task.substrate`` (``lattice`` for the current
+    task, ``gauge_cohort`` for the v1 bootstrap). ``include`` optionally restricts
+    cells. The OSIPI external-validation substrate is driven by ``run_external``.
+    """
     n_boot = task.n_bootstrap if n_boot is None else n_boot
     seed = task.seed if seed is None else seed
     levels = np.asarray(task.quantile_levels, dtype=float)
     alpha = task.alpha
     nominal = 1.0 - alpha
 
-    if substrate_name != "gauge_cohort":
+    substrate_name = task.substrate
+    builders = {"lattice": substrate.lattice, "gauge_cohort": substrate.gauge_cohort}
+    if substrate_name not in builders:
         raise NotImplementedError(
-            f"runner currently drives the Gauge cohort substrate; {substrate_name!r} "
-            "(e.g. OSIPI DRO external validation) is handled by run_external().")
-    sub = substrate.gauge_cohort(task.n_train, task.n_cal, task.n_test, seed=seed)
+            f"runner drives {sorted(builders)} (train/cal/test substrates); "
+            f"{substrate_name!r} is not one of them.")
+    sub = builders[substrate_name](task.n_train, task.n_cal, task.n_test, seed=seed)
 
     # Convert truth to Caliper convention; signals are convention-free.
     y_cal = convert.gauge_to_caliper(sub.params["cal"])
@@ -197,7 +204,7 @@ def _emit_rows(cell, card, boot, levels, alpha, nominal, q_corr, y_test, strata,
     return rows
 
 
-def run_external(task=TASK_V1, *, n_boot=None, seed=None, verbose=True):
+def run_external(task=CURRENT_TASK, *, n_boot=None, seed=None, verbose=True):
     """External validation on the OSIPI DRO. Analytic, b-flexible cells only.
 
     The OSIPI DRO has a fixed 7-b scheme and D* shifted out of Gauge's prior, so the
@@ -272,8 +279,9 @@ def write_csv(rows, path=None):
 def write_report(rows, meta, path=None):
     path = Path(path) if path else RESULTS_DIR / "REFERENCE.md"
     path.parent.mkdir(parents=True, exist_ok=True)
+    primary = meta.get("substrate", "lattice")   # the primary substrate this run scored
     marg = [r for r in rows if r["stratum"] == ALL_STRATUM
-            and r["substrate"] == "gauge_cohort"]
+            and r["substrate"] == primary]
 
     def line(r, ci=True):
         gap = r["coverage_gap"]
@@ -292,7 +300,7 @@ def write_report(rows, meta, path=None):
     lines.append("- Ruler implementation: `caliper.metrics` (read-only)")
     lines.append(f"- Substrate: **{SUBSTRATE['primary']['name']}** "
                  f"(seed {meta['seed']}), converted to Caliper `(D, f, D*)` convention")
-    lines.append(f"- Task: `{TASK_V1.name}` {meta['task_version']}; "
+    lines.append(f"- Task: `{CURRENT_TASK.name}` {meta['task_version']}; "
                  f"nominal central interval = {1 - rows[0]['alpha']:.2f}; "
                  f"bootstrap CIs: {meta['n_boot']} resamples, 95%")
     lines.append("- Honest gate: numbers are reported as run; **no tuning**, no "
@@ -315,7 +323,7 @@ def write_report(rows, meta, path=None):
 
     # The wall: high-D* tercile coverage per baseline.
     hi = [r for r in rows if r["param"] == "Dstar" and r["stratum"] == "dstar_high"
-          and r["substrate"] == "gauge_cohort"]
+          and r["substrate"] == primary]
     lines.append("## The identifiability wall -- high-D\\* tercile coverage\n")
     lines.append("| baseline | high-D\\* coverage [95% CI] | high-D\\* mean width |")
     lines.append("|---|---|---|")
@@ -354,11 +362,11 @@ def main(argv=None):
     ap.add_argument("--no-maf", action="store_true", help="skip the torch MAF cells")
     args = ap.parse_args(argv)
 
-    task = TASK_V1
+    task = CURRENT_TASK
     include = None
     if args.quick:
         from dataclasses import replace
-        task = replace(TASK_V1, n_train=200, n_cal=300, n_test=400, n_bootstrap=100)
+        task = replace(CURRENT_TASK, n_train=200, n_cal=300, n_test=400, n_bootstrap=100)
     if args.quick or args.no_maf:
         include = [k for k, b in BASELINES.items() if b.estimator != "maf"]
 

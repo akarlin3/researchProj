@@ -26,7 +26,7 @@ Machine-readable mirror of this file: [`datum/manifest.py`](datum/manifest.py).
 | | Depends on Fashion publishing? | Status |
 |---|---|---|
 | **Task definition** (`datum/task.py` — substrate, levels, metrics, conditioning, baseline set) | No — a fixed spec, runs on synthetic data | **SOLID** |
-| **Substrate adapters** (`datum/substrate.py` — Gauge cohort, OSIPI DRO, Lattice stub) | No — read-only reuse of Gauge | **SOLID** |
+| **Substrate adapters** (`datum/substrate.py` — Lattice DRO (primary), Gauge bootstrap, OSIPI DRO) | No — read-only reuse of Lattice/Gauge | **SOLID** |
 | **Baseline registry** (`datum/baselines.py`) | No — identities/paradigms/sources | **SOLID** |
 | **Ruler adapter** (`datum/ruler.py`) + **submission interface** (CP3) | No — the *wiring* is fixed | **SOLID** |
 | **Embedding, README, manifest, tests, CI** | No | **SOLID** |
@@ -70,17 +70,20 @@ applies it — the revision asset for Fashion's Casali differentiation.
 
 ## 2. SUBSTRATE — pinned inputs (the data methods are scored on)
 
-Lattice is the intended substrate but **is not built yet** (build-order
-dependency). Until it exists, the primary substrate is Gauge's synthetic cohort,
-with an OSIPI DRO as external validation.
+Lattice (the intended substrate) is now **built and is the primary substrate** —
+task v2 swapped it in for the v1 Gauge bootstrap (the build-order dependency,
+resolved). Gauge's cohort is kept runnable as the bootstrap/cross-check; an OSIPI
+DRO is the external validation. Lattice's convention matches Gauge's exactly
+((D, D\*, f) physical), so the same `datum.convert` mapping applies unchanged.
 
 | key | pinned value | source | role |
 |---|---|---|---|
-| `substrate.primary.entrypoint` | `gauge.cohort.generate_cohort` | `Gauge/gauge/cohort.py` | **synthetic** labeled IVIM cohort |
-| `substrate.primary.seed` | `20260613` | `gauge.cohort.DEFAULT_SEED` | determinism (whole cohort) |
-| `substrate.primary.commit` | `b4ada17` | `git log -1 -- Gauge/gauge/cohort.py` | provenance |
+| `substrate.primary.entrypoint` | `lattice.make_cohort` | `Lattice/lattice/cohort.py` | **synthetic** labeled IVIM DRO (primary) |
+| `substrate.primary.seed` | `20260619` | `lattice.DEFAULT_SEED` | determinism |
+| `substrate.primary.commit` | `cbabffe` | `git log -1 -- Lattice/lattice/cohort.py` | provenance |
+| `substrate.primary.version` | `0.1.0` | `Lattice/pyproject.toml` | version pin |
+| `substrate.bootstrap` | Gauge cohort, `gauge.cohort.generate_cohort`, seed `20260613`, commit `b4ada17` | `Gauge/gauge/cohort.py` | pre-Lattice bootstrap (still runnable) |
 | `substrate.external_validation` | OSIPI TF2.4 DRO, DOI `10.5281/zenodo.14605039` | `Gauge/scripts/fetch_osipi.py`, `Gauge/results/osipi_provenance.json` | synthetic DRO, download-on-demand, git-ignored |
-| `substrate.planned` | **Lattice — NOT BUILT** | — | swap-in at `datum.substrate.lattice()` |
 
 **Guardrail:** synthetic-only. No clinical / in-vivo / MSK data is materialised in
 this tree; the OSIPI DRO is synthetic and only its provenance is committed.

@@ -3,6 +3,26 @@
 All notable changes to Datum are recorded here. Datum follows the monorepo's
 provisional-until-the-ruler-locks discipline; see `ASSUMPTIONS.md`.
 
+## [0.1.0] — 2026-06-19 — Substrate swap: Lattice is now primary (task v2)
+
+Lattice (the intended substrate) was merged into the monorepo, so Datum honors its
+build-order plan and swaps it in as the primary substrate.
+
+### Changed
+- `task.py`: added `TASK_V2` (substrate `lattice`, seed `20260619`) and
+  `CURRENT_TASK = TASK_V2`; `TASK_V1` (Gauge) kept frozen for provenance. The
+  runner / submission interface / example now default to `CURRENT_TASK`.
+- `substrate.py`: implemented `lattice()` (real adapter over `lattice.make_cohort`,
+  train/cal/test across an SNR grid for comparability); `gauge_cohort()` demoted to
+  the bootstrap substrate (still runnable). `run.py` dispatches on `task.substrate`.
+- `manifest.py`: `SUBSTRATE['primary']` is now Lattice (v0.1.0 @ `cbabffe`, seed
+  `20260619`); Gauge moved to `SUBSTRATE['bootstrap']`; `planned`/"NOT BUILT"
+  removed. `_paths.ensure_deps(names=...)` resolves `lattice` on demand.
+- Regenerated reference numbers on Lattice (+ OSIPI external); docs/README/ASSUMPTIONS
+  updated. The calibration story is substrate-invariant (NLLS-Gaussian D\* gap −0.089,
+  segmented −0.649, MAF −0.038; conformal restores; wall persists for split-conformal,
+  CQR/Mondrian recover by inflating width). 28 tests pass.
+
 ## [0.1.0] — 2026-06-19 — CP3: submission interface + docs + Casali framing
 
 ### Added

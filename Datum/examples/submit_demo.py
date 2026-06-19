@@ -31,7 +31,7 @@ _paths.ensure_deps()
 from gauge.estimators import IVIMQuantileRegressor  # noqa: E402  (a reused, non-baseline method)
 
 from datum.submit import load_task, score_submission  # noqa: E402
-from datum.task import TASK_V1  # noqa: E402
+from datum.task import CURRENT_TASK  # noqa: E402
 
 
 def gauge_qr_submission(td):
@@ -54,9 +54,9 @@ def main(argv=None):
     ap.add_argument("--quick", action="store_true", help="tiny cohort smoke")
     args = ap.parse_args(argv)
 
-    task = TASK_V1
+    task = CURRENT_TASK
     if args.quick:
-        task = replace(TASK_V1, n_train=100, n_cal=300, n_test=300, n_bootstrap=100)
+        task = replace(CURRENT_TASK, n_train=100, n_cal=300, n_test=300, n_bootstrap=100)
 
     print("Loading Datum task (test truth held out)...")
     td = load_task(task=task)

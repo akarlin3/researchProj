@@ -66,3 +66,19 @@ TASK_V1 = TaskSpec(
     baselines=panel_keys(),
     n_bootstrap=1000,
 )
+
+# v2 supersedes v1 by swapping the substrate to Lattice (the intended DRO, built
+# after the Gauge bootstrap). Changing the substrate is a new task version; v1 was
+# never released (all-PROVISIONAL), so v2 is the current task. v1 is kept frozen for
+# provenance / cross-substrate comparison.
+from dataclasses import replace as _replace  # noqa: E402
+
+TASK_V2 = _replace(
+    TASK_V1,
+    version="v2",
+    substrate="lattice",
+    seed=20260619,                  # matches the Lattice DRO seed (lattice.DEFAULT_SEED)
+)
+
+# The current task the runner / submission interface default to.
+CURRENT_TASK = TASK_V2

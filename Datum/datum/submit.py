@@ -45,7 +45,10 @@ from caliper import metrics as M  # noqa: E402
 from datum import ruler, substrate  # noqa: E402
 from datum.ci import bootstrap_reference  # noqa: E402
 from datum.manifest import RULER, is_provisional  # noqa: E402
-from datum.task import TASK_V1  # noqa: E402
+from datum.task import CURRENT_TASK  # noqa: E402
+
+# Train/cal/test substrate builders a submission can be served from.
+_SUBSTRATE_BUILDERS = {"lattice": substrate.lattice, "gauge_cohort": substrate.gauge_cohort}
 
 PARAM_NAMES = ("D", "Dstar", "f")     # physical convention exposed to submitters
 DSTAR = 1                              # index of D* in (D, D*, f)
@@ -63,8 +66,8 @@ class TaskData:
     cal_params: np.ndarray            # (n_cal, 3) ground truth (D, D*, f) -- for calibration
     test_signals: np.ndarray          # (n_test, n_b) -- predict quantiles for these
     param_names: tuple = PARAM_NAMES
-    substrate: str = "gauge_cohort"
-    seed: int = TASK_V1.seed
+    substrate: str = CURRENT_TASK.substrate
+    seed: int = CURRENT_TASK.seed
 
     @property
     def n_test(self) -> int:
@@ -110,12 +113,15 @@ class SubmissionResult:
         return "\n".join(lines)
 
 
-def load_task(task=TASK_V1, substrate_name: str = "gauge_cohort", seed=None) -> TaskData:
+def load_task(task=CURRENT_TASK, substrate_name: str | None = None, seed=None) -> TaskData:
     """Materialise the benchmark task for a submitter (test truth held out)."""
     seed = task.seed if seed is None else seed
-    if substrate_name != "gauge_cohort":
-        raise NotImplementedError("submission interface currently serves gauge_cohort")
-    sub = substrate.gauge_cohort(task.n_train, task.n_cal, task.n_test, seed=seed)
+    substrate_name = substrate_name or task.substrate
+    if substrate_name not in _SUBSTRATE_BUILDERS:
+        raise NotImplementedError(
+            f"submission interface serves {sorted(_SUBSTRATE_BUILDERS)}; "
+            f"got {substrate_name!r}.")
+    sub = _SUBSTRATE_BUILDERS[substrate_name](task.n_train, task.n_cal, task.n_test, seed=seed)
     return TaskData(
         b=np.asarray(sub.b, dtype=float),
         q_levels=np.asarray(task.quantile_levels, dtype=float),
@@ -127,7 +133,7 @@ def load_task(task=TASK_V1, substrate_name: str = "gauge_cohort", seed=None) -> 
     )
 
 
-def _reference_dstar_gaps(substrate_name="gauge_cohort"):
+def _reference_dstar_gaps(substrate_name="lattice"):
     """Load reference D* marginal coverage gaps for ranking, if available."""
     path = _RESULTS / "reference_numbers.csv"
     out = {}
@@ -141,7 +147,7 @@ def _reference_dstar_gaps(substrate_name="gauge_cohort"):
     return out
 
 
-def score_submission(name: str, q_test, task=TASK_V1, substrate_name="gauge_cohort",
+def score_submission(name: str, q_test, task=CURRENT_TASK, substrate_name=None,
                      seed=None, n_boot=None) -> SubmissionResult:
     """Score a submission's test quantiles against the held-out task truth.
 
@@ -149,6 +155,7 @@ def score_submission(name: str, q_test, task=TASK_V1, substrate_name="gauge_coho
     """
     seed = task.seed if seed is None else seed
     n_boot = task.n_bootstrap if n_boot is None else n_boot
+    substrate_name = substrate_name or task.substrate
     levels = np.asarray(task.quantile_levels, dtype=float)
     alpha = task.alpha
 
@@ -161,7 +168,8 @@ def score_submission(name: str, q_test, task=TASK_V1, substrate_name="gauge_coho
         raise ValueError("quantiles must be non-decreasing along the level axis")
 
     # Recover the held-out test truth deterministically from the seed.
-    sub = substrate.gauge_cohort(task.n_train, task.n_cal, task.n_test, seed=seed)
+    builder = _SUBSTRATE_BUILDERS.get(substrate_name, substrate.lattice)
+    sub = builder(task.n_train, task.n_cal, task.n_test, seed=seed)
     y_test = sub.params["test"]                  # (n_test, 3) physical (D, D*, f)
     strata = M.tercile_groups(y_test[:, DSTAR])
 

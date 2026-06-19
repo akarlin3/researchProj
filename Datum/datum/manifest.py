@@ -36,15 +36,25 @@ RULER_IMPL = {
     "license": "MIT",
 }
 
-# --- The data substrate (read-only). Primary = Gauge's synthetic cohort.
+# --- The data substrate (read-only). Primary = Lattice's IVIM DRO (the intended
+# substrate, now built; it superseded the Gauge bootstrap per the build-order plan).
 SUBSTRATE = {
     "primary": {
+        "name": "Lattice IVIM DRO",
+        "package": "lattice",
+        "entrypoint": "lattice.make_cohort",
+        "seed": 20260619,             # lattice.DEFAULT_SEED
+        "commit": "cbabffe",          # git log -1 -- Lattice/lattice/cohort.py
+        "version": "0.1.0",           # Lattice/pyproject.toml
+        "kind": "synthetic, generated-from-seed, PHI-free",
+    },
+    "bootstrap": {
         "name": "Gauge synthetic cohort",
         "package": "gauge",
         "entrypoint": "gauge.cohort.generate_cohort",
         "seed": 20260613,             # gauge.cohort.DEFAULT_SEED
         "commit": "b4ada17",          # git log -1 -- Gauge/gauge/cohort.py
-        "kind": "synthetic, in-tree, PHI-free",
+        "kind": "synthetic; the pre-Lattice bootstrap substrate (still runnable)",
     },
     "external_validation": {
         "name": "OSIPI TF2.4 IVIM digital reference object (DRO)",
@@ -53,14 +63,9 @@ SUBSTRATE = {
         "provenance": "Gauge/results/osipi_provenance.json",
         "kind": "synthetic DRO, download-on-demand, git-ignored (provenance only)",
     },
-    "planned": {
-        "name": "Lattice",
-        "status": "NOT BUILT -- swap-in point in datum.substrate.lattice()",
-        "note": "build-order dependency: when Lattice exists, it replaces 'primary'.",
-    },
 }
 
-MONOREPO = {"repo": "akarlin3/ResearchProj", "base_commit": "73d588e"}
+MONOREPO = {"repo": "akarlin3/ResearchProj", "base_commit": "0be9323"}
 
 PROVISIONAL_POLICY = (
     "Every Datum reference number is produced by scoring a method through Fashion's "
@@ -101,9 +106,10 @@ def check() -> dict:
     assert RULER["version"], "RULER version must be pinned"
     assert RULER["commit"], "RULER commit must be pinned"
     assert RULER_IMPL["entrypoint"] == "caliper.metrics.score_quantiles"
-    assert SUBSTRATE["primary"]["entrypoint"] == "gauge.cohort.generate_cohort"
-    assert SUBSTRATE["primary"]["seed"] == 20260613
-    assert "Lattice" == SUBSTRATE["planned"]["name"]
+    assert SUBSTRATE["primary"]["entrypoint"] == "lattice.make_cohort"
+    assert SUBSTRATE["primary"]["seed"] == 20260619
+    assert SUBSTRATE["bootstrap"]["entrypoint"] == "gauge.cohort.generate_cohort"
+    assert SUBSTRATE["external_validation"]["doi"] == "10.5281/zenodo.14605039"
     assert PROVISIONAL_POLICY and "PROVISIONAL" in PROVISIONAL_POLICY
     return {
         "ruler": f"{RULER['name']} v{RULER['version']} @ {RULER['commit']}",

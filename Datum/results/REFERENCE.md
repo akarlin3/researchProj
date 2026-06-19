@@ -4,33 +4,33 @@
 
 - Ruler: **Fashion calibration ruler v0.1.0 @ f078802** (in review at MRM (R2 revision) -- NOT finalized)
 - Ruler implementation: `caliper.metrics` (read-only)
-- Substrate: **Gauge synthetic cohort** (seed 20260613), converted to Caliper `(D, f, D*)` convention
-- Task: `datum-ivim-calibration` v1; nominal central interval = 0.90; bootstrap CIs: 1000 resamples, 95%
+- Substrate: **Lattice IVIM DRO** (seed 20260619), converted to Caliper `(D, f, D*)` convention
+- Task: `datum-ivim-calibration` v2; nominal central interval = 0.90; bootstrap CIs: 1000 resamples, 95%
 - Honest gate: numbers are reported as run; **no tuning**, no cherry-picking. All baselines reused from Caliper.
 
 ## Headline -- D\* marginal coverage gap (nominal 0.90), with 95% bootstrap CI
 
 | baseline | paradigm | D\* coverage | D\* coverage gap [95% CI] |
 |---|---|---|---|
-| `nlls_gaussian` | parametric | 0.830 | -0.070 [-0.083, -0.057] |
-| `nlls_split_conformal` | conformal | 0.880 | -0.020 [-0.032, -0.009] |
-| `reference_segmented` | segmented | 0.206 | -0.694 [-0.707, -0.679] |
-| `reference_cqr` | conformal | 0.896 | -0.004 [-0.014, +0.007] |
-| `reference_mondrian_cqr` | mondrian | 0.907 | +0.007 [-0.003, +0.016] |
-| `maf_raw` | flow | 0.854 | -0.046 [-0.059, -0.034] |
-| `maf_cqr` | flow | 0.901 | +0.001 [-0.010, +0.011] |
+| `nlls_gaussian` | parametric | 0.811 | -0.089 [-0.103, -0.076] |
+| `nlls_split_conformal` | conformal | 0.905 | +0.005 [-0.006, +0.016] |
+| `reference_segmented` | segmented | 0.251 | -0.649 [-0.663, -0.632] |
+| `reference_cqr` | conformal | 0.893 | -0.007 [-0.018, +0.004] |
+| `reference_mondrian_cqr` | mondrian | 0.897 | -0.003 [-0.014, +0.008] |
+| `maf_raw` | flow | 0.862 | -0.038 [-0.050, -0.025] |
+| `maf_cqr` | flow | 0.899 | -0.001 [-0.012, +0.011] |
 
 ## The identifiability wall -- high-D\* tercile coverage
 
 | baseline | high-D\* coverage [95% CI] | high-D\* mean width |
 |---|---|---|
-| `nlls_gaussian` | 0.827 [0.804, 0.849] | 190 |
-| `nlls_split_conformal` | 0.771 [0.745, 0.797] | 119 |
-| `reference_segmented` | 0.057 [0.044, 0.071] | 19.7 |
-| `reference_cqr` | 0.915 [0.897, 0.932] | 195 |
-| `reference_mondrian_cqr` | 0.915 [0.897, 0.932] | 195 |
-| `maf_raw` | 0.851 [0.829, 0.872] | 54.5 |
-| `maf_cqr` | 0.884 [0.863, 0.905] | 59.8 |
+| `nlls_gaussian` | 0.807 [0.782, 0.833] | 164 |
+| `nlls_split_conformal` | 0.798 [0.773, 0.823] | 124 |
+| `reference_segmented` | 0.078 [0.062, 0.096] | 19.7 |
+| `reference_cqr` | 0.889 [0.870, 0.908] | 184 |
+| `reference_mondrian_cqr` | 0.906 [0.888, 0.923] | 188 |
+| `maf_raw` | 0.887 [0.867, 0.907] | 61.3 |
+| `maf_cqr` | 0.908 [0.890, 0.927] | 64.6 |
 
 ## External validation -- OSIPI DRO (independent synthetic phantom)
 
@@ -38,10 +38,10 @@ Analytic, b-flexible baselines only (the trained MAF is excluded: the OSIPI DRO 
 
 | baseline | D\* coverage | D\* coverage gap [95% CI] |
 |---|---|---|
-| `nlls_gaussian` | 0.767 | -0.133 [-0.150, -0.118] |
-| `nlls_split_conformal` | 0.892 | -0.008 [-0.020, +0.004] |
-| `reference_segmented` | 0.022 | -0.878 [-0.884, -0.872] |
-| `reference_cqr` | 0.912 | +0.012 [+0.002, +0.024] |
-| `reference_mondrian_cqr` | 0.903 | +0.003 [-0.009, +0.014] |
+| `nlls_gaussian` | 0.770 | -0.130 [-0.146, -0.114] |
+| `nlls_split_conformal` | 0.898 | -0.002 [-0.014, +0.009] |
+| `reference_segmented` | 0.020 | -0.880 [-0.886, -0.875] |
+| `reference_cqr` | 0.912 | +0.012 [+0.000, +0.024] |
+| `reference_mondrian_cqr` | 0.923 | +0.023 [+0.012, +0.033] |
 
 Full long-form numbers (all params x strata x substrate): [`reference_numbers.csv`](reference_numbers.csv).

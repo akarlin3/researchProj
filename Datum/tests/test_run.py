@@ -11,12 +11,12 @@ import pytest
 
 from datum import run as R
 from datum.baselines import BASELINES
-from datum.task import TASK_V1
+from datum.task import CURRENT_TASK
 
 
 @pytest.fixture(scope="module")
 def quick_rows():
-    task = replace(TASK_V1, n_train=200, n_cal=400, n_test=600, n_bootstrap=100)
+    task = replace(CURRENT_TASK, n_train=200, n_cal=400, n_test=600, n_bootstrap=100)
     include = [k for k, b in BASELINES.items() if b.estimator != "maf"]  # skip torch
     rows, meta = R.run_benchmark(task=task, include=include, seed=7, verbose=False)
     return rows, meta

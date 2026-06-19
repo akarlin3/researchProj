@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lattice-dro"
+version = "0.1.0"
+description = "A UQ-calibration digital reference object (DRO) for IVIM diffusion MRI: synthetic ground-truth cohorts, alternative-model signal generators, and a standardized calibration-evaluation interface."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Avery Karlin" }]
+keywords = ["IVIM", "diffusion-MRI", "uncertainty-quantification", "calibration", "digital-reference-object", "DRO"]
+
+dependencies = ["numpy>=1.23"]
+
+[project.optional-dependencies]
+selfcheck = ["scipy>=1.8"]          # NLLS round-trip self-validation
+external-data = ["requests>=2.25"]  # download-on-demand OSIPI integration
+dev = ["pytest>=7", "scipy>=1.8", "ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+include = ["lattice*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

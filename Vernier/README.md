@@ -137,7 +137,11 @@ Vernier/
   README.md  LICENSE (MIT)  pyproject.toml
 ```
 
-(`paper/` is added at CP4.)
+`paper/` (CP4) holds the manuscript: `vernier.tex` (ebgaramond + microtype),
+`numbers.tex` (auto-generated), `consistency.py` (regenerates the numbers from the
+seeded results and gates traceability), `refs.bib` (verified citations), `build.sh`
+(consistency gate → tectonic), and the built `vernier.pdf` (5 pp). Build:
+`bash paper/build.sh`.
 
 ## Dependencies
 

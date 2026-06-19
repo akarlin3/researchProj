@@ -39,7 +39,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
-| [`Vernier/`](Vernier/) | *(feasibility gate PASSED — standalone paper in progress)* Calibration-aware IVIM acquisition design: at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
+| [`Vernier/`](Vernier/) | *Vernier: calibration-aware acquisition design for IVIM diffusion MRI* (feasibility gate PASSED; manuscript built, `paper/vernier.pdf`) — at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
 
 Each subdirectory's own `README.md` and `CITATION.cff` are authoritative for
 submission status.
@@ -269,8 +269,8 @@ The Zenodo badge above archives Proteus's code and intermediate-data snapshots
 
 ### `Vernier/` — Calibration-aware acquisition design (feasibility gate)
 
-*Status: feasibility gate **PASSED** (CP2, 2026-06-19) — Vernier is a standalone paper
-(manuscript assembly in progress). At matched scan-time and matched CRLB(D\*) precision,
+*Status: feasibility gate **PASSED** (CP2, 2026-06-19) — Vernier is a standalone paper;
+the manuscript is built (`Vernier/paper/vernier.pdf`, 5 pp). At matched scan-time and matched CRLB(D\*) precision,
 b-schemes diverge in post-conformal D\* calibration (Δ\_sharp = 0.33, CI [0.20, 0.40];
 Δ\_cond = 0.06, CI [0.04, 0.10]; robust across SNR 25–50). The gate result is
 SOLID/publication-independent (Caliper-only); the paper framing and decision-value

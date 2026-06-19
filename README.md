@@ -31,7 +31,7 @@ what the project does, its headline result, and how it is laid out internally.
 |-----------|-----------------|-------|
 | [`Anneal/`](Anneal/) | *Chimera Collapse Ages: Topology-Dependent Finite-Size Scaling in Mean-Field and Ring Oscillator Systems* | Nonlinear dynamics — chimera-state collapse, survival & finite-size scaling |
 | [`Caliper/`](Caliper/) | *(research software — no standalone paper)* IVIM uncertainty-quantification calibration toolkit | Research software |
-| [`Echo/`](Echo/) | *(speculative gated build — verdict pending)* Ground-truth-free **scale** calibration of conformal IVIM intervals via test–retest repeatability | IVIM diffusion-MRI — does the error bar have the right *size*? |
+| [`Echo/`](Echo/) | *(speculative gated build — verdict: **Lethe** / constrained validation)* Ground-truth-free **scale** calibration of conformal IVIM intervals via test–retest repeatability | IVIM diffusion-MRI — does the error bar have the right *size*? |
 | [`Fashion/`](Fashion/) | *Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramér–Rao Audit of Amortized Posteriors* | IVIM diffusion-MRI — are reported error bars trustworthy? |
 | [`Forge/`](Forge/) | *(no manuscript — feasibility benchmark)* Monte Carlo dose-simulation timing & Electron Return Effect validation | Medical physics — MR-Linac simulation infrastructure |
 | [`Gauge/`](Gauge/) | *Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment* | IVIM diffusion-MRI — conformal coverage & the D\* identifiability limit |
@@ -99,9 +99,9 @@ recovers per-D\*-tercile validity only by inflating high-D\* width 3.87×.
 
 ### `Echo/` — Repeatability as a scale check on conformal intervals
 
-*Speculative gated build — verdict pending; no standalone paper yet.* Echo asks one
-ground-truth-free question about a deployed conformal IVIM interval: **is it the right
-*size* to capture a measurement's own irreproducibility?** It answers with *test–retest
+*Speculative gated build — verdict: **Lethe** (constrained validation); no standalone paper.*
+Echo asks one ground-truth-free question about a deployed conformal IVIM interval: **is it the
+right *size* to capture a measurement's own irreproducibility?** It answers with *test–retest
 interval coverage* — does one scan's parameter estimate fall inside the *other* scan's
 deployed conformal interval — reported per parameter with a BCa bootstrap CI on public
 same-day scan–rescan data (**ACRIN-6698**, n≈76, CC-BY-4.0, download-on-demand).
@@ -116,6 +116,13 @@ rate), and a pure width rescale leaves Spearman fixed while moving Echo's covera
 real data the signal collapses to Gauge's rank check, saturates, or under-scales, Echo
 routes to **Lethe** (an honest-limitation regime) — a valid verdict. It reuses Caliper's
 conformal ruler (read-only) and Gauge's download-on-demand data posture.
+
+**Verdict (rendered): Lethe.** On real ACRIN-6698 (n=76, fetched on demand) the conformal D
+interval is ~4× too narrow to cover real test–retest variation (coverage 0.263 [0.158, 0.355]
+vs the 0.755 target; scale ratio R≈0.25), robustly across the SNR grid. The finding sharpens
+Gauge §4.2.2: width *rank*-tracks repeatability (r=+0.60) but its *scale*, calibrated
+conventionally, under-covers it — region-level repeatability is non-thermal-dominated. See
+[`Echo/LETHE.md`](Echo/LETHE.md).
 
 - `echo_repeat/` — `statistic.py` (the test–retest coverage + standardized-residual scale check + numpy-only BCa bootstrap), `harness.py` (synthetic test–retest generator + method self-test, also the Reverb fallback), `invivo.py` (IVIM forward + segmented fit + Caliper-conformal deployer), `provenance.py`, `_paths.py` (read-only import chokepoint).
 - `scripts/` — `run_harness.py` (CP1 method self-test, SOLID), `fetch_invivo.py` (CP2 download-on-demand, reuses Gauge's data template), `run_validation.py` (CP3 real-data gate → PASS / Lethe).
@@ -269,7 +276,7 @@ Five folders form one IVIM diffusion-MRI uncertainty program:
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
 - **Caliper** is the reusable toolkit that packages the calibration ruler and wraps both papers' methods under one contract (deliberately un-gated pending Minos).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
-- **Echo** (speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Its real-data result is PROVISIONAL on Fashion/Gauge/Minos.
+- **Echo** (speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos.
 
 ## Provenance
 

@@ -1,0 +1,129 @@
+{
+  "provisional": true,
+  "kind": "real-data-validation",
+  "seed": 20260613,
+  "level": 0.1,
+  "n": 76,
+  "conformal_backend": "caliper.conformal.conformal_offset",
+  "headline_single_voxel_snr": 20.0,
+  "analytic_repeat_target": 0.7552058558251984,
+  "headline": {
+    "D": {
+      "param": "D",
+      "n": 76,
+      "level": 0.1,
+      "coverage": 0.2631578947368421,
+      "coverage_ci": [
+        0.15789473684210525,
+        0.35526315789473684
+      ],
+      "z_dispersion": 3.9494979254364786,
+      "z_dispersion_ci": [
+        2.7335172791019327,
+        5.777815506387851
+      ],
+      "spearman_width_vs_repeat": 0.2900341763499658,
+      "analytic_target_meas_only": 0.7552058558251984,
+      "extras": {},
+      "sigma_implied": 4.9171758136417096e-05,
+      "sigma_repeat": 0.00019929774885885215,
+      "scale_ratio_R": 0.24672510561693206
+    },
+    "Dstar": {
+      "param": "Dstar",
+      "n": 59,
+      "level": 0.1,
+      "coverage": 0.7966101694915254,
+      "coverage_ci": [
+        0.6610169491525424,
+        0.864406779661017
+      ],
+      "z_dispersion": 0.052142646690612755,
+      "z_dispersion_ci": [
+        0.031987450169833405,
+        0.08888005341219749
+      ],
+      "spearman_width_vs_repeat": 0.3727644652250146,
+      "analytic_target_meas_only": 0.7552058558251984,
+      "extras": {},
+      "sigma_implied": 0.0866115184663648,
+      "sigma_repeat": 0.004431684412741059,
+      "scale_ratio_R": 19.543701762101414
+    },
+    "f": {
+      "param": "f",
+      "n": 76,
+      "level": 0.1,
+      "coverage": 0.42105263157894735,
+      "coverage_ci": [
+        0.3026315789473684,
+        0.5263157894736842
+      ],
+      "z_dispersion": 2.6414909446517263,
+      "z_dispersion_ci": [
+        1.729290515059988,
+        3.9521499319721487
+      ],
+      "spearman_width_vs_repeat": 0.22816131237183868,
+      "analytic_target_meas_only": 0.7552058558251984,
+      "extras": {},
+      "sigma_implied": 0.027745741526637526,
+      "sigma_repeat": 0.05910909250385309,
+      "scale_ratio_R": 0.469398875051734
+    }
+  },
+  "sensitivity_single_voxel_snr": {
+    "10.0": {
+      "D": 0.4342105263157895,
+      "Dstar": 0.7966101694915254,
+      "f": 0.5921052631578947
+    },
+    "20.0": {
+      "D": 0.2631578947368421,
+      "Dstar": 0.7966101694915254,
+      "f": 0.42105263157894735
+    },
+    "30.0": {
+      "D": 0.15789473684210525,
+      "Dstar": 0.7966101694915254,
+      "f": 0.2894736842105263
+    },
+    "50.0": {
+      "D": 0.10526315789473684,
+      "Dstar": 0.7966101694915254,
+      "f": 0.14473684210526316
+    },
+    "100.0": {
+      "D": 0.05263157894736842,
+      "Dstar": 0.7966101694915254,
+      "f": 0.07894736842105263
+    }
+  },
+  "crossing_single_voxel_snr_for_target": null,
+  "gauge_baseline": {
+    "D_spearman": 0.6,
+    "D_ci": [
+      0.42,
+      0.72
+    ],
+    "Dstar_spearman": -0.17,
+    "note": "Gauge paper Sec 4.2.2 -- RANK (Spearman) check"
+  },
+  "gate": {
+    "coverage_D": 0.2631578947368421,
+    "coverage_D_ci": [
+      0.15789473684210525,
+      0.35526315789473684
+    ],
+    "thresholds": {
+      "pass_lo": 0.72,
+      "pass_hi": 0.96,
+      "lethe_under": 0.65,
+      "lethe_sat": 0.99
+    },
+    "under": true,
+    "saturated": false,
+    "discriminative": true,
+    "VERDICT": "LETHE"
+  }
+}

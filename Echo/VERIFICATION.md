@@ -28,7 +28,12 @@ confirms availability; `--from-gauge` materialises ROI-mean test–retest pairs
 (download-on-demand, provenance only). **HALT → Reverb** (the synthetic test–retest harness
 in `harness.py`) only if the real data is genuinely unsuitable for the scale regime.
 
-## CP3 — validation (hard, honest gate)
+## CP3 — validation (hard, honest gate) → RENDERED: **LETHE**
+**Outcome (seed 20260613, n=76):** coverage_D = **0.263 [BCa 95% 0.158, 0.355]** vs the 0.755
+target; R(D) = 0.247 (interval ~4× too narrow); under-scaled across the whole SNR grid →
+**LETHE** under the locked gate below. D* over-scaled (coverage 0.797, R=19.5) by the
+identifiability wall. See `LETHE.md`. CP4 is therefore not executed (PASS-only).
+
 Run `scripts/run_validation.py` on the real data; report coverage + z-dispersion with BCa
 95% CIs. **Locked gate on the well-identified parameter D:**
 - **PASS:** coverage_D BCa-95%-CI **excludes 0.65** (not under-scaled) **and excludes 1.00**

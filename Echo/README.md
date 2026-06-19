@@ -1,7 +1,10 @@
 # Echo — repeatability as a *scale* check on conformal intervals
 
-**Status: speculative gated build. CP0 legitimacy gate PASSED; CP1 scaffold up; CP2 data
-gate / CP3 validation pending. Verdict not yet rendered.**
+**Status: speculative gated build — VERDICT RENDERED. CP0 legitimacy PASSED; CP1 scaffold
+up; CP2 data gate PASSED (real ACRIN-6698, n=76); CP3 → LETHE (constrained validation).**
+On real data the conformal interval is ~4× too narrow to cover real test–retest variation of
+D (coverage 0.263 [0.158, 0.355] vs 0.755 target) — a valid honest-limitation verdict, not a
+failure. See [`LETHE.md`](LETHE.md) and [`results/RESULTS_VALIDATION.md`](results/RESULTS_VALIDATION.md).
 
 Echo asks one ground-truth-free question about a deployed conformal IVIM interval:
 

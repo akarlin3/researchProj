@@ -1,0 +1,51 @@
+{
+  "results": {
+    "snr_drop_40to12": {
+      "channel": "observable",
+      "kind": "resolvable",
+      "auc": 0.9999997500000001,
+      "fires": true,
+      "auc_maha": 0.999921,
+      "auc_resid": 0.9999997500000001
+    },
+    "D_shift_up": {
+      "channel": "observable",
+      "kind": "resolvable",
+      "auc": 0.9185995,
+      "fires": true,
+      "auc_maha": 0.9185995,
+      "auc_resid": 0.5153715000000001
+    },
+    "f_shift_up": {
+      "channel": "observable",
+      "kind": "resolvable",
+      "auc": 0.9585872500000001,
+      "fires": true,
+      "auc_maha": 0.9585872500000001,
+      "auc_resid": 0.49526275000000003
+    },
+    "triexp_perfusion_misspec": {
+      "channel": "observable",
+      "kind": "wall_adjacent",
+      "auc": 0.52844175,
+      "fires": true,
+      "auc_maha": 0.52844175,
+      "auc_resid": 0.49309475
+    },
+    "hidden_exchangeable": {
+      "channel": "hidden",
+      "auc": 0.51581725,
+      "fires": false,
+      "auc_maha": 0.51581725,
+      "auc_resid": 0.48885674999999995,
+      "marginal_coverage": 0.8855,
+      "high_dstar_coverage": 0.7946026986506747,
+      "nominal": 0.9,
+      "crlb_dstar_over_tercile_width": 5.587846820418438
+    }
+  },
+  "n": 2000,
+  "snr_ref": 40.0,
+  "provisional": true,
+  "note": "PROVISIONAL: assumes Gauge lands as submitted"
+}

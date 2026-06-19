@@ -20,6 +20,7 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
   - [`Proteus/` — Structure-first mining of the dark proteome](#proteus--structure-first-mining-of-the-dark-proteome)
+  - [`Vernier/` — Calibration-aware acquisition design (feasibility gate)](#vernier--calibration-aware-acquisition-design-feasibility-gate)
 - [How the IVIM projects fit together](#how-the-ivim-projects-fit-together)
 - [Provenance](#provenance)
 - [License](#license)
@@ -36,6 +37,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
+| [`Vernier/`](Vernier/) | *(feasibility gate pending — standalone paper, or folds into Minos)* Calibration-aware IVIM acquisition design: do b-schemes differ in post-conformal UQ calibration at matched scan-time and CRLB precision? | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
 
 Each subdirectory's own `README.md` and `CITATION.cff` are authoritative for
 submission status.
@@ -235,14 +237,39 @@ The Zenodo badge above archives Proteus's code and intermediate-data snapshots
 - `analysis/` — powered-floor, TOST/non-superiority, bits-gradient, and pLDDT-confound scripts. `gce/` — the CPU ESMFold burst scaffold.
 - `tests/`, `envlog/`, `proteus_manuscript_gigascience.tex` (legacy filename; current target PLOS), `REVISION_NOTES.md`.
 
+### `Vernier/` — Calibration-aware acquisition design (feasibility gate)
+
+*Status: feasibility gate pending — Vernier becomes a standalone paper only if the
+gate passes; otherwise it folds into Minos as a section. No result is claimed until
+the gate runs.* Vernier asks an IVIM acquisition-design question the variance-optimal
+(Cramér–Rao) and information-gain (BED/EIG) canon do not: at **matched scan-time** and
+**matched CRLB precision**, do different b-value schemes yield differently-*calibrated*
+uncertainty *after* conformal correction — and so different decision-value-per-
+scan-minute? The question is non-trivial because split-conformal restores *marginal*
+coverage to nominal for every scheme by construction; what it does **not** equalise —
+conditional coverage, interval sharpness, ECE — is the test.
+
+Honest scope: Vernier does **not** claim to improve *identifiability*. Its sibling
+**Gauge** already showed the high-D\* wall is acquisition-robust — CRLB-optimal design
+moved CRLB(D\*)/tercile-width only 1.25 → 1.05 and never removed it — so Vernier lives
+on the calibration-and-decision axis, taking that wall as given. It is built
+**read-only on Caliper** (synthetic cohort + reference estimator + conformal + ruler),
+so the feasibility gate is **publication-independent**; the decision-value lens (Minos),
+the calibrated-ruler framing (Fashion), and the wall citation (Gauge) enter only
+downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
+
+- `vernier/` — `_paths.py` (read-only Caliper wiring), `schemes.py` (b-scheme registry + scan-time model + segmented-fit validation), `crlb.py` (self-contained IVIM Fisher-matrix CRLB).
+- `tests/` — package sanity (17 cases). `ASSUMPTIONS.md` (SOLID Caliper-only gate vs PROVISIONAL Fashion/Gauge/Minos), `PROMOTION.md` (PASS → paper / FAIL → fold-into-Minos paths).
+
 ## How the IVIM projects fit together
 
-Four folders form one IVIM diffusion-MRI uncertainty program:
+Five folders form one IVIM diffusion-MRI uncertainty program:
 
 - **Fashion** establishes *which* uncertainty paradigms actually cover D\* and pins Gaussian error bars as the culprit.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
 - **Caliper** is the reusable toolkit that packages the calibration ruler and wraps both papers' methods under one contract (deliberately un-gated pending Minos).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
+- **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. A feasibility question under test: it either becomes a standalone paper or folds into Minos.
 
 ## Provenance
 
@@ -258,6 +285,7 @@ Each project was imported into the monorepo with its own history preserved:
 | `Anneal/` | annealMusic (science subtree split) | full history |
 | `Caliper/` | created in-repo | n/a |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |
+| `Vernier/` | projVernier | full history |
 
 Each imported subdirectory's history was rewritten with `git-filter-repo` and
 combined with `git merge --allow-unrelated-histories`, so `git log -- <Subfolder>/`

@@ -1,5 +1,7 @@
 # ResearchProj
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20758581.svg)](https://doi.org/10.5281/zenodo.20758581)
+
 Consolidated monorepo bringing together my research repositories. Each project
 lives in its own top-level subdirectory **with full commit history**, so
 `git log -- <Subfolder>/` shows that project's original commits, authors, and

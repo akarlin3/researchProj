@@ -25,6 +25,7 @@ _VERNIER_PKG = Path(__file__).resolve().parent   # Vernier/vernier
 VERNIER = _VERNIER_PKG.parent                      # Vernier
 REPO = VERNIER.parent                              # ResearchProj (repo root)
 CALIPER = REPO / "Caliper"                          # MIT, un-gated, PHI-free
+MINOS_CORE = REPO / "Minos" / "minos-core"          # PROVISIONAL dependency (in review)
 
 
 def _prepend(p: Path) -> str:
@@ -43,6 +44,20 @@ def add_caliper() -> str:
     if not (CALIPER / "caliper" / "__init__.py").exists():
         raise FileNotFoundError(f"Caliper package not found at {CALIPER}")
     return _prepend(CALIPER)
+
+
+def add_minos() -> str:
+    """Make ``import minos`` resolve to the validated Minos-Core decision lens.
+
+    **PROVISIONAL dependency** -- Minos is in review. Used only downstream of the
+    feasibility gate (the decision-value-per-scan-minute readout, Experiment B);
+    anything that imports through here is flagged PROVISIONAL in ``ASSUMPTIONS.md``
+    and must be re-validated if Minos changes in revision. The gate itself does
+    not call this.
+    """
+    if not (MINOS_CORE / "minos" / "__init__.py").exists():
+        raise FileNotFoundError(f"Minos-Core package not found at {MINOS_CORE}")
+    return _prepend(MINOS_CORE)
 
 
 def add_all() -> dict[str, str]:

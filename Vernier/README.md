@@ -106,23 +106,38 @@ does not equalise*, at matched precision and matched scan-time. Full numbers:
 [`results/feasibility_gate.txt`](results/feasibility_gate.txt) /
 [`.json`](results/feasibility_gate.json).
 
+### Experiment B — efficiency frontier (CP3, PROVISIONAL, Minos lens)
+
+Across scan-time (7/11/15/22 b-values), each scheme's conformal-corrected D\*
+posterior is scored on a fixed treat/spare/escalate decision (Minos utility,
+thresholds = prior D\* terciles). Decision utility improves and **saturates** with
+scan-time — the marginal decision utility per added scan-minute falls 9.9 → 2.9 →
+0.48 (sparse-7→clinical-11→rich-15→dense-22). And **no protocol beats the no-scan
+prior for D\*** (every mean utility < the prior's −14.6) — acquisition does not
+rescue D\* *decisions*, consistent with Gauge's wall. This is **PROVISIONAL**
+(Minos lens) and corroborating; it did not decide the gate. Numbers:
+[`results/efficiency_frontier.txt`](results/efficiency_frontier.txt).
+
 ## Layout
 
 ```
 Vernier/
   vernier/
     __init__.py
-    _paths.py        read-only Caliper wiring (the single dependency chokepoint)
+    _paths.py        read-only Caliper (+ PROVISIONAL Minos) wiring — the dependency chokepoint
     schemes.py       b-value scheme registry + scan-time model + segmented-fit validation
     crlb.py          IVIM Fisher-information matrix + Cramér–Rao bounds (self-contained)
-  tests/             pytest sanity (paths resolve, scan-time matched, CRLB sane)
-  ASSUMPTIONS.md     SOLID (Caliper-only) vs PROVISIONAL (Fashion/Gauge/Minos) split + pinned inputs
+    feasibility.py   the CP2 gate: matched-CRLB selection, paired bootstrap, pre-registered verdict
+    decision.py      Experiment B decision-value via the Minos lens (PROVISIONAL)
+  experiments/       feasibility_gate.py (CP2), efficiency_frontier.py (CP3) — seeded runners
+  results/           feasibility_gate.{txt,json}, efficiency_frontier.{txt,json}
+  tests/             pytest sanity (22 cases): paths, scan-time, CRLB, gate, decision
+  ASSUMPTIONS.md     SOLID (Caliper-only gate) vs PROVISIONAL (Fashion/Gauge/Minos) split
   PROMOTION.md       promotion path (on PASS) and fold path (on FAIL)
   README.md  LICENSE (MIT)  pyproject.toml
 ```
 
-(`experiments/`, `results/`, and `paper/` are added at CP2/CP3/CP4 — only on a
-PASS verdict for the paper-side artifacts.)
+(`paper/` is added at CP4.)
 
 ## Dependencies
 

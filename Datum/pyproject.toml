@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datum"
+version = "0.1.0"
+description = "Datum -- the IVIM uncertainty-quantification calibration benchmark (a fixed task + curated baselines + reference numbers, scored on Fashion's calibration ruler as packaged by Caliper)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Datum project" }]
+keywords = ["IVIM", "benchmark", "calibration", "uncertainty-quantification", "conformal-prediction", "leaderboard"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+# Datum reuses, never reinvents: the calibration ruler/metrics come from Caliper
+# (read-only) and the data substrate from Gauge (read-only). Neither is on PyPI;
+# inside the ResearchProj monorepo they are resolved by datum._paths (a read-only
+# sibling-path bootstrap). Outside the monorepo, `pip install -e ../Caliper`.
+dependencies = ["numpy>=1.23"]
+
+[project.optional-dependencies]
+baselines = ["scipy>=1.8", "scikit-learn>=1.1"]
+estimator = ["torch>=2.0"]
+dev = ["pytest>=7", "ruff>=0.4", "matplotlib>=3.5", "scipy>=1.8", "scikit-learn>=1.1"]
+
+[project.urls]
+Homepage = "https://github.com/akarlin3/ResearchProj/tree/main/Datum"
+Repository = "https://github.com/akarlin3/ResearchProj"
+Issues = "https://github.com/akarlin3/ResearchProj/issues"
+
+[tool.setuptools]
+packages = ["datum"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E741"]  # allow single-char names (l, q) in math code
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,52 @@
+{
+  "artifact": "OSIPI TF2.4 IVIM digital reference object (DRO) -- synthetic",
+  "reused_from": "Gauge/scripts/fetch_osipi.py (pinned constants + verifier)",
+  "zenodo_doi": "10.5281/zenodo.14605039",
+  "zip_url": "https://zenodo.org/records/14605039/files/OSIPI_TF24_data_phantoms.zip?download=1",
+  "zip_md5": "e7b3fe1d811a7a45c5aaf6c604c82793",
+  "dro_member": "Utilities/DRO.npy",
+  "repo_commit": "23577722f9849e5229acaad8b61abc89de6f9542",
+  "license_data": "CC-BY-4.0",
+  "license_code": "Apache-2.0",
+  "posture": "download-on-demand; raw DRO NOT committed (data/ git-ignored)",
+  "summary": {
+    "n_voxels": 5000,
+    "entry_keys": [
+      "D",
+      "Dp",
+      "S0",
+      "bvals",
+      "f",
+      "signals"
+    ],
+    "sha256_16_D": "106f45f5a344eba5",
+    "sha256_16_Dstar": "462089cc52e35fb9",
+    "sha256_16_f": "c5bb850568a6f5b4",
+    "native_b_values_s_per_mm2": [
+      0.0,
+      10.0,
+      10.0,
+      25.0,
+      50.0,
+      700.0,
+      950.0
+    ],
+    "native_b_scheme_constant_across_voxels": true,
+    "units": "D, D* in mm^2/s (absolute D*); f dimensionless -- matches Gauge",
+    "ground_truth_ranges": {
+      "D_mm2_s": [
+        0.0003003254454879872,
+        0.0034997544710695327
+      ],
+      "Dstar_mm2_s": [
+        0.05007498054629731,
+        0.19998203310567558
+      ],
+      "f": [
+        0.0005193697807122532,
+        0.599737091474863
+      ]
+    },
+    "note_distribution_shift_vs_gauge": "OSIPI true D* spans ~0.05-0.20 mm^2/s, shifted HIGHER than Gauge's calibration prior (0.010-0.100); a genuine out-of-distribution test."
+  }
+}

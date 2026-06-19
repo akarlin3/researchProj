@@ -14,6 +14,7 @@ what the project does, its headline result, and how it is laid out internally.
 - [Project details](#project-details)
   - [`Anneal/` — Chimera collapse, aging, and finite-size scaling](#anneal--chimera-collapse-aging-and-finite-size-scaling)
   - [`Caliper/` — IVIM calibration toolkit (software)](#caliper--ivim-calibration-toolkit-software)
+  - [`Datum/` — IVIM calibration benchmark (software)](#datum--ivim-calibration-benchmark-software)
   - [`Fashion/` — Do IVIM fitting methods report honest uncertainty?](#fashion--do-ivim-fitting-methods-report-honest-uncertainty)
   - [`Forge/` — Monte Carlo dose-simulation feasibility benchmark](#forge--monte-carlo-dose-simulation-feasibility-benchmark)
   - [`Gauge/` — Distribution-free conformal coverage for IVIM](#gauge--distribution-free-conformal-coverage-for-ivim)
@@ -32,6 +33,7 @@ what the project does, its headline result, and how it is laid out internally.
 |-----------|-----------------|-------|
 | [`Anneal/`](Anneal/) | *Chimera Collapse Ages: Topology-Dependent Finite-Size Scaling in Mean-Field and Ring Oscillator Systems* | Nonlinear dynamics — chimera-state collapse, survival & finite-size scaling |
 | [`Caliper/`](Caliper/) | *(research software — no standalone paper)* IVIM uncertainty-quantification calibration toolkit | Research software |
+| [`Datum/`](Datum/) | *(research software — no standalone paper)* IVIM uncertainty-calibration **benchmark** (fixed task + curated baselines + reference numbers, on Fashion's ruler) | Research software — benchmark |
 | [`Fashion/`](Fashion/) | *Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramér–Rao Audit of Amortized Posteriors* | IVIM diffusion-MRI — are reported error bars trustworthy? |
 | [`Forge/`](Forge/) | *(no manuscript — feasibility benchmark)* Monte Carlo dose-simulation timing & Electron Return Effect validation | Medical physics — MR-Linac simulation infrastructure |
 | [`Gauge/`](Gauge/) | *Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment* | IVIM diffusion-MRI — conformal coverage & the D\* identifiability limit |
@@ -98,6 +100,33 @@ recovers per-D\*-tercile validity only by inflating high-D\* width 3.87×.
 - `caliper/` — core modules: `metrics.py` (the ruler), `forward.py` (IVIM forward model + synthetic cohort), `conformal.py`, `estimator_reference.py`, `estimator_maf.py`, `benchmark.py`, `repro_gauge.py`, `publication.py` (citation layer, OFF by default).
 - `examples/` — `ruler_demo.py`, `conformal_demo.py`, plus `gauge_repro.py` / `fashion_repro.py` (synthetic reproductions of the companion papers).
 - `docs/` — API reference, reproduction maps, citing guide. `tests/` — 77 cases (81 with the torch extra). `results/benchmark.csv` — 576-row reproducible benchmark.
+
+### `Datum/` — IVIM calibration benchmark (software)
+
+*No standalone paper — research software (MIT); a benchmark, not a result.* Datum
+turns **Fashion's calibration ruler** into a *benchmark*: a fixed, versioned task
+(predict per-voxel quantiles for IVIM `(D, D*, f)`), a curated panel of baseline
+methods, reference numbers scored on that ruler, and a submission interface for
+scoring a new method. It **reuses, never reinvents** — the ruler/metrics come from
+**Caliper** (read-only `caliper.metrics`) and the data substrate from **Gauge**
+(read-only `gauge.cohort`); the dependency is one-way (nothing imports Datum). The
+intended **Lattice** substrate is not built yet, so Datum sits on Gauge's synthetic
+cohort now, with an OSIPI digital reference object wired for external validation. It
+also serves as the concrete artifact behind Fashion's "ruler-as-standard"
+differentiation from Casali. Distinct from Caliper (the ruler + an explicitly
+non-citable demo sweep), Lattice (a substrate), and OSIPI (scored on point
+accuracy, not calibration).
+
+Datum is **built on a ruler that is in review**, so it carries a finalization risk:
+the ruler version is pinned in [`Datum/ASSUMPTIONS.md`](Datum/ASSUMPTIONS.md) /
+`datum/manifest.py`, **every ruler-dependent reference number is flagged
+PROVISIONAL**, and `python Datum/revalidate.py` re-validates everything in one
+command when the ruler locks (it shares Minos's applied-half rework gate). The
+benchmark *scaffolding* is solid now; the *reference numbers* are the next
+deliverable and are PROVISIONAL by construction.
+
+- `datum/` — `task.py` (the frozen `TASK_V1` spec), `substrate.py` (read-only Gauge / OSIPI / Lattice-stub adapters), `ruler.py` (read-only adapter over `caliper.metrics`), `baselines.py` (the curated panel registry), `manifest.py` + `provisional.py` (assumption pins + PROVISIONAL stamping), `_paths.py` (sibling bootstrap for the read-only deps).
+- `ASSUMPTIONS.md` — the SOLID-vs-PROVISIONAL split and the pinned ruler version. `revalidate.py` — one-command re-validation. `tests/` — CP1 import/manifest/task gates.
 
 ### `Fashion/` — Do IVIM fitting methods report *honest* uncertainty?
 
@@ -298,12 +327,13 @@ downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
 
 ## How the IVIM projects fit together
 
-Six folders form one IVIM diffusion-MRI uncertainty program:
+Seven folders form one IVIM diffusion-MRI uncertainty program:
 
 - **Fashion** establishes *which* uncertainty paradigms actually cover D\* and pins Gaussian error bars as the culprit.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
 - **Caliper** is the reusable toolkit that packages the calibration ruler and wraps both papers' methods under one contract (deliberately un-gated pending Minos).
 - **Lattice** is the reusable *reference object* (DRO): the synthetic ground-truth cohorts and alternative-model generators the scorer and papers benchmark against — the data complement to Caliper's ruler.
+- **Datum** is the benchmark layer: it freezes that ruler into a fixed task with curated baselines and a submission interface, so any IVIM uncertainty method can be scored on one standard (reference numbers PROVISIONAL until Fashion's ruler locks).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
 - **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. A feasibility question under test: it either becomes a standalone paper or folds into Minos.
 
@@ -320,6 +350,7 @@ Each project was imported into the monorepo with its own history preserved:
 | `Proteus/` | projProteus | full history |
 | `Anneal/` | annealMusic (science subtree split) | full history |
 | `Caliper/` | created in-repo | n/a |
+| `Datum/` | created in-repo (clean synthetic-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |
 | `Lattice/` | projLattice | clean synthetic-only history (own root, merged via `--allow-unrelated-histories`) |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |
 | `Vernier/` | projVernier | full history |

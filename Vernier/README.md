@@ -2,12 +2,21 @@
 
 **Calibration-aware acquisition design for IVIM diffusion MRI.**
 
-> **Status: feasibility gate PENDING (CP2).** Vernier's central claim is an
-> *unresolved empirical question*, not yet an established result. This README
-> states the question, the honest scope, and the pre-registered test that decides
-> whether Vernier is a standalone paper at all. The gate verdict (PASS → paper;
-> FAIL → folds into Minos) is filled in here once `experiments/feasibility_gate.py`
-> has run. **No result below is claimed as final until that gate reports.**
+> **Status: feasibility gate PASSED (CP2, 2026-06-19).** At matched scan-time and
+> matched CRLB(D\*) precision, b-schemes **do** diverge in post-conformal D\*
+> calibration. Primary run (SNR 33; 4 matched-CRLB schemes; 8000 voxels;
+> 2000-iter paired bootstrap): **Δ\_sharp = 0.328**, 95% CI [0.200, 0.399];
+> **Δ\_cond = 0.059**, CI [0.036, 0.098] — both clear their pre-registered
+> thresholds (0.10 / 0.05) with CIs excluding 0. PASS holds at SNR 25 and 50
+> (robust via Δ\_cond at all three). Reproduce: `python
+> experiments/feasibility_gate.py` (→ `results/feasibility_gate.{txt,json}`).
+>
+> This gate result is **SOLID and publication-independent** (Caliper only). The
+> paper framing, decision-value-per-scan-minute numbers, and sibling citations
+> remain **PROVISIONAL** (see `ASSUMPTIONS.md`). Two honest caveats: the divergence
+> *magnitude* is **estimator-specific** (measured on Caliper's segmented reference
+> estimator — a MAF check is CP3 work), and at high SNR the sharpness gap shrinks
+> while the conditional-coverage gap persists.
 
 ---
 
@@ -75,6 +84,27 @@ in-review Fashion/Gauge/Minos code.
 
 **No tuning to force divergence.** Schemes are fixed a priori by acquisition
 rationale; everything is seeded.
+
+### Result (CP2 — PASS)
+
+Four matched-scan-time, matched-CRLB(D\*) schemes (CRLB(D\*) 20.5–23.4, within ±10%
+of the candidate-pool median), SNR 33, 8000 voxels, post-conformal D\* (90%):
+
+| scheme | CRLB(D\*) | raw cov | post cov | width | high-D\* cov |
+|---|---:|---:|---:|---:|---:|
+| perfusion-lean | 20.47 | 0.325 | 0.904 | 299.9 | 0.865 |
+| tissue-lean | 23.22 | 0.294 | 0.895 | 330.4 | 0.842 |
+| wide-ends | 22.25 | 0.295 | 0.908 | 289.1 | 0.901 |
+| mid-heavy | 23.41 | 0.252 | 0.903 | 392.5 | 0.849 |
+
+Conformal restores *marginal* coverage to ≈0.90 for all four (raw 0.25–0.33 →
+0.90), yet the post-conformal D\* **width** spans 289–393 (Δ\_sharp = 0.328, CI
+[0.200, 0.399]) and **high-D\* conditional coverage** spans 0.842–0.901 (Δ\_cond =
+0.059, CI [0.036, 0.098]). Both clear threshold with CI excluding 0 → **PASS**;
+holds at SNR 25/50. So acquisition design moves the *part of calibration conformal
+does not equalise*, at matched precision and matched scan-time. Full numbers:
+[`results/feasibility_gate.txt`](results/feasibility_gate.txt) /
+[`.json`](results/feasibility_gate.json).
 
 ## Layout
 

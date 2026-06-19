@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vernier"
+version = "0.0.1"
+description = "Vernier -- calibration-aware acquisition design for IVIM diffusion MRI (do b-schemes differ in post-conformal UQ calibration at matched scan-time and CRLB precision?)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Vernier project" }]
+keywords = ["IVIM", "acquisition-design", "calibration", "conformal-prediction", "CRLB", "uncertainty-quantification"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+dependencies = ["numpy>=1.23"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.4"]
+
+[project.urls]
+Homepage = "https://github.com/akarlin3/ResearchProj/tree/main/Vernier"
+Repository = "https://github.com/akarlin3/ResearchProj"
+Issues = "https://github.com/akarlin3/ResearchProj/issues"
+
+[tool.setuptools]
+packages = ["vernier"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E741"]  # allow single-char names (l, q) in math code
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

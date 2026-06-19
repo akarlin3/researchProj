@@ -1,0 +1,17 @@
+=== Vernier Experiment B: decision utility vs scan-time (PROVISIONAL, Minos lens) ===
+treat/spare/escalate on D*; thresholds t1=22.04 t2=46.12 (prior D* terciles), k_under=2 k_over=1
+decision utility = mean achieved utility (higher=better, <=0); baseline = cheapest protocol (sparse-7)
+
+        scheme  n_b    min    width   hiCov    meanU  dU_vs_cheap   dU/min
+--------------------------------------------------------------------------
+      sparse-7    7    1.4   316.15   0.900  -26.672        0.000     -- 
+   clinical-11   11    2.2   230.59   0.909  -18.765        7.908    9.885
+       rich-15   15    3.0   202.13   0.877  -16.453       10.220    6.387
+      dense-22   22    4.4   197.70   0.878  -15.788       10.885    3.628
+
+marginal decision utility per added scan-minute (each step vs the previous):
+  sparse-7 -> clinical-11: +7.908 utility over +0.8 min  =>  9.885/min
+  clinical-11 -> rich-15: +2.312 utility over +0.8 min  =>  2.890/min
+  rich-15 -> dense-22: +0.665 utility over +1.4 min  =>  0.475/min
+
+no-scan(prior) baseline mean utility = -14.644; every protocol's mean utility is below it -> for D* decisions, acquisition does not beat the prior (consistent with Gauge's identifiability wall).

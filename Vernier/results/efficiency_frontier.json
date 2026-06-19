@@ -1,0 +1,53 @@
+{
+  "snr": 33.0,
+  "n": 8000,
+  "seed": 0,
+  "provisional": true,
+  "lens": "minos",
+  "decision_config": {
+    "t1": 22.035730158087024,
+    "t2": 46.11719832140151,
+    "k_under": 2.0,
+    "k_over": 1.0
+  },
+  "no_scan_prior_baseline_utility": -14.644032162365171,
+  "finding": "decision utility improves monotonically and saturates with scan-time; no protocol beats the no-scan prior for D* (identifiability wall)",
+  "schemes": [
+    {
+      "name": "sparse-7",
+      "n_b": 7,
+      "scan_minutes": 1.4,
+      "width_dstar": 316.14823022243394,
+      "cond_cov_high_dstar": 0.8995502248875562,
+      "mean_utility": -26.672268544172343,
+      "baseline_utility": -14.644032162365171
+    },
+    {
+      "name": "clinical-11",
+      "n_b": 11,
+      "scan_minutes": 2.2,
+      "width_dstar": 230.58787504474859,
+      "cond_cov_high_dstar": 0.9085457271364318,
+      "mean_utility": -18.764538377864643,
+      "baseline_utility": -14.644032162365171
+    },
+    {
+      "name": "rich-15",
+      "n_b": 15,
+      "scan_minutes": 3.0,
+      "width_dstar": 202.12833380785747,
+      "cond_cov_high_dstar": 0.8770614692653673,
+      "mean_utility": -16.452715412340606,
+      "baseline_utility": -14.644032162365171
+    },
+    {
+      "name": "dense-22",
+      "n_b": 22,
+      "scan_minutes": 4.4,
+      "width_dstar": 197.70053269430903,
+      "cond_cov_high_dstar": 0.8778110944527736,
+      "mean_utility": -15.787749948353728,
+      "baseline_utility": -14.644032162365171
+    }
+  ]
+}

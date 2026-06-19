@@ -14,13 +14,16 @@ what the project does, its headline result, and how it is laid out internally.
 - [Project details](#project-details)
   - [`Anneal/` — Chimera collapse, aging, and finite-size scaling](#anneal--chimera-collapse-aging-and-finite-size-scaling)
   - [`Caliper/` — IVIM calibration toolkit (software)](#caliper--ivim-calibration-toolkit-software)
+  - [`Datum/` — IVIM calibration benchmark (software)](#datum--ivim-calibration-benchmark-software)
   - [`Fashion/` — Do IVIM fitting methods report honest uncertainty?](#fashion--do-ivim-fitting-methods-report-honest-uncertainty)
   - [`Forge/` — Monte Carlo dose-simulation feasibility benchmark](#forge--monte-carlo-dose-simulation-feasibility-benchmark)
   - [`Gauge/` — Distribution-free conformal coverage for IVIM](#gauge--distribution-free-conformal-coverage-for-ivim)
+  - [`Lattice/` — A UQ-calibration reference object (DRO) for IVIM](#lattice--a-uq-calibration-reference-object-dro-for-ivim)
   - [`Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)](#lethe--constrained-validation-results-echo-portion-repeatability-scale-check)
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
   - [`Proteus/` — Structure-first mining of the dark proteome](#proteus--structure-first-mining-of-the-dark-proteome)
+  - [`Vernier/` — Calibration-aware acquisition design (feasibility gate)](#vernier--calibration-aware-acquisition-design-feasibility-gate)
 - [How the IVIM projects fit together](#how-the-ivim-projects-fit-together)
 - [Provenance](#provenance)
 - [License](#license)
@@ -31,13 +34,16 @@ what the project does, its headline result, and how it is laid out internally.
 |-----------|-----------------|-------|
 | [`Anneal/`](Anneal/) | *Chimera Collapse Ages: Topology-Dependent Finite-Size Scaling in Mean-Field and Ring Oscillator Systems* | Nonlinear dynamics — chimera-state collapse, survival & finite-size scaling |
 | [`Caliper/`](Caliper/) | *(research software — no standalone paper)* IVIM uncertainty-quantification calibration toolkit | Research software |
+| [`Datum/`](Datum/) | *(research software — no standalone paper)* IVIM uncertainty-calibration **benchmark** (fixed task + curated baselines + reference numbers, on Fashion's ruler) | Research software — benchmark |
 | [`Fashion/`](Fashion/) | *Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramér–Rao Audit of Amortized Posteriors* | IVIM diffusion-MRI — are reported error bars trustworthy? |
 | [`Forge/`](Forge/) | *(no manuscript — feasibility benchmark)* Monte Carlo dose-simulation timing & Electron Return Effect validation | Medical physics — MR-Linac simulation infrastructure |
 | [`Gauge/`](Gauge/) | *Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment* | IVIM diffusion-MRI — conformal coverage & the D\* identifiability limit |
+| [`Lattice/`](Lattice/) | *(research software — no standalone paper)* IVIM UQ-calibration digital reference object (DRO) | Research software — synthetic ground-truth cohorts & alternative-model generators |
 | [`Lethe/`](Lethe/) | *(constrained-validation results; Echo portion — verdict: **Lethe**)* What test–retest repeatability validates about conformal interval **scale** in IVIM | IVIM diffusion-MRI — does the error bar have the right *size*? |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
+| [`Vernier/`](Vernier/) | *Vernier: calibration-aware acquisition design for IVIM diffusion MRI* (feasibility gate PASSED; manuscript built, `paper/vernier.pdf`) — at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
 
 Each subdirectory's own `README.md` and `CITATION.cff` are authoritative for
 submission status.
@@ -96,6 +102,33 @@ recovers per-D\*-tercile validity only by inflating high-D\* width 3.87×.
 - `caliper/` — core modules: `metrics.py` (the ruler), `forward.py` (IVIM forward model + synthetic cohort), `conformal.py`, `estimator_reference.py`, `estimator_maf.py`, `benchmark.py`, `repro_gauge.py`, `publication.py` (citation layer, OFF by default).
 - `examples/` — `ruler_demo.py`, `conformal_demo.py`, plus `gauge_repro.py` / `fashion_repro.py` (synthetic reproductions of the companion papers).
 - `docs/` — API reference, reproduction maps, citing guide. `tests/` — 77 cases (81 with the torch extra). `results/benchmark.csv` — 576-row reproducible benchmark.
+
+### `Datum/` — IVIM calibration benchmark (software)
+
+*No standalone paper — research software (MIT); a benchmark, not a result.* Datum
+turns **Fashion's calibration ruler** into a *benchmark*: a fixed, versioned task
+(predict per-voxel quantiles for IVIM `(D, D*, f)`), a curated panel of baseline
+methods, reference numbers scored on that ruler, and a submission interface for
+scoring a new method. It **reuses, never reinvents** — the ruler/metrics come from
+**Caliper** (read-only `caliper.metrics`) and the data substrate from **Gauge**
+(read-only `gauge.cohort`); the dependency is one-way (nothing imports Datum). The
+intended **Lattice** substrate is not built yet, so Datum sits on Gauge's synthetic
+cohort now, with an OSIPI digital reference object wired for external validation. It
+also serves as the concrete artifact behind Fashion's "ruler-as-standard"
+differentiation from Casali. Distinct from Caliper (the ruler + an explicitly
+non-citable demo sweep), Lattice (a substrate), and OSIPI (scored on point
+accuracy, not calibration).
+
+Datum is **built on a ruler that is in review**, so it carries a finalization risk:
+the ruler version is pinned in [`Datum/ASSUMPTIONS.md`](Datum/ASSUMPTIONS.md) /
+`datum/manifest.py`, **every ruler-dependent reference number is flagged
+PROVISIONAL**, and `python Datum/revalidate.py` re-validates everything in one
+command when the ruler locks (it shares Minos's applied-half rework gate). The
+benchmark *scaffolding* is solid now; the *reference numbers* are the next
+deliverable and are PROVISIONAL by construction.
+
+- `datum/` — `task.py` (the frozen `TASK_V1` spec), `substrate.py` (read-only Gauge / OSIPI / Lattice-stub adapters), `ruler.py` (read-only adapter over `caliper.metrics`), `baselines.py` (the curated panel registry), `manifest.py` + `provisional.py` (assumption pins + PROVISIONAL stamping), `_paths.py` (sibling bootstrap for the read-only deps).
+- `ASSUMPTIONS.md` — the SOLID-vs-PROVISIONAL split and the pinned ruler version. `revalidate.py` — one-command re-validation. `tests/` — CP1 import/manifest/task gates.
 
 ### `Fashion/` — Do IVIM fitting methods report *honest* uncertainty?
 
@@ -157,6 +190,34 @@ the data do not reveal (the Cramér–Rao bound reaches the bin width there).
 - `gauge/` — `forward.py`, `cohort.py`, `estimators.py`, `conformal.py`, `baselines.py` (model-based UQ), `benchmark.py`, `conditional.py`, `monitor.py` (Minos-style label-free monitor), and `results*.md` write-ups.
 - `gauge/paper/` — full LaTeX manuscript, figures, `consistency.py` (34/34 manuscript numbers trace verbatim), cover letter.
 - `scripts/` (sanity/coverage/figures), `results/` (committed artifacts), `tests/` (36 seeded tests).
+
+### `Lattice/` — A UQ-calibration reference object (DRO) for IVIM
+
+*No standalone paper — research software (MIT).* Lattice is a **digital reference
+object (DRO)** for *uncertainty-quantification calibration* in IVIM: it packages
+physiologically-grounded reference parameter distributions over ground truth
+`(D, D*, f)`, five clean-room forward-signal generators, and a standardized
+calibration-evaluation interface so any UQ method can be scored on a common
+reference. Unlike Gauge's *internal* cohort or Caliper's bi-exponential
+`synthetic_cohort`, its core is the **alternative-model generator families**
+(gamma & log-normal velocity dispersion, stretched-exponential, tri-exponential),
+each reducing to the bi-exponential model at a continuity limit — so calibration
+can be probed under controlled *model misspecification*. It is distinct from OSIPI
+TF2.4 (accuracy-focused) and is the *data* that the scorer (**Caliper**) consumes;
+the dependency is strictly one-way (Lattice imports nothing back). Everything is
+synthetic, PHI-free, and reproducible from a seed; the DRO depends on no
+publication (only an eventual citable release would cite Fashion/Gauge/Minos
+DOIs).
+
+Verified self-consistency: continuity residuals `0.000e+00` for the exact-
+reduction families (and `3.9e-09` for gamma at `k=1e8`), and a clean bi-exp
+round-trip with max relative error `7.99e-10`. On the bundled reference method,
+Lattice reproduces the family's hallmark: D\* under-covers (0.68 at nominal 0.90),
+worst in the high-D\* tercile (0.52).
+
+- `lattice/` — `generators.py` (the five forward models + noise), `cohort.py` (the `Cohort` schema, priors, `make_cohort`, continuity helper), `evaluate.py` (estimator contract + `to_scorer_inputs` adapter), `selfcheck.py` (NLLS round-trip), `osipi.py` (optional download-on-demand + provenance), `publication.py` (citation gate, OFF by default).
+- `examples/` — `make_cohort.py`, `continuity_demo.py`, `evaluate_demo.py` (Caliper-free), `evaluate_with_caliper.py` (optional one-way consumption demo).
+- `docs/` — `DRO_SPEC.md`, `POSITIONING.md`, `CLEANROOM.md`. `tests/` — 37 cases (continuity, round-trip, schema, interface, publication gate). `scripts/fetch_osipi.py`.
 
 ### `Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)
 
@@ -269,14 +330,46 @@ The Zenodo badge above archives Proteus's code and intermediate-data snapshots
 - `analysis/` — powered-floor, TOST/non-superiority, bits-gradient, and pLDDT-confound scripts. `gce/` — the CPU ESMFold burst scaffold.
 - `tests/`, `envlog/`, `proteus_manuscript_gigascience.tex` (legacy filename; current target PLOS), `REVISION_NOTES.md`.
 
+### `Vernier/` — Calibration-aware acquisition design (feasibility gate)
+
+*Status: feasibility gate **PASSED** (CP2, 2026-06-19) — Vernier is a standalone paper;
+the manuscript is built (`Vernier/paper/vernier.pdf`, 5 pp). At matched scan-time and matched CRLB(D\*) precision,
+b-schemes diverge in post-conformal D\* calibration (Δ\_sharp = 0.33, CI [0.20, 0.40];
+Δ\_cond = 0.06, CI [0.04, 0.10]; robust across SNR 25–50) — but only for over-confident
+estimators: re-running on Caliper's efficient MAF posterior **fails** the gate (Δ\_sharp 0.04,
+Δ\_cond 0.03), so the effect is estimator×acquisition-contingent. The gate results are
+SOLID/publication-independent (Caliper-only); the paper framing and decision-value
+numbers remain PROVISIONAL.* Vernier asks an IVIM acquisition-design question the variance-optimal
+(Cramér–Rao) and information-gain (BED/EIG) canon do not: at **matched scan-time** and
+**matched CRLB precision**, do different b-value schemes yield differently-*calibrated*
+uncertainty *after* conformal correction — and so different decision-value-per-
+scan-minute? The question is non-trivial because split-conformal restores *marginal*
+coverage to nominal for every scheme by construction; what it does **not** equalise —
+conditional coverage, interval sharpness, ECE — is the test.
+
+Honest scope: Vernier does **not** claim to improve *identifiability*. Its sibling
+**Gauge** already showed the high-D\* wall is acquisition-robust — CRLB-optimal design
+moved CRLB(D\*)/tercile-width only 1.25 → 1.05 and never removed it — so Vernier lives
+on the calibration-and-decision axis, taking that wall as given. It is built
+**read-only on Caliper** (synthetic cohort + reference estimator + conformal + ruler),
+so the feasibility gate is **publication-independent**; the decision-value lens (Minos),
+the calibrated-ruler framing (Fashion), and the wall citation (Gauge) enter only
+downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
+
+- `vernier/` — `_paths.py` (read-only Caliper wiring), `schemes.py` (b-scheme registry + scan-time model + segmented-fit validation), `crlb.py` (self-contained IVIM Fisher-matrix CRLB).
+- `tests/` — package sanity (17 cases). `ASSUMPTIONS.md` (SOLID Caliper-only gate vs PROVISIONAL Fashion/Gauge/Minos), `PROMOTION.md` (PASS → paper / FAIL → fold-into-Minos paths).
+
 ## How the IVIM projects fit together
 
-Five folders form one IVIM diffusion-MRI uncertainty program:
+Eight folders form one IVIM diffusion-MRI uncertainty program:
 
 - **Fashion** establishes *which* uncertainty paradigms actually cover D\* and pins Gaussian error bars as the culprit.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
 - **Caliper** is the reusable toolkit that packages the calibration ruler and wraps both papers' methods under one contract (deliberately un-gated pending Minos).
+- **Lattice** is the reusable *reference object* (DRO): the synthetic ground-truth cohorts and alternative-model generators the scorer and papers benchmark against — the data complement to Caliper's ruler.
+- **Datum** is the benchmark layer: it freezes that ruler into a fixed task with curated baselines and a submission interface, so any IVIM uncertainty method can be scored on one standard (reference numbers PROVISIONAL until Fashion's ruler locks).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
+- **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. A feasibility question under test: it either becomes a standalone paper or folds into Minos.
 - **Lethe** (the *Echo* portion; speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos.
 
 ## Provenance
@@ -292,8 +385,11 @@ Each project was imported into the monorepo with its own history preserved:
 | `Proteus/` | projProteus | full history |
 | `Anneal/` | annealMusic (science subtree split) | full history |
 | `Caliper/` | created in-repo | n/a |
+| `Datum/` | created in-repo (clean synthetic-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |
+| `Lattice/` | projLattice | clean synthetic-only history (own root, merged via `--allow-unrelated-histories`) |
 | `Lethe/` | projEcho (new — synthetic/open); built as `Echo/`, renamed `Echo/`→`Lethe/` by verdict | full history (own clean history; `git log --follow -- Lethe/`) |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |
+| `Vernier/` | projVernier | full history |
 
 Each imported subdirectory's history was rewritten with `git-filter-repo` and
 combined with `git merge --allow-unrelated-histories`, so `git log -- <Subfolder>/`
@@ -305,6 +401,6 @@ This repository is licensed under the **GNU Affero General Public License v3.0**
 (AGPL-3.0); see [`LICENSE`](LICENSE) for the full text.
 
 Some subdirectories ship their own `LICENSE` file, which governs that subproject
-and takes precedence for its contents (for example, `Caliper/` is released under
-the MIT License). Where a subproject carries no license file, the repository-level
-AGPL-3.0 applies.
+and takes precedence for its contents (for example, `Caliper/` and `Lattice/` are
+released under the MIT License). Where a subproject carries no license file, the
+repository-level AGPL-3.0 applies.

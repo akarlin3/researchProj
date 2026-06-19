@@ -1,0 +1,19 @@
+# Datum -- synthetic-only benchmark. No external/clinical data ever in tree.
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Substrate caches (download-on-demand external-validation data live here and
+# are NEVER committed -- only the provenance manifest is). See datum/substrate.py.
+data/
+*.zip
+*.nii
+*.nii.gz
+*.dcm
+
+# Generated reference numbers are reproducible from `python revalidate.py`;
+# the committed copy lives under results/ and is regenerated, not hand-edited.
+results/_scratch/

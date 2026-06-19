@@ -1,0 +1,82 @@
+cff-version: 1.2.0
+message: >-
+  If you use Lattice, please cite the software below. Lattice is a digital
+  reference object (synthetic IVIM cohorts + generators + a calibration-
+  evaluation interface); its content depends on no publication. The companion
+  IVIM manuscripts listed under `references` are PRE-PUBLICATION (no publication
+  DOI yet) and an eventual citable release would cite them only once real DOIs
+  exist. See lattice.publication (the single source of truth).
+title: "Lattice: a UQ-calibration digital reference object (DRO) for IVIM"
+abstract: >-
+  Lattice is a synthetic, PHI-free digital reference object for uncertainty-
+  quantification calibration in intravoxel incoherent motion (IVIM) diffusion
+  MRI: physiologically-grounded reference parameter distributions, five clean-
+  room forward-signal generators (bi-exponential plus four misspecification
+  families that each reduce to it at a continuity limit), and a standardized
+  calibration-evaluation interface so any UQ method can be scored on a common
+  reference. Reproducible from an integer seed.
+type: software
+authors:
+  - given-names: Avery
+    family-names: Karlin
+    orcid: "https://orcid.org/0000-0003-3848-6782"
+version: "0.1.0"
+date-released: "2026-06-19"
+license: MIT
+repository-code: "https://github.com/akarlin3/ResearchProj/tree/main/Lattice"
+keywords:
+  - IVIM
+  - diffusion-MRI
+  - digital-reference-object
+  - calibration
+  - uncertainty-quantification
+# --------------------------------------------------------------------------- #
+# Companion manuscripts an eventual citable release would cite. ALL ARE PRE-
+# PUBLICATION: no `doi:` field is set because no publication DOI exists yet.
+# `status: submitted`/`in-preparation` are the closest valid CFF tokens. Any
+# Zenodo DOIs noted are SOFTWARE code-archive DOIs, NOT publication DOIs.
+# --------------------------------------------------------------------------- #
+references:
+  - type: article
+    title: >-
+      Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the
+      Identifiability Wall in the Pseudo-Diffusion Compartment
+    authors:
+      - given-names: Avery
+        family-names: Karlin
+        orcid: "https://orcid.org/0000-0003-3848-6782"
+    journal: "Magnetic Resonance in Medicine"
+    year: 2026
+    status: submitted
+    notes: >-
+      PRE-PUBLICATION: in review at Magnetic Resonance in Medicine (2026); no
+      publication DOI yet. Software archive (NOT a publication DOI):
+      doi:10.5281/zenodo.20686273.
+  - type: article
+    title: >-
+      Calibration and Efficiency of Uncertainty Estimates in Intravoxel
+      Incoherent Motion Imaging
+    authors:
+      - given-names: Avery
+        family-names: Karlin
+        orcid: "https://orcid.org/0000-0003-3848-6782"
+    journal: "Magnetic Resonance in Medicine"
+    year: 2026
+    status: submitted
+    notes: >-
+      PRE-PUBLICATION: in review at Magnetic Resonance in Medicine (2026); no
+      publication DOI yet. Software archive (NOT a publication DOI):
+      doi:10.5281/zenodo.20649669.
+  - type: article
+    title: >-
+      Minos: the decision value of a calibrated uncertainty - A decision-
+      calibration gap and a label-free validity floor for quantitative MRI
+    authors:
+      - given-names: Avery
+        family-names: Karlin
+        orcid: "https://orcid.org/0000-0003-3848-6782"
+    journal: "Magnetic Resonance in Medicine"
+    year: 2026
+    status: in-preparation
+    notes: >-
+      PRE-PUBLICATION: in preparation (2026); no publication DOI yet.

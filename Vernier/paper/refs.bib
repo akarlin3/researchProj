@@ -1,0 +1,107 @@
+% Vernier references. Verified against arXiv / PubMed / publisher DOI pages.
+% vernier.tex ships a manual \thebibliography (single-pass-robust); this .bib is the
+% machine-readable source of the same entries. The IMPULSED-BED entry (dai2026impulsed)
+% is an arXiv preprint cited from cross-checked arXiv metadata (its PDF would not parse).
+
+% --- Bayesian experimental design / EIG for diffusion-MRI acquisition ---
+@misc{dai2026impulsed,
+  author       = {Dai, Yan and Jia, Xun and Aguilera, Todd and Jiang, Kai and
+                  Perez Rodriguez, Arely and Vanhaezebrouck, Isabelle and Deng, Jie},
+  title        = {Optimizing {IMPULSED} Acquisition Protocols for Clinical 3{T}
+                  Scanners Through {B}ayesian Experimental Design},
+  year         = {2026},
+  eprint       = {2604.06020},
+  archivePrefix= {arXiv},
+  primaryClass = {physics.med-ph},
+  doi          = {10.48550/arXiv.2604.06020}
+}
+
+@article{alexander2008framework,
+  author  = {Alexander, Daniel C.},
+  title   = {A general framework for experiment design in diffusion {MRI} and its
+             application in measuring direct tissue-microstructure features},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2008}, volume = {60}, number = {2}, pages = {439--448},
+  doi     = {10.1002/mrm.21646}
+}
+
+@misc{iollo2025activemri,
+  author       = {Iollo, Jacopo and Oudoumanessah, Geoffroy and Lartizien, Carole and
+                  Dojat, Michel and Forbes, Florence},
+  title        = {Active {MRI} Acquisition with Diffusion Guided {B}ayesian Experimental Design},
+  year         = {2025},
+  eprint       = {2506.16237}, archivePrefix = {arXiv}, primaryClass = {eess.IV},
+  doi          = {10.48550/arXiv.2506.16237}
+}
+
+% --- CRLB / optimal b-value sampling for IVIM ---
+@article{lemke2011optimal,
+  author  = {Lemke, Andreas and Stieltjes, Bram and Schad, Lothar R. and Laun, Frederik B.},
+  title   = {Toward an optimal distribution of b values for intravoxel incoherent motion imaging},
+  journal = {Magnetic Resonance Imaging},
+  year    = {2011}, volume = {29}, number = {6}, pages = {766--776},
+  doi     = {10.1016/j.mri.2011.03.004}
+}
+
+@inproceedings{zhang2013crlb,
+  author    = {Zhang, Qinwei and Wang, Yi-Xiang and Ma, Heather Ting and Yuan, Jing},
+  title     = {{Cram\'er--Rao} bound for Intravoxel Incoherent Motion Diffusion Weighted Imaging fitting},
+  booktitle = {35th Annual Intl.\ Conf.\ IEEE Eng.\ Med.\ Biol.\ Soc.\ (EMBC)},
+  year      = {2013}, pages = {511--514},
+  doi       = {10.1109/EMBC.2013.6609549}
+}
+
+@article{jalnefjord2019optimization,
+  author  = {Jalnefjord, Oscar and Montelius, Mikael and Starck, G\"oran and Ljungberg, Maria},
+  title   = {Optimization of b-value schemes for estimation of the diffusion coefficient and
+             the perfusion fraction with segmented intravoxel incoherent motion model fitting},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2019}, volume = {82}, number = {4}, pages = {1541--1552},
+  doi     = {10.1002/mrm.27826}
+}
+
+% --- Conformal prediction ---
+@inproceedings{romano2019cqr,
+  author    = {Romano, Yaniv and Patterson, Evan and Cand\`es, Emmanuel J.},
+  title     = {Conformalized Quantile Regression},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2019}, volume = {32}, pages = {3538--3548}
+}
+
+@book{vovk2005algorithmic,
+  author    = {Vovk, Vladimir and Gammerman, Alexander and Shafer, Glenn},
+  title     = {Algorithmic Learning in a Random World},
+  publisher = {Springer}, year = {2005}, doi = {10.1007/b106715}
+}
+
+@article{lei2018distributionfree,
+  author  = {Lei, Jing and G'Sell, Max and Rinaldo, Alessandro and Tibshirani, Ryan J.
+             and Wasserman, Larry},
+  title   = {Distribution-Free Predictive Inference for Regression},
+  journal = {Journal of the American Statistical Association},
+  year    = {2018}, volume = {113}, number = {523}, pages = {1094--1111},
+  doi     = {10.1080/01621459.2017.1307116}
+}
+
+% --- Calibration / proper scoring ---
+@article{gneiting2007scoring,
+  author  = {Gneiting, Tilmann and Raftery, Adrian E.},
+  title   = {Strictly Proper Scoring Rules, Prediction, and Estimation},
+  journal = {Journal of the American Statistical Association},
+  year    = {2007}, volume = {102}, number = {477}, pages = {359--378},
+  doi     = {10.1198/016214506000001437}
+}
+
+@inproceedings{kuleshov2018calibrated,
+  author    = {Kuleshov, Volodymyr and Fenner, Nathan and Ermon, Stefano},
+  title     = {Accurate Uncertainties for Deep Learning Using Calibrated Regression},
+  booktitle = {Proc.\ 35th Intl.\ Conf.\ on Machine Learning (ICML)},
+  year      = {2018}, volume = {80}, pages = {2796--2804}
+}
+
+% --- Companion (in review) ---
+@misc{minos2026,
+  author = {{Minos companion}},
+  title  = {Minos: the decision value of a calibrated uncertainty (in review)},
+  year   = {2026}, note = {Provides the decision lens used in Experiment B}
+}

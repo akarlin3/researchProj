@@ -1,0 +1,25 @@
+=== REFERENCE (segmented) -- cross-check under MAF splits (SNR=33, n=6000, train/cal/test=2040/1980/1980, bootstrap=1000) ===
+          scheme  CRLB_D*  rawCov    cov     width    ECE   hiCov
+-----------------------------------------------------------------
+  perfusion-lean    20.71   0.304  0.886   305.090  0.204   0.865
+     tissue-lean    23.50   0.274  0.895   330.207  0.219   0.833
+       wide-ends    22.53   0.272  0.914   300.881  0.222   0.912
+       mid-heavy    23.74   0.241  0.915   405.972  0.237   0.883
+
+  Delta_sharp = 0.3308  CI [0.1612, 0.4302]  (thresh 0.1)
+  Delta_cond  = 0.0788  CI [0.0322, 0.1302]  (thresh 0.05)
+  VERDICT: PASS
+
+=== MAF posterior (efficient estimator) (SNR=33, n=6000, train/cal/test=2040/1980/1980, bootstrap=1000) ===
+          scheme  CRLB_D*  rawCov    cov     width    ECE   hiCov
+-----------------------------------------------------------------
+  perfusion-lean    20.71   0.877  0.898    46.497  0.014   0.845
+     tissue-lean    23.50   0.877  0.901    48.430  0.016   0.817
+       wide-ends    22.53   0.874  0.897    47.172  0.018   0.832
+       mid-heavy    23.74   0.877  0.897    47.354  0.016   0.815
+
+  Delta_sharp = 0.0409  CI [0.0156, 0.0720]  (thresh 0.1)
+  Delta_cond  = 0.0303  CI [0.0132, 0.0666]  (thresh 0.05)
+  VERDICT: FAIL
+
+Persists for MAF: False

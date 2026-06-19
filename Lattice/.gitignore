@@ -1,0 +1,20 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Test / tooling caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+
+# External, download-on-demand data (never committed; synthetic-only in tree)
+data/
+*.npz
+!tests/**/*.npz
+
+# OS
+.DS_Store

@@ -1,0 +1,127 @@
+{
+  "reference": {
+    "label": "REFERENCE (segmented) -- cross-check under MAF splits",
+    "snr": 33.0,
+    "n": 6000,
+    "n_boot": 1000,
+    "splits": {
+      "train": 2040,
+      "cal": 1980,
+      "test": 1980
+    },
+    "schemes": [
+      {
+        "name": "perfusion-lean",
+        "crlb_dstar": 20.70748812995646,
+        "cov_dstar_raw": 0.30353535353535355,
+        "cov_dstar": 0.8863636363636364,
+        "width_dstar": 305.09044581945307,
+        "ece_dstar": 0.20434343434343435,
+        "cond_cov_high_dstar": 0.8651515151515151
+      },
+      {
+        "name": "tissue-lean",
+        "crlb_dstar": 23.500178254000346,
+        "cov_dstar_raw": 0.27424242424242423,
+        "cov_dstar": 0.8954545454545455,
+        "width_dstar": 330.20703166602897,
+        "ece_dstar": 0.21939393939393934,
+        "cond_cov_high_dstar": 0.8333333333333334
+      },
+      {
+        "name": "wide-ends",
+        "crlb_dstar": 22.52856477495841,
+        "cov_dstar_raw": 0.2722222222222222,
+        "cov_dstar": 0.9136363636363637,
+        "width_dstar": 300.8807961556162,
+        "ece_dstar": 0.22222222222222224,
+        "cond_cov_high_dstar": 0.9121212121212121
+      },
+      {
+        "name": "mid-heavy",
+        "crlb_dstar": 23.740232432482014,
+        "cov_dstar_raw": 0.24141414141414141,
+        "cov_dstar": 0.9146464646464646,
+        "width_dstar": 405.9723919261178,
+        "ece_dstar": 0.23666666666666664,
+        "cond_cov_high_dstar": 0.8833333333333333
+      }
+    ],
+    "delta_sharp": 0.33084216290754326,
+    "delta_sharp_ci": [
+      0.16115971700730888,
+      0.4301590518794242
+    ],
+    "delta_cond": 0.07878787878787874,
+    "delta_cond_ci": [
+      0.03224070902948116,
+      0.13018394648829432
+    ],
+    "sharp_pass": true,
+    "cond_pass": true,
+    "verdict": "PASS"
+  },
+  "maf": {
+    "label": "MAF posterior (efficient estimator)",
+    "snr": 33.0,
+    "n": 6000,
+    "n_boot": 1000,
+    "splits": {
+      "train": 2040,
+      "cal": 1980,
+      "test": 1980
+    },
+    "schemes": [
+      {
+        "name": "perfusion-lean",
+        "crlb_dstar": 20.70748812995646,
+        "cov_dstar_raw": 0.8772727272727273,
+        "cov_dstar": 0.8984848484848484,
+        "width_dstar": 46.497158659515264,
+        "ece_dstar": 0.014141414141414132,
+        "cond_cov_high_dstar": 0.8454545454545455
+      },
+      {
+        "name": "tissue-lean",
+        "crlb_dstar": 23.500178254000346,
+        "cov_dstar_raw": 0.8767676767676768,
+        "cov_dstar": 0.901010101010101,
+        "width_dstar": 48.430135723518056,
+        "ece_dstar": 0.015555555555555545,
+        "cond_cov_high_dstar": 0.8166666666666667
+      },
+      {
+        "name": "wide-ends",
+        "crlb_dstar": 22.52856477495841,
+        "cov_dstar_raw": 0.8742424242424243,
+        "cov_dstar": 0.8974747474747474,
+        "width_dstar": 47.1718029817832,
+        "ece_dstar": 0.01767676767676767,
+        "cond_cov_high_dstar": 0.8318181818181818
+      },
+      {
+        "name": "mid-heavy",
+        "crlb_dstar": 23.740232432482014,
+        "cov_dstar_raw": 0.8767676767676768,
+        "cov_dstar": 0.8974747474747474,
+        "width_dstar": 47.35434271116224,
+        "ece_dstar": 0.01555555555555554,
+        "cond_cov_high_dstar": 0.8151515151515152
+      }
+    ],
+    "delta_sharp": 0.040898252009169696,
+    "delta_sharp_ci": [
+      0.01564482118980057,
+      0.07195225660904107
+    ],
+    "delta_cond": 0.030303030303030276,
+    "delta_cond_ci": [
+      0.013191713423626631,
+      0.0665865384615384
+    ],
+    "sharp_pass": false,
+    "cond_pass": false,
+    "verdict": "FAIL"
+  },
+  "persists_for_maf": false
+}

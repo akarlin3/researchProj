@@ -1,0 +1,174 @@
+{
+  "primary_snr": 33.0,
+  "n": 8000,
+  "seed": 0,
+  "n_boot": 2000,
+  "matched_schemes": [
+    "perfusion-lean",
+    "tissue-lean",
+    "wide-ends",
+    "mid-heavy"
+  ],
+  "crlb_dstar": {
+    "perfusion-lean": 20.467494923232657,
+    "tissue-lean": 23.216539739626427,
+    "wide-ends": 22.245447425341087,
+    "mid-heavy": 23.41347226264097
+  },
+  "runs": {
+    "snr_33": {
+      "verdict": "PASS",
+      "delta_sharp": 0.32812685843356654,
+      "delta_sharp_ci": [
+        0.19980855226213998,
+        0.3994660282858444
+      ],
+      "delta_cond": 0.059264816204050996,
+      "delta_cond_ci": [
+        0.035849310917665834,
+        0.09807536408427187
+      ],
+      "schemes": [
+        {
+          "name": "perfusion-lean",
+          "crlb_dstar": 20.467494923232657,
+          "cov_dstar_raw": 0.32525,
+          "cov_dstar": 0.904,
+          "width_dstar": 299.8649515229048,
+          "ece_dstar": 0.041000000000000016,
+          "cond_cov_high_dstar": 0.8649662415603901
+        },
+        {
+          "name": "tissue-lean",
+          "crlb_dstar": 23.216539739626427,
+          "cov_dstar_raw": 0.294,
+          "cov_dstar": 0.895,
+          "width_dstar": 330.41232198905493,
+          "ece_dstar": 0.044950000000000004,
+          "cond_cov_high_dstar": 0.8417104276069017
+        },
+        {
+          "name": "wide-ends",
+          "crlb_dstar": 22.245447425341087,
+          "cov_dstar_raw": 0.295,
+          "cov_dstar": 0.908,
+          "width_dstar": 289.14048562276736,
+          "ece_dstar": 0.057750000000000024,
+          "cond_cov_high_dstar": 0.9009752438109527
+        },
+        {
+          "name": "mid-heavy",
+          "crlb_dstar": 23.41347226264097,
+          "cov_dstar_raw": 0.25225,
+          "cov_dstar": 0.90325,
+          "width_dstar": 392.54593647254393,
+          "ece_dstar": 0.05320000000000001,
+          "cond_cov_high_dstar": 0.8492123030757689
+        }
+      ]
+    },
+    "snr_25": {
+      "verdict": "PASS",
+      "delta_sharp": 0.3114877411530968,
+      "delta_sharp_ci": [
+        0.22577517913964804,
+        0.36786372503523584
+      ],
+      "delta_cond": 0.05626406601650413,
+      "delta_cond_ci": [
+        0.030780203496820098,
+        0.08383268079226162
+      ],
+      "schemes": [
+        {
+          "name": "perfusion-lean",
+          "crlb_dstar": 27.017093298667092,
+          "cov_dstar_raw": 0.27,
+          "cov_dstar": 0.90225,
+          "width_dstar": 315.4176447831411,
+          "ece_dstar": 0.05230000000000001,
+          "cond_cov_high_dstar": 0.8882220555138785
+        },
+        {
+          "name": "tissue-lean",
+          "crlb_dstar": 30.645832456306913,
+          "cov_dstar_raw": 0.2415,
+          "cov_dstar": 0.901,
+          "width_dstar": 358.80614413530645,
+          "ece_dstar": 0.05175000000000002,
+          "cond_cov_high_dstar": 0.8807201800450113
+        },
+        {
+          "name": "wide-ends",
+          "crlb_dstar": 29.363990601450343,
+          "cov_dstar_raw": 0.24425,
+          "cov_dstar": 0.90775,
+          "width_dstar": 301.6817464091673,
+          "ece_dstar": 0.07175000000000001,
+          "cond_cov_high_dstar": 0.9159789947486872
+        },
+        {
+          "name": "mid-heavy",
+          "crlb_dstar": 30.905783386686124,
+          "cov_dstar_raw": 0.20875,
+          "cov_dstar": 0.89775,
+          "width_dstar": 406.6879689301122,
+          "ece_dstar": 0.06260000000000002,
+          "cond_cov_high_dstar": 0.859714928732183
+        }
+      ]
+    },
+    "snr_50": {
+      "verdict": "PASS",
+      "delta_sharp": 0.0383895189154038,
+      "delta_sharp_ci": [
+        0.0360642969876996,
+        0.2590820416686538
+      ],
+      "delta_cond": 0.07201800450112528,
+      "delta_cond_ci": [
+        0.04672091229840654,
+        0.10752284513995834
+      ],
+      "schemes": [
+        {
+          "name": "perfusion-lean",
+          "crlb_dstar": 13.508546649333546,
+          "cov_dstar_raw": 0.42725,
+          "cov_dstar": 0.91,
+          "width_dstar": 277.42714150155825,
+          "ece_dstar": 0.026350000000000005,
+          "cond_cov_high_dstar": 0.846211552888222
+        },
+        {
+          "name": "tissue-lean",
+          "crlb_dstar": 15.322916228153456,
+          "cov_dstar_raw": 0.384,
+          "cov_dstar": 0.8935,
+          "width_dstar": 270.29030383150706,
+          "ece_dstar": 0.0323,
+          "cond_cov_high_dstar": 0.8012003000750187
+        },
+        {
+          "name": "wide-ends",
+          "crlb_dstar": 14.681995300725172,
+          "cov_dstar_raw": 0.37725,
+          "cov_dstar": 0.91125,
+          "width_dstar": 270.66542888514783,
+          "ece_dstar": 0.045,
+          "cond_cov_high_dstar": 0.8724681170292573
+        },
+        {
+          "name": "mid-heavy",
+          "crlb_dstar": 15.452891693343062,
+          "cov_dstar_raw": 0.33825,
+          "cov_dstar": 0.89625,
+          "width_dstar": 267.04362633479724,
+          "ece_dstar": 0.0432,
+          "cond_cov_high_dstar": 0.800450112528132
+        }
+      ]
+    }
+  },
+  "primary_verdict": "PASS"
+}

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# venvs
+.venv/
+venv/
+env/
+
+# test / tooling caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+
+# generated artifacts (results are committed explicitly, not via wildcard)
+artifacts/
+*.npz

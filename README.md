@@ -272,7 +272,9 @@ The Zenodo badge above archives Proteus's code and intermediate-data snapshots
 *Status: feasibility gate **PASSED** (CP2, 2026-06-19) — Vernier is a standalone paper;
 the manuscript is built (`Vernier/paper/vernier.pdf`, 5 pp). At matched scan-time and matched CRLB(D\*) precision,
 b-schemes diverge in post-conformal D\* calibration (Δ\_sharp = 0.33, CI [0.20, 0.40];
-Δ\_cond = 0.06, CI [0.04, 0.10]; robust across SNR 25–50). The gate result is
+Δ\_cond = 0.06, CI [0.04, 0.10]; robust across SNR 25–50) — but only for over-confident
+estimators: re-running on Caliper's efficient MAF posterior **fails** the gate (Δ\_sharp 0.04,
+Δ\_cond 0.03), so the effect is estimator×acquisition-contingent. The gate results are
 SOLID/publication-independent (Caliper-only); the paper framing and decision-value
 numbers remain PROVISIONAL.* Vernier asks an IVIM acquisition-design question the variance-optimal
 (Cramér–Rao) and information-gain (BED/EIG) canon do not: at **matched scan-time** and

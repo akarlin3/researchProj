@@ -22,6 +22,8 @@ import json
 import os
 import re
 
+import numpy as np
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(os.path.dirname(HERE), "results")
 TEX = os.path.join(HERE, "vernier.tex")
@@ -105,6 +107,29 @@ def build_numbers():
         "PriorBaselineU": (f"{front['no_scan_prior_baseline_utility']:.1f}",
                            "Exp B: no-scan prior baseline mean utility [PROVISIONAL]"),
     })
+
+    # ---- MAF robustness (SOLID -- Caliper-only; the estimator-contingency result) ----
+    maf = _load("maf_gate.json")
+    m, r = maf["maf"], maf["reference"]
+    mw = [s["width_dstar"] for s in m["schemes"]]
+    nums.update({
+        "MafDeltaSharp": (f"{m['delta_sharp']:.3f}", "MAF gate: D* width spread [SOLID]"),
+        "MafDeltaSharpLo": (f"{m['delta_sharp_ci'][0]:.3f}", "MAF gate: Delta_sharp CI lo [SOLID]"),
+        "MafDeltaSharpHi": (f"{m['delta_sharp_ci'][1]:.3f}", "MAF gate: Delta_sharp CI hi [SOLID]"),
+        "MafDeltaCond": (f"{m['delta_cond']:.3f}", "MAF gate: high-D* coverage range [SOLID]"),
+        "MafDeltaCondLo": (f"{m['delta_cond_ci'][0]:.3f}", "MAF gate: Delta_cond CI lo [SOLID]"),
+        "MafDeltaCondHi": (f"{m['delta_cond_ci'][1]:.3f}", "MAF gate: Delta_cond CI hi [SOLID]"),
+        "MafVerdict": (m["verdict"], "MAF gate: verdict [SOLID]"),
+        "MafWidthLo": (f"{min(mw):.0f}", "MAF gate: min post-conformal D* width [SOLID]"),
+        "MafWidthHi": (f"{max(mw):.0f}", "MAF gate: max post-conformal D* width [SOLID]"),
+        "MafRawCov": (f"{np.mean([s['cov_dstar_raw'] for s in m['schemes']]):.2f}",
+                      "MAF gate: mean raw (pre-conformal) D* coverage -- already near-calibrated [SOLID]"),
+        "RefSplitDeltaSharp": (f"{r['delta_sharp']:.3f}",
+                               "MAF gate: reference Delta_sharp under same splits (cross-check) [SOLID]"),
+        "RefSplitDeltaCond": (f"{r['delta_cond']:.3f}",
+                              "MAF gate: reference Delta_cond under same splits (cross-check) [SOLID]"),
+        "RefSplitVerdict": (r["verdict"], "MAF gate: reference verdict under same splits [SOLID]"),
+    })
     return nums
 
 
@@ -140,6 +165,9 @@ def verify_tex(nums):
         ("matched CRLB within +/-10%", (float(nums["CrlbMax"][0]) - float(nums["CrlbMin"][0]))
          / float(nums["CrlbMin"][0]) <= 0.25),  # max-min/min over the matched set
         ("frontier returns diminish", float(nums["FrontMargA"][0]) > float(nums["FrontMargC"][0])),
+        ("MAF gate FAILS (estimator-contingent)", nums["MafVerdict"][0] == "FAIL"),
+        ("MAF divergence < reference", float(nums["MafDeltaSharp"][0]) < float(nums["DeltaSharp"][0])),
+        ("reference still PASS under MAF splits", nums["RefSplitVerdict"][0] == "PASS"),
     ]
     for name, cond in asserts:
         print(f"  assert {name}: {'PASS' if cond else 'FAIL'}")

@@ -13,10 +13,18 @@
 >
 > This gate result is **SOLID and publication-independent** (Caliper only). The
 > paper framing, decision-value-per-scan-minute numbers, and sibling citations
-> remain **PROVISIONAL** (see `ASSUMPTIONS.md`). Two honest caveats: the divergence
-> *magnitude* is **estimator-specific** (measured on Caliper's segmented reference
-> estimator — a MAF check is CP3 work), and at high SNR the sharpness gap shrinks
-> while the conditional-coverage gap persists.
+> remain **PROVISIONAL** (see `ASSUMPTIONS.md`).
+>
+> **Key qualifier — the divergence is estimator-contingent (also SOLID).** Re-running
+> the identical gate on Caliper's efficient MAF posterior (`experiments/maf_gate.py`)
+> **FAILS**: the MAF is already near-calibrated raw (cov ≈ 0.88), its corrected D\*
+> intervals are ~10× sharper (~47 vs ~300) and barely differ across schemes
+> (Δ\_sharp 0.33 → **0.04**, Δ\_cond 0.08 → **0.03**, both below threshold). So the
+> divergence is a property of the estimator×acquisition interaction — it matters for
+> the over-confident estimators that conformal correction targets (and that dominate
+> clinical IVIM), not for an efficient amortised posterior. (The reference still
+> PASSES under the same splits — cross-check.) Also: at high SNR the sharpness gap
+> shrinks while the conditional-coverage gap persists.
 
 ---
 
@@ -128,10 +136,11 @@ Vernier/
     schemes.py       b-value scheme registry + scan-time model + segmented-fit validation
     crlb.py          IVIM Fisher-information matrix + Cramér–Rao bounds (self-contained)
     feasibility.py   the CP2 gate: matched-CRLB selection, paired bootstrap, pre-registered verdict
+    gate.py          estimator-agnostic, heteroscedastic-aware gate (used for the MAF robustness check)
     decision.py      Experiment B decision-value via the Minos lens (PROVISIONAL)
-  experiments/       feasibility_gate.py (CP2), efficiency_frontier.py (CP3) — seeded runners
-  results/           feasibility_gate.{txt,json}, efficiency_frontier.{txt,json}
-  tests/             pytest sanity (22 cases): paths, scan-time, CRLB, gate, decision
+  experiments/       feasibility_gate.py (CP2), efficiency_frontier.py (CP3), maf_gate.py (estimator-contingency)
+  results/           feasibility_gate.*, efficiency_frontier.*, maf_gate.* (.txt + .json)
+  tests/             pytest sanity (24 cases): paths, scan-time, CRLB, gate, decision, MAF
   ASSUMPTIONS.md     SOLID (Caliper-only gate) vs PROVISIONAL (Fashion/Gauge/Minos) split
   PROMOTION.md       promotion path (on PASS) and fold path (on FAIL)
   README.md  LICENSE (MIT)  pyproject.toml

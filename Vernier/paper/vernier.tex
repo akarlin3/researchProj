@@ -69,10 +69,16 @@ spans $\numHiCovMin$--$\numHiCovMax$ ($\Delta_{\mathrm{cond}}=\numDeltaCond$, CI
 $[\numDeltaCondLo,\numDeltaCondHi]$), even though marginal coverage is held at
 $\approx\numPostCovHi$ for all of them. Both gaps clear pre-registered thresholds with
 bootstrap CIs excluding zero: \textbf{acquisition design moves the part of calibration
-conformal does not fix, at matched precision.} We are deliberately narrow: Vernier
-does \emph{not} claim to improve identifiability---a companion analysis\PROV{} shows
-the high-$\Dstar$ wall is acquisition-robust (CRLB-optimal design moved
-CRLB$(\Dstar)$/tercile-width only $\numGaugeWallHi\!\to\!\numGaugeWallLo$). The claim
+conformal does not fix, at matched precision.} The effect is \emph{estimator-contingent}:
+it is large for the over-confident segmented estimator that conformal correction targets
+but \emph{collapses} below threshold for an efficient amortised (MAF) posterior, which is
+already near-calibrated ($\Delta_{\mathrm{sharp}}\!:\numDeltaSharp\!\to\!\numMafDeltaSharp$,
+$\Delta_{\mathrm{cond}}\!:\numDeltaCond\!\to\!\numMafDeltaCond$); the divergence is a
+property of the estimator$\times$acquisition interaction, and matters precisely for the
+imperfect estimators that dominate clinical IVIM. We are deliberately narrow on a second
+axis too: Vernier does \emph{not} claim to improve identifiability---a companion
+analysis\PROV{} shows the high-$\Dstar$ wall is acquisition-robust (CRLB-optimal design
+moved CRLB$(\Dstar)$/tercile-width only $\numGaugeWallHi\!\to\!\numGaugeWallLo$). The claim
 lives on the calibration-and-decision axis.
 \end{abstract}
 
@@ -242,24 +248,51 @@ clinical 11-b acquisition captures most of the recoverable calibrated decision v
 beyond it, additional scan-minutes buy very little, and none of it closes the
 $\Dstar$ decision gap.
 
+\subsection{Robustness: the divergence is estimator-contingent}
+\label{sec:maf}
+
+The gate above used Caliper's deliberately over-confident segmented estimator. To test
+whether the divergence is a property of the \emph{acquisition} or of the \emph{estimator},
+we re-ran the identical gate---same matched schemes, train/cal/test splits, metrics, and
+paired bootstrap---on Caliper's efficient masked-autoregressive-flow (MAF) posterior, and
+on the reference estimator under those same splits. (Both estimators ship with the open
+Caliper toolkit, so this experiment is also SOLID.) Under matched splits the reference
+still PASSES ($\Delta_{\mathrm{sharp}}=\numRefSplitDeltaSharp$,
+$\Delta_{\mathrm{cond}}=\numRefSplitDeltaCond$). The MAF, by contrast, is already
+near-calibrated \emph{before} any correction (raw $\Dstar$ coverage $\approx\numMafRawCov$);
+its corrected $\Dstar$ intervals are an order of magnitude sharper
+($\approx\numMafWidthLo$--$\numMafWidthHi$ vs $\numWidthMin$--$\numWidthMax$); and,
+crucially, they barely differ across schemes: $\Delta_{\mathrm{sharp}}=\numMafDeltaSharp$
+(CI $[\numMafDeltaSharpLo,\numMafDeltaSharpHi]$) and $\Delta_{\mathrm{cond}}=\numMafDeltaCond$
+(CI $[\numMafDeltaCondLo,\numMafDeltaCondHi]$), both below the pre-registered thresholds:
+\textbf{\numMafVerdict}. The calibration divergence is therefore not a property of the
+acquisition alone but of the estimator$\times$acquisition interaction: it appears when the
+estimator's realised error is large and varies with sampling geometry---the over-confident
+regime conformal correction exists to repair---and vanishes for an efficient posterior whose
+error already tracks the CRLB.
+
 \section{Discussion}
 
 The feasibility result establishes a third axis for diffusion-MRI acquisition design,
 distinct from variance (CRLB) and information (BED/EIG): \emph{post-correction
-calibration}. At matched precision and matched scan-time, where the variance- and
-information-optimal objectives are by definition indifferent, schemes still differ
-substantially in the sharpness and conditional coverage of their conformally corrected
-$\Dstar$ intervals. Because marginal conformal correction equalises only marginal
-coverage, these differences are invisible to a marginal-coverage audit and to the CRLB,
-yet they are exactly what a downstream decision sees.
+calibration}---but, sharpened by \S\ref{sec:maf}, only for the over-confident estimators
+that conformal correction targets. At matched precision and matched scan-time, where the
+variance- and information-optimal objectives are by definition indifferent, schemes built
+on such an estimator still differ substantially in the sharpness and conditional coverage
+of their conformally corrected $\Dstar$ intervals. Because marginal conformal correction
+equalises only marginal coverage, these differences are invisible to a marginal-coverage
+audit and to the CRLB, yet they are exactly what a downstream decision sees.
 
 We are deliberately careful about what this does and does not show. \textbf{(1)} It is
 a calibration claim, not an identifiability claim: the companion wall result\PROV{}
 stands, and our own frontier confirms that acquisition does not make $\Dstar$ decisions
-beat the prior. \textbf{(2)} The divergence \emph{magnitude} is estimator-specific---we
-measured it on a segmented reference estimator whose realised $\Dstar$ error, being far
-from the CRLB, varies with sampling geometry; whether an efficient amortised posterior
-narrows the gap is the natural next experiment. \textbf{(3)} The sharpness gap is
+beat the prior. \textbf{(2)} The divergence is \emph{estimator-contingent}, not universal
+(\S\ref{sec:maf}): it is large for the over-confident segmented estimator but collapses
+below threshold for an efficient MAF posterior. We read this as localising the
+contribution rather than refuting it---acquisition-aware calibration matters exactly for
+the imperfect, over-confident estimators that dominate clinical IVIM and that motivate
+conformal correction in the first place, and is unnecessary when a well-calibrated
+amortised posterior is already available. \textbf{(3)} The sharpness gap is
 SNR-dependent (it shrinks at high SNR), whereas the conditional-coverage gap persists,
 so the latter is the more durable signal. \textbf{(4)} ``CI excludes zero'' is a weak
 bar for a non-negative range statistic; the substantive criterion is the pre-registered
@@ -267,15 +300,17 @@ bar for a non-negative range statistic; the substantive criterion is the pre-reg
 
 \section{Limitations and reproducibility}
 
-All data are synthetic and PHI-free. The feasibility gate (\S\ref{sec:gate}) is SOLID:
-it runs on the open Caliper toolkit alone and depends on no manuscript in review. The
+All data are synthetic and PHI-free. The feasibility gate (\S\ref{sec:gate}) and the
+estimator-contingency result (\S\ref{sec:maf}) are SOLID: both run on the open Caliper
+toolkit alone (the segmented and MAF estimators ship with it) and depend on no manuscript
+in review. The
 decision-value frontier (\S\ref{sec:frontier}) and the honest-scope wall statement are
 PROVISIONAL---they consume the in-review decision-calibration\PROV{} and conformal-coverage\PROV{}
 companions---and are re-validated by one command when those land
 (\texttt{../ASSUMPTIONS.md}, \texttt{../PROMOTION.md}). Every number above is emitted by
 \texttt{consistency.py} from the seeded result files
-(\texttt{results/feasibility\_gate.json}, \texttt{results/efficiency\_frontier.json});
-the manuscript contains no hand-entered figures.
+(\texttt{results/feasibility\_gate.json}, \texttt{results/efficiency\_frontier.json},
+\texttt{results/maf\_gate.json}); the manuscript contains no hand-entered figures.
 
 \begin{thebibliography}{99}
 \small

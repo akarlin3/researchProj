@@ -1,0 +1,220 @@
+{
+  "config": {
+    "n_noise": 200,
+    "seed": 20260620,
+    "run_flow": true,
+    "run_real": true,
+    "q_levels": [
+      0.025,
+      0.05,
+      0.1,
+      0.25,
+      0.5,
+      0.75,
+      0.9,
+      0.95,
+      0.975
+    ]
+  },
+  "targets": {
+    "T1_railing_real": {
+      "claimed": 0.547,
+      "band": [
+        0.49700000000000005,
+        0.5970000000000001
+      ],
+      "rebuilt": 0.5419254658385093,
+      "ci": [
+        0.5201733954451346,
+        0.5636645962732919
+      ],
+      "pass": true
+    },
+    "T3a_cov_dstar_laplace_sd": {
+      "claimed": 0.3,
+      "band": [
+        0.19999999999999998,
+        0.4
+      ],
+      "rebuilt": 0.8011111111111111,
+      "ci": [
+        0.7833333333333333,
+        0.8188888888888889
+      ],
+      "pass": false
+    },
+    "T3b_cov_dstar_mcmc_sd": {
+      "claimed": 0.67,
+      "band": [
+        0.5700000000000001,
+        0.77
+      ],
+      "rebuilt": 0.9044444444444445,
+      "ci": [
+        0.8905555555555555,
+        0.9172222222222223
+      ],
+      "pass": false
+    },
+    "T3c_cov_dstar_mcmc_quantile": {
+      "claimed": 0.94,
+      "band": [
+        0.8899999999999999,
+        0.99
+      ],
+      "rebuilt": 0.9011111111111111,
+      "ci": [
+        0.8866666666666667,
+        0.9138888888888889
+      ],
+      "pass": true
+    },
+    "T3c_cov_d_f_mcmc_quantile": {
+      "claimed": 0.94,
+      "band": [
+        0.8899999999999999,
+        0.99
+      ],
+      "rebuilt": {
+        "D": 0.9488888888888889,
+        "f": 0.9638888888888889
+      },
+      "pass": true
+    },
+    "T4_flow_beats_railed_nlls": {
+      "claimed": "directional",
+      "rebuilt": {
+        "ece_gap": 0.05208333333333333,
+        "sharp_gap": 0.06847966734041933,
+        "cov_gap": 0.2155555555555556
+      },
+      "pass": true
+    }
+  },
+  "synthetic": {
+    "mcmc_acceptance": [
+      0.27172291666666665,
+      0.27969166666666667,
+      0.23461916666666668
+    ],
+    "Dstar_railing_rate": 0.175,
+    "T3a_laplace_sd_Dstar": {
+      "coverage": 0.8011111111111111,
+      "ci": [
+        0.7833333333333333,
+        0.8188888888888889
+      ]
+    },
+    "T3b_mcmc_sd_Dstar": {
+      "coverage": 0.9044444444444445,
+      "ci": [
+        0.8905555555555555,
+        0.9172222222222223
+      ]
+    },
+    "T3c_mcmc_quantile_Dstar": {
+      "coverage": 0.9011111111111111,
+      "ci": [
+        0.8866666666666667,
+        0.9138888888888889
+      ]
+    },
+    "T3c_mcmc_quantile_D": {
+      "coverage": 0.9488888888888889,
+      "ci": [
+        0.9394305555555555,
+        0.9588888888888889
+      ]
+    },
+    "T3c_mcmc_quantile_f": {
+      "coverage": 0.9638888888888889,
+      "ci": [
+        0.9555555555555556,
+        0.9722222222222222
+      ]
+    },
+    "Dstar_cond_laplace": {
+      "0": 0.9116666666666666,
+      "1": 0.8583333333333333,
+      "2": 0.6333333333333333
+    },
+    "Dstar_cond_mcmc_sd": {
+      "0": 0.9516666666666667,
+      "1": 0.9533333333333334,
+      "2": 0.8083333333333333
+    },
+    "T4_flow_vs_railed_nlls": {
+      "flow": {
+        "coverage": 0.9788888888888889,
+        "ece": 0.06916666666666668,
+        "sharpness": 0.11232983626837309
+      },
+      "nlls_railed": {
+        "coverage": 0.7633333333333333,
+        "ece": 0.12125000000000001,
+        "sharpness": 0.18080950360879242
+      },
+      "gap_ece_nlls_minus_flow": {
+        "point": 0.05208333333333333,
+        "ci": [
+          0.035829861111111104,
+          0.07502430555555552
+        ]
+      },
+      "gap_sharp_nlls_minus_flow": {
+        "point": 0.06847966734041933,
+        "ci": [
+          0.059925271500420756,
+          0.07679992386929235
+        ]
+      },
+      "gap_cov_flow_minus_nlls": {
+        "point": 0.2155555555555556,
+        "ci": [
+          0.1972222222222223,
+          0.235
+        ]
+      }
+    }
+  },
+  "real": {
+    "provenance": {
+      "source": "OSIPI TF2.4 IVIM code collection",
+      "zenodo_record": "14605039",
+      "zenodo_url": "https://zenodo.org/records/14605039",
+      "license": "CC-BY-4.0 (OSIPI TF2.4 open data)",
+      "zip": "/Users/averykarlin/researchProj/.claude/worktrees/gnomon-standup/Gnomon/download/OSIPI_TF24_data_phantoms.zip",
+      "sha256": "2a53054d6e6e76335c9fcdae245e6003460db014e88147b6030d9de4dd650b3e",
+      "sha256_ok": true,
+      "note": "External CC-BY-4.0 data; fetched on demand, not redistributed in-tree."
+    },
+    "n_roi": 1932,
+    "rail_tol_1e-3": {
+      "rate": 0.5419254658385093,
+      "ci": [
+        0.5201733954451346,
+        0.5636645962732919
+      ]
+    },
+    "rail_tol_1e-3_snr25": {
+      "rate": 0.5869837296620776,
+      "n": 799
+    },
+    "rail_tol_1e-2": {
+      "rate": 0.5615942028985508,
+      "ci": [
+        0.5398550724637681,
+        0.5838509316770186
+      ]
+    },
+    "rail_tol_1e-2_snr25": {
+      "rate": 0.6120150187734669,
+      "n": 799
+    }
+  },
+  "verdict": "PARTIAL",
+  "divergence": [
+    "T3a_cov_dstar_laplace_sd",
+    "T3b_cov_dstar_mcmc_sd"
+  ]
+}

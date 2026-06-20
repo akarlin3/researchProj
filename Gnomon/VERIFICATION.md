@@ -37,12 +37,28 @@ Gate: **runs, self-consistent.**
 - [x] Every design choice documented inline + in `docs/METHODS.md` (b-schemes, NLLS
       box/init/railing, MCMC sampler spec, MAF training spec, OSIPI ROI selection).
 
-## CP3 — the reproduction gate  ⏳  (HARD HALT either way)
+## CP3 — the reproduction gate  ✅  → verdict: **PARTIAL** (HARD HALT)
 
-Gate: run the rebuild, compare to the frozen manifest with bootstrap CIs.
-→ **REPRODUCES** (proceed to CP4) or **DOES NOT REPRODUCE** (divergence report, stop).
+Ran `python -m gnomon.reproduce` (seed 20260620) → [`results/reproduction.json`](results/reproduction.json).
+Full verdict + divergence report: [`VERDICT.md`](VERDICT.md).
 
-## CP4 — package for the retool  ⏳  (reproduce branch only)
+- [x] **REPRODUCES (4/6):** T1 railing **54.2%** [52.0, 56.4] on real OSIPI (vs claimed
+      54.7%, sha256-verified); T3c quantile coverage (D\* 0.90, D 0.95, f 0.96); T4 flow
+      beats railed NLLS (ECE/sharpness/coverage gaps, CIs exclude 0).
+- [x] **DIVERGES (2/6):** T3a Laplace-SD D\* 0.80 (claimed 0.30) and T3b MCMC-SD D\* 0.90
+      (claimed 0.67) — the *severe marginal* Gaussian under-coverage.
+- [x] **Cause pinned, run not asserted** (`scripts/divergence_diagnostic.py`): (1) cohort
+      regime — under-coverage concentrates in the high-D\* tercile (0.63), diluted by a
+      prior-spanning cohort; (2) railed-voxel uncertainty convention — the honest CRLB
+      over-covers unidentified D\*, while Fashion's "overconfident" floored SD gives
+      pooled 0.68 (≈ the 0.67 claim). Both are under-documented in Fashion's prose.
 
-Clean implementation + complete methods + reproduced numbers handed to the Fashion
-retool; merge-back documented.
+**Halt:** verdict is PARTIAL, so Gnomon does not auto-proceed to CP4. The divergence
+changes how the numbers should be presented in the retool (re-frame marginal → conditional
+coverage; document the uncertainty convention). Awaiting direction.
+
+## CP4 — package for the retool  ⏸  (gated on the verdict)
+
+The clean implementation + complete methods + the *reproduced* results (T1/T3c/T4) are
+ready to hand to the retool; the *divergent* results (T3a/T3b) are documented with their
+cause in [`VERDICT.md`](VERDICT.md). Proceed only on a decision about the re-framing.

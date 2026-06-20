@@ -220,7 +220,7 @@ substrate is **Lattice** (read-only); **Caliper's ruler is off-limits as an impo
 
 - `gnomon/` — `manifest.py` (frozen targets + tolerances + provenance), `_paths.py` (read-only Lattice bootstrap; Caliper forbidden), and the rebuild modules `forward.py`, `cohort.py`, `nlls.py` (+railing), `bayes.py` (Laplace + MCMC), `flow.py` (MAF/NPE), `metrics.py` (independent coverage/ECE/sharpness), `bootstrap.py`, `osipi.py` (OSIPI download-on-demand), `reproduce.py` (CP3 verdict).
 - `docs/METHODS.md` — the complete methods write-up Fashion lacked (every completeness item). `ASSUMPTIONS.md` / `CLEANROOM.md` / `TARGETS.md` / `VERIFICATION.md`, `reproduce.sh`, `tests/` (CP1 gates: import, manifest consistency, clean-room boundary, clean IP).
-- **Status: CP1 (scaffold + frozen manifest) complete; CP2 (rebuild) and CP3 (verdict) pending. PROVISIONAL until the verdict.**
+- **Status: CP1–CP3 complete. Verdict (CP3): PARTIAL.** The NLLS railing rate reproduces on the real open data (**54.2%** [52.0, 56.4] vs claimed 54.7%), as do the quantile-interval fix and the flow-vs-railed-NLLS behavior; the *severe marginal* Gaussian under-coverages (claimed 0.30/0.67) do **not** — Gnomon gets 0.80/0.90, the gap tracing to an under-documented hard cohort + an "overconfident" railed-voxel SD convention (the failure reproduces *conditionally*, in the high-D\* tercile). The phenomenon is real; the headline marginal numbers are not regime/convention-robust. See [`Gnomon/VERDICT.md`](Gnomon/VERDICT.md). Feeds the Fashion retool; not a standalone paper.
 
 ### `Lattice/` — A UQ-calibration reference object (DRO) for IVIM
 

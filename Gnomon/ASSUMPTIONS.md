@@ -17,9 +17,9 @@ Machine-readable mirror of the targets: [`gnomon/manifest.py`](gnomon/manifest.p
 | **Clean-room boundary** (`_paths.py` lattice-only; Caliper forbidden; static tests) | No | **SOLID** |
 | **Targets manifest** (claimed numbers + frozen tolerances + provenance) | No — frozen before running | **SOLID (frozen)** |
 | **Completeness checklist** (the Huang-flagged items METHODS.md must cover) | No | **SOLID** |
-| **CP2 implementations** (forward/NLLS/Laplace/MCMC/MAF/metrics) | They *produce* the numbers | **PROVISIONAL until self-consistency gates pass** |
-| **Every reproduced number** (railing rate, coverages, ECE/sharpness gaps) | **Yes** | **PROVISIONAL until CP3** |
-| **The verdict** (REPRODUCES / DOES NOT REPRODUCE) | **Yes** | **PROVISIONAL until CP3** |
+| **CP2 implementations** (forward/NLLS/Laplace/MCMC/MAF/metrics) | They *produce* the numbers | **SOLID** — 16/16 self-consistency gates pass |
+| **Every reproduced number** (railing rate, coverages, ECE/sharpness gaps) | **Yes** | **RENDERED (CP3)** — in [`results/reproduction.json`](results/reproduction.json) |
+| **The verdict** (REPRODUCES / DOES NOT REPRODUCE) | **Yes** | **RENDERED (CP3): PARTIAL** — see [`VERDICT.md`](VERDICT.md) |
 | **Merge-back as Fashion's clean core** | Only on the REPRODUCES branch | **CONDITIONAL** |
 
 ## 1. Fashion — pinned inputs (the targets Gnomon must reproduce)

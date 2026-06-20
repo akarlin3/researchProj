@@ -1,0 +1,87 @@
+{
+ "dataset": {
+  "name": "OSIPI TF2.4 open data -- human-abdominal IVIM/DWI + synthetic DRO",
+  "primary_cohort": "in-vivo human ABDOMEN, Philips 3T multi-b DWI (sourced from the IVIMNET repository), N=1 subject",
+  "kind": "OPEN community-standard data; the human-abdominal scan is the cohort on which Fashion's 54.7% NLLS railing was first computed",
+  "code_repo": "https://github.com/OSIPI/TF2.4_IVIM-MRI_CodeCollection",
+  "code_repo_tag": "v0.1.0",
+  "code_license": "Apache-2.0",
+  "data_record_doi": "10.5281/zenodo.14605039",
+  "data_record_url": "https://zenodo.org/records/14605039",
+  "data_license": "CC-BY-4.0",
+  "abdomen_source_note": "Data/abdomen_readme.txt: 'Scanned on a Philips 3T system. Taken from https://github.com/oliverchampion/IVIMNET'",
+  "zip_name": "OSIPI_TF24_data_phantoms.zip",
+  "zip_md5": "e7b3fe1d811a7a45c5aaf6c604c82793",
+  "members_extracted": [
+   "Data/abdomen.nii.gz",
+   "Data/abdomen.bval",
+   "Data/abdomen_readme.txt",
+   "Data/mask_abdomen_homogeneous.nii.gz",
+   "Data/mask_full_temp.nii.gz",
+   "Utilities/DRO.npy"
+  ],
+  "forward_model": "bi-exponential S/S0 = (1-f)exp(-bD) + f exp(-bD*)",
+  "citation_data": "Gurney-Champion O, Rashid I, van der Thiel M, Kuppens D, Voorter P, van Houdt P, Peterson E, Jalnefjord O. Data to github.com/OSIPI/TF2.4_IVIM-MRI_CodeCollection. Zenodo; doi:10.5281/zenodo.14605039.",
+  "ip_posture": "OPEN/CLEAN. NOT pancData3, NOT MSK clinical data. download-on-demand; raw imaging NOT committed (data/ git-ignored).",
+  "fetched_utc": "2026-06-20T05:07:30.787064+00:00",
+  "abdomen_shape": [
+   144,
+   144,
+   21,
+   104
+  ],
+  "n_diffusion_volumes": 104,
+  "b_values_unique_s_per_mm2": [
+   0.0,
+   10.0,
+   20.0,
+   30.0,
+   40.0,
+   50.0,
+   75.0,
+   100.0,
+   150.0,
+   250.0,
+   400.0,
+   600.0
+  ],
+  "b_value_repeats": {
+   "0": 15,
+   "10": 9,
+   "20": 9,
+   "30": 9,
+   "40": 9,
+   "50": 9,
+   "75": 4,
+   "100": 12,
+   "150": 4,
+   "250": 4,
+   "400": 4,
+   "600": 16
+  },
+  "roi_voxel_counts": {
+   "mask_abdomen_homogeneous.nii.gz": 1932,
+   "mask_full_temp.nii.gz": 28053
+  },
+  "files": {
+   "abdomen.nii.gz": {
+    "sha256_16": "a7b281edc5356d62"
+   },
+   "abdomen.bval": {
+    "sha256_16": "3c7107ec6e76bb64"
+   },
+   "abdomen_readme.txt": {
+    "sha256_16": "36b9fc04a211bd2e"
+   },
+   "mask_abdomen_homogeneous.nii.gz": {
+    "sha256_16": "377b58b0d8a45226"
+   },
+   "mask_full_temp.nii.gz": {
+    "sha256_16": "723919fd566ca4b9"
+   },
+   "DRO.npy": {
+    "sha256_16": "9a93c9f3b6746329"
+   }
+  }
+ }
+}

@@ -97,10 +97,10 @@ Intravoxel incoherent motion imaging (1) separates tissue diffusion ($D$) from m
 pseudodiffusion (\Dstar{}) via a biexponential signal model, with perfusion fraction $f$.
 \Dstar{} is notoriously weakly identified: its contribution scales with $f$ (typically
 5--20\%) and degrades rapidly at clinical SNR (2--7). Consequently, any point estimate of
-\Dstar{} must be accompanied by an honest uncertainty estimate to be clinically usable ---
-yet the calibration of IVIM uncertainty has not been systematically established across
-estimation paradigms or the increasingly common deep-learning methods; recent work
-quantifying deep-learning IVIM uncertainty (18,19) does not address the cross-paradigm
+\Dstar{} must be accompanied by an honest uncertainty estimate to be clinically usable. Yet
+the calibration of IVIM uncertainty has not been systematically established across estimation
+paradigms or the increasingly common deep-learning methods, and recent work quantifying
+deep-learning IVIM uncertainty (18,19) does not address the cross-paradigm
 calibration-and-efficiency question posed here.
 
 Two gaps motivate this work. First, uncertainty can be constructed in many ways ---
@@ -412,14 +412,14 @@ verification, regardless of average coverage. The amortized posterior's tendency
 toward the prior under weak identifiability is a calibration failure that masquerades as
 confidence --- a particularly dangerous mode for \Dstar{}, already prone to
 over-interpretation. These findings are demonstrated for one trained NPE configuration --- a
-single prior and acquisition family, with the flow architecture varied as an ablation; a
+single prior and acquisition family, with the flow architecture varied as an ablation. A
 Masked Autoregressive Flow reproduced the same below-floor \Dstar{} overconfidence
 (Supplementary Figure S1), so the effect is not an artifact of the spline-flow architecture.
 The acquisition-shift result nonetheless shows the calibration is configuration-dependent, so
 whether the overconfidence generalizes across priors and acquisitions --- as opposed to
 across flow architectures, which it does --- remains open. Within that scope, the
 overconfidence reproduces in the signal domain, persists under model misspecification, and
-appears on an open in-vivo dataset; the amortized calibration does not transfer across
+appears on an open in-vivo dataset. The amortized calibration does not transfer across
 acquisition schemes (Figure~4), so any claim of acquisition-amortized uncertainty requires
 per-scheme validation.
 
@@ -484,11 +484,11 @@ evaluation. The efficiency floor is the analytical Gaussian (Fisher-information)
 local approximation and is least tight precisely where the \Dstar{} posterior is most skewed
 --- at low SNR under weak identifiability, where our central claims sit. The direction of this
 error is favourable to the conclusion: where the posterior is skewed the achievable variance
-generally exceeds the Gaussian CRLB, so the true floor lies above the value we plot, and the
+generally exceeds the Gaussian CRLB, so the true floor lies above the value we plot. The
 estimator's claimed SD is then even further below the true floor. A sampling-based bound
 confirms this directly: on the low-SNR subset (SNR 10--20), where the central \Dstar{} claims
 sit, replacing the Gaussian floor with a Rician-exact Fisher floor leaves the below-floor
-fraction essentially unchanged (81.4\% versus 81.2\%), so the over-confidence is not an
+fraction essentially unchanged (81.4\% versus 81.2\%). The over-confidence is therefore not an
 artifact of the Gaussian noise-model approximation. All code, the calibration grid, and the
 efficiency map are released openly as a reproducibility module, and offered to the OSIPI
 initiative, for benchmarking future methods.

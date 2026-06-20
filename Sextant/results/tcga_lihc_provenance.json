@@ -1,0 +1,100 @@
+{
+ "dataset": {
+  "name": "TCGA-LIHC liver DWI -- independent human-abdominal replication",
+  "collection": "TCGA-LIHC",
+  "source": "TCIA / NBIA",
+  "doi": "10.7937/K9/TCIA.2016.IMMQW8UQ",
+  "license": "CC BY 3.0",
+  "citation": "Erickson, B. J., Kirk, S., Lee, Y., Bathe, O., Kearns, M., Gerdes, C., Rieger-Christ, K., & Lemmerman, J. (2016). The Cancer Genome Atlas Liver Hepatocellular Carcinoma Collection (TCGA-LIHC) [Data set]. The Cancer Imaging Archive. https://doi.org/10.7937/K9/TCIA.2016.IMMQW8UQ",
+  "modality": "MR DWI (real in-vivo, LIVER); human abdominal",
+  "manufacturer_note": "Siemens (b-value encoded in SequenceName *ep_b<NN>t)",
+  "ground_truth_ivim": false,
+  "ip_posture": "OPEN/CLEAN. NOT pancreatic, NOT MSK. download-on-demand; assembled arrays NOT committed (data/ git-ignored).",
+  "nbia_api": "https://services.cancerimagingarchive.net/nbia-api/services/v1",
+  "fetched_utc": "2026-06-20T05:26:06.808270+00:00",
+  "n_series": 4,
+  "series": [
+   {
+    "scheme": "liver_4b_0_50_500_800",
+    "patient": "TCGA-DD-A4NF",
+    "series_uid": "1.3.6.1.4.1.14519.5.2.1.3344.4008.574306575231703947657068631020",
+    "series_description": "liver_diff ax 0-50-500-800",
+    "study_date": "2004-02-24 00:00:00.0",
+    "bvals": [
+     0.0,
+     50.0,
+     500.0,
+     800.0
+    ],
+    "shape": [
+     208,
+     256,
+     18,
+     4
+    ],
+    "sha256_16": "66f579cd44d88c75",
+    "npz": "data/tcga_lihc/liver_4b_0_50_500_800__TCGA-DD-A4NF.npz"
+   },
+   {
+    "scheme": "liver_3b_50_400_800",
+    "patient": "TCGA-BC-A112",
+    "series_uid": "1.3.6.1.4.1.14519.5.2.1.8421.4008.235944337337681216262302155168",
+    "series_description": "ep2d_diff_b50_400_800",
+    "study_date": "1999-09-10 00:00:00.0",
+    "bvals": [
+     50.0,
+     400.0,
+     800.0
+    ],
+    "shape": [
+     156,
+     192,
+     35,
+     3
+    ],
+    "sha256_16": "23d2dd83fffbbd77",
+    "npz": "data/tcga_lihc/liver_3b_50_400_800__TCGA-BC-A112.npz"
+   },
+   {
+    "scheme": "liver_3b_50_400_800",
+    "patient": "TCGA-DD-A4NH",
+    "series_uid": "1.3.6.1.4.1.14519.5.2.1.3344.4008.292406158553680634331895885264",
+    "series_description": "ep2d_diff_b50_400_800 FREE BREATHE",
+    "study_date": "2004-06-13 00:00:00.0",
+    "bvals": [
+     50.0,
+     400.0,
+     800.0
+    ],
+    "shape": [
+     156,
+     192,
+     36,
+     3
+    ],
+    "sha256_16": "f65a774e2f0cdded",
+    "npz": "data/tcga_lihc/liver_3b_50_400_800__TCGA-DD-A4NH.npz"
+   },
+   {
+    "scheme": "liver_3b_50_400_800",
+    "patient": "TCGA-DD-A4NJ",
+    "series_uid": "1.3.6.1.4.1.14519.5.2.1.3344.4008.315096169381780626293781722206",
+    "series_description": "ep2d_diff_b50_400_800 FREE BREATHE",
+    "study_date": "2004-03-30 00:00:00.0",
+    "bvals": [
+     50.0,
+     400.0,
+     800.0
+    ],
+    "shape": [
+     156,
+     192,
+     34,
+     3
+    ],
+    "sha256_16": "f09941c0c5bbd5bd",
+    "npz": "data/tcga_lihc/liver_3b_50_400_800__TCGA-DD-A4NJ.npz"
+   }
+  ]
+ }
+}

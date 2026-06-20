@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sextant-core"
+version = "0.1.0"
+description = "Boundary-railing of conventional NLLS IVIM fits: an assumption-free optimizer fact, re-centred from Fashion's calibration diagnostic and replicated on open human-abdominal DWI."
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.23",
+    "scipy>=1.9",
+    "nibabel>=5.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sextant*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "data: tests that require the OSIPI download (skipped if data/ is absent)",
+]

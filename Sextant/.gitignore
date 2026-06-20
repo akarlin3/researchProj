@@ -1,0 +1,28 @@
+# Downloaded imaging data — download-on-demand, never committed (provenance
+# manifest results/osipi_provenance.json IS committed; the raw arrays are not).
+data/
+
+# Imaging / array formats (belt-and-suspenders alongside data/)
+*.nii
+*.nii.gz
+*.dcm
+*.npy
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# LaTeX build artefacts (paper/sextant.pdf IS committed; intermediates are not)
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+
+# OS
+.DS_Store

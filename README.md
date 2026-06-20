@@ -23,6 +23,7 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
   - [`Proteus/` — Structure-first mining of the dark proteome](#proteus--structure-first-mining-of-the-dark-proteome)
+  - [`Sextant/` — Boundary-railing as the primary, assumption-free IVIM diagnostic](#sextant--boundary-railing-as-the-primary-assumption-free-ivim-diagnostic)
   - [`Vernier/` — Calibration-aware acquisition design (feasibility gate)](#vernier--calibration-aware-acquisition-design-feasibility-gate)
 - [How the IVIM projects fit together](#how-the-ivim-projects-fit-together)
 - [Provenance](#provenance)
@@ -43,6 +44,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
+| [`Sextant/`](Sextant/) | *(re-aim of Fashion)* Boundary-railing of conventional NLLS IVIM fits — an assumption-free optimizer fact promoted to the primary claim, replicated on open human-abdominal DWI; the calibration ruler demoted to scoped secondary | IVIM diffusion-MRI — answering the "overextended claims" critique |
 | [`Vernier/`](Vernier/) | *Vernier: calibration-aware acquisition design for IVIM diffusion MRI* (feasibility gate PASSED; manuscript built, `paper/vernier.pdf`) — at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
 
 Each subdirectory's own `README.md` and `CITATION.cff` are authoritative for
@@ -330,6 +332,40 @@ The Zenodo badge above archives Proteus's code and intermediate-data snapshots
 - `analysis/` — powered-floor, TOST/non-superiority, bits-gradient, and pLDDT-confound scripts. `gce/` — the CPU ESMFold burst scaffold.
 - `tests/`, `envlog/`, `proteus_manuscript_gigascience.tex` (legacy filename; current target PLOS), `REVISION_NOTES.md`.
 
+### `Sextant/` — Boundary-railing as the primary, assumption-free IVIM diagnostic
+
+*Status: a **re-aim of Fashion**, not a new dataset. CP0–CP4 complete; the
+manuscript is built (`Sextant/paper/sextant.pdf`). The independent TCGA-LIHC liver
+replication is done (CC BY 3.0, signed off). Default merge-back target: this
+becomes retooled Fashion's new spine.*
+
+Sextant answers the reviewer critique that Fashion's calibration contribution is
+*overextended* by promoting a result that **cannot** be overextended because it
+assumes nothing: in an open human-abdominal IVIM acquisition, a large fraction of
+conventional NLLS pseudo-diffusion (D\*) fits **rail to a parameter bound**. This
+is a fact about the optimizer and the data — no ground truth, no noise-model trust
+argument — so it directly defuses the "overextended" objection. The calibration
+**ruler** (coverage/ECE/sharpness) is kept but demoted to a **scoped secondary**
+section, explicitly limited to data with ground truth (it cannot be applied to the
+real scan — which is the argument for leading with railing).
+
+Headline (seed 20260613, 5000-bootstrap): railing reproduces Fashion's **54.7%**
+on the original ROI (95% CI [52.2, 57.1], n=1618), **generalises** to the full
+abdomen ROI at **47.8%** ([47.1, 48.5], n=19652), and **replicates on an
+independent liver cohort** (TCGA-LIHC, Siemens 1.5T): **43.7%** at the clean 4-b
+scheme and **73.5%** across 3 subjects at a sparse 3-b scheme. It survives generous
+*wide* bounds (32% / 27% / 15%, so not a tight-bounds artefact) and is dominated by
+the upper-bound high-D\* identifiability wall — the same wall Gauge found and that
+Casali's learned method (in-vivo mouse-brain) reports as residual D\*
+overconfidence. The boundary-railing computation is **reused read-only** from
+Fashion (`fashion_reuse` via AST extraction); the new empirical content is the
+bootstrap CIs, the SNR/rail-direction characterisation, the full-abdomen
+generalisation, and the independent liver-DWI replication.
+
+- `sextant-core/` — package (flat layout, own `pyproject.toml`): `fashion_reuse.py` (read-only Fashion railing/ruler loaders), `railing.py` (primary diagnostic + SNR strata), `bootstrap.py` (voxel CIs), `ruler.py` (scoped secondary), `cohorts.py`, `seeding.py`; `tests/` (16 cases).
+- `scripts/` — `fetch_osipi.py` (download-on-demand OSIPI human-abdominal data, CC-BY-4.0, MD5-verified, provenance manifest committed), `run_railing.py` (seeded driver). `results/` — provenance + `railing_results.json` + `RESULTS_CP2/3.md`.
+- `paper/` — `sextant.tex` (`ebgaramond`+`microtype`) + `consistency.py`. `VERIFICATION.md`, `ASSUMPTIONS.md`, `_paths.py`, `reproduce.sh` (one-command).
+
 ### `Vernier/` — Calibration-aware acquisition design (feasibility gate)
 
 *Status: feasibility gate **PASSED** (CP2, 2026-06-19) — Vernier is a standalone paper;
@@ -361,7 +397,7 @@ downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
 
 ## How the IVIM projects fit together
 
-Eight folders form one IVIM diffusion-MRI uncertainty program:
+Nine folders form one IVIM diffusion-MRI uncertainty program:
 
 - **Fashion** establishes *which* uncertainty paradigms actually cover D\* and pins Gaussian error bars as the culprit.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
@@ -370,6 +406,7 @@ Eight folders form one IVIM diffusion-MRI uncertainty program:
 - **Datum** is the benchmark layer: it freezes that ruler into a fixed task with curated baselines and a submission interface, scored over **Lattice's** cohorts (with an OSIPI DRO as external validation), so any IVIM uncertainty method can be ranked on one standard (reference numbers PROVISIONAL until Fashion's ruler locks).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
 - **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. A feasibility question under test: it either becomes a standalone paper or folds into Minos.
+- **Sextant** re-aims **Fashion** to answer the "overextended claims" critique: it promotes the assumption-free fact that conventional NLLS D\* fits *rail to a bound* on open human-abdominal data to the primary claim, demotes the calibration ruler to a scoped secondary, and replicates the railing across the full OSIPI abdomen and an independent TCGA-LIHC liver cohort. It reuses Fashion's railing computation read-only and, by default, feeds the retooled Fashion spine rather than splitting off (no salami).
 - **Lethe** (the *Echo* portion; speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos.
 
 ## Provenance
@@ -383,6 +420,7 @@ Each project was imported into the monorepo with its own history preserved:
 | `Minos/` | projMinos | full history |
 | `Ouroboros/` | projOuroboros | full history |
 | `Proteus/` | projProteus | full history |
+| `Sextant/` | created in-repo (re-aim of Fashion; clean synthetic-analysis history, no patient data in tree or history) | n/a |
 | `Anneal/` | annealMusic (science subtree split) | full history |
 | `Caliper/` | created in-repo | n/a |
 | `Datum/` | created in-repo (clean synthetic-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |

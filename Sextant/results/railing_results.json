@@ -1,0 +1,548 @@
+{
+ "meta": {
+  "seed": 20260613,
+  "n_boot": 5000,
+  "generated_utc": "2026-06-20T06:22:37.701715+00:00",
+  "fashion_reported_homogeneous": 0.547,
+  "fashion_reported_n_high_snr": 1618,
+  "registered_thresholds": {
+   "point_min": 0.3,
+   "ci_lo_min": 0.2,
+   "strong_band": [
+    0.4,
+    0.7
+   ]
+  }
+ },
+ "cohorts": [
+  {
+   "name": "abdomen_homogeneous",
+   "family": "OSIPI",
+   "bvals": [
+    0.0,
+    10.0,
+    20.0,
+    30.0,
+    50.0,
+    75.0,
+    100.0,
+    150.0,
+    400.0,
+    600.0
+   ],
+   "n_voxels": 1932,
+   "n_high_snr": 1618,
+   "n_analyzed": 1618,
+   "subsampled": false,
+   "tight": {
+    "cohort": "abdomen_homogeneous",
+    "n_voxels": 1932,
+    "n_high_snr": 1618,
+    "snr_floor": 8.0,
+    "bounds": "tight",
+    "lower_rail": 0.0033,
+    "upper_rail": 0.1485,
+    "frac_railed": 0.5469715698393078,
+    "frac_lower": 0.1557478368355995,
+    "frac_upper": 0.3912237330037083,
+    "n_railed": 885,
+    "by_snr": [
+     {
+      "lo": 8.0,
+      "hi": 15.0,
+      "n": 633,
+      "frac_railed": 0.5418641390205371,
+      "frac_lower": 0.01263823064770932,
+      "frac_upper": 0.5292259083728278
+     },
+     {
+      "lo": 15.0,
+      "hi": 30.0,
+      "n": 930,
+      "frac_railed": 0.5311827956989247,
+      "frac_lower": 0.22365591397849463,
+      "frac_upper": 0.30752688172043013
+     },
+     {
+      "lo": 30.0,
+      "hi": 60.0,
+      "n": 55,
+      "frac_railed": 0.8727272727272727,
+      "frac_lower": 0.6545454545454545,
+      "frac_upper": 0.21818181818181817
+     },
+     {
+      "lo": 60.0,
+      "hi": null,
+      "n": 0,
+      "frac_railed": null,
+      "frac_lower": null,
+      "frac_upper": null
+     }
+    ],
+    "n_analyzed": 1618,
+    "subsampled": false
+   },
+   "wide": {
+    "cohort": "abdomen_homogeneous",
+    "n_voxels": 1932,
+    "n_high_snr": 1618,
+    "snr_floor": 8.0,
+    "bounds": "wide",
+    "lower_rail": 0.001499,
+    "upper_rail": 0.499501,
+    "frac_railed": 0.32138442521631644,
+    "frac_lower": 0.07478368355995056,
+    "frac_upper": 0.2466007416563659,
+    "n_railed": 520,
+    "by_snr": [
+     {
+      "lo": 8.0,
+      "hi": 15.0,
+      "n": 633,
+      "frac_railed": 0.3712480252764613,
+      "frac_lower": 0.001579778830963665,
+      "frac_upper": 0.3696682464454976
+     },
+     {
+      "lo": 15.0,
+      "hi": 30.0,
+      "n": 930,
+      "frac_railed": 0.2752688172043011,
+      "frac_lower": 0.1053763440860215,
+      "frac_upper": 0.16989247311827957
+     },
+     {
+      "lo": 30.0,
+      "hi": 60.0,
+      "n": 55,
+      "frac_railed": 0.5272727272727272,
+      "frac_lower": 0.4,
+      "frac_upper": 0.12727272727272726
+     },
+     {
+      "lo": 60.0,
+      "hi": null,
+      "n": 0,
+      "frac_railed": null,
+      "frac_lower": null,
+      "frac_upper": null
+     }
+    ],
+    "n_analyzed": 1618,
+    "subsampled": false
+   },
+   "bootstrap_ci": {
+    "point": 0.5469715698393078,
+    "lo": 0.5222496909765142,
+    "hi": 0.5710754017305315,
+    "level": 0.95,
+    "n_boot": 5000,
+    "seed": 20260613
+   },
+   "verdict": {
+    "label": "REPLICATES-STRONG",
+    "replicates": true,
+    "strong": true,
+    "thresholds": {
+     "point_min": 0.3,
+     "ci_lo_min": 0.2,
+     "strong_band": [
+      0.4,
+      0.7
+     ]
+    }
+   },
+   "mask": "mask_abdomen_homogeneous.nii.gz"
+  },
+  {
+   "name": "abdomen_full",
+   "family": "OSIPI",
+   "bvals": [
+    0.0,
+    10.0,
+    20.0,
+    30.0,
+    50.0,
+    75.0,
+    100.0,
+    150.0,
+    400.0,
+    600.0
+   ],
+   "n_voxels": 28053,
+   "n_high_snr": 19652,
+   "n_analyzed": 19652,
+   "subsampled": false,
+   "tight": {
+    "cohort": "abdomen_full",
+    "n_voxels": 28053,
+    "n_high_snr": 19652,
+    "snr_floor": 8.0,
+    "bounds": "tight",
+    "lower_rail": 0.0033,
+    "upper_rail": 0.1485,
+    "frac_railed": 0.4780683899857521,
+    "frac_lower": 0.04574598005292082,
+    "frac_upper": 0.4323224099328313,
+    "n_railed": 9395,
+    "by_snr": [
+     {
+      "lo": 8.0,
+      "hi": 15.0,
+      "n": 13782,
+      "frac_railed": 0.49985488318096066,
+      "frac_lower": 0.034392686112320416,
+      "frac_upper": 0.4654621970686403
+     },
+     {
+      "lo": 15.0,
+      "hi": 30.0,
+      "n": 5789,
+      "frac_railed": 0.42477111763689757,
+      "frac_lower": 0.07220590775608914,
+      "frac_upper": 0.3525652098808084
+     },
+     {
+      "lo": 30.0,
+      "hi": 60.0,
+      "n": 81,
+      "frac_railed": 0.5802469135802469,
+      "frac_lower": 0.08641975308641975,
+      "frac_upper": 0.49382716049382713
+     },
+     {
+      "lo": 60.0,
+      "hi": null,
+      "n": 0,
+      "frac_railed": null,
+      "frac_lower": null,
+      "frac_upper": null
+     }
+    ],
+    "n_analyzed": 19652,
+    "subsampled": false
+   },
+   "wide": {
+    "cohort": "abdomen_full",
+    "n_voxels": 28053,
+    "n_high_snr": 19652,
+    "snr_floor": 8.0,
+    "bounds": "wide",
+    "lower_rail": 0.001499,
+    "upper_rail": 0.499501,
+    "frac_railed": 0.2743232240993283,
+    "frac_lower": 0.020812131080806026,
+    "frac_upper": 0.2535110930185223,
+    "n_railed": 5391,
+    "by_snr": [
+     {
+      "lo": 8.0,
+      "hi": 15.0,
+      "n": 13782,
+      "frac_railed": 0.29212015672616454,
+      "frac_lower": 0.014584240313452328,
+      "frac_upper": 0.27753591641271225
+     },
+     {
+      "lo": 15.0,
+      "hi": 30.0,
+      "n": 5789,
+      "frac_railed": 0.2316462256002764,
+      "frac_lower": 0.03541198825358438,
+      "frac_upper": 0.19623423734669201
+     },
+     {
+      "lo": 30.0,
+      "hi": 60.0,
+      "n": 81,
+      "frac_railed": 0.2962962962962963,
+      "frac_lower": 0.037037037037037035,
+      "frac_upper": 0.25925925925925924
+     },
+     {
+      "lo": 60.0,
+      "hi": null,
+      "n": 0,
+      "frac_railed": null,
+      "frac_lower": null,
+      "frac_upper": null
+     }
+    ],
+    "n_analyzed": 19652,
+    "subsampled": false
+   },
+   "bootstrap_ci": {
+    "point": 0.4780683899857521,
+    "lo": 0.4710462039487075,
+    "hi": 0.4851414614288622,
+    "level": 0.95,
+    "n_boot": 5000,
+    "seed": 20260613
+   },
+   "verdict": {
+    "label": "REPLICATES-STRONG",
+    "replicates": true,
+    "strong": true,
+    "thresholds": {
+     "point_min": 0.3,
+     "ci_lo_min": 0.2,
+     "strong_band": [
+      0.4,
+      0.7
+     ]
+    }
+   },
+   "mask": "mask_full_temp.nii.gz"
+  },
+  {
+   "name": "lihc_liver_3b_50_400_800",
+   "family": "TCGA-LIHC",
+   "bvals": [
+    50.0,
+    400.0,
+    800.0
+   ],
+   "n_voxels": 2970626,
+   "n_high_snr": 1544999,
+   "n_analyzed": 40000,
+   "subsampled": true,
+   "tight": {
+    "cohort": "lihc_liver_3b_50_400_800",
+    "n_voxels": 2970626,
+    "n_high_snr": 1544999,
+    "snr_floor": 8.0,
+    "bounds": "tight",
+    "lower_rail": 0.0033,
+    "upper_rail": 0.1485,
+    "frac_railed": 0.734475,
+    "frac_lower": 0.7252,
+    "frac_upper": 0.009275,
+    "n_railed": 29379,
+    "by_snr": [
+     {
+      "lo": 8.0,
+      "hi": 15.0,
+      "n": 19827,
+      "frac_railed": 0.7103949160236042,
+      "frac_lower": 0.7011146416502749,
+      "frac_upper": 0.009280274373329298
+     },
+     {
+      "lo": 15.0,
+      "hi": 30.0,
+      "n": 12249,
+      "frac_railed": 0.7219364846109887,
+      "frac_lower": 0.7125479630990285,
+      "frac_upper": 0.00938852151196016
+     },
+     {
+      "lo": 30.0,
+      "hi": 60.0,
+      "n": 5481,
+      "frac_railed": 0.7905491698595147,
+      "frac_lower": 0.7847108191935778,
+      "frac_upper": 0.0058383506659368724
+     },
+     {
+      "lo": 60.0,
+      "hi": null,
+      "n": 2443,
+      "frac_railed": 0.866966844044208,
+      "frac_lower": 0.8505935325419566,
+      "frac_upper": 0.01637331150225133
+     }
+    ],
+    "n_analyzed": 40000,
+    "subsampled": true
+   },
+   "wide": null,
+   "bootstrap_ci": {
+    "point": 0.734475,
+    "lo": 0.7302,
+    "hi": 0.73875,
+    "level": 0.95,
+    "n_boot": 5000,
+    "seed": 20260613
+   },
+   "verdict": {
+    "label": "REPLICATES",
+    "replicates": true,
+    "strong": false,
+    "thresholds": {
+     "point_min": 0.3,
+     "ci_lo_min": 0.2,
+     "strong_band": [
+      0.4,
+      0.7
+     ]
+    }
+   },
+   "n_subjects": 3,
+   "per_subject": [
+    {
+     "patient": "TCGA-BC-A112",
+     "n_high_snr": 344203,
+     "n_analyzed": 8000,
+     "frac_railed": 0.659125
+    },
+    {
+     "patient": "TCGA-DD-A4NH",
+     "n_high_snr": 554756,
+     "n_analyzed": 8000,
+     "frac_railed": 0.744125
+    },
+    {
+     "patient": "TCGA-DD-A4NJ",
+     "n_high_snr": 646040,
+     "n_analyzed": 8000,
+     "frac_railed": 0.752125
+    }
+   ],
+   "note": "3-b scheme, lowest b=50 (no b=0; normalised by b=50 -- approximate)"
+  },
+  {
+   "name": "lihc_liver_4b_0_50_500_800",
+   "family": "TCGA-LIHC",
+   "bvals": [
+    0.0,
+    50.0,
+    500.0,
+    800.0
+   ],
+   "n_voxels": 954720,
+   "n_high_snr": 648265,
+   "n_analyzed": 40000,
+   "subsampled": true,
+   "tight": {
+    "cohort": "lihc_liver_4b_0_50_500_800",
+    "n_voxels": 954720,
+    "n_high_snr": 648265,
+    "snr_floor": 8.0,
+    "bounds": "tight",
+    "lower_rail": 0.0033,
+    "upper_rail": 0.1485,
+    "frac_railed": 0.43695,
+    "frac_lower": 0.1654,
+    "frac_upper": 0.27155,
+    "n_railed": 17478,
+    "by_snr": [
+     {
+      "lo": 8.0,
+      "hi": 15.0,
+      "n": 14299,
+      "frac_railed": 0.46206028393593956,
+      "frac_lower": 0.21400097908944682,
+      "frac_upper": 0.24805930484649277
+     },
+     {
+      "lo": 15.0,
+      "hi": 30.0,
+      "n": 15660,
+      "frac_railed": 0.42094508301404854,
+      "frac_lower": 0.14572158365261814,
+      "frac_upper": 0.27522349936143037
+     },
+     {
+      "lo": 30.0,
+      "hi": 60.0,
+      "n": 7800,
+      "frac_railed": 0.4285897435897436,
+      "frac_lower": 0.11743589743589744,
+      "frac_upper": 0.31115384615384617
+     },
+     {
+      "lo": 60.0,
+      "hi": null,
+      "n": 2241,
+      "frac_railed": 0.41767068273092367,
+      "frac_lower": 0.15975011155734048,
+      "frac_upper": 0.25792057117358325
+     }
+    ],
+    "n_analyzed": 40000,
+    "subsampled": true
+   },
+   "wide": {
+    "cohort": "lihc_liver_4b_0_50_500_800",
+    "n_voxels": 954720,
+    "n_high_snr": 648265,
+    "snr_floor": 8.0,
+    "bounds": "wide",
+    "lower_rail": 0.001499,
+    "upper_rail": 0.499501,
+    "frac_railed": 0.15155,
+    "frac_lower": 0.121325,
+    "frac_upper": 0.030225,
+    "n_railed": 6062,
+    "by_snr": [
+     {
+      "lo": 8.0,
+      "hi": 15.0,
+      "n": 14299,
+      "frac_railed": 0.19176166165466116,
+      "frac_lower": 0.16231904328974053,
+      "frac_upper": 0.029442618364920625
+     },
+     {
+      "lo": 15.0,
+      "hi": 30.0,
+      "n": 15660,
+      "frac_railed": 0.12496807151979565,
+      "frac_lower": 0.09725415070242656,
+      "frac_upper": 0.027713920817369092
+     },
+     {
+      "lo": 30.0,
+      "hi": 60.0,
+      "n": 7800,
+      "frac_railed": 0.1280769230769231,
+      "frac_lower": 0.09012820512820513,
+      "frac_upper": 0.03794871794871795
+     },
+     {
+      "lo": 60.0,
+      "hi": null,
+      "n": 2241,
+      "frac_railed": 0.16242748772869256,
+      "frac_lower": 0.13654618473895583,
+      "frac_upper": 0.025881302989736725
+     }
+    ],
+    "n_analyzed": 40000,
+    "subsampled": true
+   },
+   "bootstrap_ci": {
+    "point": 0.43695,
+    "lo": 0.432125,
+    "hi": 0.441850625,
+    "level": 0.95,
+    "n_boot": 5000,
+    "seed": 20260613
+   },
+   "verdict": {
+    "label": "REPLICATES-STRONG",
+    "replicates": true,
+    "strong": true,
+    "thresholds": {
+     "point_min": 0.3,
+     "ci_lo_min": 0.2,
+     "strong_band": [
+      0.4,
+      0.7
+     ]
+    }
+   },
+   "n_subjects": 1,
+   "per_subject": [
+    {
+     "patient": "TCGA-DD-A4NF",
+     "n_high_snr": 648265,
+     "n_analyzed": 8000,
+     "frac_railed": 0.432875
+    }
+   ],
+   "note": "4-b scheme includes b=0 (clean IVIM normalisation)"
+  }
+ ]
+}

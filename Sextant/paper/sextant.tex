@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ebgaramond}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=teal,citecolor=teal,urlcolor=teal]{hyperref}
+
+\input{numbers.tex}
+\emergencystretch=2em   % avoid overfull boxes with ebgaramond justification
+
+\title{\textbf{Sextant: boundary-railing of conventional NLLS IVIM fits as an
+assumption-free diagnostic}\\[2pt]
+\large A bound-pinned pseudo-diffusion failure mode, re-centred from a calibration
+ruler and replicated on open human-abdominal diffusion MRI}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Reported uncertainty in intravoxel incoherent motion (IVIM) imaging has been
+critiqued as \emph{overextended}: a coverage or calibration statement is only as
+trustworthy as the noise and forward model that generated its reference truth. We
+answer that critique not by defending the calibration argument but by promoting a
+result that \emph{cannot} be overextended because it assumes nothing. In a
+conventional bounded non-linear least-squares (NLLS) bi-exponential IVIM fit, the
+pseudo-diffusion coefficient $D^{*}$ is so weakly identified that the optimiser
+frequently terminates \emph{on} a parameter bound. On an open human-abdominal
+acquisition, \HomoFrac\% of high-SNR voxels (n${=}$\HomoN) have a bound-railed NLLS
+$D^{*}$ (95\% bootstrap CI [\HomoCIlo, \HomoCIhi]), reproducing a previously
+reported figure; across the full abdominal ROI the rate is \FullFrac\%
+([\FullCIlo, \FullCIhi], n${=}$\FullN). It survives deliberately generous bounds
+(\HomoWide\% / \FullWide\%), persists across SNR, and replicates on an independent
+liver-DWI cohort (TCGA-LIHC, \lihcLicense): \LihcFourFrac\% at the clean 4-b scheme
+and \LihcThreeFrac\% across \LihcThreeSubj{} subjects at a sparse 3-b scheme.
+Railing is a fact about the optimiser and the data --- no ground truth, no
+noise-model trust --- and so is immune to the overextension objection. The
+calibration ruler is retained but demoted to a scoped secondary diagnostic,
+explicitly limited to data with ground truth.
+\end{abstract}
+
+\section{Introduction}
+The clinically load-bearing question in quantitative diffusion MRI is not how
+accurate a point estimate is, but whether a reported \emph{error bar} can be
+believed. A natural way to answer it is a calibration ruler --- coverage, expected
+calibration error, sharpness at fixed nominal levels --- that scores whether a
+method's stated uncertainty is honest. The objection a sceptical reviewer raises
+is that such a ruler is itself \emph{overextended}: empirical coverage is computed
+against a reference truth simulated under an assumed noise and forward model, so a
+coverage claim inherits exactly the trust it was supposed to certify.
+
+This paper takes the objection seriously and re-aims the contribution. We promote
+to the primary claim a phenomenon that requires no calibration trust at all:
+\textbf{boundary-railing} of the conventional NLLS IVIM fit. Because railing is
+read directly off the optimiser's output, it carries no calibration assumption and
+therefore cannot be overextended. The calibration ruler is not discarded --- it is
+kept as a clearly scoped \emph{secondary} diagnostic (Section~\ref{sec:ruler}).
+
+\section{Boundary-railing}
+The bi-exponential IVIM model is
+\[
+S(b)/S_0 = (1-f)\,e^{-bD} + f\,e^{-bD^{*}},
+\]
+fit per voxel by bounded NLLS over $(D, D^{*}, f)$. The pseudo-diffusion term
+$D^{*}$ governs the fast perfusion decay seen only at low $b$; it is the
+ill-conditioned parameter. When the likelihood is flat in $D^{*}$, a
+trust-region optimiser does not find an interior optimum --- it slides to a box
+constraint and stops. We call a voxel \emph{railed} if its NLLS $D^{*}$ lands
+within $\varepsilon$ of either bound. The railed fraction among high-SNR voxels is
+our statistic. It needs no ground truth: it is a property of the estimator applied
+to the data.
+
+\section{Methods}
+\textbf{Reuse, not reimplementation.} The NLLS fit, the per-voxel signal/SNR
+reduction, and the rail thresholds are reused read-only from the prior IVIM
+calibration work (the \texttt{fashion\_reuse} module loads the exact functions by
+source extraction). We add the bootstrap, the SNR/rail-direction characterisation,
+the full-ROI generalisation, and the independent replication.
+
+\textbf{Data.} The primary cohort is the OSIPI TF2.4 open human-abdominal IVIM
+acquisition (Philips 3T; Zenodo 10.5281/zenodo.14605039, CC-BY-4.0), analysed at
+its curated homogeneous ROI (the original cohort) and at the full abdominal ROI.
+The independent cohort is TCGA-LIHC liver DWI (TCIA, \lihcLicense, DOI
+\lihcDOI{}; \lihcNseries{} series), an unrelated site, scanner (Siemens 1.5T), and
+organ. All imaging is download-on-demand; only provenance manifests are committed.
+
+\textbf{Pre-registered thresholds.} Fixed before running: a cohort
+\emph{replicates} if the railed fraction is $\ge\thrPoint\%$ \emph{and} its 95\%
+bootstrap lower bound is $\ge\thrCIlo\%$; otherwise the claim scopes down. Bootstrap
+is voxel-level resampling, \nboot{} resamples, seed \seed.
+
+\section{Results}
+\subsection{Primary: the original cohort}
+On the curated homogeneous ROI, \HomoFrac\% of the \HomoN{} high-SNR voxels have a
+bound-railed NLLS $D^{*}$ (95\% CI [\HomoCIlo, \HomoCIhi]), matching the previously
+reported \fashionReported\% on the same data. Verdict: \HomoVerdict.
+
+\subsection{Generalisation: the full abdomen}
+Extending from the curated ROI to the entire abdominal ROI (n${=}$\FullN), the rate
+is \FullFrac\% (95\% CI [\FullCIlo, \FullCIhi]); verdict \FullVerdict. Railing is
+therefore not a property of a hand-chosen homogeneous patch.
+
+\subsection{Independent replication: TCGA-LIHC liver DWI}
+On an independent liver-DWI cohort the phenomenon recurs. At the clean 4-b scheme
+($b{=}0,50,500,800$) the railed fraction is \LihcFourFrac\% (95\% CI [\LihcFourCIlo,
+\LihcFourCIhi], n${=}$\LihcFourN; verdict \LihcFourVerdict). Across \LihcThreeSubj{}
+subjects at a sparse 3-b clinical scheme ($b{=}50,400,800$, no $b{=}0$; normalised
+by the lowest $b$, hence approximate) the pooled fraction is \LihcThreeFrac\%
+([\LihcThreeCIlo, \LihcThreeCIhi], n${=}$\LihcThreeN; verdict \LihcThreeVerdict).
+The sparser the perfusion sampling, the worse $D^{*}$ identifiability, and the more
+the fit rails --- the expected direction.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{lrrrl}
+\toprule
+Cohort & $n$ (high-SNR) & Railed & 95\% CI & Verdict\\
+\midrule
+Abdomen, homogeneous ROI (OSIPI) & \HomoN & \HomoFrac\% & [\HomoCIlo, \HomoCIhi] & \HomoVerdict\\
+Abdomen, full ROI (OSIPI) & \FullN & \FullFrac\% & [\FullCIlo, \FullCIhi] & \FullVerdict\\
+Liver, 4-b $0/50/500/800$ (TCGA-LIHC) & \LihcFourN & \LihcFourFrac\% & [\LihcFourCIlo, \LihcFourCIhi] & \LihcFourVerdict\\
+Liver, 3-b $50/400/800$ (TCGA-LIHC) & \LihcThreeN & \LihcThreeFrac\% & [\LihcThreeCIlo, \LihcThreeCIhi] & \LihcThreeVerdict\\
+\bottomrule
+\end{tabular}
+\caption{Boundary-railing of NLLS $D^{*}$ across open human-abdominal cohorts
+(seed \seed, \nboot-bootstrap). Pre-registered thresholds: railed
+$\ge\thrPoint\%$ with CI lower bound $\ge\thrCIlo\%$.}
+\end{table}
+
+\subsection{When and why it rails}
+Railing does not vanish with SNR --- it persists across every SNR stratum --- which
+identifies it as \emph{structural} weak identifiability of $D^{*}$ rather than mere
+measurement noise. It is dominated by the \emph{upper} bound (the homogeneous ROI
+splits \HomoLower\% lower / \HomoUpper\% upper; the full ROI \FullLower\% /
+\FullUpper\%): the high-$D^{*}$ identifiability wall, where the perfusion compartment
+is so weakly constrained the optimiser is pushed to the ceiling. Under deliberately
+generous bounds the rate falls but stays a substantial minority (\HomoWide\% /
+\FullWide\%), so railing is not an artefact of tight bounds.
+
+\subsection{Secondary: the scoped calibration ruler}
+\label{sec:ruler}
+The calibration ruler (coverage / ECE / sharpness) is retained as a secondary
+diagnostic, reused read-only. Its scope is explicit: it scores estimates against a
+known truth and is therefore \emph{undefined on the real abdominal scan}, which has
+no ground-truth $(D, D^{*}, f)$. That limitation --- the very point the
+overextension critique raised --- is the argument for leading with railing, which
+needs no truth.
+
+\section{Differentiation from learned uncertainty (Casali et al., 2026)}
+Casali et al.\ (\emph{NMR in Biomedicine}, 2026; arXiv:2508.04588) propose a
+\emph{method} --- deep-ensemble mixture-density networks for IVIM uncertainty ---
+validated in vivo on \textbf{mouse brain}, and themselves report residual $D^{*}$
+overconfidence. Sextant is not a competing UQ method; it documents an
+assumption-free failure mode of the conventional fit on \textbf{human-abdominal}
+tissue, where perfusion (and thus $D^{*}$) is clinically meaningful. The
+differentiation is strictly empirical and scoped to the data: human-abdominal DWI
+reaches a regime that preclinical mouse-brain validation does not, and Casali's own
+$D^{*}$ overconfidence is the learned echo of the same weak-identifiability wall
+that makes the conventional fit rail.
+
+\section{Limitations and scope}
+The open primary cohort is a single subject; we make no population claim from it,
+reporting a within-subject voxel statistic with a voxel-bootstrap CI and supporting
+generality by cross-cohort agreement (homogeneous, full, and independent liver). The
+3-b liver scheme lacks $b{=}0$ and is normalised by its lowest $b$, an approximation
+flagged as such; the 4-b liver cohort with $b{=}0$ is the clean independent test.
+Railing magnitude depends on the bound width and the b-scheme density; we report
+both the tight (original) and wide (generous) bounds and the per-scheme results
+rather than a single number.
+
+\section{Conclusion}
+A large, reproducible fraction of conventional NLLS IVIM fits rail to a parameter
+bound on open human-abdominal data, and the effect generalises across ROI, bounds,
+SNR, and an independent liver cohort. Because it is read off the optimiser without
+any calibration-trust assumption, it is the bulletproof primary claim the
+overextension critique demanded; the calibration ruler remains useful but scoped.
+
+\section*{Reproducibility}
+One command, \texttt{bash Sextant/reproduce.sh}, fetches the open data
+(MD5/checksum-verified; raw arrays never committed), runs the seeded analysis and
+tests, and rebuilds this manuscript through the consistency gate that regenerates
+every number above from \texttt{results/railing\_results.json}.
+
+\end{document}

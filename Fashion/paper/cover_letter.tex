@@ -1,0 +1,67 @@
+% =====================================================================
+% Cover letter — Magnetic Resonance Imaging (Elsevier)
+% Built with tectonic: `tectonic cover_letter.tex`
+% =====================================================================
+\documentclass[11pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\signature{Avery Karlin, BA \\ Department of Applied Physics and Applied Mathematics,
+Columbia University \\ Department of Computer Science, University of Colorado Boulder \\
+\texttt{ak5232@columbia.edu}}
+
+\address{Avery Karlin \\ Columbia University \\ New York, NY, USA}
+
+\begin{document}
+
+\begin{letter}{Professor John C.\ Gore \\ Editor-in-Chief, \textit{Magnetic Resonance Imaging}
+\\ Elsevier}
+
+\opening{Dear Professor Gore,}
+
+I am pleased to submit our manuscript, ``Calibration and Efficiency of Uncertainty Estimates
+in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a
+Cram\'er--Rao Audit of Amortized Posteriors,'' for consideration as an original research
+article in \textit{Magnetic Resonance Imaging}.
+
+The work asks a question that matters wherever quantitative MR parameters carry error bars:
+when an IVIM fitting method reports an uncertainty, can it be believed? Using a single
+biexponential IVIM simulation framework, the study makes two methodological contributions.
+First, it compares uncertainty constructions across classical, Bayesian, and deep-learning
+paradigms and identifies which yield calibrated intervals on the bounded, skewed parameters
+$D^{*}$ and $f$ --- showing that quantile intervals, not Gaussian credible intervals, recover
+nominal coverage. Second, and more generally, it benchmarks an amortized neural posterior
+estimator against the Cram\'er--Rao information floor, demonstrating that a posterior can pass
+aggregate calibration checks while being overconfident and biased exactly where the parameter
+is weakly identified. The transferable message is a diagnostic one: information-floor (CRLB)
+auditing, paired with shape-aware intervals, exposes pointwise miscalibration that aggregate
+coverage conceals --- a check applicable to learned quantitative-MRI posteriors well beyond
+IVIM.
+
+We believe the manuscript is well matched to the computational and methodological scope of
+\textit{Magnetic Resonance Imaging}. It is squarely a methods contribution to MR parameter
+estimation and uncertainty quantification: it concerns simulation-based inference, the
+information-theoretic limits of MR fitting, and deployment-time safeguards (an
+out-of-distribution gate and per-scheme recalibration) for learned estimators. All code, the
+calibration grid, and the efficiency map are released openly as a reproducibility module and
+offered to the OSIPI initiative, consistent with the journal's emphasis on rigorous,
+reproducible MR methodology.
+
+This manuscript is original, has not been published previously, and is not under consideration
+for publication elsewhere. Its submission is approved by the author, and there are no competing
+interests to declare. The author takes full responsibility for the integrity of the work; a
+declaration of the use of AI-assisted writing tools is included with the manuscript.
+
+% [[DECISION: disclose prior MRM review? author's call]]
+% This letter deliberately makes NO mention of any prior review history at another journal.
+% Whether to proactively disclose the earlier Magnetic Resonance in Medicine review to the
+% MRI editor is the author's decision; if desired, add a short, factual paragraph here.
+
+Thank you for considering our work. I would be glad to suggest suitable reviewers on request
+and to respond to any questions.
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}

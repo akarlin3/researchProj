@@ -47,7 +47,7 @@ Cram\'er--Rao Audit of Amortized Posteriors\par}
 Word count (body): $\sim$3,200 \quad$\vert$\quad Figures: 4 \quad$\vert$\quad Tables: 2
 
 \vspace{0.3em}
-{\itshape Submitted to Magnetic Resonance in Medicine}
+{\itshape Submitted to Magnetic Resonance Imaging (Elsevier)}
 \end{center}
 
 \noindent Corresponding author: Avery Karlin (\texttt{ak5232@columbia.edu}). Conflict of
@@ -93,14 +93,14 @@ inference, Cram\'er--Rao bound, deep learning.
 % ======================= INTRODUCTION =======================
 \section*{Introduction}
 
-Intravoxel incoherent motion imaging (1) separates tissue diffusion ($D$) from microvascular
+Intravoxel incoherent motion imaging [1] separates tissue diffusion ($D$) from microvascular
 pseudodiffusion (\Dstar{}) via a biexponential signal model, with perfusion fraction $f$.
 \Dstar{} is notoriously weakly identified: its contribution scales with $f$ (typically
-5--20\%) and degrades rapidly at clinical SNR (2--7). Consequently, any point estimate of
+5--20\%) and degrades rapidly at clinical SNR [2--7]. Consequently, any point estimate of
 \Dstar{} must be accompanied by an honest uncertainty estimate to be clinically usable. Yet
 the calibration of IVIM uncertainty has not been systematically established across estimation
 paradigms or the increasingly common deep-learning methods, and recent work quantifying
-deep-learning IVIM uncertainty (18,19) does not address the cross-paradigm
+deep-learning IVIM uncertainty [18,19] does not address the cross-paradigm
 calibration-and-efficiency question posed here.
 
 Two gaps motivate this work. First, uncertainty can be constructed in many ways ---
@@ -108,18 +108,18 @@ bootstrap resampling of a least-squares fit, the curvature of a Bayesian posteri
 spread of a deep ensemble, or the response of a network to input perturbation --- and it is
 not known which constructions yield calibrated intervals on the bounded, skewed parameters
 \Dstar{} and $f$. Second, while recent work has introduced simulation-based inference to
-diffusion MRI (including generalized frameworks like $\mu$GUIDE (20) and explicit Bayesian
-comparisons (21)) alongside concurrent UQ frameworks for IVIM (19), amortized neural
+diffusion MRI (including generalized frameworks like $\mu$GUIDE [20] and explicit Bayesian
+comparisons [21]) alongside concurrent UQ frameworks for IVIM [19], amortized neural
 posterior estimators have not been benchmarked against the information-theoretic limit of
 the problem.
 
 This work is positioned as a diagnostic contribution rather than an audit of one method.
 Relative to recent IVIM and diffusion-MRI uncertainty work, its distinguishing move is to
-benchmark a learned posterior against the information floor. Casali et al.\ (19) decompose
+benchmark a learned posterior against the information floor. Casali et al.\ [19] decompose
 supervised IVIM uncertainty into aleatoric and epistemic components but do not test it against
-a Cram\'er--Rao information floor; $\mu$GUIDE (20) surfaces parameter degeneracy in a
+a Cram\'er--Rao information floor; $\mu$GUIDE [20] surfaces parameter degeneracy in a
 generalized simulation-based framework without referencing the achievable-precision limit; and
-Manzano-Patr\'on et al.\ (21) report simulation-based inference as ``calibrated'' on aggregate
+Manzano-Patr\'on et al.\ [21] report simulation-based inference as ``calibrated'' on aggregate
 coverage in diffusion MRI --- precisely the aggregate-pass / pointwise-fail mirage this work
 dissects pointwise. The portable lesson is methodological: aggregate calibration is necessary
 but not sufficient, and floor-referenced, shape-aware auditing is what separates a posterior
@@ -162,23 +162,23 @@ was added at SNR $\in \{10, 20, 40, 100\}$. The b-scheme was clinically sparse (
 \subsection*{Part 1 --- Uncertainty paradigms and constructions}
 
 Three paradigms were compared. Classical: biexponential and segmented NLLS with residual
-bootstrap (8) ($K = 200$). Bayesian (6,9): maximum a posteriori estimation with (a) Laplace
+bootstrap [8] ($K = 200$). Bayesian [6,9]: maximum a posteriori estimation with (a) Laplace
 approximation (Gaussian posterior from the central-difference Hessian at the mode), (b) MCMC
 with Gaussian credible intervals from the marginal posterior SD, and (c) MCMC with quantile
 intervals taken directly from posterior samples. Deep learning: two pre-trained networks
-built on the IVIM-NET architecture (16) --- IVIM\_NEToptim (7) and Super\_IVIM\_DC (17) ---
-with uncertainty from ensemble-over-retrains (14,15) ($M = 5$; epistemic) and
+built on the IVIM-NET architecture [16] --- IVIM\_NEToptim [7] and Super\_IVIM\_DC [17] ---
+with uncertainty from ensemble-over-retrains [14,15] ($M = 5$; epistemic) and
 input-perturbation ($B = 50$; predictive, via Rician re-noising of the reconstructed
 signal). All implementations used the OSIPI TF2.4 reference code.
 
 \subsection*{Part 2 --- Amortized neural posterior and information-floor benchmarking}
 
-An amortized NPE (neural spline flow (12)) was trained on the IVIM forward model over a
+An amortized NPE (neural spline flow [12]) was trained on the IVIM forward model over a
 BoxUniform prior ($D \in [0.2, 3.0]$, $\Dstar \in [3, 150]$, $f \in [0, 0.5]$, display
 units), conditioned on $\log_{10}$-SNR as known context, with \Dstar{} trained in log space
 to span its $\sim$1.7-decade range. The set of $(b, \text{signal})$ pairs was encoded with a
 permutation-invariant embedding so the posterior is amortized over the acquisition. Amortized
-posterior estimation (11) was previously applied to IVIM with a Gaussian posterior (18); here
+posterior estimation [11] was previously applied to IVIM with a Gaussian posterior [18]; here
 a normalizing-flow posterior is audited against the information floor.
 
 The NPE was benchmarked on a dense grid against the CRLB (Gaussian approximation; Fisher
@@ -191,7 +191,7 @@ of held-out b-values --- fitting on a retained b-subset, propagating posterior s
 the forward model, and scoring the fraction of held-out signals covered --- under three
 conditions (in-distribution, tri-exponential ground truth, and a noise-model mismatch) and
 under an alternative acquisition scheme, and repeated the held-out-b check on an open multi-b
-in-vivo brain dataset (the OSIPI TF2.4 IVIM-MRI Code Collection data (22); $N = 500$ voxels).
+in-vivo brain dataset (the OSIPI TF2.4 IVIM-MRI Code Collection data [22]; $N = 500$ voxels).
 The same gray-matter ROI of this dataset, under the same held-out-b partition, supplies both
 in-vivo evaluations: the $N = 500$ voxels here for the held-out-b coverage curve (Figure 4B)
 and a larger $\sim$2{,}000-voxel draw for the per-voxel deployment-time gate (Supplementary
@@ -205,7 +205,7 @@ For levels $L \in \{0.50, 0.68, 0.80, 0.90, 0.95\}$, empirical coverage is the f
 voxels whose ground truth falls within the $L$-level interval; nominal calibration is
 $\mathrm{coverage}(L) = L$. The empirical-SD ceiling --- the SD of the point estimate across
 replicates --- is an oracle upper bound on calibrated uncertainty. For the NPE,
-simulation-based calibration (SBC) (13) tested rank uniformity, and the CRLB efficiency ratio
+simulation-based calibration (SBC) [13] tested rank uniformity, and the CRLB efficiency ratio
 (method SD $\div$ CRLB SD) located each estimate relative to the floor: below 1 implies
 precision below the information limit (overconfidence for a claimed posterior, bias for an
 achieved point estimate); above 1 implies wasted information.
@@ -217,7 +217,7 @@ achieved point estimate); above 1 implies wasted information.
 
 The full factorial grid (2,592 rows; 864 cells) produced zero fully-dead cells. Both
 classical baselines mildly under-covered across the grid ($D$ and $f$ $\sim$0.83--0.85,
-\Dstar{} $\sim$0.78--0.81), consistent with known low-perfused fitting difficulty (10), with
+\Dstar{} $\sim$0.78--0.81), consistent with known low-perfused fitting difficulty [10], with
 no dramatic classical overconfidence; bootstrap and segmented fitting were comparable,
 segmented marginally better on \Dstar{}. The severe, construction-specific failures appear
 instead in the Bayesian Gaussian intervals, the deep ensembles, and the biased network,
@@ -308,7 +308,7 @@ the overconfidence is intrinsic to the trained NPE, not an artifact of the in-di
 simulation, and NLLS remained calibrated throughout. Under an alternative acquisition scheme
 the NPE became overconfident at essentially every grid point for all three parameters
 ($\sim$100\%, versus 17--69\% on the trained scheme), showing that the amortized calibration
-does not transfer across acquisitions. On the same open in-vivo brain dataset (22) ($N = 500$
+does not transfer across acquisitions. On the same open in-vivo brain dataset [22] ($N = 500$
 voxels), held-out-b posterior-predictive coverage collapsed to 0.03 at nominal 0.95 (NLLS
 0.90).
 Because voxel-level ground truth is unavailable in vivo, this is a held-out-signal check
@@ -316,7 +316,7 @@ rather than a parameter-recovery test, so it demonstrates that the trained NPE's
 overconfidence persists outside simulation rather than establishing it as a general property
 of amortized IVIM posteriors.
 
-A single in-vivo abdominal case from the same open collection (22) is shown in Supplementary
+A single in-vivo abdominal case from the same open collection [22] is shown in Supplementary
 Figure S4 as a qualitative illustration of the same weak-identifiability signature (the NLLS
 \Dstar{} reference
 boundary-rails in 54.7\% of high-SNR ROI voxels); it is not used for inference. Inference-time
@@ -475,7 +475,7 @@ tissue-informed truncated-Normal \Dstar{} prior, Supplementary Figure S5). The b
 weak identifiability rather than to a single design choice; an informative prior legitimately
 permits posterior width below the prior-free CRLB, so the discriminating evidence is the
 persistence under the uninformative log-uniform prior, not the below-floor fraction itself.
-The in vivo signal evaluation relies on a single open brain dataset (22) ($N = 500$ voxels)
+The in vivo signal evaluation relies on a single open brain dataset [22] ($N = 500$ voxels)
 without voxel-level ground truth, serving as a held-out-signal demonstration rather than a
 parameter-recovery test. Similarly, the spatial demonstration (Supplementary Figure S4) is
 restricted to a single representative abdominal case ($N = 1$) intended strictly to illustrate
@@ -531,7 +531,7 @@ and $f$ drift from near-efficient to inefficient; NLLS tracks the floor.}
 \caption{Robustness and real-data confirmation. (A) Posterior-predictive held-out-b coverage
 in simulation for NPE vs NLLS under baseline, tri-exponential, and noise-model
 misspecification: the NPE under-covers by $\sim$0.61 at nominal 0.95 regardless of condition,
-while NLLS stays calibrated. (B) The same check on the open multi-b in-vivo brain dataset (22)
+while NLLS stays calibrated. (B) The same check on the open multi-b in-vivo brain dataset [22]
 ($N=500$ voxels):
 NPE coverage collapses to $\sim$0.03 at nominal 0.95. (C) Fraction of grid points
 overconfident on the trained vs an alternative acquisition scheme: overconfidence rises to
@@ -539,19 +539,23 @@ $\sim$100\% off-scheme for all parameters, indicating amortized calibration does
 across acquisitions.}
 \end{figure}
 
-% ======================= ACKNOWLEDGMENTS =======================
-\section*{Acknowledgments}
+% ======================= DECLARATIONS (Elsevier structure) =======================
+\section*{CRediT authorship contribution statement}
 
-The author acknowledges the use of a large language model (Claude Opus 4.8, Anthropic;
-accessed 11 June 2026) to assist with drafting and copy-editing manuscript prose and with
-writing document- and figure-generation code. All study design, analyses, numerical results,
-and scientific figures were produced by the author from original data; no AI tool was used to
-create, alter, or interpret research data or results. All AI-assisted text was reviewed,
-revised, and approved by the author, who takes full responsibility for the accuracy and
-integrity of the work.
+\textbf{Avery Karlin:} Conceptualization, Methodology, Software, Formal analysis,
+Investigation, Data curation, Writing -- original draft, Writing -- review \& editing,
+Visualization.
 
-% ======================= DATA AVAILABILITY =======================
-\section*{Data Availability Statement}
+\section*{Declaration of competing interest}
+
+The author declares no competing interests.
+
+\section*{Funding}
+
+This research received no specific grant from any funding agency in the public, commercial, or
+not-for-profit sectors.
+
+\section*{Data availability}
 
 All code, the calibration grid, and the efficiency map underlying this study are openly
 available as a reproducibility module archived on Zenodo at
@@ -562,6 +566,16 @@ map (per-grid-point claimed, achieved, and floor SDs). The in-vivo evaluations u
 available datasets, cited in Methods. The module is additionally offered to the OSIPI
 initiative for benchmarking future IVIM uncertainty methods. No new patient data were
 generated by this study.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the writing process}
+
+The author acknowledges the use of a large language model (Claude Opus 4.8, Anthropic;
+accessed 11 June 2026) to assist with drafting and copy-editing manuscript prose and with
+writing document- and figure-generation code. All study design, analyses, numerical results,
+and scientific figures were produced by the author from original data; no AI tool was used to
+create, alter, or interpret research data or results. All AI-assisted text was reviewed,
+revised, and approved by the author, who takes full responsibility for the accuracy and
+integrity of the work.
 
 % ======================= REFERENCES =======================
 \begin{thebibliography}{99}

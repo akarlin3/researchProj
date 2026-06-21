@@ -1,0 +1,156 @@
+{
+ "meta": {
+  "seed": 20260621,
+  "fit": "Fashion fit_biexp_nlls (read-only reuse)",
+  "rail_thresholds": {
+   "lower": 0.0033,
+   "upper": 0.1485
+  },
+  "substrate": "DIGITAL reference phantom + truth-controlled sim (synthetic signal; NOT real tissue)"
+ },
+ "B1_brain_phantom": {
+  "bvals": [
+   0.0,
+   10.0,
+   20.0,
+   30.0,
+   40.0,
+   80.0,
+   110.0,
+   140.0,
+   170.0,
+   200.0,
+   300.0,
+   400.0,
+   500.0,
+   600.0,
+   700.0,
+   800.0,
+   900.0
+  ],
+  "source": "Ryghog2014/Federau2012 (committed)",
+  "tissues": [
+   {
+    "tissue": "WM",
+    "D_true": 0.00081,
+    "Dstar_true": 0.084,
+    "f_true": 0.044,
+    "snr": 40.0,
+    "n": 500,
+    "frac_railed": 0.306,
+    "frac_upper": 0.294,
+    "frac_lower": 0.012,
+    "median_rel_dstar_error": 0.6394875406918232
+   },
+   {
+    "tissue": "GM",
+    "D_true": 0.00086,
+    "Dstar_true": 0.076,
+    "f_true": 0.033,
+    "snr": 40.0,
+    "n": 500,
+    "frac_railed": 0.302,
+    "frac_upper": 0.256,
+    "frac_lower": 0.046,
+    "median_rel_dstar_error": 0.7781509287003183
+   },
+   {
+    "tissue": "CSF",
+    "D_true": 0.003,
+    "Dstar_true": 0,
+    "f_true": 0,
+    "snr": 40.0,
+    "n": 500,
+    "frac_railed": 0.49,
+    "frac_upper": 0.124,
+    "frac_lower": 0.366,
+    "median_rel_dstar_error": NaN
+   }
+  ]
+ },
+ "B2_f_sweep": {
+  "D_true": 0.001,
+  "Dstar_true": 0.02,
+  "snr": 20.0,
+  "rows": [
+   {
+    "f": 0.02,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.6183333333333333,
+    "median_rel_dstar_error": 0.8499999999987331
+   },
+   {
+    "f": 0.05,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.40166666666666667,
+    "median_rel_dstar_error": 0.8499999999723413
+   },
+   {
+    "f": 0.08,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.23,
+    "median_rel_dstar_error": 0.7946263094515462
+   },
+   {
+    "f": 0.12,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.14333333333333334,
+    "median_rel_dstar_error": 0.7101790313916201
+   },
+   {
+    "f": 0.18,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.06666666666666667,
+    "median_rel_dstar_error": 0.592773981812921
+   },
+   {
+    "f": 0.25,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.03,
+    "median_rel_dstar_error": 0.4316381495222115
+   },
+   {
+    "f": 0.35,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.01,
+    "median_rel_dstar_error": 0.3205230759700167
+   },
+   {
+    "f": 0.45,
+    "n": 600,
+    "snr": 20.0,
+    "frac_railed": 0.0033333333333333335,
+    "median_rel_dstar_error": 0.18340151427520252
+   }
+  ]
+ },
+ "B3_flag_validity": {
+  "20": {
+   "n": 3000,
+   "median_abs_err_railed": 0.030705069501077847,
+   "median_abs_err_nonrailed": 0.009023683064887468,
+   "median_rel_err_railed": 0.671798654303367,
+   "median_rel_err_nonrailed": 0.3342108418458688,
+   "frac_railed": 0.21033333333333334,
+   "auc_railed_predicts_large_error": 0.555,
+   "spearman_railed_vs_abs_err": 0.13227657158628572
+  },
+  "40": {
+   "n": 3000,
+   "median_abs_err_railed": 0.010184006780598318,
+   "median_abs_err_nonrailed": 0.005745457685586551,
+   "median_rel_err_railed": 0.5056098855715387,
+   "median_rel_err_nonrailed": 0.2294681758695516,
+   "frac_railed": 0.16666666666666666,
+   "auc_railed_predicts_large_error": 0.5153333333333333,
+   "spearman_railed_vs_abs_err": 0.05174771241641249
+  }
+ }
+}

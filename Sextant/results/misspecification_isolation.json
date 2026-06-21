@@ -1,0 +1,412 @@
+{
+ "meta": {
+  "seed": 20260621,
+  "n_truths": 2000,
+  "n_boot": 2000,
+  "bvals": [
+   0.0,
+   10.0,
+   20.0,
+   30.0,
+   50.0,
+   75.0,
+   100.0,
+   150.0,
+   400.0,
+   600.0
+  ],
+  "snrs": [
+   10.0,
+   20.0,
+   40.0,
+   100.0
+  ],
+  "forwards": [
+   "biexp_WS",
+   "triexp",
+   "kurtosis",
+   "noise_chi"
+  ],
+  "prior": "trained NPE BoxUniform (D U, D* logU, f U)",
+  "fit": "Fashion fit_biexp_nlls (read-only reuse)",
+  "rail_thresholds": {
+   "lower": 0.0033,
+   "upper": 0.1485
+  }
+ },
+ "cells": [
+  {
+   "forward": "biexp_WS",
+   "snr": 10.0,
+   "frac_railed": 0.298,
+   "frac_lower": 0.115,
+   "frac_upper": 0.183,
+   "ci": [
+    0.2779875,
+    0.3185
+   ],
+   "frac_railed_hard_corner": 0.5066666666666667,
+   "by_true_f_tercile": {
+    "low": 0.4287856071964018,
+    "mid": 0.2807807807807808,
+    "high": 0.18440779610194902
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.383808095952024,
+    "mid": 0.18468468468468469,
+    "high": 0.32533733133433285
+   }
+  },
+  {
+   "forward": "biexp_WS",
+   "snr": 20.0,
+   "frac_railed": 0.226,
+   "frac_lower": 0.0955,
+   "frac_upper": 0.1305,
+   "ci": [
+    0.2085,
+    0.245
+   ],
+   "frac_railed_hard_corner": 0.4266666666666667,
+   "by_true_f_tercile": {
+    "low": 0.39280359820089955,
+    "mid": 0.1816816816816817,
+    "high": 0.10344827586206896
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.3493253373313343,
+    "mid": 0.11261261261261261,
+    "high": 0.2158920539730135
+   }
+  },
+  {
+   "forward": "biexp_WS",
+   "snr": 40.0,
+   "frac_railed": 0.149,
+   "frac_lower": 0.075,
+   "frac_upper": 0.074,
+   "ci": [
+    0.134,
+    0.1645
+   ],
+   "frac_railed_hard_corner": 0.32,
+   "by_true_f_tercile": {
+    "low": 0.30434782608695654,
+    "mid": 0.1006006006006006,
+    "high": 0.041979010494752625
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.2518740629685157,
+    "mid": 0.04954954954954955,
+    "high": 0.1454272863568216
+   }
+  },
+  {
+   "forward": "biexp_WS",
+   "snr": 100.0,
+   "frac_railed": 0.1115,
+   "frac_lower": 0.063,
+   "frac_upper": 0.0485,
+   "ci": [
+    0.098,
+    0.125
+   ],
+   "frac_railed_hard_corner": 0.3466666666666667,
+   "by_true_f_tercile": {
+    "low": 0.22488755622188905,
+    "mid": 0.057057057057057055,
+    "high": 0.05247376311844078
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.19490254872563717,
+    "mid": 0.024024024024024024,
+    "high": 0.11544227886056972
+   }
+  },
+  {
+   "forward": "triexp",
+   "snr": 10.0,
+   "frac_railed": 0.3095,
+   "frac_lower": 0.12,
+   "frac_upper": 0.1895,
+   "ci": [
+    0.288,
+    0.33
+   ],
+   "frac_railed_hard_corner": 0.56,
+   "by_true_f_tercile": {
+    "low": 0.46326836581709147,
+    "mid": 0.26426426426426425,
+    "high": 0.20089955022488756
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.39430284857571213,
+    "mid": 0.18468468468468469,
+    "high": 0.3493253373313343
+   }
+  },
+  {
+   "forward": "triexp",
+   "snr": 20.0,
+   "frac_railed": 0.184,
+   "frac_lower": 0.0755,
+   "frac_upper": 0.1085,
+   "ci": [
+    0.1674875,
+    0.2
+   ],
+   "frac_railed_hard_corner": 0.29333333333333333,
+   "by_true_f_tercile": {
+    "low": 0.3028485757121439,
+    "mid": 0.14114114114114115,
+    "high": 0.10794602698650675
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.2893553223388306,
+    "mid": 0.07357357357357357,
+    "high": 0.1889055472263868
+   }
+  },
+  {
+   "forward": "triexp",
+   "snr": 40.0,
+   "frac_railed": 0.1475,
+   "frac_lower": 0.0735,
+   "frac_upper": 0.074,
+   "ci": [
+    0.132,
+    0.1625
+   ],
+   "frac_railed_hard_corner": 0.3333333333333333,
+   "by_true_f_tercile": {
+    "low": 0.30884557721139433,
+    "mid": 0.07507507507507508,
+    "high": 0.05847076461769116
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.2383808095952024,
+    "mid": 0.05555555555555555,
+    "high": 0.14842578710644677
+   }
+  },
+  {
+   "forward": "triexp",
+   "snr": 100.0,
+   "frac_railed": 0.0935,
+   "frac_lower": 0.0585,
+   "frac_upper": 0.035,
+   "ci": [
+    0.0814875,
+    0.1065
+   ],
+   "frac_railed_hard_corner": 0.3466666666666667,
+   "by_true_f_tercile": {
+    "low": 0.20239880059970014,
+    "mid": 0.046546546546546545,
+    "high": 0.031484257871064465
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.17991004497751126,
+    "mid": 0.015015015015015015,
+    "high": 0.08545727136431784
+   }
+  },
+  {
+   "forward": "kurtosis",
+   "snr": 10.0,
+   "frac_railed": 0.2705,
+   "frac_lower": 0.1025,
+   "frac_upper": 0.168,
+   "ci": [
+    0.251,
+    0.2905
+   ],
+   "frac_railed_hard_corner": 0.3333333333333333,
+   "by_true_f_tercile": {
+    "low": 0.39730134932533734,
+    "mid": 0.23723723723723725,
+    "high": 0.17691154422788605
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.35082458770614694,
+    "mid": 0.17267267267267267,
+    "high": 0.28785607196401797
+   }
+  },
+  {
+   "forward": "kurtosis",
+   "snr": 20.0,
+   "frac_railed": 0.1815,
+   "frac_lower": 0.064,
+   "frac_upper": 0.1175,
+   "ci": [
+    0.166,
+    0.19801249999999995
+   ],
+   "frac_railed_hard_corner": 0.26666666666666666,
+   "by_true_f_tercile": {
+    "low": 0.30134932533733133,
+    "mid": 0.13663663663663664,
+    "high": 0.10644677661169415
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.27436281859070466,
+    "mid": 0.06156156156156156,
+    "high": 0.20839580209895053
+   }
+  },
+  {
+   "forward": "kurtosis",
+   "snr": 40.0,
+   "frac_railed": 0.1005,
+   "frac_lower": 0.0495,
+   "frac_upper": 0.051,
+   "ci": [
+    0.0875,
+    0.114
+   ],
+   "frac_railed_hard_corner": 0.3466666666666667,
+   "by_true_f_tercile": {
+    "low": 0.20389805097451275,
+    "mid": 0.04954954954954955,
+    "high": 0.047976011994003
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.1634182908545727,
+    "mid": 0.025525525525525526,
+    "high": 0.11244377811094453
+   }
+  },
+  {
+   "forward": "kurtosis",
+   "snr": 100.0,
+   "frac_railed": 0.05,
+   "frac_lower": 0.038,
+   "frac_upper": 0.012,
+   "ci": [
+    0.0405,
+    0.06
+   ],
+   "frac_railed_hard_corner": 0.10666666666666667,
+   "by_true_f_tercile": {
+    "low": 0.11544227886056972,
+    "mid": 0.025525525525525526,
+    "high": 0.008995502248875561
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.10194902548725637,
+    "mid": 0.016516516516516516,
+    "high": 0.031484257871064465
+   }
+  },
+  {
+   "forward": "noise_chi",
+   "snr": 10.0,
+   "frac_railed": 0.301,
+   "frac_lower": 0.1645,
+   "frac_upper": 0.1365,
+   "ci": [
+    0.281,
+    0.3215
+   ],
+   "frac_railed_hard_corner": 0.5333333333333333,
+   "by_true_f_tercile": {
+    "low": 0.4617691154422789,
+    "mid": 0.26426426426426425,
+    "high": 0.17691154422788605
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.41379310344827586,
+    "mid": 0.18018018018018017,
+    "high": 0.30884557721139433
+   }
+  },
+  {
+   "forward": "noise_chi",
+   "snr": 20.0,
+   "frac_railed": 0.224,
+   "frac_lower": 0.1165,
+   "frac_upper": 0.1075,
+   "ci": [
+    0.207,
+    0.242
+   ],
+   "frac_railed_hard_corner": 0.44,
+   "by_true_f_tercile": {
+    "low": 0.4062968515742129,
+    "mid": 0.16516516516516516,
+    "high": 0.10044977511244378
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.34332833583208394,
+    "mid": 0.1036036036036036,
+    "high": 0.22488755622188905
+   }
+  },
+  {
+   "forward": "noise_chi",
+   "snr": 40.0,
+   "frac_railed": 0.156,
+   "frac_lower": 0.0835,
+   "frac_upper": 0.0725,
+   "ci": [
+    0.14,
+    0.1725
+   ],
+   "frac_railed_hard_corner": 0.4266666666666667,
+   "by_true_f_tercile": {
+    "low": 0.3103448275862069,
+    "mid": 0.09309309309309309,
+    "high": 0.06446776611694154
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.2593703148425787,
+    "mid": 0.05555555555555555,
+    "high": 0.15292353823088456
+   }
+  },
+  {
+   "forward": "noise_chi",
+   "snr": 100.0,
+   "frac_railed": 0.1035,
+   "frac_lower": 0.0595,
+   "frac_upper": 0.044,
+   "ci": [
+    0.09,
+    0.117
+   ],
+   "frac_railed_hard_corner": 0.26666666666666666,
+   "by_true_f_tercile": {
+    "low": 0.20839580209895053,
+    "mid": 0.05855855855855856,
+    "high": 0.043478260869565216
+   },
+   "by_true_dstar_tercile": {
+    "low": 0.20089955022488756,
+    "mid": 0.02252252252252252,
+    "high": 0.08695652173913043
+   }
+  }
+ ],
+ "misspec_delta_vs_WS": {
+  "triexp": {
+   "10": 0.0115,
+   "20": -0.042,
+   "40": -0.0015,
+   "100": -0.018
+  },
+  "kurtosis": {
+   "10": -0.0275,
+   "20": -0.0445,
+   "40": -0.0485,
+   "100": -0.0615
+  },
+  "noise_chi": {
+   "10": 0.003,
+   "20": -0.002,
+   "40": 0.007,
+   "100": -0.008
+  }
+ },
+ "max_abs_delta_vs_WS": 0.0615
+}

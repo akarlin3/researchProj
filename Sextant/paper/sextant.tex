@@ -8,6 +8,8 @@
 \usepackage{booktabs}
 \usepackage{xcolor}
 \usepackage[colorlinks=true,linkcolor=teal,citecolor=teal,urlcolor=teal]{hyperref}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
 
 \input{numbers.tex}
 \emergencystretch=2em   % avoid overfull boxes with ebgaramond justification
@@ -40,9 +42,15 @@ reported figure; across the full abdominal ROI the rate is \FullFrac\%
 liver-DWI cohort (TCGA-LIHC, \lihcLicense): \LihcFourFrac\% at the clean 4-b scheme
 and \LihcThreeFrac\% across \LihcThreeSubj{} subjects at a sparse 3-b scheme.
 Railing is a fact about the optimiser and the data --- no ground truth, no
-noise-model trust --- and so is immune to the overextension objection. The
-calibration ruler is retained but demoted to a scoped secondary diagnostic,
-explicitly limited to data with ground truth.
+noise-model trust --- and so is immune to the overextension objection. A
+truth-controlled battery (in-silico misspecification isolation, a known-truth
+digital-phantom recovery test, and a model-criticism check on the real scan)
+confirms the railing is intrinsic estimator pathology under weak $D^{*}$
+identifiability, not forward-model misfit: the bounded fit rails even under the
+exactly correct model, and on the real abdomen railed voxels are \emph{less}
+model-misspecified than non-railed ones. The calibration ruler is retained but
+demoted to a scoped secondary diagnostic, explicitly limited to data with ground
+truth.
 \end{abstract}
 
 \section{Introduction}
@@ -154,6 +162,69 @@ no ground-truth $(D, D^{*}, f)$. That limitation --- the very point the
 overextension critique raised --- is the argument for leading with railing, which
 needs no truth.
 
+\section{Robustness: railing is estimator pathology, not model misfit}
+\label{sec:robust}
+A reviewer who grants that railing needs no calibration trust may still ask a
+\emph{different} question: could the railing read off the real abdominal scan be an
+artefact of \emph{simulator--reality mismatch} --- the bi-exponential forward/noise
+model not matching tissue --- rather than an intrinsic property of the bounded
+estimator under weak $D^{*}$ identifiability? A truth-controlled battery isolates it
+as the latter (Fig.~\ref{fig:robust}; seeds and full tables in the reproducibility
+module). None of this is needed for the primary claim; it forecloses the
+misspecification reading.
+
+\textbf{In-silico misspecification isolation.} Drawing \RobN{} ground-truth
+$(D,D^{*},f)$ over the analysis prior and rendering under the \emph{exactly correct}
+bi-exponential model (no misspecification possible), the bounded NLLS still rails in
+\RobWSrailTen\% of voxels at SNR~10 (\RobWSrailHundred\% at SNR~100). Replacing the
+forward model with a tri-exponential tissue tail, diffusional kurtosis, or a
+non-Rician multi-coil noise model changes the railed fraction by at most
+\RobMaxDelta~pp at any SNR. Railing therefore arises from the estimator and the weak
+identifiability of $D^{*}$, not from forward-model misfit; misspecification neither
+creates nor materially inflates it. Its \emph{magnitude} is a regime effect:
+restricted to the low-perfusion / high-$D^{*}$ corner the curated real ROI occupies,
+the well-specified railed fraction is \RobCornerTen\% (SNR~10), bracketing the
+observed \HomoFrac\%.
+
+\textbf{Known-truth recovery.} On a brain digital reference phantom (literature
+$(D,D^{*},f)$ per tissue) railing is prevalent where perfusion is weak (white matter
+\PhantWM\%, grey matter \PhantGM\%). In a controlled known-truth sweep, as the
+perfusion fraction falls to $f{=}\PhantSweepLoF$ the railed fraction rises to
+\PhantSweepRailLoF\% in lockstep with the relative $D^{*}$ recovery error (from
+\PhantErrHiF{} at high $f$ to \PhantErrLoF{} at $f{=}\PhantSweepLoF$); pooled over the
+prior, railed voxels carry \PhantErrRatio$\times$ the $D^{*}$ recovery error of
+non-railed voxels. Railing thus flags genuine, ground-truth $D^{*}$ unrecoverability
+--- as a \emph{specific but not sensitive} flag (AUC \PhantAUC{} as a classifier of
+large recovery error), since $D^{*}$ is weakly identified broadly, not only where the
+fit rails. The substrate is a digital phantom (synthetic signal), so this is a
+known-truth recovery test, not a real-tissue one.
+
+\textbf{Model criticism on the real scan.} A truth-free held-out-$b$
+posterior-predictive criticism (the RNPE self-consistency idea of Ward et al.\ 2022
+in NLLS form), calibrated to flag \CritNull\% of a well-specified null, criticises
+\CritReal\% of real abdominal voxels as model-misspecified --- a modest excess
+consistent with mild forward/noise misspecification. Decisively, that excess is
+\emph{not} where the railing is: among railed voxels only \CritRailed\% are
+criticised (below the well-specified baseline), versus \CritNonRailed\% among
+non-railed voxels. Railing co-occurs with a \emph{good} bi-exponential fit --- the
+optimiser slides to a bound because $D^{*}$ is unidentified, not because the model is
+wrong --- so the boundary-railing is not a forward-model-misfit artefact.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{robustness_battery.pdf}
+\caption{\textbf{Railing is estimator pathology, not simulator--reality mismatch.}
+(A)~Under the exactly correct bi-exponential model (no misspecification possible)
+the bounded NLLS still rails; tri-exponential, kurtosis, and non-Rician noise
+misspecifications overlap it ($\le\RobMaxDelta$~pp). The well-specified hard-corner
+rate (star) brackets the real \HomoFrac\% (dashed). (B)~Known-truth sweep: railed
+fraction (left) and relative $D^{*}$ recovery error (right) rise together as the
+perfusion fraction $f$ falls. (C)~Truth-free model criticism on the real abdomen:
+railed voxels are \emph{less} model-misspecified (\CritRailed\%) than non-railed
+voxels (\CritNonRailed\%), so railing is not a model-misfit artefact.}
+\label{fig:robust}
+\end{figure}
+
 \section{Differentiation from learned uncertainty (Casali et al., 2026)}
 Casali et al.\ (\emph{NMR in Biomedicine}, 2026; arXiv:2508.04588) propose a
 \emph{method} --- deep-ensemble mixture-density networks for IVIM uncertainty ---
@@ -174,7 +245,15 @@ generality by cross-cohort agreement (homogeneous, full, and independent liver).
 flagged as such; the 4-b liver cohort with $b{=}0$ is the clean independent test.
 Railing magnitude depends on the bound width and the b-scheme density; we report
 both the tight (original) and wide (generous) bounds and the per-scheme results
-rather than a single number.
+rather than a single number. The robustness battery (Sec.~\ref{sec:robust})
+establishes that railing is estimator pathology rather than forward-model misfit,
+but its known-truth recovery limb uses a \emph{digital} reference phantom
+(synthetic signal): it shows railing tracks ground-truth $D^{*}$ unrecoverability
+\emph{in silico}, not in real tissue. A real perfusion phantom scan or a
+test--retest in-vivo acquisition with repeatable parameters --- neither available
+in the open data used here --- would be required to validate $D^{*}$
+recoverability against \emph{real} truth; that remains the one open gap, and is the
+natural next step.
 
 \section{Conclusion}
 A large, reproducible fraction of conventional NLLS IVIM fits rail to a parameter

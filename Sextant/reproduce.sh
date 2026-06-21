@@ -16,6 +16,17 @@ echo "== 1. fetch OSIPI open data (CC-BY-4.0; human-abdominal DWI + DRO) =="
 echo "== 2. boundary-railing analysis (seed 20260613, bootstrap CIs) =="
 "$PROT" "$HERE/scripts/run_railing.py" || { echo "analysis FAILED"; exit 1; }
 
+echo "== 2b. HC2/CS2 robustness battery (truth-controlled; no external data needed "
+echo "       except the OSIPI scan already fetched in step 1) =="
+KMP_DUPLICATE_LIB_OK=TRUE "$PROT" "$HERE/scripts/run_misspecification_isolation.py" \
+  || { echo "misspecification isolation FAILED"; exit 1; }
+KMP_DUPLICATE_LIB_OK=TRUE "$PROT" "$HERE/scripts/run_phantom_recovery.py" \
+  || { echo "phantom recovery FAILED"; exit 1; }
+KMP_DUPLICATE_LIB_OK=TRUE "$PROT" "$HERE/scripts/run_model_criticism.py" \
+  || { echo "model criticism FAILED"; exit 1; }
+KMP_DUPLICATE_LIB_OK=TRUE "$PROT" "$HERE/scripts/make_robustness_figure.py" \
+  || { echo "robustness figure FAILED"; exit 1; }
+
 echo "== 3. tests =="
 "$PROT" -m pytest -q "$HERE/sextant-core/tests" || { echo "tests FAILED"; exit 1; }
 

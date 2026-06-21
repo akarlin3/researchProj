@@ -1,0 +1,59 @@
+{
+ "source_csv": "cp1_budget_sweep.csv (prior friction-remediation run, sbi venv)",
+ "budgets": [
+  50000,
+  100000,
+  250000,
+  500000,
+  1000000
+ ],
+ "dstar_claimed_ratio_by_snr": {
+  "50000": {
+   "10": 0.0774,
+   "20": 0.156,
+   "50": 0.3618,
+   "100": 0.74
+  },
+  "100000": {
+   "10": 0.0804,
+   "20": 0.1597,
+   "50": 0.3614,
+   "100": 0.7044
+  },
+  "250000": {
+   "10": 0.0793,
+   "20": 0.1587,
+   "50": 0.3802,
+   "100": 0.7156
+  },
+  "500000": {
+   "10": 0.0836,
+   "20": 0.1596,
+   "50": 0.3763,
+   "100": 0.6711
+  },
+  "1000000": {
+   "10": 0.0811,
+   "20": 0.1599,
+   "50": 0.3681,
+   "100": 0.6922
+  }
+ },
+ "dstar_overall_below_floor": {
+  "50000": 0.6948,
+  "100000": 0.6958,
+  "250000": 0.6987,
+  "500000": 0.6948,
+  "1000000": 0.6948
+ },
+ "span_snr10_claimed_ratio": [
+  0.0774,
+  0.0836
+ ],
+ "span_overall_below_floor": [
+  0.6948,
+  0.6987
+ ],
+ "budget_invariant": true,
+ "verdict": "BUDGET-INVARIANT: the below-floor D* overconfidence is flat across a 20-fold budget range -> NOT simulation starvation; supports the information-theoretic reading."
+}

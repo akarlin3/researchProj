@@ -1,0 +1,61 @@
+{
+ "meta": {
+  "seed": 20260621,
+  "held_out_b": [
+   30.0,
+   100.0,
+   600.0
+  ],
+  "fit_b": [
+   0.0,
+   10.0,
+   20.0,
+   50.0,
+   75.0,
+   150.0,
+   400.0
+  ],
+  "null_threshold_pct": 95,
+  "null_threshold": 4.209959401511373,
+  "statistic": "SNR-normalised held-out-b posterior-predictive RMSE",
+  "method": "RNPE-style (Ward et al. 2022) NLLS analogue, truth-free"
+ },
+ "validation": {
+  "biexp_WS": {
+   "flagged_frac": 0.04733333333333333,
+   "expected": "~0.05 (calibration)",
+   "n": 3000
+  },
+  "triexp_strong": {
+   "flagged_frac": 0.062,
+   "expected": ">0.05 (shape, sensitivity check)",
+   "n": 3000
+  },
+  "triexp": {
+   "flagged_frac": 0.058,
+   "expected": ">~0.05 (mild shape)",
+   "n": 3000
+  },
+  "kurtosis": {
+   "flagged_frac": 0.04533333333333334,
+   "expected": "absorbed (amplitude)",
+   "n": 3000
+  },
+  "baseline": {
+   "flagged_frac": 0.021333333333333333,
+   "expected": "absorbed (amplitude)",
+   "n": 3000
+  }
+ },
+ "real": {
+  "available": true,
+  "n_high_snr": 1618,
+  "criticised_frac": 0.09147095179233622,
+  "excess_over_null": 0.0415,
+  "frac_railed": 0.5469715698393078,
+  "criticised_frac_among_railed": 0.0327683615819209,
+  "criticised_frac_among_nonrailed": 0.16234652114597545,
+  "source": "OSIPI TF2.4 abdomen (Zenodo 14605039), homogeneous ROI",
+  "interpretation": "NOT a misspecification artefact (railed are well-fit-but-unidentified)"
+ }
+}

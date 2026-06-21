@@ -1,0 +1,57 @@
+NUMBERS_FROZEN — close/open-friction (HC2/CS2 + HC4/CS3)
+=========================================================
+Every number below traces to a run output (path given). Nothing is quoted from an
+old manuscript. Regenerate with the listed command.
+
+--------------------------------------------------------------------------------
+A. GNOMON SOURCE-OF-TRUTH (frozen; from Gnomon/results/reproduction.json, seed 20260620)
+   Reproduce: KMP_DUPLICATE_LIB_OK=TRUE PYTHONPATH=Gnomon python -m gnomon.reproduce
+--------------------------------------------------------------------------------
+T1  NLLS D* boundary-railing, real OSIPI abdomen : 54.2%  CI [52.0, 56.4]  (claimed 54.7%) PASS
+T3c D* coverage, MCMC quantile                   : 0.90   CI [0.89, 0.91]  (claimed 0.94)   PASS
+T3c'D,f coverage, MCMC quantile                  : D 0.949, f 0.964                          PASS
+T4  MAF flow vs railed NLLS (directional)        : ece_gap 0.052, sharp_gap 0.068, cov_gap 0.216 PASS
+T3a D* coverage, Laplace SD                       : 0.80 (claimed 0.30)   DIVERGES (regime/convention)
+T3b D* coverage, MCMC SD                          : 0.90 (claimed 0.67)   DIVERGES (regime/convention)
+
+--------------------------------------------------------------------------------
+B. SEXTANT RAILING (railing-first primary; results/railing_results.json, seed 20260613)
+--------------------------------------------------------------------------------
+Abdomen homogeneous ROI : 54.7% railed (885/1618 high-SNR)  CI [52.2, 57.1]  REPLICATES-STRONG
+  rail direction: lower 15.6% / upper 39.1% (high-D* wall) ; wide-bounds 32.1%
+Abdomen full ROI        : 47.8%  CI [47.1, 48.5]  (n=19,652)
+TCGA-LIHC liver 4-b     : 43.7%  CI [43.2, 44.2]  ; 3-b 73.4% (3 subjects)
+
+--------------------------------------------------------------------------------
+C. TRACK A — HC2/CS2 robustness battery (NEW this run; Sextant/results/*.json, seed 20260621)
+   Reproduce: see Sextant/reproduce.sh (steps 2b)
+--------------------------------------------------------------------------------
+C1 In-silico misspecification isolation  (misspecification_isolation.json; N=2000 truths)
+   well-specified railing (zero misspec)  : SNR10 29.8% , SNR20 22.6% , SNR40 14.9% , SNR100 11.2%
+   max |railed(misspec) - railed(WS)|      : 6.2 pp  (tri-exp / kurtosis / non-Rician)
+   well-specified, hard low-f/high-D* corner: 50.7% (SNR10)  -> brackets real 54.7%  (corner n=75)
+
+C2 Phantom / known-truth recovery  (phantom_recovery.json)
+   brain digital phantom railing          : WM 30.6% , GM 30.2% , CSF 49.0% (SNR40)
+   brain phantom rel. D* error            : WM 0.64 , GM 0.78
+   f-sweep railing (f 0.45 -> 0.02)        : 0.3% -> 61.8%  (monotone)
+   f-sweep rel. D* error (f 0.45 -> 0.02)  : 0.18 -> 0.85   (monotone)
+   railed vs non-railed D* error (SNR20)   : 0.0307 vs 0.0090  (ratio 3.4x)
+   AUC(railed predicts large error)        : 0.56 (SNR20) / 0.52 (SNR40)  [specific, not sensitive]
+
+C3 RNPE-style model criticism on real OSIPI abdomen  (model_criticism.json)
+   calibration on well-specified null      : 4.7% flagged (nominal 5%)
+   sensitivity (strong tri-exp shape)      : 6.2%  ; mild tri-exp 5.8% ; kurtosis/baseline absorbed
+   REAL abdomen criticised                 : 9.1%  (n=1618; reproduces prior NPE-based 12.8% in direction)
+   criticised | railed                     : 3.3%  (BELOW the 4.7% baseline)
+   criticised | non-railed                 : 16.2%
+   -> railing co-occurs with GOOD bi-exp fit: NOT a misspecification artefact
+
+--------------------------------------------------------------------------------
+D. TRACK B — HC4/CS3 simulation-budget sweep (BANKED; research_debt/budget_sweep/)
+   Re-derived from cp1_budget_sweep.csv (prior sbi-venv run) via summarize_budget_sweep.py
+--------------------------------------------------------------------------------
+D* claimed SD/CRLB ratio @ SNR10, budget 50k..1M : 0.077, 0.080, 0.079, 0.084, 0.081  (span 0.007)
+D* overall below-floor fraction, budget 50k..1M  : 0.695, 0.696, 0.699, 0.695, 0.695  (span 0.004)
+VERDICT: BUDGET-INVARIANT across 20x  ->  not simulation starvation (closed for future use)
+NOTE: BANKED only; absent from the railing-first manuscript.

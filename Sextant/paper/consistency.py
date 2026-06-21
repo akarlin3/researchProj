@@ -17,6 +17,9 @@ _ROOT = os.path.dirname(_HERE)
 _RESULTS = os.path.join(_ROOT, "results", "railing_results.json")
 _OSIPI_PROV = os.path.join(_ROOT, "results", "osipi_provenance.json")
 _LIHC_PROV = os.path.join(_ROOT, "results", "tcga_lihc_provenance.json")
+_MISSPEC = os.path.join(_ROOT, "results", "misspecification_isolation.json")
+_PHANTOM = os.path.join(_ROOT, "results", "phantom_recovery.json")
+_CRITICISM = os.path.join(_ROOT, "results", "model_criticism.json")
 _NUMBERS = os.path.join(_HERE, "numbers.tex")
 
 # cohort name -> TeX macro prefix
@@ -87,16 +90,84 @@ def main():
         cmd("lihcDOI", lp["doi"])
         cmd("lihcNseries", lp["n_series"])
 
-    with open(_NUMBERS, "w") as fh:
-        fh.write("\n".join(lines) + "\n")
+    # --- HC2/CS2 robustness battery (Track A) macros, regenerated from results --- #
+    _robustness_macros(cmd, problems, homo)
 
     if problems:
         print("CONSISTENCY FAILURES:")
         for p in problems:
             print("  -", p)
         sys.exit(1)
+
+    with open(_NUMBERS, "w") as fh:
+        fh.write("\n".join(lines) + "\n")
+
     n_macros = sum(1 for l in lines if l.startswith("\\newcommand"))
     print(f"consistency OK: {n_macros} macros -> {_NUMBERS}")
+
+
+def _robustness_macros(cmd, problems, homo):
+    """Emit (and internally check) the HC2/CS2 robustness-battery macros.
+
+    Every number in the manuscript's robustness section is regenerated here from
+    results/{misspecification_isolation,phantom_recovery,model_criticism}.json so
+    the consistency gate covers the Track-A additions too. Absent files are skipped
+    (the gate still runs), but if present their internal invariants are checked.
+    """
+    def pct(x):
+        return f"{100 * x:.1f}"
+
+    if os.path.exists(_MISSPEC):
+        m = json.load(open(_MISSPEC))
+        cells = {(c["forward"], c["snr"]): c for c in m["cells"]}
+        ws10 = cells[("biexp_WS", 10.0)]["frac_railed"]
+        ws100 = cells[("biexp_WS", 100.0)]["frac_railed"]
+        corner10 = cells[("biexp_WS", 10.0)]["frac_railed_hard_corner"]
+        cmd("RobN", f"{m['meta']['n_truths']:,}".replace(",", "{,}"))
+        cmd("RobWSrailTen", pct(ws10))
+        cmd("RobWSrailHundred", pct(ws100))
+        cmd("RobMaxDelta", f"{100 * m['max_abs_delta_vs_WS']:.1f}")
+        cmd("RobCornerTen", pct(corner10))
+        if not (0 <= m["max_abs_delta_vs_WS"] <= 1):
+            problems.append("misspec max delta out of range")
+        if ws10 <= 0:
+            problems.append("well-specified railing is zero (isolation claim broken)")
+
+    if os.path.exists(_PHANTOM):
+        p = json.load(open(_PHANTOM))
+        tis = {t["tissue"]: t for t in p["B1_brain_phantom"]["tissues"]}
+        rows = p["B2_f_sweep"]["rows"]
+        lo, hi = rows[0], rows[-1]               # f=0.02 (worst) .. f=0.45 (best)
+        b3 = p["B3_flag_validity"]["20"]
+        cmd("PhantWM", pct(tis["WM"]["frac_railed"]))
+        cmd("PhantGM", pct(tis["GM"]["frac_railed"]))
+        cmd("PhantSweepHiF", f"{hi['f']:.2f}")
+        cmd("PhantSweepLoF", f"{lo['f']:.2f}")
+        cmd("PhantSweepRailHiF", pct(hi["frac_railed"]))   # at high f -> low railing
+        cmd("PhantSweepRailLoF", pct(lo["frac_railed"]))   # at low f  -> high railing
+        cmd("PhantErrLoF", f"{lo['median_rel_dstar_error']:.2f}")
+        cmd("PhantErrHiF", f"{hi['median_rel_dstar_error']:.2f}")
+        ratio = b3["median_abs_err_railed"] / b3["median_abs_err_nonrailed"]
+        cmd("PhantErrRatio", f"{ratio:.1f}")
+        cmd("PhantAUC", f"{b3['auc_railed_predicts_large_error']:.2f}")
+        if not (lo["frac_railed"] > hi["frac_railed"]):
+            problems.append("f-sweep railing not monotone in identifiability")
+
+    if os.path.exists(_CRITICISM):
+        c = json.load(open(_CRITICISM))
+        ws = c["validation"]["biexp_WS"]["flagged_frac"]
+        real = c["real"]
+        cmd("CritNull", pct(ws))
+        cmd("CritReal", pct(real["criticised_frac"]))
+        cmd("CritRailed", pct(real["criticised_frac_among_railed"]))
+        cmd("CritNonRailed", pct(real["criticised_frac_among_nonrailed"]))
+        # cross-check: criticism's own railing rate matches the headline 54.7%
+        if homo and abs(real["frac_railed"] - homo["tight"]["frac_railed"]) > 0.02:
+            problems.append("criticism railing rate != headline railing rate")
+        if not (real["criticised_frac_among_railed"]
+                < real["criticised_frac_among_nonrailed"]):
+            problems.append("railed voxels not less-criticised than non-railed "
+                            "(misspecification-isolation claim broken)")
 
 
 if __name__ == "__main__":

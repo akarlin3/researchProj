@@ -7,22 +7,38 @@ optimiser confined to a physiological box via ``scipy.optimize.least_squares``
 (trust-region reflective). Uncertainty is the textbook asymptotic Gaussian:
 ``cov = sigma^2 * (J^T J)^-1`` from the Jacobian at the solution.
 
-This module exists to reproduce -- on *synthetic phantoms only* -- two
-qualitative findings the Fashion manuscript reports for constrained NLLS:
+This module exists to reproduce -- on *synthetic phantoms only* -- the two
+findings the (retooled) Fashion manuscript builds on for constrained NLLS, in
+their retooled priority order:
 
-1. **Boundary railing.** The pseudo-diffusion ``D*`` is weakly identified from a
-   sparse, noisy acquisition, so the constrained optimiser frequently pins it
-   against a box bound. ``boundary_railing_rate`` measures the fraction of voxels
-   whose ``D*`` estimate lands on a bound -- the per-voxel signature of that weak
-   identifiability.
-2. **Over-confident model-based intervals.** The asymptotic Gaussian error bars
-   the fit reports are systematically too tight (and, on railed voxels, centred
-   on a wrong value), so the calibration ruler (``caliper.metrics``) flags them
-   as under-covering.
+1. **Boundary railing (the assumption-free primary).** The pseudo-diffusion
+   ``D*`` is weakly identified from a sparse, noisy acquisition, so the
+   constrained optimiser frequently pins it against a box bound.
+   ``boundary_railing_rate`` measures the fraction of voxels whose ``D*``
+   estimate lands on a bound -- a per-voxel identifiability signature that needs
+   no ground truth. (The manuscript's real-data rates -- ~55% on the open OSIPI
+   abdomen, replicated 47.8-73.4% across cohorts including an independent liver
+   -- live in the paper and are NOT reproduced here.)
+2. **Conditional interval under-coverage (a scoped, ground-truth-only readout).**
+   The asymptotic-Gaussian error bars are reported under the **honest CRLB**
+   convention (wide where ``D*`` is unidentified; see ``_asymptotic_sigma`` and
+   ``sd_convention``). Scored by the calibration ruler (``caliper.metrics``) on
+   synthetic ground truth, they under-cover ``D*`` *conditionally* in the
+   high-``D*`` tercile -- not the dramatic marginal severity an earlier framing
+   reported. The ruler is a scoped secondary instrument: it needs ground truth
+   and cannot be applied to the real scan.
 
-NOTE (in review): the Fashion manuscript is under peer review. This module
-reproduces only the *phenomenon* on in-repo synthetic data. The manuscript's
-*clinical* boundary-railing percentage lives in the paper and is deliberately
+SD convention (the reviewer-flagged choice; see Gnomon ``docs/METHODS.md`` §5b).
+A railed/unidentified ``D*`` carries no local Fisher information, so its SD is a
+modelling *choice*. ``sd_convention="honest"`` (default) widens it -- the
+statistically honest admission that ``D*`` is undetermined; ``"floored"`` is an
+illustrative reconstruction that instead reports a narrow floored SD
+("overconfident by design") and is shown only to explain how the now-dropped
+marginal 0.30 / 0.67 D* coverage severity arose. Default and recommended: honest.
+
+NOTE (in review): the Fashion manuscript is under peer review at **NMR in
+Biomedicine**. This module reproduces only the *phenomenon* on in-repo synthetic
+data; the clinical/real-data percentages live in the paper and are deliberately
 NOT reproduced here. Keep this module private until the paper clears.
 
 scipy + numpy. The fit is a per-voxel optimisation loop (no torch).
@@ -111,6 +127,17 @@ class NLLSIVIMEstimator:
         bound, measured as a fraction of that parameter's bound span.
     sigma_floor : a small positive floor on the reported SD (guards the degenerate
         Jacobian at a railed solution from producing a zero-width interval).
+    sd_convention : how a railed/unidentified ``D*``'s SD is reported. ``"honest"``
+        (default) keeps the wide, span-clipped asymptotic SD -- the statistically
+        honest admission that ``D*`` is undetermined where it rails. ``"floored"``
+        is an illustrative reconstruction that overwrites a railed ``D*``'s SD with
+        the narrow ``railed_sd_floor`` (the "overconfident by design" convention
+        that manufactures the now-dropped marginal severity). See Gnomon
+        ``docs/METHODS.md`` §5b. Default and recommended: honest.
+    railed_sd_floor : the floored-convention SD for a railed ``D*``, in Caliper's
+        ``D*`` units (Ds, where 1 unit == 1e-3 mm^2/s); default 3.0 == 0.003
+        mm^2/s, matching Gnomon's ``RAILED_SD_FLOOR``. Ignored under the honest
+        convention.
     max_nfev : optimiser iteration budget per voxel.
     """
 
@@ -120,6 +147,8 @@ class NLLSIVIMEstimator:
     init: tuple[float, float, float] = (1.0, 0.1, 20.0)
     rail_tol: float = 1e-3
     sigma_floor: float = 1e-6
+    sd_convention: str = "honest"
+    railed_sd_floor: float = 3.0
     max_nfev: int = 400
     eps: float = 1e-4
 
@@ -133,6 +162,10 @@ class NLLSIVIMEstimator:
             raise ValueError("lower/upper must each have 4 entries (S0, D, f, D*)")
         if np.any(self._hi <= self._lo):
             raise ValueError("each upper bound must exceed its lower bound")
+        if self.sd_convention not in ("honest", "floored"):
+            raise ValueError("sd_convention must be 'honest' or 'floored'")
+        if self.railed_sd_floor <= 0.0:
+            raise ValueError("railed_sd_floor must be positive")
         self._span = self._hi - self._lo
         self._b0_idx = int(np.argmin(self.bvalues))
 
@@ -172,6 +205,15 @@ class NLLSIVIMEstimator:
         railed4 = (point4 - self._lo[None, :] <= self.rail_tol * self._span[None, :]) | (
             self._hi[None, :] - point4 <= self.rail_tol * self._span[None, :]
         )
+        if self.sd_convention == "floored":
+            # Illustrative "overconfident floor" convention (Fashion-implied): a
+            # railed/unidentified D* is reported with a *narrow* floored SD rather
+            # than the honest wide one, so its interval under-covers. This is the
+            # choice that reconstructs the now-dropped marginal D* severity; it is
+            # shown only as a labelled illustration (see Gnomon docs/METHODS.md
+            # §5b) and is never the default. We floor the railed D* SD only.
+            dstar_railed = railed4[:, _DSTAR_FIT_IDX]
+            sigma4[dstar_railed, _DSTAR_FIT_IDX] = self.railed_sd_floor
         return NLLSFit(
             params=point4[:, _REPORT_IDX],
             s0=point4[:, 0],

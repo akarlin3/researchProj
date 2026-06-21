@@ -3,13 +3,17 @@
     python examples/fashion_repro.py
     python examples/fashion_repro.py --snr 20 --n-train 8000 --n-test 3000
 
-Reproduces, on Caliper's in-repo synthetic phantoms only, the headline
-*qualitative* findings of the Fashion manuscript:
+Reproduces, on Caliper's in-repo synthetic phantoms only, the (retooled) Fashion
+manuscript's findings in their retooled priority order:
 
-  1. the calibration ruler (caliper.metrics): coverage, ECE and sharpness;
-  2. the NLLS boundary-railing pathology: a box-constrained NLLS bi-exponential
-     fit rails the weakly-identified D* against its bounds, and the ruler flags
-     its intervals as overconfident (coverage below nominal);
+  1. the boundary-railing pathology (the assumption-free PRIMARY): a
+     box-constrained NLLS bi-exponential fit rails the weakly-identified D*
+     against its bounds -- a per-voxel identifiability signature that needs no
+     ground truth (the real-data rates live in the paper);
+  2. the calibration ruler (caliper.metrics) as a scoped, ground-truth-only
+     SECONDARY: under the honest-CRLB SD convention the railed NLLS intervals
+     under-cover D* *conditionally* in the high-D* tercile (not a dramatic
+     marginal severity); coverage, ECE and sharpness are reported;
   3. the flow-vs-NLLS comparison: the MAF flow posterior is better-calibrated
      than constrained NLLS on the same held-out set.
 
@@ -19,11 +23,11 @@ The pipeline, end to end, on one fixed seed:
                      -> caliper.metrics ruler scorecard + NLLS railing rate
                      -> a short comparison table
 
-IN REVIEW / SYNTHETIC ONLY. The Fashion manuscript is under peer review; this
-script reproduces only the *phenomenon* on synthetic data. The manuscript's
-*clinical* numbers (e.g. the in-vivo D* boundary-railing percentage) live in the
-paper and are deliberately NOT reproduced here. Needs the optional extras:
-``pip install -e ".[estimator,baselines]"`` (torch + scipy).
+IN REVIEW / SYNTHETIC ONLY. The Fashion manuscript is under peer review at NMR in
+Biomedicine; this script reproduces only the *phenomenon* on synthetic data. The
+manuscript's *clinical / real-data* numbers (e.g. the in-vivo D* boundary-railing
+percentage) live in the paper and are deliberately NOT reproduced here. Needs the
+optional extras: ``pip install -e ".[estimator,baselines]"`` (torch + scipy).
 """
 from __future__ import annotations
 

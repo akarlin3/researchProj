@@ -125,3 +125,48 @@ def test_ruler_flags_dstar_overconfident():
     # the well-identified params are far closer to nominal than D* is.
     assert s["Dstar"].coverage_gap < s["D"].coverage_gap
     assert s["Dstar"].coverage_gap < s["f"].coverage_gap
+
+
+# --------------------------------------------------------------------------- #
+# Retooled SD convention -- honest (default) vs the floored illustration
+# --------------------------------------------------------------------------- #
+def test_sd_convention_defaults_to_honest():
+    # The retooled Fashion reports under the honest CRLB; honest is the default.
+    assert NLLSIVIMEstimator().sd_convention == "honest"
+
+
+def test_invalid_sd_convention_rejected():
+    with pytest.raises(ValueError):
+        NLLSIVIMEstimator(sd_convention="overconfident")
+    with pytest.raises(ValueError):
+        NLLSIVIMEstimator(railed_sd_floor=0.0)
+
+
+def test_floored_convention_narrows_railed_dstar_and_lowers_coverage():
+    # Honest CRLB (default) reports a *wide* SD for a railed/unidentified D*; the
+    # floored "overconfident" convention overwrites it with the narrow floor. The
+    # honest path is left untouched (so downstream numbers don't move); the floored
+    # path under-covers D* harder -- the choice that reconstructs the now-dropped
+    # marginal severity, kept only as a labelled illustration.
+    c = synthetic_cohort(n=600, snr=20.0, seed=0)
+    honest = NLLSIVIMEstimator()                       # default sd_convention
+    floored = NLLSIVIMEstimator(sd_convention="floored")
+
+    fit_h = honest.solve(c.signals)
+    fit_f = floored.solve(c.signals)
+    railed = fit_h.dstar_railed
+    assert railed.any(), "need some railed D* voxels for this test"
+
+    # point estimates and railing flags are identical -- only the SD differs.
+    assert np.array_equal(fit_h.params, fit_f.params)
+    assert np.array_equal(fit_h.dstar_railed, fit_f.dstar_railed)
+    # honest railed-D* SD is wide; floored clamps it to the narrow floor (3.0).
+    assert np.all(fit_f.sigma[railed, 2] == floored.railed_sd_floor)
+    assert np.median(fit_h.sigma[railed, 2]) > floored.railed_sd_floor
+
+    # consequence on the ruler: floored under-covers D* at least as hard as honest,
+    # while honest itself still under-covers (the kept, milder finding).
+    s_h = _score(c, honest)
+    s_f = _score(c, floored)
+    assert s_f["Dstar"].coverage <= s_h["Dstar"].coverage + 1e-9
+    assert s_h["Dstar"].coverage_gap < 0.0

@@ -1,9 +1,13 @@
 # Fashion reproduction — Caliper as the manuscript's companion code
 
-> **IN REVIEW / SYNTHETIC ONLY.** The Fashion manuscript ("Do IVIM fitting methods
-> report *honest* uncertainty?") is under peer review. This module reproduces only
-> the **qualitative phenomena** the manuscript reports, on Caliper's **in-repo
-> synthetic phantoms**. The manuscript's **clinical numbers** (e.g. the in-vivo
+> **IN REVIEW / SYNTHETIC ONLY.** The (retooled) Fashion manuscript —
+> *"Boundary-railing of conventional NLLS fits as an assumption-free
+> pseudo-diffusion identifiability diagnostic in IVIM MRI"* — is under peer review
+> at **NMR in Biomedicine**. It now leads with boundary railing as the
+> assumption-free primary and treats the calibration ruler as a scoped,
+> ground-truth-only secondary (honest-CRLB conditional coverage). This module
+> reproduces only the **qualitative phenomena**, on Caliper's **in-repo synthetic
+> phantoms**. The manuscript's **clinical / real-data numbers** (e.g. the in-vivo
 > D\* boundary-railing percentage) live in the paper and are **deliberately not
 > reproduced here**. Keep this module private until the paper clears.
 

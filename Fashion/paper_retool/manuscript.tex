@@ -38,14 +38,14 @@ its reference truth. We answer that critique not by defending the calibration
 argument but by promoting, as the primary contribution, a result that
 \emph{cannot} be overextended because it assumes nothing. That $\Ds$ is weakly
 identified is itself long known; what is new is not the phenomenon but an
-assumption-free, optimiser-level statistic that neutralises this objection where
+assumption-free, optimizer-level statistic that neutralises this objection where
 no calibration ruler can, together with its first systematic, pre-registered,
 cross-cohort quantification and an independent clean-room reproduction.
 
 \textbf{Methods.} In a conventional bounded non-linear least-squares (NLLS)
 bi-exponential IVIM fit, the pseudo-diffusion coefficient $\Ds$ is so weakly
-identified that the optimiser frequently terminates \emph{on} a parameter bound.
-We read this boundary-railing directly off the optimiser's output --- no ground
+identified that the optimizer frequently terminates \emph{on} a parameter bound.
+We read this boundary-railing directly off the optimizer's output --- no ground
 truth, no noise model --- and quantify it with voxel-level bootstrap confidence
 intervals on one open human-abdominal acquisition (OSIPI), its full ROI, and an
 independent liver-DWI cohort (TCGA-LIHC). The calibration ruler (coverage,
@@ -74,7 +74,7 @@ the railed-NLLS baseline.
 
 \textbf{Conclusion.} A large, reproducible fraction of conventional NLLS IVIM fits
 rail to a parameter bound on open human-abdominal data. Because the statistic is
-read off the optimiser without any calibration-trust assumption, it is immune to
+read off the optimizer without any calibration-trust assumption, it is immune to
 the overextension objection; the calibration ruler remains useful but scoped.
 \end{abstract}
 
@@ -106,14 +106,14 @@ contribution as resting on precisely this unverifiable assumption.
 This paper takes the objection seriously and re-aims the contribution. We promote
 to the primary claim a phenomenon that requires no calibration trust at all:
 \textbf{boundary-railing} of the conventional NLLS IVIM fit. When the likelihood
-is flat in $\Ds$, a box-constrained optimiser does not find an interior optimum
+is flat in $\Ds$, a box-constrained optimizer does not find an interior optimum
 --- it slides to a constraint and stops. The fraction of voxels for which this
 happens is a property of the estimator applied to the data; it is read directly
-off the optimiser's output and carries no assumption about ground truth or noise.
+off the optimizer's output and carries no assumption about ground truth or noise.
 It therefore cannot be overextended. We are explicit about what is new. That
 $\Ds$ is weakly identified --- and that a bounded fit can consequently pin it to a
 bound --- is long established~\cite{koh2011,lemke2011}; the contribution is not
-that observation but an assumption-free, optimiser-level statistic that answers
+that observation but an assumption-free, optimizer-level statistic that answers
 the overextension objection no calibration ruler can, given here its first
 systematic, pre-registered, cross-cohort quantification and an independent
 clean-room reimplementation. We show that this railing fraction is large,
@@ -129,7 +129,7 @@ earlier draft carried. Within that scope it yields a real, reproducible finding:
 symmetric Gaussian intervals under-cover $\Ds$ in the high-$\Ds$ regime, the same
 weak-identifiability wall that drives railing. The contribution is thus a single
 mechanism --- weak $\Ds$ identifiability --- observed two ways: as an
-assumption-free fact about the optimiser (primary), and as a scoped calibration
+assumption-free fact about the optimizer (primary), and as a scoped calibration
 consequence where ground truth permits it (secondary).
 
 \section{Methods}
@@ -303,13 +303,13 @@ it is not an artefact of tight box constraints. It is dominated by the
 \emph{upper} $\Ds$ bound: the homogeneous ROI splits \HomoLower\% lower-rail /
 \HomoUpper\% upper-rail, and the full ROI \FullLower\% / \FullUpper\%. This is the
 high-$\Ds$ identifiability wall: the fast perfusion compartment is so weakly
-constrained by the data that the optimiser is pushed to the ceiling. The
+constrained by the data that the optimizer is pushed to the ceiling. The
 direction of the effect across acquisition schemes confirms the mechanism --- the
 sparser the low-$b$ perfusion sampling, the worse $\Ds$ identifiability, and the
 more the fit rails (the sparse 3-$b$ liver scheme rails most). Equation~\eqref{eq:ivim}
 makes this concrete: $\Ds$ governs a fast decay visible only at low $b$, so once
 the low-$b$ sampling is thin the likelihood is nearly flat in $\Ds$ and the
-asymptotic (CRLB) variance --- which is exactly the curvature the optimiser
+asymptotic (CRLB) variance --- which is exactly the curvature the optimizer
 cannot find --- diverges.
 
 \subsection{The railing flag is actionable: it flags voxels whose $\Ds$ is
@@ -340,7 +340,7 @@ reduction excludes zero; the benefit recurs at SNR 10 and 40
 It is, deliberately stated, \emph{not} a sensitive detector. Its recall is only
 \flagRecTwenty{} [\flagRecTwentyLo, \flagRecTwentyHi]: most unreliable voxels do
 not rail, because $\Ds$ is weakly identified \emph{broadly} and a fit can carry a
-badly recovered interior $\Ds$ without the optimiser reaching a bound. As a binary
+badly recovered interior $\Ds$ without the optimizer reaching a bound. As a binary
 classifier of unreliability the flag therefore sits only modestly above chance
 (balanced accuracy \flagAuc), consistent with the near-chance area-under-curve of
 railing scored against an above-median error split. The earned reading is
@@ -461,7 +461,7 @@ deliberately bounded sense: the flag is \emph{specific, not sensitive} (recall
 \flagRecTwenty), so a positive rail flags untrustworthy $\Ds$ but the absence of a
 rail does not certify a reliable one --- we claim a flag for untrustworthy $\Ds$,
 not a complete detector of it. Two scope boundaries follow and are stated
-explicitly. First, this railing flag is read off the conventional optimiser's
+explicitly. First, this railing flag is read off the conventional optimizer's
 output and is \emph{distinct from} an out-of-distribution self-consistency gate
 (a learned check on a posterior's own coherence); the two must not be conflated,
 and we evaluate only the former. Second, the flag's \emph{clinical} utility ---
@@ -481,7 +481,7 @@ presented and are left to future work.
 
 \paragraph{Differentiation from known $\Ds$ instability.} That $\Ds$ is unstable
 and hard to fit is textbook~\cite{koh2011,lemke2011}; the contribution here is not
-that observation but an assumption-free, optimiser-level railing statistic ---
+that observation but an assumption-free, optimizer-level railing statistic ---
 immune to the overextension critique that calibration claims invite --- delivered
 with its first systematic, pre-registered, cross-cohort quantification and an
 independent clean-room reproduction.
@@ -509,7 +509,7 @@ secondary, not the primary, contribution.
 
 A large, reproducible fraction of conventional NLLS IVIM fits rail to a parameter
 bound on open human-abdominal data, and the effect generalises across ROI, bounds,
-SNR, and an independent liver cohort. Because it is read off the optimiser without
+SNR, and an independent liver cohort. Because it is read off the optimizer without
 any calibration-trust assumption, boundary-railing is a primary claim immune to
 the overextension objection that calibration arguments invite. The calibration
 ruler remains useful but scoped: under an honest CRLB convention it shows a real,

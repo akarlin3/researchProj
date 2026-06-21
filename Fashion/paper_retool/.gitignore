@@ -1,0 +1,12 @@
+# LaTeX build intermediates (tectonic/pdflatex)
+*.aux
+*.log
+*.blg
+*.bbl
+*.out
+*.toc
+*.pag
+*.xdv
+*.fls
+*.fdb_latexmk
+*.synctex.gz

@@ -1,3 +1,40 @@
+# CHANGES — NMR in Biomedicine journal format (Wiley NJD-v2) + author block
+
+Branch `worktree-nmr-biomed-format`. **Format only — no new claim, no new number.**
+`numbers.tex` is unchanged (the numbers-gate `consistency.py` re-derives it
+byte-identically: 174 macros, exit 0). Ports `Fashion/paper_retool/manuscript.tex`
+from a neutral `article` class to the official **Wiley NJD-v2** class that NMR in
+Biomedicine directs LaTeX authors to.
+
+## What changed
+- **Document class.** `article` (ebgaramond) → `\documentclass[AMA,STIX1COL]{WileyNJD-v2}`.
+  Dropped the now-class-owned packages (geometry, authblk, hyperref, ebgaramond,
+  fontenc/inputenc); kept the project macros (`numbers.tex`, `\Ds`, `\unit`, `\d`).
+- **Vendored template files** (the Wiley class is **not on CTAN**, so it is committed
+  beside the source for a self-contained `tectonic` build): `WileyNJD-v2.cls` (v0.2),
+  `NJDnatbib.sty`, `WileyNJD-AMA.bst`.
+- **Author block.** Filled the previously blank `\author`/`\affil`: **Avery Karlin**,
+  affiliations (1) Annealing Signet Institute, (2) Dept. of Applied Physics and
+  Applied Mathematics, Columbia University, (3) Dept. of Computer Science, University
+  of Colorado Boulder; `\corres` + `\email{ak5232@columbia.edu}`; `\presentaddress`
+  noting student status at Columbia and CU Boulder; `\authormark{Karlin}`.
+- **Front matter → class macros.** Structured abstract block → `\abstract[Summary]{}`
+  (272 words, ≤300 limit); added `\keywords{}` (6, journal-required, previously
+  missing); added an abbreviations `\footnotetext`; added the `\jnlcitation{}`
+  "How to cite" content (auto-emitted by the class).
+- **References.** `\bibliographystyle{unsrt}` → AMA numbered/superscript via the
+  `AMA` class option + `WileyNJD-AMA.bst` (NMR in Biomedicine house style). All 15
+  cited references resolve (no undefined citations).
+- **Graphical abstract.** WileyNJD-v2 has no GA macro and the journal takes the GA as
+  a separate upload, so the inline GA section was removed from the manuscript and
+  re-homed into a standalone `graphical_abstract_card.tex` → `graphical_abstract_card.pdf`
+  (image `figures/graphical_abstract.pdf` + the ≤80-word TOC text), preserved intact.
+- **Build hygiene.** Added `.gitignore` for LaTeX intermediates. `tectonic` builds
+  both `manuscript.pdf` (9 pp) and the GA card cleanly; the WileyNJD-v2 class compiles
+  under tectonic's XeTeX (STIX fonts auto-fetched).
+
+---
+
 # CHANGES — needle/novelty (1/3): pre-empt "railing is just known $D^*$ non-identifiability"
 
 Branch `worktree-needle+novelty` (requested: `needle/novelty`). Target paper:

@@ -7,21 +7,33 @@ boundary-railing primary (PR #29) and the **Gnomon CP4** spine-agnostic hand-off
 components and honors the Gnomon claims ledger exactly. Target venue:
 **NMR in Biomedicine** (EIC Prof. John R. Griffiths).
 
-> **STATUS: PROVISIONAL — NOT SUBMITTED.** Human review and venue-specific
-> formatting are the next step (see *Not done* below). Do not submit as-is.
+> **STATUS: PROVISIONAL — NOT SUBMITTED.** The manuscript is now in the official
+> **NMR in Biomedicine (Wiley NJD-v2)** journal format; human review is the next
+> step (see *Not done* below). Do not submit as-is.
 
 ## Build
 
 ```bash
 bash build.sh          # numbers-gate (integration) -> tectonic -> manuscript.pdf
-python3 consistency.py # numbers-gate only (126 macros, stdlib-only)
+python3 consistency.py # numbers-gate only (174 macros, stdlib-only)
+tectonic manuscript.tex                # manuscript (Wiley NJD-v2 class)
+tectonic graphical_abstract_card.tex   # standalone graphical-abstract card
 ```
+
+The manuscript compiles with the **WileyNJD-v2** class (Wiley's "New Journal
+Design"), the class NMR in Biomedicine directs LaTeX authors to. Because that
+class is **not on CTAN**, the three required template files are vendored beside
+the source (`WileyNJD-v2.cls`, `NJDnatbib.sty`, `WileyNJD-AMA.bst`) so `tectonic`
+builds the paper offline with no extra setup.
 
 ## Contents
 
 | File | What it is |
 |---|---|
-| `manuscript.tex` / `.pdf` | The boundary-railing-first manuscript (ebgaramond + microtype). |
+| `manuscript.tex` / `.pdf` | The boundary-railing-first manuscript in the **Wiley NJD-v2** journal class (AMA numbered references). |
+| `WileyNJD-v2.cls`, `NJDnatbib.sty`, `WileyNJD-AMA.bst` | Vendored Wiley NMR-in-Biomedicine template files (not on CTAN; tracked so the build is self-contained). |
+| `graphical_abstract_card.tex` / `_card.pdf` | Standalone graphical abstract (image + ≤80-word text), uploaded separately — the class has no GA macro. |
+| `figures/graphical_abstract.pdf` | The 50×60 mm graphical-abstract image. |
 | `numbers.tex` | **Auto-generated** macros; every number traces to a seeded Sextant/Gnomon result JSON. Do not hand-edit. |
 | `consistency.py` | **Numbers-gate**: re-derives `numbers.tex` from the validated source JSONs and asserts cross-source consistency; non-zero exit aborts the build. |
 | `refs.bib` | Bibliography (reused from Fashion + the TCGA-LIHC dataset citation). |
@@ -78,12 +90,17 @@ No `pancData3` / MSK data. Synthetic substrate is the read-only Lattice sibling.
   ~300-word abstract (converted from the structured one), and a generative-AI
   declaration in the manuscript declarations. The GA figure choice/text awaits
   author approval before this is called submission-ready (see root `CHANGES.md`).
-- **Remaining venue-specific formatting.** The Wiley submission template, reference
-  style, and final figure/word limits are **not** yet applied; the manuscript still
-  uses a neutral article class.
+- **Venue template APPLIED.** The manuscript is now in the official Wiley NJD-v2
+  class with AMA numbered/superscript references (`WileyNJD-AMA.bst`), the `Summary`
+  abstract macro (272 words, under the 300 limit), `\keywords`, an abbreviations
+  footnote, and the auto-emitted "How to cite" box. Final figure/word-count checks
+  against the live author guidelines still warrant an author pass before submission.
 - **Cover letter.** The phenomenon-led cover letter is provided; the author
   decides whether/how to disclose prior review history.
-- **Author/affiliation block** carries the prior redraft's placeholder identity;
-  confirm before submission.
+- **Author/affiliation block FILLED.** Avery Karlin, with three affiliations —
+  Annealing Signet Institute (primary); Department of Applied Physics and Applied
+  Mathematics, Columbia University; and Department of Computer Science, University
+  of Colorado Boulder (student) — correspondence `ak5232@columbia.edu`. Confirm the
+  ORCID/email and primary-affiliation order before submission.
 - **OUT-OF-SCOPE items** (OOD gate, timing, brain held-out-$b$) remain unevaluated
   by design; if a future revision wants them, they must be sourced elsewhere.

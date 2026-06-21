@@ -36,7 +36,11 @@ imaging has been critiqued as \emph{overextended}: any coverage or calibration
 statement is only as trustworthy as the noise and forward model that generated
 its reference truth. We answer that critique not by defending the calibration
 argument but by promoting, as the primary contribution, a result that
-\emph{cannot} be overextended because it assumes nothing.
+\emph{cannot} be overextended because it assumes nothing. That $\Ds$ is weakly
+identified is itself long known; what is new is not the phenomenon but an
+assumption-free, optimiser-level statistic that neutralises this objection where
+no calibration ruler can, together with its first systematic, pre-registered,
+cross-cohort quantification and an independent clean-room reproduction.
 
 \textbf{Methods.} In a conventional bounded non-linear least-squares (NLLS)
 bi-exponential IVIM fit, the pseudo-diffusion coefficient $\Ds$ is so weakly
@@ -100,7 +104,13 @@ is flat in $\Ds$, a box-constrained optimiser does not find an interior optimum
 --- it slides to a constraint and stops. The fraction of voxels for which this
 happens is a property of the estimator applied to the data; it is read directly
 off the optimiser's output and carries no assumption about ground truth or noise.
-It therefore cannot be overextended. We show that this railing fraction is large,
+It therefore cannot be overextended. We are explicit about what is new. That
+$\Ds$ is weakly identified --- and that a bounded fit can consequently pin it to a
+bound --- is long established~\cite{koh2011,lemke2011}; the contribution is not
+that observation but an assumption-free, optimiser-level statistic that answers
+the overextension objection no calibration ruler can, given here its first
+systematic, pre-registered, cross-cohort quantification and an independent
+clean-room reimplementation. We show that this railing fraction is large,
 reproducible, generalises beyond a hand-curated ROI, survives deliberately
 generous bounds and every SNR stratum, and replicates on an independent organ,
 scanner, and site.
@@ -384,18 +394,19 @@ out-of-distribution self-consistency gate, estimator timing, or in-vivo brain
 held-out-$b$ recovery; those questions are outside the scope of the evidence
 presented and are left to future work.
 
+\paragraph{Differentiation from known $\Ds$ instability.} That $\Ds$ is unstable
+and hard to fit is textbook~\cite{koh2011,lemke2011}; the contribution here is not
+that observation but an assumption-free, optimiser-level railing statistic ---
+immune to the overextension critique that calibration claims invite --- delivered
+with its first systematic, pre-registered, cross-cohort quantification and an
+independent clean-room reproduction.
+
 \paragraph{Differentiation from learned uncertainty.} Casali et
-al.~\cite{casali2026} propose a method --- deep-ensemble mixture-density networks
-for IVIM uncertainty, validated in vivo on mouse brain --- and themselves report
-residual $\Ds$ overconfidence. The present work is not a competing UQ method: it
-documents an assumption-free failure mode of the \emph{conventional} fit on
-human-abdominal tissue, where perfusion (and thus $\Ds$) is clinically meaningful.
-The differentiation is strictly empirical and scoped to the data: human-abdominal
-DWI reaches a weak-identifiability regime that preclinical mouse-brain validation
-does not, and Casali's own residual $\Ds$ overconfidence is the learned echo of
-the same wall that makes the conventional fit rail. Our amortized-posterior result
-(Section~\ref{sec:ruler}) is consistent with their finding that a well-specified
-learned estimator improves but does not eliminate the high-$\Ds$ difficulty.
+al.~\cite{casali2026} characterise one supervised network's aleatoric/epistemic
+uncertainty budget, validated on preclinical mouse brain; this work instead
+documents an estimator-agnostic, real-data identifiability signature in
+human-abdominal DWI, their own residual $\Ds$ overconfidence being the learned
+echo of the same wall that rails the conventional fit.
 
 \paragraph{Limitations and scope.} The open primary cohort is a single subject;
 we make no population claim from it, reporting a within-subject voxel statistic

@@ -26,9 +26,7 @@ python3 consistency.py # numbers-gate only (126 macros, stdlib-only)
 | `consistency.py` | **Numbers-gate**: re-derives `numbers.tex` from the validated source JSONs and asserts cross-source consistency; non-zero exit aborts the build. |
 | `refs.bib` | Bibliography (reused from Fashion + the TCGA-LIHC dataset citation). |
 | `HUANG_COVERAGE_MAP.md` | Each Huang critique → where/how the retool resolves it (CP3). |
-| `cover_letter_phenomenon.tex` | Cover-letter variant A — lead with the phenomenon. |
-| `cover_letter_replication.tex` | Cover-letter variant B — lead with the cross-cohort replication. |
-| `cover_letter_correction.tex` | Cover-letter variant C — lead with the honest correction. |
+| `cover_letter_phenomenon.tex` | Cover letter — leads with the phenomenon. |
 | `build.sh` | Gate + compile. |
 
 ## Claims ledger → manuscript section map
@@ -77,8 +75,8 @@ No `pancData3` / MSK data. Synthetic substrate is the read-only Lattice sibling.
 - **No venue-specific formatting.** NMR in Biomedicine house style (Wiley template,
   structured-abstract rules, reference style, figure/word limits) is **not** yet
   applied; the manuscript uses a neutral article class.
-- **Cover-letter selection.** Three variants are provided; the author chooses one
-  and decides whether/how to disclose prior review history.
+- **Cover letter.** The phenomenon-led cover letter is provided; the author
+  decides whether/how to disclose prior review history.
 - **Author/affiliation block** carries the prior redraft's placeholder identity;
   confirm before submission.
 - **OUT-OF-SCOPE items** (OOD gate, timing, brain held-out-$b$) remain unevaluated

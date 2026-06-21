@@ -156,10 +156,9 @@ numeric multiset (`freeze_numbers.sh`), built with `tectonic`:
 
 ```
 diff numbers_pre.txt numbers_post.txt
-2c2
-< 10 0      ->  14 0     # manuscript.pdf: +4 "b=0" tokens (the new limitation language)
-225c225
-< 6 0       ->   8 0     # supplement.pdf: +2 "b=0" tokens (Table 1 caption)
+# Human-readable summary of the only changed token count:
+# manuscript.pdf: 10 "0" -> 14 "0"   (+4 from added b=0 wording)
+# supplement.pdf: 6 "0"  -> 8 "0"    (+2 from added b=0 wording)
 ```
 
 The **only** change is an *increase* in the count of the token `0`, from the six added

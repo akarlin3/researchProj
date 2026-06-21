@@ -156,8 +156,8 @@ numeric multiset (`freeze_numbers.sh`), built with `tectonic`:
 
 Human-readable summary of `diff numbers_pre.txt numbers_post.txt`:
 
-- `manuscript.pdf`: 10 `"0"` $\rightarrow$ 14 `"0"` (+4 from added `$b=0$` wording)
-- `supplement.pdf`: 6 `"0"` $\rightarrow$ 8 `"0"` (+2 from added `$b=0$` wording)
+- `manuscript.pdf`: 10 `"0"` → 14 `"0"` (+4 from added `$b=0$` wording)
+- `supplement.pdf`: 6 `"0"` → 8 `"0"` (+2 from added `$b=0$` wording)
 
 The **only** change is an *increase* in the count of the token `0`, from the six added
 `$b=0$` mentions. Every reported result token is unchanged:

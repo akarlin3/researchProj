@@ -46,15 +46,33 @@ be re-stated. The *data* itself (ACRIN-6698) is public and stable regardless.
 
 ## 3. FASHION (PROVISIONAL — the posterior/ruler the widths derive from)
 
+**Paper status (PINNED):** in review at **NMR in Biomedicine** (retooled,
+boundary-railing-first; resubmitted from MRM); no DOI. Source: `Fashion/paper_retool/`,
+`Gnomon/handoff/CLAIMS_LEDGER.md`.
+
 | key | pinned value | source | role for Echo |
 |---|---|---|---|
 | `fashion.version` | 0.1.0 | `Fashion/pyproject.toml` | package version |
 | `fashion.zenodo` | 10.5281/zenodo.20649669 | `Fashion/README.md` | citable snapshot |
-| `fashion.role` | calibrated IVIM posterior / ruler that conformal widths are built on | Fashion | the uncertainty whose *scale* Echo checks |
+| `fashion.role` | calibrated IVIM posterior / **scoped, ground-truth-only** ruler that conformal widths are built on | Fashion | the uncertainty whose *scale* Echo checks |
 
 **The Fashion assumption:** the calibrated posterior that defines a "well-scaled" interval
 lands as submitted. If Fashion's ruler changes, the *interpretation* of what a correctly
 sized interval is changes, and CP3's reading is re-stated.
+
+**Retool note — reinforces Lethe's thesis.** The retooled Fashion now openly owns a
+**bounded, conditional limit**: under the honest CRLB its calibration ruler is a
+*scoped secondary* (ground-truth/synthetic only — it cannot be applied to a real
+scan), and even on ground truth it under-covers D\* *conditionally* in the high-D\*
+tercile (honest CRLB 0.63 [0.60, 0.67]); the dramatic marginal 0.30/0.67 severity is
+**dropped**. This **reinforces** Echo/Lethe's central claim that ground-truth-free
+trust is bounded: the ruler's own paper now agrees its calibration certificate is
+scoped and conditional — exactly the kind of bound Lethe records. Echo's own result
+lives on a *disjoint axis* (real-data test–retest **precision**, coverage 0.263 vs an
+analytic 0.755 target); it never quoted Fashion's coverage figures, so nothing here is
+re-numbered — only the framing aligns. No overclaim is introduced: Fashion's bound is
+on *synthetic* conditional coverage; Lethe's is on *real* repeatability scale; the two
+bounds are independent and reported as such.
 
 ## 4. MINOS (PROVISIONAL — the decision/trust lens)
 

@@ -105,9 +105,15 @@ quantile regression to IVIM and reported, on the same ACRIN-6698 test--retest ar
 here, that the conformal interval \emph{width} rank-tracks the scan--rescan variability of
 $D$ (Spearman $r=\numGaugeR$, $95\%$ CI $[\numGaugeRlo,\numGaugeRhi]$; for $\Dstar$ the
 association is null, $r=\numGaugeDstar$), explicitly framing it as ``repeatability-tracking,
-not validation, accuracy, calibration, or coverage.'' \textbf{Fashion}\PROV{} established
-which uncertainty paradigms actually cover $\Dstar$ and supplies the calibrated posterior a
-conformal width is built on. \textbf{Minos}\PROV{} prices the \emph{decision} value of a
+not validation, accuracy, calibration, or coverage.'' \textbf{Fashion}\PROV{} (retooled,
+in review at \textit{NMR in Biomedicine}) established which uncertainty paradigms actually
+cover $\Dstar$ and supplies the calibrated posterior a conformal width is built on; in its
+retooled form it leads with an assumption-free boundary-railing diagnostic and openly scopes
+its calibration ruler to a \emph{secondary, ground-truth-only} instrument that under-covers
+$\Dstar$ \emph{conditionally} in the high-$\Dstar$ regime --- a bounded, conditional admission
+that reinforces the constrained-validation reading of this note: even the ruler's own paper
+now agrees that a ground-truth-free calibration certificate is scoped, not absolute.
+\textbf{Minos}\PROV{} prices the \emph{decision} value of a
 calibrated error bar, motivating why a correctly \emph{sized} interval matters. We reuse
 \textbf{Caliper} (MIT, in-tree) for the conformal ruler, read-only.
 
@@ -238,7 +244,13 @@ Applied to conventionally-calibrated conformal IVIM intervals, it returns a shar
 negative --- the interval for $D$ is about four times too narrow for real scan--rescan
 variation --- which we record, honestly, as a Lethe result. On publication of Fashion,
 Gauge, and Minos the provisional flags are discharged by a single re-run; the promotion and
-fold paths are documented alongside.
+fold paths are documented alongside. Notably, the retooled \textbf{Fashion}\PROV{} reaches a
+parallel conclusion from the opposite direction: it now leads with an assumption-free
+boundary-railing diagnostic and openly scopes its calibration ruler to a ground-truth-only
+secondary that under-covers $\Dstar$ \emph{conditionally}, so the ruler's own paper now
+agrees that a ground-truth-free calibration certificate is bounded and conditional. The two
+bounds sit on disjoint axes --- Lethe on real-data repeatability \emph{precision}, Fashion on
+\emph{synthetic} conditional coverage --- and are reported as independent, not conflated.
 
 \paragraph{Reproducibility \& data availability.} All numbers trace to seeded printouts via
 \texttt{consistency.py}; one command (\texttt{bash reproduce.sh}) regenerates them. Real

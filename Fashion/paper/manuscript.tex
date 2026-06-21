@@ -142,7 +142,7 @@ observation that NLLS struggles on \Dstar{}, which is well established. Two one-
 deltas locate the work. (a) Relative to the known instability of \Dstar{}
 (Gurney-Champion et al., 2018; Meeus et al., 2017), which is documented largely in
 simulation and as estimator variance, we quantify instability as a concrete,
-optimiser-level \emph{boundary-railing rate} that is directly readable from real data,
+optimizer-level \emph{boundary-railing rate} that is directly readable from real data,
 reproduces in an independent clean-room implementation, and recurs across scanners,
 organs, and acquisition schemes with bootstrap confidence intervals. (b) Relative to
 Casali et al.\ (2026), who build a comprehensive uncertainty-quantification framework
@@ -151,12 +151,12 @@ epistemic components, our object is different: an estimator-agnostic, real-data
 identifiability \emph{phenomenon} and its conditional-coverage resolution, not a learned
 network's internal uncertainty budget.
 
-The phenomenon we measure is boundary-railing. When a bounded least-squares optimiser
+The phenomenon we measure is boundary-railing. When a bounded least-squares optimizer
 cannot localise \Dstar{} from the data, it does not return a diffuse estimate---it drives
 \Dstar{} to a fit bound and stops, producing a point estimate pinned at the edge of the
 feasible box with a spuriously narrow apparent precision. Railing is thus a per-voxel,
 assumption-free read-out of weak identifiability: it requires no ground truth and no
-trust in a noise model, only the optimiser's own output. We quantify its rate on open
+trust in a noise model, only the optimizer's own output. We quantify its rate on open
 in-vivo data, show it generalises, and then trace its downstream effect on three
 uncertainty constructions---Gaussian (Laplace and MCMC standard-deviation) credible
 intervals, posterior quantile intervals, and an amortized neural posterior estimator---using
@@ -201,7 +201,7 @@ in-vivo \emph{abdomen} acquisition (Gurney-Champion et al., 2025; Zenodo record
 in-tree. The acquisition is a $144\times144\times21$ volume with 104 measurements over
 12 unique b-values $\{0,10,20,30,40,50,75,100,150,250,400,600\}$ s/mm$^2$ (Philips 3T).
 The archive's homogeneous-tissue mask defines a 1932-voxel ROI; each voxel was
-b0-normalised. A previously reported ``1618 high-SNR voxels'' corresponds to this ROI
+b0-normalized. A previously reported ``1618 high-SNR voxels'' corresponds to this ROI
 under an unstated SNR cut; we therefore report the railing rate on the full
 homogeneous ROI and on a b0-SNR$>$25 subset so the load-bearing number carries its
 selection sensitivity. For cross-cohort generalization (Section 3.1), Sextant analysed
@@ -280,7 +280,7 @@ rising to 56.2\% (54.0--58.4) at the looser $10^{-2}$ tolerance and to 58.7\% on
 b0-SNR$>$25 subset (n\,=\,799). A previously reported rate of 54.7\% on the same data
 sits inside this confidence interval---reproduced here without using the original code,
 on the full ROI rather than an unstated SNR-cut subset (Figure 1). Railing is therefore a
-genuine, code-independent property of the data-plus-optimiser, not an artefact of one
+genuine, code-independent property of the data-plus-optimizer, not an artefact of one
 analysis.
 
 The phenomenon generalises across selection, scanner, and organ (Figure 1). On the
@@ -290,7 +290,7 @@ different site, vendor (Siemens 1.5T), and organ, acquired with a proper $b=0$ a
 IVIM ground truth): under a clean four-b-value scheme \Dstar{} rails in 43.7\%
 (43.2--44.2) of voxels, reproducing the phenomenon in an entirely unrelated acquisition.
 A sparser three-b-value liver scheme rails still more---73.4\% (73.0--73.9)---which we
-report as supporting rather than load-bearing evidence: it omits $b=0$, is normalised by
+report as supporting rather than load-bearing evidence: it omits $b=0$, is normalized by
 its lowest acquired $b$ (an approximation), and pools only three subjects (per-subject
 rates 0.66, 0.74, 0.75, mutually consistent). Its higher rate is directionally consistent
 with the mechanism---thinner low-$b$ perfusion sampling weakens \Dstar{} identifiability
@@ -388,7 +388,7 @@ honest quantile row.}
 years, and that NLLS fits of \Dstar{} are unstable is textbook (Koh et al., 2011;
 Gurney-Champion et al., 2018). The contribution here is not that observation. It is the
 first systematic, real-data quantification of \Dstar{} \emph{boundary-railing}---an
-optimiser-level, assumption-free fingerprint of that weak identifiability---measured on
+optimizer-level, assumption-free fingerprint of that weak identifiability---measured on
 open in-vivo data, reproduced in an independent clean-room implementation, shown to
 generalise across selection, scanner, organ and acquisition scheme with bootstrap CIs,
 and paired with an honest, conditional characterisation of the calibration failure it
@@ -401,7 +401,7 @@ reports aggregate calibration in diffusion MRI (Manzano-Patr\'on et al., 2025), 
 emphasis is the conditional, convention-explicit honesty of the coverage claim itself.
 
 \textbf{Why railing is the right primitive.} Railing requires no ground truth and no
-trust in a noise model---it is read directly from the optimiser's output---which is what
+trust in a noise model---it is read directly from the optimizer's output---which is what
 makes it both immune to the over-extension critique that attaches to assumption-laden
 calibration claims and directly actionable: a visibly railed voxel is a flagged voxel.
 This is also a clinically safer failure mode than the silent alternative. A bounded

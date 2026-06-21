@@ -1,8 +1,8 @@
 # Datum reference numbers (PROVISIONAL)
 
-> **PROVISIONAL.** These numbers are scored on Fashion's calibration ruler, which is *in review at MRM*. They are **not** final reference values and must not be cited as such until the ruler locks. Regenerate with `python revalidate.py --full`.
+> **PROVISIONAL.** These numbers are scored on Fashion's calibration ruler, which is *in review at NMR in Biomedicine* (retooled, boundary-railing-first; a scoped, ground-truth-only secondary reported under the honest CRLB). They are **not** final reference values and must not be cited as such until the ruler locks. Regenerate with `python revalidate.py --full`.
 
-- Ruler: **Fashion calibration ruler v0.1.0 @ f078802** (in review at MRM (R2 revision) -- NOT finalized)
+- Ruler: **Fashion calibration ruler v0.1.0 @ f078802** (in review at NMR in Biomedicine (retooled, boundary-railing-first) -- NOT finalized)
 - Ruler implementation: `caliper.metrics` (read-only)
 - Substrate: **Lattice IVIM DRO** (seed 20260619), converted to Caliper `(D, f, D*)` convention
 - Task: `datum-ivim-calibration` v2; nominal central interval = 0.90; bootstrap CIs: 1000 resamples, 95%

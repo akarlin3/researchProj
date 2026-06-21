@@ -1,8 +1,12 @@
 """Assumptions manifest -- machine-readable pins for Datum's load-bearing inputs.
 
-Datum is built **on Fashion's calibration ruler**, which is *in review*. Until
-that ruler locks (MRM acceptance + DOI), every reference number Datum produces by
-scoring through the ruler is **PROVISIONAL**. This module is the single source of
+Datum is built **on Fashion's calibration ruler**, which is *in review* (retooled,
+now resubmitted to **NMR in Biomedicine**). Until that ruler locks (NMRB
+acceptance + DOI), every reference number Datum produces by scoring through the
+ruler is **PROVISIONAL**. The retooled Fashion demotes the ruler to a **scoped
+secondary** (ground-truth/synthetic only) and reports under the **honest CRLB**
+convention; Datum's substrate is synthetic, so the scope holds, and Datum scores
+the honest-CRLB intervals Caliper produces. This module is the single source of
 truth for what is pinned and the policy that governs the provisional flag. The
 human-readable companion is ``ASSUMPTIONS.md``; this file is what tests and
 ``revalidate.py`` read.
@@ -20,9 +24,11 @@ RULER = {
     "symbols": ["coverage", "ece", "sharpness_rel"],
     "nominal_levels": [0.50, 0.68, 0.80, 0.90, 0.95, 0.99],  # frozen LEVELS in calib.py
     "version": "0.1.0",                 # Fashion/pyproject.toml
-    "commit": "f078802",               # git log -1 -- Fashion/uq/calib.py
+    "commit": "f078802",               # git log -1 -- Fashion/uq/calib.py (recipe unchanged by the retool)
     "code_zenodo": "10.5281/zenodo.20649669",  # Fashion code+figures archive
-    "manuscript_status": "in review at MRM (R2 revision) -- NOT finalized",
+    "scope": "scoped secondary -- ground-truth/synthetic only (cannot touch a real scan)",
+    "convention": "honest CRLB (default; floored convention rejected as manufacturing severity)",
+    "manuscript_status": "in review at NMR in Biomedicine (retooled, boundary-railing-first) -- NOT finalized",
     "manuscript_doi": None,            # None => PROVISIONAL is in force
 }
 

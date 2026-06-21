@@ -3,10 +3,13 @@
 > **Datum is a benchmark built on a ruler that is still in review.** It packages a
 > fixed IVIM uncertainty-calibration task, a curated baseline panel, and reference
 > numbers — **under the explicit assumption that Fashion's calibration ruler
-> survives to publication as submitted.** Fashion is in review at *MRM* (R2).
-> Therefore the ruler version is pinned here, and **every reference number Datum
-> produces by scoring through that ruler is flagged PROVISIONAL** in the table /
-> output where it appears.
+> survives to publication as submitted.** Fashion is in review at *NMR in
+> Biomedicine* (retooled, boundary-railing-first; resubmitted from MRM). The retool
+> demotes the ruler to a **scoped secondary** (ground-truth/synthetic only) reported
+> under the **honest CRLB** convention — Datum's substrate is synthetic, so the
+> scope holds. Therefore the ruler version is pinned here, and **every reference
+> number Datum produces by scoring through that ruler is flagged PROVISIONAL** in
+> the table / output where it appears.
 >
 > If Fashion's ruler shifts in revision (its nominal levels, its coverage/ECE/
 > sharpness recipe, or its headline about which interval is "the calibrated one"),
@@ -39,9 +42,10 @@ never edits Caliper or Gauge. The dependency is one-way: **nothing imports Datum
 
 ## 1. FASHION — pinned inputs (the calibration ruler Datum is built on)
 
-**Status (PINNED):** *in review at MRM (R2 revision)* — **NOT finalized**, no
-manuscript DOI assigned. Source: `Fashion/CITATION.cff` (`journal: "in submission
-to MRM"`), `Fashion/REVIEWER_RESPONSE_R2.md`.
+**Status (PINNED):** *in review at NMR in Biomedicine* (retooled,
+boundary-railing-first; resubmitted from MRM) — **NOT finalized**, no manuscript
+DOI assigned. Source: `Fashion/paper_retool/` (NMR in Biomedicine, Wiley NJD-v2),
+`Gnomon/handoff/CLAIMS_LEDGER.md`.
 
 | key | pinned value | source | role for Datum |
 |---|---|---|---|
@@ -51,13 +55,19 @@ to MRM"`), `Fashion/REVIEWER_RESPONSE_R2.md`.
 | `ruler.version` | `0.1.0` | `Fashion/pyproject.toml` | package version |
 | `ruler.commit` | `f078802` (last touch of `calib.py`) | `git log -1 -- Fashion/uq/calib.py` | code provenance |
 | `ruler.code_zenodo` | `10.5281/zenodo.20649669` | `Fashion/README.md` | citable code snapshot |
+| `ruler.scope` | scoped secondary — ground-truth/synthetic only | retooled Fashion / Gnomon hand-off | the ruler cannot touch a real scan; Datum's substrate is synthetic, so the scope holds |
+| `ruler.convention` | honest CRLB (default; floored rejected) | `Gnomon/docs/METHODS.md` §5b | Datum scores the honest-CRLB intervals Caliper produces |
 | `ruler.manuscript_doi` | `None` | — | **`None` ⇒ PROVISIONAL in force** |
 
-**The Fashion assumption Datum relies on:** that Fashion's calibration ruler — the
-coverage/ECE/sharpness triple at the frozen nominal levels, and its headline that a
-*skew-aware* interval is the calibration recipe for D\* while symmetric ±σ
-under-covers — survives review unchanged. Datum operationalizes that ruler as a
-benchmark standard. If the ruler changes, **all reference numbers are invalid.**
+**The Fashion assumption Datum relies on (retooled):** that Fashion's calibration
+ruler — the coverage/ECE/sharpness triple at the frozen nominal levels — survives
+review *as a scoped, ground-truth-only secondary* reported under the honest CRLB.
+The retool drops the dramatic *marginal* D\* under-coverage (0.30/0.67) and keeps
+the honest, milder, **conditional** finding (high-D\* tercile under-coverage); the
+assumption-free primary is boundary railing on real data, which needs no ruler.
+Datum operationalizes the scoped ruler as a benchmark standard on synthetic data.
+If the ruler's recipe or nominal levels change, **all reference numbers are
+invalid** and must be re-run.
 
 **Ruler implementation Datum calls (read-only):** `caliper.metrics.score_quantiles`
 (Caliper v0.1.0, MIT) — Caliper packages Fashion's recipe model-agnostically.

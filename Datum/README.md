@@ -8,7 +8,10 @@ ECE / sharpness standard), as packaged read-only by **Caliper**, over a syntheti
 data substrate.
 
 > ⚠️ **PROVISIONAL.** Datum is built on Fashion's calibration ruler, which is **in
-> review at *MRM***. Every reference number Datum produces by scoring through that
+> review at *NMR in Biomedicine*** (retooled, boundary-railing-first). The retooled
+> Fashion demotes the ruler to a **scoped secondary** (ground-truth/synthetic only)
+> reported under the **honest CRLB** convention — Datum's substrate is synthetic, so
+> the scope holds. Every reference number Datum produces by scoring through that
 > ruler is flagged **PROVISIONAL** and must not be presented as a final reference
 > value until the ruler locks (DOI assigned). See [`ASSUMPTIONS.md`](ASSUMPTIONS.md)
 > and [`datum/manifest.py`](datum/manifest.py); re-validate with

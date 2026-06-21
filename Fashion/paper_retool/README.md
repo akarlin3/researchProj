@@ -72,9 +72,15 @@ No `pancData3` / MSK data. Synthetic substrate is the read-only Lattice sibling.
 ## Not done (deliberately — halt for human review)
 
 - **Not submitted.** No submission action has been taken.
-- **No venue-specific formatting.** NMR in Biomedicine house style (Wiley template,
-  structured-abstract rules, reference style, figure/word limits) is **not** yet
-  applied; the manuscript uses a neutral article class.
+- **Format pack (needle/format) APPLIED — pending author sign-off on the GA.**
+  NMR-in-Biomedicine required items now present: a graphical abstract (50x60 mm
+  figure `figures/graphical_abstract.pdf` + 78-word text), a single-paragraph
+  ~300-word abstract (converted from the structured one), and a generative-AI
+  declaration in the manuscript declarations. The GA figure choice/text awaits
+  author approval before this is called submission-ready (see root `CHANGES.md`).
+- **Remaining venue-specific formatting.** The Wiley submission template, reference
+  style, and final figure/word limits are **not** yet applied; the manuscript still
+  uses a neutral article class.
 - **Cover letter.** The phenomenon-led cover letter is provided; the author
   decides whether/how to disclose prior review history.
 - **Author/affiliation block** carries the prior redraft's placeholder identity;

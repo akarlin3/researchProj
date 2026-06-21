@@ -1,0 +1,459 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ebgaramond}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{authblk}
+\usepackage[colorlinks=true,linkcolor=teal,citecolor=teal,urlcolor=teal]{hyperref}
+
+\input{numbers.tex}
+\emergencystretch=2em   % avoid overfull boxes under ebgaramond justification
+
+\renewcommand{\d}{D}                 % keep \d free of the babel accent
+\newcommand{\Ds}{D^{*}}
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+
+\title{\textbf{Boundary-railing of conventional NLLS fits as an assumption-free
+pseudo-diffusion identifiability diagnostic in IVIM MRI}\\[3pt]
+\large A bound-pinned $\Ds$ failure mode, re-centred from a calibration ruler and
+replicated across open human-abdominal diffusion MRI}
+
+\author[ ]{ }
+\affil[ ]{ }
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+\textbf{Purpose.} Reported uncertainty in intravoxel incoherent motion (IVIM)
+imaging has been critiqued as \emph{overextended}: any coverage or calibration
+statement is only as trustworthy as the noise and forward model that generated
+its reference truth. We answer that critique not by defending the calibration
+argument but by promoting, as the primary contribution, a result that
+\emph{cannot} be overextended because it assumes nothing.
+
+\textbf{Methods.} In a conventional bounded non-linear least-squares (NLLS)
+bi-exponential IVIM fit, the pseudo-diffusion coefficient $\Ds$ is so weakly
+identified that the optimiser frequently terminates \emph{on} a parameter bound.
+We read this boundary-railing directly off the optimiser's output --- no ground
+truth, no noise model --- and quantify it with voxel-level bootstrap confidence
+intervals on one open human-abdominal acquisition (OSIPI), its full ROI, and an
+independent liver-DWI cohort (TCGA-LIHC). The calibration ruler (coverage,
+expected calibration error, sharpness) is retained but demoted to a scoped
+secondary diagnostic, evaluated only where ground truth exists, and under an
+explicitly stated honest Cram\'er--Rao (CRLB) convention.
+
+\textbf{Results.} On the curated homogeneous ROI, \HomoFrac\% of \HomoN{}
+high-SNR voxels rail $\Ds$ (95\% CI [\HomoCIlo, \HomoCIhi]), reproducing a prior
+report and corroborated by an independent clean-room reimplementation
+(\gnomonRailFrac\% [\gnomonRailCIlo, \gnomonRailCIhi]). Railing generalises to the
+full abdomen (\FullFrac\%), survives generous bounds and every SNR stratum, and
+replicates on liver DWI (\LihcFourFrac\% at a clean 4-$b$ scheme;
+\LihcThreeFrac\% across \LihcThreeSubj{} subjects at a sparse 3-$b$ scheme).
+As a scoped secondary finding, under the honest CRLB symmetric Gaussian intervals
+under-cover $\Ds$ specifically in the high-$\Ds$ tercile (central-95\% coverage
+\covLapHonHigh{} [\covLapHonHighLo, \covLapHonHighHi] for the Laplace SD), and an
+amortized neural posterior is simultaneously better-calibrated and sharper than
+the railed-NLLS baseline.
+
+\textbf{Conclusion.} A large, reproducible fraction of conventional NLLS IVIM fits
+rail to a parameter bound on open human-abdominal data. Because the statistic is
+read off the optimiser without any calibration-trust assumption, it is immune to
+the overextension objection; the calibration ruler remains useful but scoped.
+\end{abstract}
+
+\section{Introduction}
+
+The clinically load-bearing question in quantitative diffusion MRI is not how
+accurate a point estimate is, but whether a reported \emph{error bar} can be
+believed. The intravoxel incoherent motion (IVIM) model~\cite{lebihan1988}
+separates tissue diffusion from microcapillary perfusion through a
+bi-exponential signal decay, and its perfusion-sensitive pseudo-diffusion
+coefficient $\Ds$ is both the clinically interesting parameter and the
+notoriously ill-conditioned one~\cite{koh2011,lemke2011}. A natural way to certify
+an uncertainty estimate is a calibration ruler --- empirical coverage, expected
+calibration error (ECE), and sharpness at fixed nominal levels --- that scores
+whether a method's stated uncertainty is honest. A growing literature applies
+exactly such rulers to classical Bayesian and learned IVIM
+estimators~\cite{while2017,orton2014,barbieri2020,kaandorp2021,casali2026}.
+
+The objection a sceptical reviewer raises against any such ruler is that it is
+itself \emph{overextended}. Empirical coverage is computed against a reference
+truth simulated under an assumed noise and forward model, so a coverage claim
+inherits exactly the trust it was meant to certify: if the simulator is
+misspecified, the calibration verdict is too. This is not a hypothetical concern
+--- model misspecification is the central failure mode documented for
+simulation-based inference~\cite{hermans2022,cannon2022,frazier2020}, and a
+methods reviewer of an earlier version of this work flagged the calibration
+contribution as resting on precisely this unverifiable assumption.
+
+This paper takes the objection seriously and re-aims the contribution. We promote
+to the primary claim a phenomenon that requires no calibration trust at all:
+\textbf{boundary-railing} of the conventional NLLS IVIM fit. When the likelihood
+is flat in $\Ds$, a box-constrained optimiser does not find an interior optimum
+--- it slides to a constraint and stops. The fraction of voxels for which this
+happens is a property of the estimator applied to the data; it is read directly
+off the optimiser's output and carries no assumption about ground truth or noise.
+It therefore cannot be overextended. We show that this railing fraction is large,
+reproducible, generalises beyond a hand-curated ROI, survives deliberately
+generous bounds and every SNR stratum, and replicates on an independent organ,
+scanner, and site.
+
+The calibration ruler is not discarded. It is kept as a clearly scoped
+\emph{secondary} diagnostic, evaluated only on data with ground truth, and
+reported \emph{conditionally} on the true $\Ds$ regime under a stated honest
+CRLB convention --- a deliberately narrower claim than the marginal headline an
+earlier draft carried. Within that scope it yields a real, reproducible finding:
+symmetric Gaussian intervals under-cover $\Ds$ in the high-$\Ds$ regime, the same
+weak-identifiability wall that drives railing. The contribution is thus a single
+mechanism --- weak $\Ds$ identifiability --- observed two ways: as an
+assumption-free fact about the optimiser (primary), and as a scoped calibration
+consequence where ground truth permits it (secondary).
+
+\section{Methods}
+\label{sec:methods}
+
+This section is complete from line one: it names every dataset with a stable
+identifier, states every fitting and training detail, and documents both the
+Cram\'er--Rao approximation and the railed-voxel standard-deviation (SD)
+convention that earlier reviewers flagged as missing. A completeness checklist is
+given in Table~\ref{tab:checklist}.
+
+\subsection{Datasets}
+
+\paragraph{Primary real cohort --- OSIPI abdomen.} The primary in-vivo cohort is
+the open human-abdominal IVIM acquisition distributed with the OSIPI TF2.4 IVIM
+code collection (Zenodo record \osipiRecord, DOI \osipiDOI, \osipiLicense;
+Philips 3T)~\cite{osipidata2025}. The archive provides a
+$144\times144\times21$ volume with \osipiNvol{} diffusion measurements over
+\osipiNb{} unique $b$-values $\{0,10,20,30,40,50,75,100,150,250,400,600\}\unit{s/mm^2}$.
+We analyse the archive's homogeneous-tissue mask (\osipiHomoN{} voxels; each
+voxel $b_0$-normalised by its mean $b{=}0$ signal) and, separately, the full
+abdominal ROI. The homogeneous ROI is the cohort on which a previously reported
+\fashionReported\% NLLS $\Ds$-railing fraction was first computed.
+
+\paragraph{Independent replication cohort --- TCGA-LIHC liver.} The independent
+cohort is liver diffusion-weighted imaging from the TCGA-LIHC collection (TCIA;
+DOI \tcgaDOI, \tcgaLicense; Siemens 1.5T)~\cite{tcgalihc2016} --- an unrelated
+site, scanner manufacturer, and organ. We use \tcgaNseries{} series: a clean
+4-$b$ scheme ($b{=}0,50,500,800\unit{s/mm^2}$; one subject) and a sparse clinical
+3-$b$ scheme ($b{=}50,400,800\unit{s/mm^2}$, no $b{=}0$; \LihcThreeSubj{} subjects).
+
+\paragraph{Synthetic substrate for the ruler.} The calibration ruler requires
+ground truth and is therefore evaluated only on a synthetic digital reference
+object. Ground-truth $(\d,\Ds,f)$ are drawn from documented physiological priors;
+Rician noise is added at SNR $\in\{10,20,40\}$ with 200 noise realisations per
+condition (a 9-cell design). The substrate is generated by an independent
+read-only sibling module and is fully reproducible from its master seed.
+
+\paragraph{Data and IP posture.} All imaging is open and download-on-demand
+(OSIPI, \osipiLicense; TCGA-LIHC, \tcgaLicense), checksum-verified, and never
+redistributed in-tree; only provenance manifests are committed. No proprietary or
+clinical data are used.
+
+\subsection{Forward model and estimators}
+
+The bi-exponential IVIM model is
+\begin{equation}
+S(b)/S_0 = (1-f)\,e^{-bD} + f\,e^{-b(D+\Ds)},
+\label{eq:ivim}
+\end{equation}
+fit per voxel over $(S_0,\d,f,\Ds)$ in scaled parameters so every fit variable is
+$O(1)$, with an analytic Jacobian verified against finite differences.
+
+\paragraph{NLLS and boundary-railing.} The point estimator is a box-constrained
+four-parameter trust-region-reflective least-squares fit
+(\texttt{scipy.optimize.least\_squares}, analytic Jacobian, \texttt{max\_nfev}
+$=400$). The box follows the stated prior range. A parameter is \emph{railed} iff
+$|\hat{x}-\text{bound}|/(\text{upper}-\text{lower}) < \varepsilon$; we report the
+$\Ds$-railing rate at $\varepsilon=10^{-3}$ (primary) and $10^{-2}$ (sensitivity),
+and under a deliberately widened box (``generous bounds''). The railing rate
+needs no ground truth: it is a property of the estimator applied to the data.
+
+\paragraph{Laplace and MCMC posteriors.} For the synthetic ruler only, two
+classical posteriors are formed: a Laplace/asymptotic Gaussian at the MAP with the
+CRLB covariance $\sigma^2(J^\top J)^{-1}$ (symmetric SD interval), and a
+clean-room random-walk Metropolis sampler (per-voxel, vectorised; Gaussian
+likelihood, known $\sigma$, uniform-box prior; burn 1500, keep 2000, thin 2),
+from which we read both a symmetric SD interval and a 2.5/97.5 quantile interval.
+
+\paragraph{Amortized neural posterior (NPE).} A conditional autoregressive
+normalizing flow (5 affine layers, per-dimension MLP conditioners, standard-normal
+base)~\cite{papamakarios2021,cranmer2020} is trained by neural posterior
+estimation on 80\,000 $(\theta,x)$ pairs ($\theta\sim$ uniform-box,
+SNR $\sim U(10,40)$; Adam, learning rate $10^{-3}$, 40 epochs, batch 512),
+written from scratch with no external SBI library.
+
+\subsection{The CRLB assumption and the railed-voxel SD convention}
+\label{sec:crlb}
+
+Two distinct modelling choices live here; both are stated, and the second is
+decisive for the calibration headline, so it is documented in full.
+
+\emph{(a) Gaussian/CRLB approximation.} The Laplace covariance
+$\sigma^2(J^\top J)^{-1}$ is a Gaussian approximation to the posterior, weakest
+precisely where $\Ds$ is most skewed --- low SNR and high $\Ds$, exactly where the
+under-coverage sits. The MCMC results do not rely on it (the sampler targets the
+exact posterior under the box prior).
+
+\emph{(b) Railed-voxel SD convention.} A voxel whose $\Ds$ is railed carries no
+local Fisher information about $\Ds$: the Jacobian column collapses and $J^\top J$
+is singular. Two defensible conventions then exist and give \emph{opposite}
+coverage. Under the \textbf{honest CRLB} (our default) the pseudo-inverse assigns
+such a voxel a wide $\Ds$ interval --- the statistically correct admission that
+$\Ds$ is undetermined there. Under an \textbf{overconfident floor} a railed voxel
+is instead given a small floored $\Ds$ SD, so its interval is narrow and
+under-covers ``by design.'' The convention is decisive: flooring drops pooled
+Laplace $\Ds$ coverage from \covLapHonPool{} to \covLapFloPool, reconstructing a
+dramatic marginal figure that is an artefact of the convention rather than a
+property of the data. We report all calibration results under the honest CRLB and
+show the floored convention only as a labelled illustration
+(Section~\ref{sec:convention}).
+
+\subsection{Calibration ruler and uncertainty on the numbers}
+
+The ruler --- coverage, ECE (mean $|\text{empirical}-\text{nominal}|$ over a level
+grid), sharpness (mean interval width) --- is re-derived from published
+definitions, with a $\Ds$-tercile conditional-coverage probe added. Every
+load-bearing number carries a bootstrap confidence interval (voxel-level
+resampling for the real cohorts, \railNboot{} resamples, seed \railSeed;
+noise-realisation resampling for the synthetic ruler). A directional gap is
+reported as significant only if its bootstrap CI excludes zero. Pre-registered
+replication thresholds (fixed before running): a cohort \emph{replicates} if the
+railed fraction is $\ge\thrPoint\%$ \emph{and} its 95\% bootstrap lower bound is
+$\ge\thrCIlo\%$.
+
+\section{Results}
+
+\subsection{Primary: boundary-railing across cohorts (assumption-free)}
+\label{sec:primary}
+
+On the curated homogeneous ROI, \HomoFrac\% of the \HomoN{} high-SNR voxels have a
+bound-railed NLLS $\Ds$ (95\% CI [\HomoCIlo, \HomoCIhi]), matching the previously
+reported \fashionReported\% on the same data (verdict \HomoVerdict). An
+independent clean-room reimplementation --- a separate forward model, fitter, and
+railing test sharing no code with the original --- obtains \gnomonRailFrac\%
+([\gnomonRailCIlo, \gnomonRailCIhi]) on the same ROI, and \gnomonRailSnr\% on a
+stricter $b_0$-SNR${>}25$ subset; the two CIs overlap, so the phenomenon is not an
+implementation artefact.
+
+Railing is not a property of a hand-chosen homogeneous patch. Extending to the
+entire abdominal ROI (n${=}\FullN$), the rate is \FullFrac\% ([\FullCIlo,
+\FullCIhi], verdict \FullVerdict). It also recurs on an independent organ,
+scanner, and site: on the clean 4-$b$ liver scheme the railed fraction is
+\LihcFourFrac\% ([\LihcFourCIlo, \LihcFourCIhi], n${=}\LihcFourN$, verdict
+\LihcFourVerdict), and across \LihcThreeSubj{} subjects at the sparse 3-$b$
+clinical scheme it is \LihcThreeFrac\% ([\LihcThreeCIlo, \LihcThreeCIhi],
+n${=}\LihcThreeN$, verdict \LihcThreeVerdict). All four cohorts clear the
+pre-registered replication thresholds (Table~\ref{tab:railing}).
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lrrrl}
+\toprule
+Cohort & $n$ (high-SNR) & Railed & 95\% CI & Verdict\\
+\midrule
+Abdomen, homogeneous ROI (OSIPI) & \HomoN & \HomoFrac\% & [\HomoCIlo, \HomoCIhi] & \HomoVerdict\\
+Abdomen, full ROI (OSIPI) & \FullN & \FullFrac\% & [\FullCIlo, \FullCIhi] & \FullVerdict\\
+Liver, 4-$b$ $0/50/500/800$ (TCGA-LIHC) & \LihcFourN & \LihcFourFrac\% & [\LihcFourCIlo, \LihcFourCIhi] & \LihcFourVerdict\\
+Liver, 3-$b$ $50/400/800$ (TCGA-LIHC) & \LihcThreeN & \LihcThreeFrac\% & [\LihcThreeCIlo, \LihcThreeCIhi] & \LihcThreeVerdict\\
+\bottomrule
+\end{tabular}
+\caption{Boundary-railing of the NLLS $\Ds$ across open human-abdominal cohorts
+(seed \railSeed, \railNboot-resample bootstrap). Pre-registered thresholds:
+railed $\ge\thrPoint\%$ with bootstrap lower bound $\ge\thrCIlo\%$. The
+homogeneous-ROI rate matches the prior report of \fashionReported\% and is
+independently corroborated by a clean-room reimplementation
+(\gnomonRailFrac\%~[\gnomonRailCIlo,~\gnomonRailCIhi]).}
+\label{tab:railing}
+\end{table}
+
+\subsection{Mechanism: why $\Ds$ rails}
+\label{sec:mechanism}
+
+Railing is structural weak identifiability of $\Ds$, not measurement noise. It
+does not vanish with SNR --- it persists across every SNR stratum --- and it
+survives deliberately generous bounds, falling but remaining a substantial
+minority (\HomoWide\% on the homogeneous ROI, \FullWide\% on the full abdomen), so
+it is not an artefact of tight box constraints. It is dominated by the
+\emph{upper} $\Ds$ bound: the homogeneous ROI splits \HomoLower\% lower-rail /
+\HomoUpper\% upper-rail, and the full ROI \FullLower\% / \FullUpper\%. This is the
+high-$\Ds$ identifiability wall: the fast perfusion compartment is so weakly
+constrained by the data that the optimiser is pushed to the ceiling. The
+direction of the effect across acquisition schemes confirms the mechanism --- the
+sparser the low-$b$ perfusion sampling, the worse $\Ds$ identifiability, and the
+more the fit rails (the sparse 3-$b$ liver scheme rails most). Equation~\eqref{eq:ivim}
+makes this concrete: $\Ds$ governs a fast decay visible only at low $b$, so once
+the low-$b$ sampling is thin the likelihood is nearly flat in $\Ds$ and the
+asymptotic (CRLB) variance --- which is exactly the curvature the optimiser
+cannot find --- diverges.
+
+\subsection{Secondary, scoped: the calibration ruler under the honest CRLB}
+\label{sec:ruler}
+
+The same weak-identifiability wall has a calibration consequence, which we report
+only where ground truth exists (the synthetic substrate) and only conditionally on
+the true $\Ds$ regime. This is the deliberately scoped secondary contribution; it
+is undefined on the real abdominal scan, which has no ground-truth $(\d,\Ds,f)$,
+and that limitation --- the very point the overextension critique raised --- is
+the argument for leading with railing.
+
+\paragraph{Symmetric Gaussian intervals under-cover $\Ds$ in the high-$\Ds$
+regime.} Under the honest CRLB, central-95\% $\Ds$ coverage is near-nominal in the
+low-$\Ds$ tercile but falls in the high-$\Ds$ tercile: \covLapHonHigh{}
+[\covLapHonHighLo, \covLapHonHighHi] for the Laplace SD and \covMcHonHigh{}
+[\covMcHonHighLo, \covMcHonHighHi] for the MCMC SD, versus \covLapHonLow{} and
+\covMcHonLow{} respectively in the low-$\Ds$ tercile (Table~\ref{tab:coverage}).
+The failure is identifiability-driven and conditional --- it is concentrated
+exactly where railing concentrates --- not a uniform marginal collapse.
+
+\paragraph{The interval shape, not a wider SD, restores marginal coverage.}
+Reading the MCMC posterior's 2.5/97.5 quantile interval rather than a symmetric SD
+interval restores near-nominal \emph{marginal} $\Ds$ coverage (\margMqDstar{}
+[\margMqDstarLo, \margMqDstarHi]); $\d$ and $f$ are already near-nominal
+(\margMqD, \margMqF). The right interval \emph{shape}, not a larger SD, is the fix.
+Conditionally, however, a residual high-$\Ds$ gap remains even for the quantile
+interval (\covMqHonHigh{} [\covMqHonHighLo, \covMqHonHighHi] in the high-$\Ds$
+tercile): the residual is the identifiability wall itself, not an interval-shape
+artefact.
+
+\paragraph{An amortized posterior beats the railed NLLS on calibration and
+sharpness.} On the synthetic held-out set the neural posterior is simultaneously
+better-calibrated and sharper than the railed-NLLS baseline: $\Ds$ coverage
+\flowCov{} versus \nllsCov{} (gap \gapCov{} [\gapCovLo, \gapCovHi]), ECE \flowEce{}
+versus \nllsEce, and sharpness \flowSharp{} versus \nllsSharp. All three gaps'
+bootstrap CIs exclude zero. The railed Gaussian's wide-but-miscentred intervals
+lose on every axis: railing is not merely a point-estimate pathology but an
+uncertainty pathology that a calibrated estimator avoids.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lcccc}
+\toprule
+Estimator (honest CRLB) & low $\Ds$ & mid $\Ds$ & \textbf{high $\Ds$} & pooled\\
+\midrule
+Laplace SD & \covLapHonLow{} [\covLapHonLowLo,\covLapHonLowHi] & \covLapHonMid{} [\covLapHonMidLo,\covLapHonMidHi] & \textbf{\covLapHonHigh{} [\covLapHonHighLo,\covLapHonHighHi]} & \covLapHonPool{} [\covLapHonPoolLo,\covLapHonPoolHi]\\
+MCMC SD & \covMcHonLow{} [\covMcHonLowLo,\covMcHonLowHi] & \covMcHonMid{} [\covMcHonMidLo,\covMcHonMidHi] & \textbf{\covMcHonHigh{} [\covMcHonHighLo,\covMcHonHighHi]} & \covMcHonPool{} [\covMcHonPoolLo,\covMcHonPoolHi]\\
+MCMC quantile & \covMqHonLow{} [\covMqHonLowLo,\covMqHonLowHi] & \covMqHonMid{} [\covMqHonMidLo,\covMqHonMidHi] & \covMqHonHigh{} [\covMqHonHighLo,\covMqHonHighHi] & \covMqHonPool{} [\covMqHonPoolLo,\covMqHonPoolHi]\\
+\bottomrule
+\end{tabular}
+\caption{Per-true-$\Ds$-tercile central-95\% $\Ds$ coverage on the synthetic
+substrate, under the honest CRLB convention (Section~\ref{sec:crlb}), with
+bootstrap CIs. The under-coverage is conditional --- concentrated in the
+high-$\Ds$ tercile --- and survives the quantile-shape fix.}
+\label{tab:coverage}
+\end{table}
+
+\subsection{The convention reconstructs --- but does not justify --- a dramatic
+marginal figure}
+\label{sec:convention}
+
+For completeness we document how a much more dramatic marginal under-coverage can
+be produced. Under the overconfident floored convention
+(Section~\ref{sec:crlb}b), pooled Laplace $\Ds$ coverage drops to \covLapFloPool{}
+[\covLapFloPoolLo, \covLapFloPoolHi] and the high-$\Ds$ tercile to \covLapFloHigh{}
+[\covLapFloHighLo, \covLapFloHighHi]. Flooring an unidentified voxel's SD reports
+$\Ds$ as if it were precisely known --- it manufactures severity. We therefore do
+\emph{not} report a marginal headline coverage; the honest, reproducible statement
+is the conditional table above, and the floored figures appear only here, with the
+convention named, to explain how a larger number can arise.
+
+\section{Discussion}
+
+\paragraph{What is and is not claimed.} The primary claim is narrow and
+assumption-free: a large, reproducible fraction of conventional NLLS IVIM fits
+rail $\Ds$ to a bound on open human-abdominal data, across ROI, bounds, SNR, and
+an independent liver cohort. The secondary claim is scoped to ground-truth data:
+under a stated honest CRLB, symmetric Gaussian intervals under-cover $\Ds$ in the
+high-$\Ds$ regime, a quantile interval fixes the marginal but not the conditional
+gap, and an amortized posterior dominates the railed NLLS. We explicitly do
+\emph{not} claim a dramatic marginal coverage collapse: such figures are
+reconstructible only under an undocumented floored SD convention and are reported
+here solely as a labelled illustration. We also make no claim about an
+out-of-distribution self-consistency gate, estimator timing, or in-vivo brain
+held-out-$b$ recovery; those questions are outside the scope of the evidence
+presented and are left to future work.
+
+\paragraph{Differentiation from learned uncertainty.} Casali et
+al.~\cite{casali2026} propose a method --- deep-ensemble mixture-density networks
+for IVIM uncertainty, validated in vivo on mouse brain --- and themselves report
+residual $\Ds$ overconfidence. The present work is not a competing UQ method: it
+documents an assumption-free failure mode of the \emph{conventional} fit on
+human-abdominal tissue, where perfusion (and thus $\Ds$) is clinically meaningful.
+The differentiation is strictly empirical and scoped to the data: human-abdominal
+DWI reaches a weak-identifiability regime that preclinical mouse-brain validation
+does not, and Casali's own residual $\Ds$ overconfidence is the learned echo of
+the same wall that makes the conventional fit rail. Our amortized-posterior result
+(Section~\ref{sec:ruler}) is consistent with their finding that a well-specified
+learned estimator improves but does not eliminate the high-$\Ds$ difficulty.
+
+\paragraph{Limitations and scope.} The open primary cohort is a single subject;
+we make no population claim from it, reporting a within-subject voxel statistic
+with a voxel-bootstrap CI and supporting generality by cross-cohort agreement
+(homogeneous ROI, full ROI, and an independent liver cohort). The 3-$b$ liver
+scheme lacks $b{=}0$ and is normalised by its lowest $b$, an approximation flagged
+as such; the 4-$b$ liver cohort with $b{=}0$ is the clean independent test.
+Railing magnitude depends on the bound width and the $b$-scheme density; we report
+both tight and generous bounds and per-scheme results rather than a single number.
+The calibration ruler is evaluated only on synthetic ground truth and is, by
+construction, undefined on the real scans --- which is exactly why it is the
+secondary, not the primary, contribution.
+
+\section{Conclusion}
+
+A large, reproducible fraction of conventional NLLS IVIM fits rail to a parameter
+bound on open human-abdominal data, and the effect generalises across ROI, bounds,
+SNR, and an independent liver cohort. Because it is read off the optimiser without
+any calibration-trust assumption, boundary-railing is a primary claim immune to
+the overextension objection that calibration arguments invite. The calibration
+ruler remains useful but scoped: under an honest CRLB convention it shows a real,
+conditional high-$\Ds$ under-coverage and an amortized-posterior advantage, with
+every number traced to a seeded, openly reproducible computation.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{ll}
+\toprule
+Completeness item & Where addressed\\
+\midrule
+Dataset identifiers & \S\ref{sec:methods}: OSIPI Zenodo \osipiRecord; TCGA-LIHC \tcgaDOI\\
+Acquisition / $b$-schemes & \S\ref{sec:methods}: \osipiNb{} unique $b$; liver 4-$b$ and 3-$b$ schemes\\
+Full fitting (NLLS, MCMC) & \S\ref{sec:methods}: box/init/solver/railing; sampler spec\\
+Full training (NPE) & \S\ref{sec:methods}: architecture, 80k sims, prior, epochs\\
+CRLB approximation & \S\ref{sec:crlb}(a)\\
+Railed-voxel SD convention & \S\ref{sec:crlb}(b); illustration \S\ref{sec:convention}\\
+Calibration ruler definitions & \S\ref{sec:methods}\\
+Uncertainty / CIs & \S\ref{sec:methods}: bootstrap, seed \railSeed\\
+Claims scope (no overclaim) & \S\ref{sec:primary}--\ref{sec:convention}; Discussion\\
+\bottomrule
+\end{tabular}
+\caption{Completeness checklist --- the methods items an earlier review flagged as
+missing, each mapped to where it is now addressed.}
+\label{tab:checklist}
+\end{table}
+
+\section*{Data availability and reproducibility}
+All imaging is open and download-on-demand: the OSIPI abdomen acquisition (Zenodo
+\osipiRecord, \osipiLicense) and the TCGA-LIHC liver series (TCIA, \tcgaDOI,
+\tcgaLicense), each checksum-verified and never redistributed in-tree. Every
+number in this manuscript is regenerated from seeded result files by a single
+consistency gate that fails the build on any drift; the synthetic substrate, the
+railing analysis, the classical and amortized posteriors, and the calibration
+ruler are each independent, seeded reimplementations.
+
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
+\end{document}

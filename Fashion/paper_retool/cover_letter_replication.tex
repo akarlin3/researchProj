@@ -1,0 +1,69 @@
+% =====================================================================
+% Cover letter VARIANT B (lead-with-replication) -- NMR in Biomedicine
+% EIC: Professor John R. Griffiths
+% Build: tectonic cover_letter_replication.tex
+% =====================================================================
+\documentclass[11pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\signature{Avery Karlin, BA \\ Department of Applied Physics and Applied Mathematics,
+Columbia University \\ \texttt{ak5232@columbia.edu}}
+\address{Avery Karlin \\ Columbia University \\ New York, NY, USA}
+
+\begin{document}
+\begin{letter}{Professor John R.\ Griffiths \\ Editor-in-Chief, \textit{NMR in Biomedicine}}
+\opening{Dear Professor Griffiths,}
+
+I am pleased to submit ``Boundary-railing of conventional NLLS fits as an
+assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI'' for
+consideration in \textit{NMR in Biomedicine}.
+
+What distinguishes this manuscript is the strength of its replication. The central
+finding --- that a conventional box-constrained least-squares IVIM fit drives the
+pseudo-diffusion coefficient $D^{*}$ onto a parameter bound in a large fraction of
+voxels --- is established not once but across four cohorts and two independent
+implementations. On the open OSIPI in-vivo abdomen scan the railed fraction is
+54.7\% of high-SNR voxels (95\% CI 52.2--57.1); an independent clean-room
+reimplementation, sharing no code with the original, reproduces a previously
+reported figure (54.2\%, 95\% CI 52.0--56.4); the effect persists over the full
+abdominal ROI (47.8\%); and it recurs on an entirely separate organ, scanner
+manufacturer, and site --- TCGA-LIHC liver DWI --- at 43.7\% (clean 4-$b$ scheme)
+and 73.4\% across three subjects (sparse 3-$b$ scheme), the sparser perfusion
+sampling railing more, exactly as $D^{*}$ identifiability predicts. Pre-registered
+replication thresholds, fixed before analysis, are cleared by every cohort.
+
+This robustness is possible because the statistic assumes nothing: railing is read
+directly off the optimiser's output and needs no ground truth and no noise model.
+That is the deliberate re-aim of the work relative to an earlier, calibration-led
+version. By promoting an assumption-free, cross-cohort-replicated phenomenon to the
+primary claim, the manuscript answers the methods objection that a calibration
+verdict is only as trustworthy as the simulator behind its reference truth --- the
+railing result cannot be overextended in that way.
+
+The calibration ruler is kept but scoped honestly: evaluated only on synthetic
+ground truth, reported conditionally on the true $D^{*}$ regime and under a stated
+Cram\'er--Rao convention (high-$D^{*}$ under-coverage of 0.63; a shape-aware
+quantile interval and an amortized posterior as the resolution). The earlier
+dramatic marginal headline is dropped and shown to be an artefact of an
+undocumented SD convention, now fully documented along with all dataset
+identifiers, fitting and training detail, and the Cram\'er--Rao approximation.
+
+Every number traces to a single seeded reproduction that regenerates with one
+command on openly licensed data (OSIPI TF2.4, Zenodo 14605039; TCGA-LIHC via The
+Cancer Imaging Archive), so the replication can be re-run by any reader. The
+manuscript fits both principal categories of \textit{NMR in Biomedicine} --- an
+original in-vivo IVIM study and a methodological contribution --- and is
+complementary to learned-uncertainty frameworks for IVIM such as Casali et al.\
+(2026, this journal).
+
+The manuscript is original, has not been published previously, and is not under
+consideration elsewhere. The author declares no competing interests, takes full
+responsibility for the integrity of the work, and includes a declaration of
+AI-assisted writing. I would be glad to suggest reviewers and to answer any
+questions.
+
+\closing{Sincerely,}
+\end{letter}
+\end{document}

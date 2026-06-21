@@ -1,0 +1,74 @@
+% =====================================================================
+% Cover letter VARIANT A (lead-with-the-phenomenon) -- NMR in Biomedicine
+% EIC: Professor John R. Griffiths
+% Build: tectonic cover_letter_phenomenon.tex
+% =====================================================================
+\documentclass[11pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\signature{Avery Karlin, BA \\ Department of Applied Physics and Applied Mathematics,
+Columbia University \\ \texttt{ak5232@columbia.edu}}
+\address{Avery Karlin \\ Columbia University \\ New York, NY, USA}
+
+\begin{document}
+\begin{letter}{Professor John R.\ Griffiths \\ Editor-in-Chief, \textit{NMR in Biomedicine}}
+\opening{Dear Professor Griffiths,}
+
+I am pleased to submit ``Boundary-railing of conventional NLLS fits as an
+assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI'' for
+consideration in \textit{NMR in Biomedicine}.
+
+The work begins from a concrete, real-data observation. Pseudo-diffusion
+($D^{*}$) is the least identifiable parameter of the intravoxel incoherent motion
+(IVIM) model --- long known in principle from simulation --- and we show it leaves
+a direct, measurable fingerprint in real acquisitions. On the open OSIPI in-vivo
+abdomen scan, a conventional box-constrained least-squares fit drives $D^{*}$ onto
+a parameter bound (it ``rails'') in 54.7\% of high-SNR voxels (95\% CI
+52.2--57.1). Railing is an assumption-free read-out of weak identifiability: it
+needs no ground truth and no trust in a noise model, only the optimiser's own
+output, and so it is immune to the objection that a calibration statement is only
+as trustworthy as the simulator behind it.
+
+This re-aims the contribution relative to an earlier, calibration-led version of
+this work. Promoting railing to the primary claim answers, rather than defends
+against, that objection. The phenomenon is robust: an independent clean-room
+reimplementation reproduces a previously reported figure (54.2\%, 95\% CI
+52.0--56.4) without sharing code, and it generalises across selection, scanner,
+and organ --- 47.8\% over the full abdominal ROI and 43.7--73.4\% in an
+independent multi-subject liver DWI cohort (TCGA-LIHC), with the sparser $b$-value
+scheme railing more, exactly as identifiability predicts.
+
+The calibration ruler is retained but honestly scoped. It is demoted to a
+secondary diagnostic evaluated only where ground truth exists, reported
+\emph{conditionally} on the true $D^{*}$ regime and under an explicitly stated
+Cram\'er--Rao convention: symmetric Gaussian intervals under-cover $D^{*}$
+specifically in the high-$D^{*}$ tercile (central-95\% coverage 0.63), a shape-aware
+quantile interval restores marginal coverage but not the conditional residual, and
+an amortized neural posterior dominates the railed baseline. The dramatic marginal
+headline of the earlier version is dropped; we show it is reconstructible only
+under an undocumented overconfident SD convention, which we now document. The
+methods are complete from line one --- dataset identifiers, fitting and training
+detail, the Cram\'er--Rao approximation, and both SD conventions --- addressing the
+completeness points an earlier methods review raised.
+
+The manuscript fits \textit{NMR in Biomedicine} in both its principal categories:
+an original in-vivo IVIM study on open biomedical MR data, and a methodological
+contribution to how quantitative-MR uncertainty should be characterised. Every
+number traces to a single seeded reproduction that regenerates with one command on
+openly licensed data (OSIPI TF2.4, Zenodo 14605039; TCGA-LIHC via The Cancer
+Imaging Archive). The contribution is distinct from, and complementary to,
+learned-uncertainty frameworks for IVIM such as Casali et al.\ (2026, this
+journal), whose object is a particular network's uncertainty budget rather than an
+estimator-agnostic real-data signature.
+
+The manuscript is original, has not been published previously, and is not under
+consideration elsewhere. The author declares no competing interests, takes full
+responsibility for the integrity of the work, and includes a declaration of
+AI-assisted writing. I would be glad to suggest reviewers and to answer any
+questions.
+
+\closing{Sincerely,}
+\end{letter}
+\end{document}

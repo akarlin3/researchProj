@@ -1,0 +1,71 @@
+% =====================================================================
+% Cover letter VARIANT C (lead-with-honest-correction) -- NMR in Biomedicine
+% EIC: Professor John R. Griffiths
+% Build: tectonic cover_letter_correction.tex
+% =====================================================================
+\documentclass[11pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\signature{Avery Karlin, BA \\ Department of Applied Physics and Applied Mathematics,
+Columbia University \\ \texttt{ak5232@columbia.edu}}
+\address{Avery Karlin \\ Columbia University \\ New York, NY, USA}
+
+\begin{document}
+\begin{letter}{Professor John R.\ Griffiths \\ Editor-in-Chief, \textit{NMR in Biomedicine}}
+\opening{Dear Professor Griffiths,}
+
+I am pleased to submit ``Boundary-railing of conventional NLLS fits as an
+assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI'' for
+consideration in \textit{NMR in Biomedicine}.
+
+I want to be transparent about the history of this work, because the correction is
+part of what makes it worth publishing. An earlier version led with a calibration
+claim --- a dramatic marginal under-coverage of the pseudo-diffusion coefficient
+$D^{*}$ --- and a methods review rightly objected on two grounds: that an empirical
+coverage statement is only as trustworthy as the noise and forward model behind its
+reference truth, and that the dramatic figure depended on choices that were not
+documented. We took both objections seriously and rebuilt the contribution.
+
+Two things changed. First, an independent clean-room reimplementation showed that
+the dramatic \emph{marginal} headline does not reproduce; it is recoverable only
+under an undocumented, overconfident convention for the standard deviation of a
+railed (unidentified) voxel. We have dropped that headline. The honest, reproducible
+statement is \emph{conditional}: under a stated Cram\'er--Rao convention, symmetric
+Gaussian intervals under-cover $D^{*}$ specifically in the high-$D^{*}$ tercile
+(central-95\% coverage 0.63) while remaining near-nominal elsewhere; a shape-aware
+quantile interval restores the marginal coverage but not the conditional residual,
+and an amortized neural posterior dominates the railed baseline. The convention that
+manufactured the original severity is now documented in full, alongside all dataset
+identifiers, fitting and training detail, and the Cram\'er--Rao approximation.
+
+Second --- and this is the heart of the resubmission --- we promote to the primary
+claim a result that \emph{cannot} be overextended because it assumes nothing.
+A conventional box-constrained least-squares IVIM fit drives $D^{*}$ onto a
+parameter bound in 54.7\% of high-SNR voxels on the open OSIPI abdomen scan (95\%
+CI 52.2--57.1), reproduced by the independent reimplementation (54.2\%) and
+replicated across the full ROI (47.8\%) and an independent liver DWI cohort
+(43.7--73.4\%). This boundary-railing is read directly off the optimiser, with no
+ground truth and no noise-model trust, and so it answers the reviewer's central
+objection rather than defending against it.
+
+The result is a stronger, narrower, and fully reproducible paper: a primary claim
+immune to the overextension critique, and a calibration result kept only within the
+scope its evidence supports. Every number traces to a single seeded reproduction
+that regenerates with one command on openly licensed data (OSIPI TF2.4, Zenodo
+14605039; TCGA-LIHC via The Cancer Imaging Archive). The work fits both principal
+categories of \textit{NMR in Biomedicine} and is complementary to learned-uncertainty
+frameworks for IVIM such as Casali et al.\ (2026, this journal), who themselves
+report residual $D^{*}$ overconfidence --- the learned echo of the same
+identifiability wall.
+
+The manuscript is original, has not been published previously, and is not under
+consideration elsewhere. The author declares no competing interests, takes full
+responsibility for the integrity of the work, and includes a declaration of
+AI-assisted writing. I would be glad to suggest reviewers and to answer any
+questions.
+
+\closing{Sincerely,}
+\end{letter}
+\end{document}

@@ -2,8 +2,9 @@
 
 Caliper is open-source tooling. If you use it, please cite the **software**. The
 toolkit also ships *synthetic, qualitative* reproductions of two associated IVIM
-manuscripts — but **both are pre-publication** (in review at MRM), so this page
-renders them as *in review*, never as *published*.
+manuscripts — but **both are pre-publication** (Gauge in review at *MRM*, Fashion
+in review at *NMR in Biomedicine*), so this page renders them as *in review*,
+never as *published*.
 
 > **Single source of truth.** Everything below is generated from
 > [`caliper.publication`](../caliper/publication.py). A paper counts as
@@ -57,10 +58,10 @@ publishes.
 }
 ```
 
-### Fashion — calibration & efficiency of IVIM uncertainty estimates
+### Fashion — boundary-railing as an assumption-free IVIM identifiability diagnostic
 
-- **Status:** in review at *Magnetic Resonance in Medicine* (2026, Manuscript ID
-  MRM-26-27109); pre-publication.
+- **Status:** in review at *NMR in Biomedicine* (2026, retooled
+  boundary-railing-first manuscript; submission ID pending); pre-publication.
 - **Software archive (NOT a publication DOI):** `doi:10.5281/zenodo.20649669`.
 - **Reproduced (synthetic, qualitative):** `caliper.baselines` —
   `python examples/fashion_repro.py`; see
@@ -68,11 +69,11 @@ publishes.
   or independently validated result.
 
 ```bibtex
-@unpublished{Karlin_Fashion_IVIM_Calibration,
+@unpublished{Karlin_Fashion_IVIM_Railing,
   author = {Karlin, Avery},
-  title  = {Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramer-Rao Audit of Amortized Posteriors},
+  title  = {Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI: a bound-pinned D* failure mode re-centred from a calibration ruler and replicated across open human-abdominal diffusion MRI},
   year   = {2026},
-  note   = {In review at Magnetic Resonance in Medicine (2026), Manuscript ID MRM-26-27109; pre-publication -- no publication DOI yet (placeholder 10.XXXX/XXXXX). Software archive: doi:10.5281/zenodo.20649669.}
+  note   = {In review at NMR in Biomedicine (2026), retooled boundary-railing-first manuscript, submission ID pending; pre-publication -- no publication DOI yet (placeholder 10.XXXX/XXXXX). Software archive: doi:10.5281/zenodo.20649669.}
 }
 ```
 

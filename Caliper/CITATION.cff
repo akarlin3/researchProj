@@ -55,20 +55,21 @@ references:
       (examples/gauge_repro.py); not a published or validated result.
   - type: article
     title: >-
-      Calibration and Efficiency of Uncertainty Estimates in Intravoxel
-      Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison,
-      and a Cramer-Rao Audit of Amortized Posteriors
+      Boundary-railing of conventional NLLS fits as an assumption-free
+      pseudo-diffusion identifiability diagnostic in IVIM MRI: a bound-pinned D*
+      failure mode re-centred from a calibration ruler and replicated across open
+      human-abdominal diffusion MRI
     authors:
       - given-names: Avery
         family-names: Karlin
         orcid: "https://orcid.org/0000-0003-3848-6782"
-    journal: "Magnetic Resonance in Medicine"
+    journal: "NMR in Biomedicine"
     year: 2026
     status: submitted
     notes: >-
-      PRE-PUBLICATION: in review at Magnetic Resonance in Medicine (2026,
-      Manuscript ID MRM-26-27109); no publication DOI yet (placeholder
-      10.XXXX/XXXXX -- fill in once published). Software archive (NOT a
-      publication DOI): doi:10.5281/zenodo.20649669. Reproduced qualitatively on
-      synthetic data by caliper.baselines (examples/fashion_repro.py); not a
-      published or validated result.
+      PRE-PUBLICATION: in review at NMR in Biomedicine (2026, retooled
+      boundary-railing-first manuscript; submission ID pending); no publication
+      DOI yet (placeholder 10.XXXX/XXXXX -- fill in once published). Software
+      archive (NOT a publication DOI): doi:10.5281/zenodo.20649669. Reproduced
+      qualitatively on synthetic data by caliper.baselines
+      (examples/fashion_repro.py); not a published or validated result.

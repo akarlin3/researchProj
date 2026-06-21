@@ -180,24 +180,32 @@ PUBLICATION: dict[str, PaperRef] = {
     "fashion": PaperRef(
         key="fashion",
         title=(
-            "Calibration and Efficiency of Uncertainty Estimates in Intravoxel "
-            "Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm "
-            "Comparison, and a Cramer-Rao Audit of Amortized Posteriors"
+            "Boundary-railing of conventional NLLS fits as an assumption-free "
+            "pseudo-diffusion identifiability diagnostic in IVIM MRI: a "
+            "bound-pinned D* failure mode re-centred from a calibration ruler and "
+            "replicated across open human-abdominal diffusion MRI"
         ),
-        citation_key="Karlin_Fashion_IVIM_Calibration",
+        citation_key="Karlin_Fashion_IVIM_Railing",
         status="in_review",
         repro_module="caliper.baselines",
         repro_example="examples/fashion_repro.py",
         claim=(
-            "Symmetric Gaussian uncertainties under-cover the skewed, bound-pinned "
-            "D* posterior, while the skew-aware quantile credible interval recovers "
-            "nominal coverage; a box-constrained NLLS fit rails D* and is "
-            "overconfident, and a normalizing-flow posterior is better-calibrated."
+            "A box-constrained NLLS rails the pseudo-diffusion D* at a fit bound in "
+            "~55% of homogeneous-ROI voxels on open in-vivo abdominal IVIM data "
+            "(independently reproduced 54.2%, replicated 47.8-73.4% across cohorts "
+            "incl. an independent liver) -- an assumption-free, per-voxel "
+            "identifiability signature. As a scoped, ground-truth-only secondary, "
+            "the calibration ruler shows symmetric Gaussian intervals under-cover "
+            "D* conditionally in the high-D* tercile (honest CRLB), the skew-aware "
+            "quantile interval restores marginal coverage with a residual high-D* "
+            "gap, and a normalizing-flow posterior is better-calibrated and sharper "
+            "than the railed NLLS."
         ),
         paper_doi=None,                          # <- None until published
         software_doi="10.5281/zenodo.20649669",  # real Zenodo code archive
-        manuscript_id="MRM-26-27109",
+        manuscript_id=None,                      # NMRB submission; ID pending
         year=2026,
+        venue="NMR in Biomedicine",              # retooled: moved from MRM to NMRB
     ),
 }
 

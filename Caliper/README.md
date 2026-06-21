@@ -223,7 +223,7 @@ stay in the papers.
 | Paper | Status (true) | Synthetic reproduction | Reproduces |
 |---|---|---|---|
 | **Gauge** — *Distribution-Free Conformal Coverage for IVIM Parameter Maps…* | **in review** at MRM (2026) | `python examples/gauge_repro.py` ([map](docs/gauge_reproduction.md)) | marginal CQR restores pooled D\* coverage; the high-D\* tercile stays under-covered (the identifiability wall); Mondrian buys it back only by inflating width |
-| **Fashion** — *Calibration and Efficiency of Uncertainty Estimates in IVIM…* | **in review** at MRM (2026) | `python examples/fashion_repro.py` ([map](docs/fashion_reproduction.md)) | NLLS rails the weakly-identified D\* and under-covers; a normalizing-flow posterior is better-calibrated, scored by the ruler |
+| **Fashion** — *Boundary-railing as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM…* | **in review** at *NMR in Biomedicine* (2026) | `python examples/fashion_repro.py` ([map](docs/fashion_reproduction.md)) | the assumption-free primary: a box-constrained NLLS rails the weakly-identified D\* (no ground truth needed); as a scoped, ground-truth-only secondary the ruler shows the railed intervals under-cover D\* *conditionally* in the high-D\* tercile (honest CRLB), while a normalizing-flow posterior is better-calibrated |
 
 See [docs/citing.md](docs/citing.md) and [`CITATION.cff`](CITATION.cff) for how to
 cite the software and the (pre-publication) manuscripts — both render as

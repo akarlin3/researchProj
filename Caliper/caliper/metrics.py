@@ -16,6 +16,15 @@ The central data contract is the quantile array produced by an estimator's
 Everything here is pure numpy and deterministic. Run ``python metrics.py`` for a
 self-test plus a short demo.
 
+Scope (retooled Fashion). This ruler is a *scoped secondary* instrument: it
+scores intervals against **ground truth**, so it lives on synthetic / DRO data
+and cannot be applied to a real scan that has no labels. Under the retooled
+Fashion the load-bearing readout is *conditional* coverage by D* tercile (the
+high-D* identifiability wall), not a marginal severity; the assumption-free
+primary -- boundary railing on real data -- needs no ruler at all. Intervals fed
+in should already follow the honest-CRLB SD convention (wide where D* is
+unidentified); see ``caliper.baselines`` ``sd_convention``.
+
 Author: Caliper project. Numpy-only by design -- do not add heavy deps here.
 """
 from __future__ import annotations

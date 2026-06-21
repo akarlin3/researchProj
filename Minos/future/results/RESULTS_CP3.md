@@ -4,6 +4,15 @@
 > label-free monitor) and forward/estimator/conformal code. See [`../ASSUMPTIONS.md`](../ASSUMPTIONS.md).
 > Reproduce: `proteus/bin/python Minos/future/applied/monitor_applied.py` (numbers in
 > [`RESULTS_CP3.json`](RESULTS_CP3.json)). Strictly synthetic IVIM (seed 20260613); no clinical data.
+>
+> **Retool reinforcement.** The hidden, label-free-invisible failure this monitor
+> exposes — marginal D\* coverage **0.885** (≈ nominal) but high-D\* tercile **0.795**
+> (hidden-channel AUC 0.516, blind) — *is* the conditional high-D\* under-coverage the
+> retooled Fashion (in review at *NMR in Biomedicine*) now openly owns under the
+> honest CRLB (0.63 [0.60, 0.67], high-D\* tercile). Re-run against the retooled
+> upstream reproduces this **exactly** (FULL-N cross-check: 0.905 / 0.823, AUC 0.499).
+> **Verdict: SURVIVES** — the retool *reinforces* CP3, the ruler's own paper now
+> agreeing that ground-truth-free trust fails conditionally in the high-D\* regime.
 
 ## What was run
 

@@ -1,10 +1,19 @@
 # CP2 — applied decision–calibration gap on Fashion-calibrated IVIM posteriors
 
-> **PROVISIONAL — pending Fashion publication.** Every number here consumes Fashion's
-> uncertainty generators (in review). See [`../ASSUMPTIONS.md`](../ASSUMPTIONS.md). Reproduce:
+> **PROVISIONAL — pending Fashion publication** (retooled, in review at *NMR in
+> Biomedicine*). Every number here consumes Fashion's uncertainty generators (in
+> review). See [`../ASSUMPTIONS.md`](../ASSUMPTIONS.md). Reproduce:
 > `proteus/bin/python Minos/future/applied/gap_applied.py` (raw numbers in
 > [`RESULTS_CP2.json`](RESULTS_CP2.json)). Clean synthetic data only (Fashion IVIM simulator,
 > pancreatic-anchor priors); no `pancData3`/MSK/clinical data.
+>
+> **Retool survival (re-run against the retooled upstream).** Minos imports no
+> Fashion/Caliper *ruler* code, so the decision-gap headline re-runs unchanged: the
+> max coverage-calibration regret stays **3.2 utility units** and the gap (`tau* ≠
+> tau_stat`, driven by posterior skewness γ) persists, **concentrated in the
+> high-D\* tercile** — the same regime where the retool's honest *conditional* D\*
+> under-coverage (0.63 [0.60, 0.67], high-D\* tercile) lives. The dropped marginal
+> 0.30/0.67 was never a Minos input. **Verdict: SURVIVES**, now honestly sized.
 
 ## What was run
 

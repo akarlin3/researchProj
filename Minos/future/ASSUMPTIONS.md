@@ -31,9 +31,24 @@ The theory half is imported read-only (`future/_paths.py`); it is never edited b
 
 ## 1. FASHION — pinned inputs (the calibration ruler / posteriors)
 
-**Paper status (PINNED):** *in submission to MRM* (Magnetic Resonance in Medicine), 2026.
-Pre-publication, **no DOI assigned** to the manuscript.
-Source: `Fashion/CITATION.cff` (`status: "in submission to MRM"`).
+**Paper status (PINNED):** *in review at NMR in Biomedicine* (retooled,
+boundary-railing-first; resubmitted from MRM), 2026. Pre-publication, **no DOI
+assigned** to the manuscript. Source: `Fashion/paper_retool/` (NMR in Biomedicine,
+Wiley NJD-v2), `Gnomon/handoff/CLAIMS_LEDGER.md`.
+
+**Retool note (scope of the change for Minos).** The retooled Fashion demotes its
+calibration ruler to a **scoped secondary** (ground-truth/synthetic only) reported
+under the **honest CRLB**, and *drops* the dramatic *marginal* D\* under-coverage
+(0.30/0.67) in favour of the honest, milder **conditional** finding — D\*
+under-coverage concentrated in the **high-D\* tercile** (honest CRLB 0.63 [0.60,
+0.67]). **Minos was never built on the dropped 0.30**: its applied half computes
+coverage *empirically on Gauge's synthetic cohort* and its load-bearing result is
+exactly the high-D\* conditional failure (CP3) and the decision-gap on the
+skew-aware posterior (CP2). The retool therefore **reinforces** Minos — the ruler's
+own paper now openly owns the same conditional high-D\* wall the Minos monitor
+exposes. Minos imports no Caliper/Fashion ruler code, so its numbers re-run
+unchanged (CP3 reproduces exactly; the CP2 decision-gap headline, max regret 3.2
+utility units, is stable).
 
 | key | pinned value | source (file) | role for Minos |
 |---|---|---|---|
@@ -48,11 +63,17 @@ Source: `Fashion/CITATION.cff` (`status: "in submission to MRM"`).
 | `fashion.api.simulator` | `uq.ivim_simulator.simulate_repeats(...)`, `ANCHOR_TRUTHS`, `B_SCHEMES` | `Fashion/uq/ivim_simulator.py` | **synthetic** ground-truth IVIM (pancreatic anchors) |
 | `fashion.reference_csv` | `calib_w3.csv` (gitignored; regenerate via `make calib`) | `Fashion/uq/run_w3_calib.py` | reference calibration table |
 
-**The Fashion assumption Minos relies on:** that Fashion's headline — that a *skew-aware* posterior
-(MCMC 2.5/97.5 quantile interval) is the calibration recipe that fixes D\* under-coverage, while
-symmetric ±σ intervals are miscalibrated — survives review. Minos consumes Fashion's calibrated
-posteriors as the *input error bar* whose decision-vs-coverage gap it then measures. If Fashion's
-ruler (which generator is "the calibrated one", or the coverage numbers) changes, **CP2 is invalid**.
+**The Fashion assumption Minos relies on (retooled):** that Fashion's *kept* finding —
+that a **skew-aware** posterior (MCMC 2.5/97.5 quantile interval) restores *marginal*
+D\* coverage while symmetric ±σ intervals are miscalibrated, with a **residual
+high-D\* conditional gap** under the honest CRLB — survives review. (This is the
+KEPT K2/R2 claim in `Gnomon/handoff/CLAIMS_LEDGER.md`; the dropped marginal
+0.30/0.67 severity was never a Minos input.) Minos consumes Fashion's calibrated
+posteriors as the *input error bar* whose decision-vs-coverage gap it then measures,
+and the gap it finds is **concentrated in the high-D\* tercile** — the same
+identifiability regime where the retooled honest conditional under-coverage lives.
+If Fashion's ruler (which generator is "the calibrated one", or the *conditional*
+coverage behaviour) changes, **CP2 is invalid**.
 
 **Wiring:** `future/_paths.add_fashion()` → `import uq`. Read-only.
 

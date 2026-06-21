@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gnomon"
+version = "0.0.1"
+description = "Clean-room reproduce-or-refute rebuild of Fashion's IVIM calibration ruler"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Avery Karlin" }]
+# Core is numpy + scipy (NLLS, MCMC, CRLB). The MAF flow and the OSIPI fetch are
+# optional extras so the manifest and the bulk of the ruler run lean.
+dependencies = ["numpy>=1.23", "scipy>=1.9"]
+
+[project.optional-dependencies]
+flow = ["torch>=2.0"]          # MAF / neural posterior estimation
+data = ["requests>=2.28"]      # OSIPI Zenodo download-on-demand
+dev = ["pytest>=7"]
+
+[tool.setuptools]
+packages = ["gnomon"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

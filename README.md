@@ -18,6 +18,7 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Fashion/` — Do IVIM fitting methods report honest uncertainty?](#fashion--do-ivim-fitting-methods-report-honest-uncertainty)
   - [`Forge/` — Monte Carlo dose-simulation feasibility benchmark](#forge--monte-carlo-dose-simulation-feasibility-benchmark)
   - [`Gauge/` — Distribution-free conformal coverage for IVIM](#gauge--distribution-free-conformal-coverage-for-ivim)
+  - [`Gnomon/` — Clean-room reproduce-or-refute of Fashion's ruler (software)](#gnomon--clean-room-reproduce-or-refute-of-fashions-ruler-software)
   - [`Lattice/` — A UQ-calibration reference object (DRO) for IVIM](#lattice--a-uq-calibration-reference-object-dro-for-ivim)
   - [`Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)](#lethe--constrained-validation-results-echo-portion-repeatability-scale-check)
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
@@ -39,6 +40,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Fashion/`](Fashion/) | *Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramér–Rao Audit of Amortized Posteriors* | IVIM diffusion-MRI — are reported error bars trustworthy? |
 | [`Forge/`](Forge/) | *(no manuscript — feasibility benchmark)* Monte Carlo dose-simulation timing & Electron Return Effect validation | Medical physics — MR-Linac simulation infrastructure |
 | [`Gauge/`](Gauge/) | *Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment* | IVIM diffusion-MRI — conformal coverage & the D\* identifiability limit |
+| [`Gnomon/`](Gnomon/) | *(research software — no standalone paper by default)* Clean-room **reproduce-or-refute** rebuild of Fashion's calibration ruler (independent forward model + NLLS railing + Laplace/MCMC + MAF + ruler; targets pinned before running) | Research software — independent reproduction (the hedge to the Fashion retool) |
 | [`Lattice/`](Lattice/) | *(research software — no standalone paper)* IVIM UQ-calibration digital reference object (DRO) | Research software — synthetic ground-truth cohorts & alternative-model generators |
 | [`Lethe/`](Lethe/) | *(constrained-validation results; Echo portion — verdict: **Lethe**)* What test–retest repeatability validates about conformal interval **scale** in IVIM | IVIM diffusion-MRI — does the error bar have the right *size*? |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
@@ -192,6 +194,35 @@ the data do not reveal (the Cramér–Rao bound reaches the bin width there).
 - `gauge/` — `forward.py`, `cohort.py`, `estimators.py`, `conformal.py`, `baselines.py` (model-based UQ), `benchmark.py`, `conditional.py`, `monitor.py` (Minos-style label-free monitor), and `results*.md` write-ups.
 - `gauge/paper/` — full LaTeX manuscript, figures, `consistency.py` (34/34 manuscript numbers trace verbatim), cover letter.
 - `scripts/` (sanity/coverage/figures), `results/` (committed artifacts), `tests/` (36 seeded tests).
+
+### `Gnomon/` — Clean-room *reproduce-or-refute* of Fashion's ruler (software)
+
+*No standalone paper by default — Gnomon is a **verdict** that feeds the Fashion
+retool (MIT software).* Fashion was returned at *MRM* review on **methods** —
+internal inconsistencies, incompleteness (under-specified dataset IDs, training/
+fitting detail, the Cramér–Rao approximation), and overextended claims. Gnomon is
+the clean-slate hedge: an **independent, from-scratch** rebuild of Fashion's
+calibration ruler that **cannot inherit** those inconsistencies (it shares no code
+with Fashion) and is documented completely from line one. A gnomon is the shadow-
+casting reference of a sundial — the bare standard that tells the time without
+trusting the dial's markings.
+
+It answers one question: *does a clean rebuild reproduce Fashion's load-bearing
+numbers?* The targets are pinned **before running** in `gnomon/manifest.py`, read
+from Fashion's **prose** only (never its source): the NLLS D\* boundary-railing rate
+(**54.7%**, on the open OSIPI abdomen scan), and the headline D\* coverage table at
+nominal 0.95 (**0.30** Laplace-SD / **0.67** MCMC-SD / **0.94** MCMC-quantile — the
+right *shape*, not a bigger SD, fixes it), plus the MAF-flow-vs-railed-NLLS ECE/
+sharpness *behavior*. CP3 is a **hard halt either way**: reproduce ⇒ the rejection
+was *presentational* and Gnomon becomes the clean reference + complete methods;
+does-not-reproduce ⇒ *substantive*, emit a divergence report and stop. The synthetic
+substrate is **Lattice** (read-only); **Caliper's ruler is off-limits as an import**
+(it *is* Fashion's method as code) — enforced at the seam by `gnomon/_paths.py`
+(lattice-only) and a static test.
+
+- `gnomon/` — `manifest.py` (frozen targets + tolerances + provenance), `_paths.py` (read-only Lattice bootstrap; Caliper forbidden), and the rebuild modules `forward.py`, `cohort.py`, `nlls.py` (+railing), `bayes.py` (Laplace + MCMC), `flow.py` (MAF/NPE), `metrics.py` (independent coverage/ECE/sharpness), `bootstrap.py`, `osipi.py` (OSIPI download-on-demand), `reproduce.py` (CP3 verdict).
+- `docs/METHODS.md` — the complete methods write-up Fashion lacked (every completeness item). `ASSUMPTIONS.md` / `CLEANROOM.md` / `TARGETS.md` / `VERIFICATION.md`, `reproduce.sh`, `tests/` (CP1 gates: import, manifest consistency, clean-room boundary, clean IP).
+- **Status: CP1–CP3 complete. Verdict (CP3): PARTIAL.** The NLLS railing rate reproduces on the real open data (**54.2%** [52.0, 56.4] vs claimed 54.7%), as do the quantile-interval fix and the flow-vs-railed-NLLS behavior; the *severe marginal* Gaussian under-coverages (claimed 0.30/0.67) do **not** — Gnomon gets 0.80/0.90, the gap tracing to an under-documented hard cohort + an "overconfident" railed-voxel SD convention (the failure reproduces *conditionally*, in the high-D\* tercile). The phenomenon is real; the headline marginal numbers are not regime/convention-robust. See [`Gnomon/VERDICT.md`](Gnomon/VERDICT.md). Feeds the Fashion retool; not a standalone paper.
 
 ### `Lattice/` — A UQ-calibration reference object (DRO) for IVIM
 
@@ -402,6 +433,7 @@ Nine folders form one IVIM diffusion-MRI uncertainty program:
 - **Fashion** establishes *which* uncertainty paradigms actually cover D\* and pins Gaussian error bars as the culprit.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
 - **Caliper** is the reusable toolkit that packages the calibration ruler and wraps both papers' methods under one contract (deliberately un-gated pending Minos).
+- **Gnomon** is the independent control on that ruler: a clean-room, from-scratch rebuild (sharing no code with Fashion or Caliper) whose only job is to *reproduce-or-refute* Fashion's load-bearing numbers and emit the complete methods Fashion was rejected for lacking — the hedge to the Fashion retool. Verdict pending (CP3 hard halt either way).
 - **Lattice** is the reusable *reference object* (DRO): the synthetic ground-truth cohorts and alternative-model generators the scorer and papers benchmark against — the data complement to Caliper's ruler.
 - **Datum** is the benchmark layer: it freezes that ruler into a fixed task with curated baselines and a submission interface, scored over **Lattice's** cohorts (with an OSIPI DRO as external validation), so any IVIM uncertainty method can be ranked on one standard (reference numbers PROVISIONAL until Fashion's ruler locks).
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
@@ -424,6 +456,7 @@ Each project was imported into the monorepo with its own history preserved:
 | `Anneal/` | annealMusic (science subtree split) | full history |
 | `Caliper/` | created in-repo | n/a |
 | `Datum/` | created in-repo (clean synthetic-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |
+| `Gnomon/` | created in-repo (clean synthetic/open-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |
 | `Lattice/` | projLattice | clean synthetic-only history (own root, merged via `--allow-unrelated-histories`) |
 | `Lethe/` | projEcho (new — synthetic/open); built as `Echo/`, renamed `Echo/`→`Lethe/` by verdict | full history (own clean history; `git log --follow -- Lethe/`) |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |

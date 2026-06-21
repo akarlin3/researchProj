@@ -1,0 +1,10 @@
+# tectonic / latex build artifacts
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+manuscript.pdf
+supplement.pdf
+cover_letter.pdf
+NUMBERS_NOW.txt

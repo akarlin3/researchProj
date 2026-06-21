@@ -1,0 +1,21 @@
+# Downloaded open data (OSIPI) — fetched on demand, never committed.
+download/
+*.nii
+*.nii.gz
+*.bval
+*.bvec
+*.dcm
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+
+# Large/regenerable run artifacts (the committed verdict is results/reproduction.json)
+*.pt
+*.npy
+*.npz

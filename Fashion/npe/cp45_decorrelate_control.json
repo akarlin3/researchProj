@@ -1,0 +1,104 @@
+{
+  "model": "/Users/averykarlin/.claude/jobs/6d4c330b/tmp/dedicated500/npe_b500000.pt",
+  "cp4_gate_decorrelation": {
+    "n_sim_voxels": 3995,
+    "T0_heldout_resid": {
+      "auc_vs_median": 0.9855336057138762,
+      "spearman": 0.9522093678841316,
+      "note": "ORIGINAL shared-fit target (reproduces the ~0.99 setup in simulation)"
+    },
+    "T1_param_recovery_Dstar": {
+      "auc_vs_median": 0.6014965892281866,
+      "spearman": 0.19401849940097862,
+      "note": "DECORRELATED: |D*_hat - D*_true|, not a residual"
+    },
+    "T1b_param_recovery_joint": {
+      "auc_vs_median": 0.7185420272550969,
+      "spearman": 0.45511407598568376,
+      "note": "DECORRELATED: joint prior-normalized parameter error"
+    },
+    "T2_CI_miscoverage_any": {
+      "auc_vs_label": NaN,
+      "rate": 1.0,
+      "note": "DECORRELATED: theta_true outside central 95% posterior CI (calibration)"
+    },
+    "T2b_CI_miscoverage_Dstar": {
+      "auc_vs_label": NaN,
+      "rate": 1.0,
+      "note": "DECORRELATED: D*_true outside central 95% posterior CI"
+    }
+  },
+  "cp5a_param_coverage_indistribution": {
+    "0.50": {
+      "D": 0.4923654568210263,
+      "Dstar": 0.49111389236545683,
+      "f": 0.48710888610763453
+    },
+    "0.68": {
+      "D": 0.6680851063829787,
+      "Dstar": 0.6728410513141426,
+      "f": 0.6700876095118898
+    },
+    "0.80": {
+      "D": 0.7902377972465582,
+      "Dstar": 0.7914893617021277,
+      "f": 0.7849812265331665
+    },
+    "0.90": {
+      "D": 0.8853566958698373,
+      "Dstar": 0.8921151439299124,
+      "f": 0.8811013767209012
+    },
+    "0.95": {
+      "D": 0.9344180225281602,
+      "Dstar": 0.9389236545682103,
+      "f": 0.9299123904881101
+    }
+  },
+  "cp5a_dstar_coverage_strata_at0.95": {
+    "all": [
+      0.9389236545682103,
+      3995
+    ],
+    "snr_lo(8-15)": [
+      0.9508032128514057,
+      996
+    ],
+    "snr_mid(15-40)": [
+      0.938961038961039,
+      1540
+    ],
+    "snr_hi(40-100)": [
+      0.9307745030843043,
+      1459
+    ],
+    "f_lo(<0.1)_weakID": [
+      0.9404309252217997,
+      789
+    ]
+  },
+  "cp5b_rnpe_model_criticism": {
+    "null_selfconsistency_q95_global": 16.630277462090383,
+    "snr_bin_edges": [
+      0.0,
+      15.0,
+      25.0,
+      40.0,
+      60.0
+    ],
+    "null_q95_per_snr_bin": [
+      4.710763048449886,
+      7.707327214456933,
+      11.048676665553478,
+      17.76372810980682,
+      27.371963670711153
+    ],
+    "in_silico_global_false_flag_rate": 0.05006257822277847,
+    "invivo_n": 1997,
+    "invivo_flagged_fraction_snr_matched": 0.12819228843264896,
+    "invivo_flagged_fraction_global_q95": 0.5157736604907361,
+    "invivo_median_selfconsistency": 16.93552,
+    "invivo_median_snr_avg": 66.7207,
+    "note": "fraction of in-vivo voxels whose self-consistency exceeds the SNR-matched well-specified simulated 95th percentile -> RNPE-style misspecification flag (5% = no excess over noise)"
+  }
+}

@@ -1,0 +1,79 @@
+# CHANGES — needle/replication (cross-cohort replication reframe)
+
+Branch `needle/replication`. **Framing only — no number changed, none dropped.** The
+least-clean cohort (73.4%, liver 3-b) is no longer the headline cross-organ number; the
+clean 4-b liver (43.7%, with a proper `b=0`) is now the primary independent cross-organ
+test, and the 73.4% is retained as directionally-consistent supporting evidence with its
+limitations stated at first mention.
+
+Gnomon/Sextant remain the source of truth. No value was edited, recomputed, or invented.
+
+## Edits
+
+1. **Abstract** (`Fashion/paper/manuscript.tex`, ~line 91). The liver sentence now names
+   the 4-b cohort (43.7%) as *our primary independent cross-organ test* (unrelated organ,
+   scanner, site, proper `b=0`). The 3-b 73.4% is presented after it as a sparser scheme
+   that "rails still more … directionally consistent with the same mechanism."
+
+2. **Results §3.1 replication paragraph** (`Fashion/paper/manuscript.tex`, ~lines 286–292).
+   - 4-b promoted to the load-bearing cross-organ test: "Our primary independent
+     cross-organ test is a multi-subject liver DWI cohort (TCGA-LIHC … proper `b=0` …):
+     under a clean four-b-value scheme D\* rails in **43.7% (43.2–44.2)** … reproducing
+     the phenomenon in an entirely unrelated acquisition."
+   - 3-b reframed as supporting, **limitations stated at first mention**: "A sparser
+     three-b-value liver scheme rails still more — **73.4% (73.0–73.9)** — which we report
+     as supporting rather than load-bearing evidence: it omits `b=0`, is normalised by its
+     lowest acquired `b` (an approximation), and pools only three subjects (per-subject
+     rates 0.66, 0.74, 0.75 …)." Its higher rate is tied to the mechanism (thinner low-`b`
+     perfusion sampling → weaker D\* identifiability), exactly as predicted.
+
+3. **Figure 1 caption** (`Fashion/paper/manuscript.tex`, ~line 455). The clean four-b-value
+   liver scheme (proper `b=0`) is named the primary independent cross-organ test; the
+   three-b scheme "rails most, supporting the same mechanism."
+
+4. **Table 1 caption** (`Fashion/paper/supplement.tex`, ~line 68). Added that the 4-b liver
+   cohort is the primary independent cross-organ test (REPLICATES-STRONG), while the 3-b
+   cohort is "supporting evidence only — it omits `b=0`, is normalised by its lowest
+   acquired `b`, and pools just three subjects" (REPLICATES, no wide-bound control). Row
+   order (4-b before 3-b) and verdict emphasis (REPLICATES-STRONG vs REPLICATES) were
+   already correct and are unchanged.
+
+## Numbers gate
+
+The repo's `Fashion/paper/check_numbers.sh` compares PDF-extracted numeric multisets to a
+frozen baseline. **Note:** `Fashion/NUMBERS_FROZEN.txt` is a human-readable prose ledger
+from an earlier (assessor-remediation) draft, not a `freeze_numbers.sh` PDF-multiset
+snapshot, so `check_numbers.sh` does not pass on current `main` either — a pre-existing
+condition independent of this change.
+
+The applicable proof for a framing-only edit is a **freeze-before/after diff** of the PDF
+numeric multiset (`freeze_numbers.sh`), built with `tectonic`:
+
+```
+diff numbers_pre.txt numbers_post.txt
+2c2
+< 10 0      ->  14 0     # manuscript.pdf: +4 "b=0" tokens (the new limitation language)
+225c225
+< 6 0       ->   8 0     # supplement.pdf: +2 "b=0" tokens (Table 1 caption)
+```
+
+The **only** change is an *increase* in the count of the token `0`, from the six added
+`$b=0$` mentions. Every reported result token is unchanged:
+
+- All four cohort rates intact: **54.2/54.7%** (abdomen homogeneous), **47.8%** (abdomen
+  full), **43.7%** (liver 4-b), **73.4%** (liver 3-b).
+- All CI bounds intact (43.2–44.2, 73.0–73.9, 47.1–48.5, 52.0–56.4, 52.2–57.1, …).
+- Per-subject 3-b rates (0.66, 0.74, 0.75) intact.
+
+A line-level diff of just the cohort-number tokens is empty (byte-identical pre vs post).
+
+## Confirmation
+
+- [x] All four cohort numbers unchanged (verified by multiset diff).
+- [x] 4-b (43.7%, proper `b=0`) framed as the primary independent cross-organ test.
+- [x] 73.4% retained, with its limitations (no `b=0`, lowest-`b` normalization, three
+      subjects) stated at first mention in both the abstract and Results §3.1.
+- [x] Table 1 ordering/emphasis and abstract reflect 4-b primary / 3-b supporting.
+
+**NOT submission-ready:** do not mark submission-ready until the author approves the
+reframed replication paragraph.

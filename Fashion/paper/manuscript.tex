@@ -88,10 +88,12 @@ reimplementation. On the open OSIPI TF2.4 in-vivo abdomen acquisition (Zenodo
 14605039), an independently written box-constrained nonlinear least-squares (NLLS) fit
 rails \Dstar{} at a fit bound in 54.2\% (95\% CI 52.0--56.4) of homogeneous-ROI
 voxels, reproducing a previously reported 54.7\% without using its code. The phenomenon
-generalises: it recurs in 47.8\% of the full abdominal ROI (n\,=\,19{,}652) and in an
-independent multi-subject liver DWI cohort (TCGA-LIHC) at 43.7\% (four b-values) and
-73.4\% (three b-values), the sparser scheme railing more, exactly as identifiability
-predicts. We then show how this manifests in uncertainty estimates. Replacing a
+generalises: it recurs in 47.8\% of the full abdominal ROI (n\,=\,19{,}652) and---in our
+primary independent cross-organ test, an unrelated organ, scanner, and site acquired with
+a proper $b=0$---in a multi-subject liver DWI cohort (TCGA-LIHC) at 43.7\% (four
+b-values). A sparser three-b-value liver scheme that omits $b=0$ rails still more
+(73.4\%), directionally consistent with the same mechanism: thinner low-$b$ perfusion
+sampling weakens \Dstar{} identifiability further, exactly as predicted. We then show how this manifests in uncertainty estimates. Replacing a
 previously reported \emph{marginal} coverage figure---which we could not reproduce and
 trace to an undocumented standard-deviation convention---we report \Dstar{} coverage
 \emph{conditionally}, per true-\Dstar{} tercile, under an explicit honest
@@ -282,13 +284,18 @@ genuine, code-independent property of the data-plus-optimiser, not an artefact o
 analysis.
 
 The phenomenon generalises across selection, scanner, and organ (Figure 1). On the
-\emph{full} abdominal ROI (n\,=\,19{,}652) the rate is 47.8\% (47.1--48.5). In an
-independent multi-subject liver DWI cohort (TCGA-LIHC: different site, Siemens 1.5T,
-liver rather than abdomen, no IVIM ground truth) \Dstar{} rails in 43.7\% (43.2--44.2)
-of voxels under a four-b-value scheme and in 73.4\% (73.0--73.9) under a sparser
-three-b-value scheme that omits $b=0$. The sparser scheme rails more, and almost entirely
-to the lower bound, exactly as weaker \Dstar{} identifiability predicts; per-subject
-three-b rates (0.66, 0.74, 0.75) are consistent. In the abdomen the rail is predominantly
+\emph{full} abdominal ROI (n\,=\,19{,}652) the rate is 47.8\% (47.1--48.5). Our
+primary independent cross-organ test is a multi-subject liver DWI cohort (TCGA-LIHC:
+different site, vendor (Siemens 1.5T), and organ, acquired with a proper $b=0$ and no
+IVIM ground truth): under a clean four-b-value scheme \Dstar{} rails in 43.7\%
+(43.2--44.2) of voxels, reproducing the phenomenon in an entirely unrelated acquisition.
+A sparser three-b-value liver scheme rails still more---73.4\% (73.0--73.9)---which we
+report as supporting rather than load-bearing evidence: it omits $b=0$, is normalised by
+its lowest acquired $b$ (an approximation), and pools only three subjects (per-subject
+rates 0.66, 0.74, 0.75, mutually consistent). Its higher rate is directionally consistent
+with the mechanism---thinner low-$b$ perfusion sampling weakens \Dstar{} identifiability
+further---and the rail is almost entirely to the lower bound, exactly as identifiability
+predicts. In the abdomen the rail is predominantly
 to the upper bound (39\% upper vs 16\% lower), and a generous-bound control still rails a
 third of voxels, confirming railing is not an artefact of tight bounds. All cohorts clear
 a pre-registered replication threshold (point rate $\ge 0.30$, CI lower bound
@@ -452,8 +459,10 @@ NLLS \Dstar{} railing rate (\% of voxels, 95\% bootstrap CI). Dark point: Gnomon
 clean-room reference on the open OSIPI abdomen homogeneous ROI (54.2\%). Light points:
 Sextant cross-cohort generalization---OSIPI high-SNR subset, OSIPI full ROI, and the
 independent TCGA-LIHC liver cohort under four- and three-b-value schemes. Dashed line:
-prior report (54.7\%); dotted line: pre-registered replication floor (30\%). The sparser
-three-b liver scheme rails most, as weaker \Dstar{} identifiability predicts.}
+prior report (54.7\%); dotted line: pre-registered replication floor (30\%). The clean
+four-b-value liver scheme (proper $b=0$) is the primary independent cross-organ test; the
+sparser three-b scheme rails most, supporting the same mechanism, as weaker \Dstar{}
+identifiability predicts.}
 \end{figure}
 
 \begin{figure}[htbp]

@@ -1,0 +1,203 @@
+{
+  "config": {
+    "n_noise": 200,
+    "seed": 20260620,
+    "alpha": 0.05,
+    "railed_sd_floor": 0.003,
+    "bootstrap": {
+      "n_boot": 2000,
+      "ci": 0.95,
+      "seed": 20260621
+    },
+    "dstar_railing_rate_synthetic": 0.175
+  },
+  "tercile_edges_Dstar": [
+    0.051083,
+    0.068888
+  ],
+  "conditional_coverage": {
+    "Laplace_SD": {
+      "honest": {
+        "low_Dstar": {
+          "coverage": 0.9117,
+          "ci": [
+            0.8883,
+            0.935
+          ],
+          "n": 600
+        },
+        "mid_Dstar": {
+          "coverage": 0.8583,
+          "ci": [
+            0.8283,
+            0.885
+          ],
+          "n": 600
+        },
+        "high_Dstar": {
+          "coverage": 0.6333,
+          "ci": [
+            0.595,
+            0.6717
+          ],
+          "n": 600
+        },
+        "pooled": {
+          "coverage": 0.8011,
+          "ci": [
+            0.7833,
+            0.8189
+          ],
+          "n": 1800
+        }
+      },
+      "floored": {
+        "low_Dstar": {
+          "coverage": 0.8717,
+          "ci": [
+            0.845,
+            0.8967
+          ],
+          "n": 600
+        },
+        "mid_Dstar": {
+          "coverage": 0.75,
+          "ci": [
+            0.715,
+            0.7833
+          ],
+          "n": 600
+        },
+        "high_Dstar": {
+          "coverage": 0.4067,
+          "ci": [
+            0.3667,
+            0.4467
+          ],
+          "n": 600
+        },
+        "pooled": {
+          "coverage": 0.6761,
+          "ci": [
+            0.6539,
+            0.6972
+          ],
+          "n": 1800
+        }
+      }
+    },
+    "MCMC_SD": {
+      "honest": {
+        "low_Dstar": {
+          "coverage": 0.9517,
+          "ci": [
+            0.9333,
+            0.9683
+          ],
+          "n": 600
+        },
+        "mid_Dstar": {
+          "coverage": 0.9533,
+          "ci": [
+            0.9367,
+            0.97
+          ],
+          "n": 600
+        },
+        "high_Dstar": {
+          "coverage": 0.8083,
+          "ci": [
+            0.775,
+            0.84
+          ],
+          "n": 600
+        },
+        "pooled": {
+          "coverage": 0.9044,
+          "ci": [
+            0.8906,
+            0.9172
+          ],
+          "n": 1800
+        }
+      },
+      "floored": {
+        "low_Dstar": {
+          "coverage": 0.9183,
+          "ci": [
+            0.8967,
+            0.94
+          ],
+          "n": 600
+        },
+        "mid_Dstar": {
+          "coverage": 0.8533,
+          "ci": [
+            0.8266,
+            0.8817
+          ],
+          "n": 600
+        },
+        "high_Dstar": {
+          "coverage": 0.65,
+          "ci": [
+            0.6117,
+            0.6867
+          ],
+          "n": 600
+        },
+        "pooled": {
+          "coverage": 0.8072,
+          "ci": [
+            0.7889,
+            0.8256
+          ],
+          "n": 1800
+        }
+      }
+    },
+    "MCMC_quantile_recommended": {
+      "honest": {
+        "low_Dstar": {
+          "coverage": 0.925,
+          "ci": [
+            0.9033,
+            0.945
+          ],
+          "n": 600
+        },
+        "mid_Dstar": {
+          "coverage": 0.9683,
+          "ci": [
+            0.9533,
+            0.9817
+          ],
+          "n": 600
+        },
+        "high_Dstar": {
+          "coverage": 0.81,
+          "ci": [
+            0.7783,
+            0.8417
+          ],
+          "n": 600
+        },
+        "pooled": {
+          "coverage": 0.9011,
+          "ci": [
+            0.8867,
+            0.9139
+          ],
+          "n": 1800
+        }
+      }
+    }
+  },
+  "recommended_convention": "honest",
+  "recommended_reason": "The floored convention reports an unidentified (railed) D* as if it were precisely known -- it manufactures the 0.30/0.67 severity. The honest CRLB widens where information is absent (statistically correct); the residual under-coverage that survives it -- concentrated in the high-D* tercile -- is the real, reproducible finding. The retool should report honest-CRLB conditional coverage; the floored convention is shown only to explain the original marginal headline.",
+  "reconstruction_checks": {
+    "honest_laplace_high_Dstar_~0.63": 0.6333,
+    "floored_laplace_pooled_~0.68": 0.6761
+  },
+  "reconstruction_ok": true
+}

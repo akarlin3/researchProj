@@ -51,5 +51,5 @@ in the manuscript and `refs.bib` — no new reference was added.
 ## Status
 
 **PROVISIONAL — NOT submission-ready.** Per the prompt, the manuscript is **not** to be
-marked submission-ready until the author approves the novelty wording. This is needle-mover
+marked submission-ready until the author approves the novelty wording. This is needle-moving
 1/3; do not auto-merge.

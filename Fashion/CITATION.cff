@@ -3,9 +3,8 @@ message: >-
   If you use this analysis module, please cite the manuscript below. Please also
   cite the upstream OSIPI TF2.4 IVIM-MRI Code Collection (see the "Citing" section
   of README_upstream.md) when using the fitting engines under src/.
-title: "Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramér–Rao Audit of Amortized Posteriors"
+title: "Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI: a bound-pinned D* failure mode re-centred from a calibration ruler and replicated across open human-abdominal diffusion MRI"
 version: 0.1.0
-date-released: 2026
 license: AGPL-3.0-only
 repository-code: "https://github.com/OSIPI/TF2.4_IVIM-MRI_CodeCollection"
 authors:
@@ -15,12 +14,14 @@ authors:
     email: ak5232@columbia.edu
 preferred-citation:
   type: article
-  title: "Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramér–Rao Audit of Amortized Posteriors"
+  title: "Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI: a bound-pinned D* failure mode re-centred from a calibration ruler and replicated across open human-abdominal diffusion MRI"
   authors:
     - family-names: Karlin
       given-names: Avery
       affiliation: "Columbia University, Department of Applied Physics and Applied Mathematics; University of Colorado Boulder, Department of Computer Science"
       email: ak5232@columbia.edu
-  journal: "in submission to MRM"
-  year: 2026
-  doi: "10.XXXX/XXXXXXX"  # fill in once published
+  status: submitted
+  notes: >-
+    Manuscript submitted to NMR in Biomedicine (Wiley) in 2026; currently in
+    review. Unpublished — no DOI assigned yet. This entry will be updated with the
+    volume, year, and DOI on acceptance.

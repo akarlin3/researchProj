@@ -130,13 +130,13 @@ Collection. This module is additive and released under the same license.
 
 ## Citation
 
-The related publication is **in submission to *Magnetic Resonance in Medicine* (MRM)**; there is no preprint. The block below is a placeholder to be updated on acceptance.
+The related publication is **in review at *NMR in Biomedicine* (Wiley)**; there is no preprint. The block below is a placeholder to be updated on acceptance.
 
 ```bibtex
-@article{karlin_ivim_uncertainty_INSUBMISSION,
+@article{karlin_ivim_railing_INREVIEW,
   author  = {Karlin, Avery},
-  title   = {{Calibration and Efficiency of Uncertainty Estimates in Intravoxel Incoherent Motion Imaging: Quantile Intervals, Cross-Paradigm Comparison, and a Cramér–Rao Audit of Amortized Posteriors}},
-  journal = {in submission to Magnetic Resonance in Medicine},
+  title   = {{Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI: a bound-pinned D* failure mode re-centred from a calibration ruler and replicated across open human-abdominal diffusion MRI}},
+  journal = {in review at NMR in Biomedicine},
   year    = {2026}
 }
 ```

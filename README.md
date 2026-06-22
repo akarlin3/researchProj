@@ -21,6 +21,7 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Gnomon/` — Clean-room reproduce-or-refute of Fashion's ruler (software)](#gnomon--clean-room-reproduce-or-refute-of-fashions-ruler-software)
   - [`Lattice/` — A UQ-calibration reference object (DRO) for IVIM](#lattice--a-uq-calibration-reference-object-dro-for-ivim)
   - [`Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)](#lethe--constrained-validation-results-echo-portion-repeatability-scale-check)
+  - [`Limbo/` — Field review of trustworthy UQ for body MRI in adaptive RT](#limbo--field-review-of-trustworthy-uq-for-body-mri-in-adaptive-rt)
   - [`Matrix/` — Synthetic-twin closed loop (Keystone's no-scanner mode)](#matrix--synthetic-twin-closed-loop-keystones-no-scanner-mode)
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
@@ -44,6 +45,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Gnomon/`](Gnomon/) | *(research software — no standalone paper by default)* Clean-room **reproduce-or-refute** rebuild of Fashion's calibration ruler (independent forward model + NLLS railing + Laplace/MCMC + MAF + ruler; targets pinned before running) | Research software — independent reproduction (the hedge to the Fashion retool) |
 | [`Lattice/`](Lattice/) | *(research software — no standalone paper)* IVIM UQ-calibration digital reference object (DRO) | Research software — synthetic ground-truth cohorts & alternative-model generators |
 | [`Lethe/`](Lethe/) | *(constrained-validation results; Echo portion — verdict: **Lethe**)* What test–retest repeatability validates about conformal interval **scale** in IVIM | IVIM diffusion-MRI — does the error bar have the right *size*? |
+| [`Limbo/`](Limbo/) | *(field review — PROVISIONAL, not publish-gated)* Trustworthy uncertainty quantification for quantitative/diffusion body MRI and its decision-use in MR-guided adaptive radiotherapy; a **trust → value-of-information → action** survey + gap map over 59 verified references | Field review — synthesis, taxonomy, gap-identification (target: *Physics in Medicine & Biology*) |
 | [`Matrix/`](Matrix/) | *(research software — no standalone paper)* Synthetic-twin **closed-loop** harness (scan→posterior→trust gate→action gate→dose replan→re-scan); Keystone's no-scanner mode, consuming Fashion/Minos/Forge behind stubbed interfaces | Adaptive quantitative-MRI dosing — a working closed loop on a synthetic twin (no scanner, no patient data) |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
@@ -293,6 +295,34 @@ under-covers it — region-level repeatability is non-thermal-dominated. See
 - `scripts/` — `run_harness.py` (CP1 method self-test), `fetch_invivo.py` (CP2 download-on-demand, reuses Gauge's data template), `run_validation.py` (CP3 real-data gate → PASS / Lethe).
 - `paper/` — `lethe.tex` (`ebgaramond`+`microtype`) + `consistency.py` (numbers traced to seeded results). `ASSUMPTIONS.md`, `PROMOTION.md`, `VERIFICATION.md`, `LETHE.md`, `reproduce.sh` (one-command), `tests/`.
 
+### `Limbo/` — Field review of trustworthy UQ for body MRI in adaptive RT
+
+*Field review — PROVISIONAL, not publish-gated.* **Limbo** is a broad survey of *the
+literature's* work on trustworthy uncertainty quantification (UQ) for quantitative/diffusion body
+MRI (IVIM, DWI/ADC, DKI, DCE perfusion, relaxometry) and its decision-use in **MR-guided adaptive
+radiotherapy**. It organises the field along a **trust → value-of-information → action** axis (with a
+foundations layer and a gap map) and identifies where the field's UQ-trust questions remain open. Its
+value is **trigger-independent** — field command plus a citable paper for the *first* PhD
+application — and it **absorbs Buttress** (the portfolio-thickener; no separate repo).
+
+It is deliberately **distinct from Augur**: Augur is a perspective on the *author's own* arc
+(Fashion/Minos/Lethe/Gauge), hard-blocked until those publish; Limbo is a field survey of *others'*
+work, not publish-gated, with the author's own papers appearing — if at all — only as a minority of
+peer-cited entries (the CP0 distinctness gate; [`Limbo/ASSUMPTIONS.md`](Limbo/ASSUMPTIONS.md)).
+
+> **The hard gate is verified citations.** A review's dominant failure mode is the phantom citation
+> (this portfolio's own history: Ouroboros's non-existent "Sun et al."; Augur's mis-quoted "r≈0.39").
+> [`Limbo/limbo.bib`](Limbo/limbo.bib) holds **59 entries, each with a resolvable DOI / arXiv / stable
+> proceedings id**; [`Limbo/CITATIONS.md`](Limbo/CITATIONS.md) carries a one-line verified claim per
+> key; [`verify_citations.py`](Limbo/verify_citations.py) fails the build on any identifier-less
+> entry, any bib↔ledger orphan, or any phantom `\cite` in the survey prose. CP1 resolved all 59
+> identifiers against primary sources (offline **and** `--online`); the survey cites the full base
+> with zero phantoms (10 tests).
+
+- `limbo.bib`, `CITATIONS.md` (verified-claim ledger), `TAXONOMY.md` (the survey axis), `SURVEY.md`
+  (CP2 draft + gap map), `verify_citations.py` (the gate; `--online` resolvability), `ASSUMPTIONS.md`
+  (scope + distinctness + clean IP), `reproduce.sh` (one-command), `tests/`.
+
 ### `Matrix/` — Synthetic-twin closed loop (Keystone's no-scanner mode)
 
 *Research software — no standalone paper.* **Matrix** is the capstone (**Keystone**) closed
@@ -475,6 +505,14 @@ Nine folders form one IVIM diffusion-MRI uncertainty program:
 - **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. Feasibility gate **PASSED** and survives the retooled ruler (Δ\_sharp 0.328, Δ\_cond 0.059, CIs exclude 0; Δ\_cond is the high-D\* conditional metric the retool retains) — standalone path active, no fold into Minos.
 - **Sextant** re-aims **Fashion** to answer the "overextended claims" critique: it promotes the assumption-free fact that conventional NLLS D\* fits *rail to a bound* on open human-abdominal data to the primary claim, demotes the calibration ruler to a scoped secondary, and replicates the railing across the full OSIPI abdomen and an independent TCGA-LIHC liver cohort. It reuses Fashion's railing computation read-only and, by default, feeds the retooled Fashion spine rather than splitting off (no salami).
 - **Lethe** (the *Echo* portion; speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos.
+
+Two further folders sit *over* the program rather than inside it. **Augur** is the inward-facing
+*perspective* that threads the author's own arc (Fashion → Minos → Lethe → Gauge) into one
+trust→value→action story — publish-gated until those papers land. **Limbo** is the outward-facing
+*field review* of the same trust→value-of-information→action spine, but surveying **the broader
+literature's** UQ-trust work in quantitative/diffusion body MRI and adaptive RT — deliberately
+distinct from Augur (others' work, not the author's; not publish-gated) and trigger-independent. Its
+hard gate is verified citations: 59 entries, each a resolvable DOI/arXiv/proceedings id, machine-checked.
 
 **Retool propagation (merged 2026-06-21).** The retooled, NMRB-resubmitted Fashion —
 boundary-railing as the assumption-free primary, the calibration ruler scoped to a

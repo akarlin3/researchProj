@@ -1,0 +1,618 @@
+% limbo.bib — verified citation base for the Limbo field review
+% (Trustworthy uncertainty quantification for quantitative/diffusion body MRI
+%  and its decision-use in MR-guided adaptive radiotherapy).
+%
+% HARD GATE (the Ouroboros/Augur lesson — no phantom citations, no drift):
+%   * every entry carries a resolvable identifier: a DOI, an arXiv eprint, or a
+%     stable proceedings/JMLR URL (for venues that mint no DOI);
+%   * every entry has a one-line VERIFIED claim with a checked source, recorded in
+%     CITATIONS.md keyed by the citekey below;
+%   * verify_citations.py fails the build on any entry missing an identifier or any
+%     citekey lacking a verified claim (and vice-versa).
+% Each identifier was resolved against its primary source during CP1 (2026-06-22);
+% the gate re-runs at CP3. See CITATIONS.md for the per-entry verified claim + quote.
+
+% ====================================================================
+% A — Parameter estimation for quantitative/diffusion body MRI and its uncertainty
+% ====================================================================
+
+@inproceedings{zhang2013,
+  author    = {Zhang, Qinwei and Wang, Yi-Xiang J. and Ma, Heather Ting and Yuan, Jing},
+  title     = {Cram{\'e}r-Rao bound for intravoxel incoherent motion diffusion weighted imaging fitting},
+  booktitle = {35th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)},
+  year      = {2013},
+  pages     = {511--514},
+  doi       = {10.1109/EMBC.2013.6609549}
+}
+
+@article{jalnefjord2019,
+  author  = {Jalnefjord, Oscar and Montelius, Mikael and Starck, G{\"o}ran and Ljungberg, Maria},
+  title   = {Optimization of b-value schemes for estimation of the diffusion coefficient and the perfusion fraction with segmented intravoxel incoherent motion model fitting},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2019},
+  volume  = {82},
+  pages   = {1541--1552},
+  doi     = {10.1002/mrm.27826}
+}
+
+@article{barbieri2016,
+  author  = {Barbieri, Sebastiano and Donati, Olivio F. and Froehlich, Johannes M. and Thoeny, Harriet C.},
+  title   = {Impact of the calculation algorithm on biexponential fitting of diffusion-weighted MRI in upper abdominal organs},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2016},
+  volume  = {75},
+  pages   = {2175--2184},
+  doi     = {10.1002/mrm.25765}
+}
+
+@article{while2017,
+  author  = {While, Peter T.},
+  title   = {A comparative simulation study of bayesian fitting approaches to intravoxel incoherent motion modeling in diffusion-weighted MRI},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2017},
+  volume  = {78},
+  pages   = {2373--2387},
+  doi     = {10.1002/mrm.26598}
+}
+
+@article{gurneychampion2018,
+  author  = {Gurney-Champion, Oliver J. and Klaassen, Remy and Froeling, Martijn and Barbieri, Sebastiano and Stoker, Jaap and Engelbrecht, Marc R. W. and Wilmink, Johanna W. and Besselink, Marc G. and Bel, Arjan and van Laarhoven, Hanneke W. M. and Nederveen, Aart J.},
+  title   = {Comparison of six fit algorithms for the intra-voxel incoherent motion model of diffusion-weighted magnetic resonance imaging data of pancreatic cancer patients},
+  journal = {PLOS ONE},
+  year    = {2018},
+  volume  = {13},
+  pages   = {e0194590},
+  doi     = {10.1371/journal.pone.0194590}
+}
+
+@article{bertleff2017,
+  author  = {Bertleff, Marco and Domsch, Sebastian and Weing{\"a}rtner, Sebastian and Zapp, Jascha and O'Brien, Kieran and Barth, Markus and Schad, Lothar R.},
+  title   = {Diffusion parameter mapping with the combined intravoxel incoherent motion and kurtosis model using artificial neural networks at 3 T},
+  journal = {NMR in Biomedicine},
+  year    = {2017},
+  volume  = {30},
+  pages   = {e3833},
+  doi     = {10.1002/nbm.3833}
+}
+
+@article{barbieri2020,
+  author  = {Barbieri, Sebastiano and Gurney-Champion, Oliver J. and Klaassen, Remy and Thoeny, Harriet C.},
+  title   = {Deep learning how to fit an intravoxel incoherent motion model to diffusion-weighted MRI},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2020},
+  volume  = {83},
+  pages   = {312--321},
+  doi     = {10.1002/mrm.27910}
+}
+
+@article{kaandorp2021,
+  author  = {Kaandorp, Misha P. T. and Barbieri, Sebastiano and Klaassen, Remy and van Laarhoven, Hanneke W. M. and Crezee, Hans and While, Peter T. and Nederveen, Aart J. and Gurney-Champion, Oliver J.},
+  title   = {Improved unsupervised physics-informed deep learning for intravoxel incoherent motion modeling and evaluation in pancreatic cancer patients},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2021},
+  volume  = {86},
+  pages   = {2250--2265},
+  doi     = {10.1002/mrm.28852}
+}
+
+@article{vasylechko2021,
+  author  = {Vasylechko, Serge Didenko and Warfield, Simon K. and Afacan, Onur and Kurugol, Sila},
+  title   = {Self-supervised IVIM DWI parameter estimation with a physics based forward model},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2021},
+  volume  = {87},
+  pages   = {904--914},
+  doi     = {10.1002/mrm.28989}
+}
+
+@article{casali2025,
+  author        = {Casali, Nicola and Brusaferri, Alessandro and Baselli, Giuseppe and Fumagalli, Stefano and Micotti, Edoardo and Forloni, Gianluigi and Hussein, Riaz and Rizzo, Giovanna and Mastropietro, Alfonso},
+  title         = {A comprehensive framework for uncertainty quantification of voxel-wise supervised models in IVIM MRI},
+  journal       = {arXiv preprint},
+  year          = {2025},
+  eprint        = {2508.04588},
+  archivePrefix = {arXiv},
+  note          = {also NMR in Biomedicine, 2026}
+}
+
+@article{schmid2006,
+  author  = {Schmid, Volker J. and Whitcher, Brandon and Padhani, Anwar R. and Taylor, N. Jane and Yang, Guang-Zhong},
+  title   = {Bayesian methods for pharmacokinetic models in dynamic contrast-enhanced magnetic resonance imaging},
+  journal = {IEEE Transactions on Medical Imaging},
+  year    = {2006},
+  volume  = {25},
+  pages   = {1627--1636},
+  doi     = {10.1109/TMI.2006.884210}
+}
+
+% ====================================================================
+% B — Trust machinery: calibration, conformal prediction, reliability standards
+% ====================================================================
+
+@article{angelopoulos2021,
+  author        = {Angelopoulos, Anastasios N. and Bates, Stephen},
+  title         = {A gentle introduction to conformal prediction and distribution-free uncertainty quantification},
+  journal       = {arXiv preprint},
+  year          = {2021},
+  eprint        = {2107.07511},
+  archivePrefix = {arXiv}
+}
+
+@article{shafer2008,
+  author  = {Shafer, Glenn and Vovk, Vladimir},
+  title   = {A tutorial on conformal prediction},
+  journal = {Journal of Machine Learning Research},
+  year    = {2008},
+  volume  = {9},
+  pages   = {371--421},
+  url     = {https://www.jmlr.org/papers/v9/shafer08a.html}
+}
+
+@inproceedings{kuleshov2018,
+  author    = {Kuleshov, Volodymyr and Fenner, Nathan and Ermon, Stefano},
+  title     = {Accurate uncertainties for deep learning using calibrated regression},
+  booktitle = {Proceedings of the 35th International Conference on Machine Learning (ICML)},
+  year      = {2018},
+  volume    = {80},
+  pages     = {2796--2804},
+  url       = {https://proceedings.mlr.press/v80/kuleshov18a.html}
+}
+
+@inproceedings{guo2017,
+  author    = {Guo, Chuan and Pleiss, Geoff and Sun, Yu and Weinberger, Kilian Q.},
+  title     = {On calibration of modern neural networks},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning (ICML)},
+  year      = {2017},
+  volume    = {70},
+  pages     = {1321--1330},
+  url       = {https://proceedings.mlr.press/v70/guo17a.html}
+}
+
+@inproceedings{lakshminarayanan2017,
+  author        = {Lakshminarayanan, Balaji and Pritzel, Alexander and Blundell, Charles},
+  title         = {Simple and scalable predictive uncertainty estimation using deep ensembles},
+  booktitle     = {Advances in Neural Information Processing Systems 30 (NeurIPS)},
+  year          = {2017},
+  eprint        = {1612.01474},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{gal2016,
+  author        = {Gal, Yarin and Ghahramani, Zoubin},
+  title         = {Dropout as a bayesian approximation: representing model uncertainty in deep learning},
+  booktitle     = {Proceedings of the 33rd International Conference on Machine Learning (ICML)},
+  year          = {2016},
+  volume        = {48},
+  pages         = {1050--1059},
+  eprint        = {1506.02142},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{amini2020,
+  author        = {Amini, Alexander and Schwarting, Wilko and Soleimany, Ava and Rus, Daniela},
+  title         = {Deep evidential regression},
+  booktitle     = {Advances in Neural Information Processing Systems 33 (NeurIPS)},
+  year          = {2020},
+  eprint        = {1910.02600},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{ovadia2019,
+  author        = {Ovadia, Yaniv and Fertig, Emily and Ren, Jie and Nado, Zachary and Sculley, D. and Nowozin, Sebastian and Dillon, Joshua V. and Lakshminarayanan, Balaji and Snoek, Jasper},
+  title         = {Can you trust your model's uncertainty? Evaluating predictive uncertainty under dataset shift},
+  booktitle     = {Advances in Neural Information Processing Systems 32 (NeurIPS)},
+  year          = {2019},
+  eprint        = {1906.02530},
+  archivePrefix = {arXiv}
+}
+
+@article{raunig2015,
+  author  = {Raunig, David L. and McShane, Lisa M. and Pennello, Gene and Gatsonis, Constantine and Carson, Paul L. and Voyvodic, James T. and Wahl, Richard L. and Kurland, Brenda F. and Schwarz, Adam J. and G{\"o}nen, Mithat and Zahlmann, Gudrun and Kondratovich, Marina V. and O'Donnell, Kevin and Petrick, Nicholas and Cole, Patricia E. and Garra, Brian and Sullivan, Daniel C.},
+  title   = {Quantitative imaging biomarkers: a review of statistical methods for technical performance assessment},
+  journal = {Statistical Methods in Medical Research},
+  year    = {2015},
+  volume  = {24},
+  pages   = {27--67},
+  doi     = {10.1177/0962280214537344}
+}
+
+@article{obuchowski2015,
+  author  = {Obuchowski, Nancy A. and Barnhart, Huiman X. and Buckler, Andrew J. and Pennello, Gene and Wang, Xiao-Feng and Kalpathy-Cramer, Jayashree and Kim, Hyun J. and Reeves, Anthony P.},
+  title   = {Statistical issues in the comparison of quantitative imaging biomarker algorithms using pulmonary nodule volume as an example},
+  journal = {Statistical Methods in Medical Research},
+  year    = {2015},
+  volume  = {24},
+  pages   = {107--140},
+  doi     = {10.1177/0962280214537392}
+}
+
+@article{sullivan2015,
+  author  = {Sullivan, Daniel C. and Obuchowski, Nancy A. and Kessler, Larry G. and Raunig, David L. and Gatsonis, Constantine and Huang, Erich P. and Kondratovich, Marina and McShane, Lisa M. and Reeves, Anthony P. and Barboriak, Daniel P. and Guimaraes, Alexander R. and Wahl, Richard L.},
+  title   = {Metrology standards for quantitative imaging biomarkers},
+  journal = {Radiology},
+  year    = {2015},
+  volume  = {277},
+  pages   = {813--825},
+  doi     = {10.1148/radiol.2015142202}
+}
+
+@article{koo2016,
+  author  = {Koo, Terry K. and Li, Mae Y.},
+  title   = {A guideline of selecting and reporting intraclass correlation coefficients for reliability research},
+  journal = {Journal of Chiropractic Medicine},
+  year    = {2016},
+  volume  = {15},
+  pages   = {155--163},
+  doi     = {10.1016/j.jcm.2016.02.012}
+}
+
+@article{blandaltman1986,
+  author  = {Bland, J. Martin and Altman, Douglas G.},
+  title   = {Statistical methods for assessing agreement between two methods of clinical measurement},
+  journal = {The Lancet},
+  year    = {1986},
+  volume  = {327},
+  pages   = {307--310},
+  doi     = {10.1016/S0140-6736(86)90837-8}
+}
+
+% ====================================================================
+% C — Diffusion/perfusion body-MRI biomarkers and their measured reliability
+% ====================================================================
+
+@article{lebihan1986,
+  author  = {Le Bihan, Denis and Breton, E. and Lallemand, D. and Grenier, P. and Cabanis, E. and Laval-Jeantet, M.},
+  title   = {MR imaging of intravoxel incoherent motions: application to diffusion and perfusion in neurologic disorders},
+  journal = {Radiology},
+  year    = {1986},
+  volume  = {161},
+  pages   = {401--407},
+  doi     = {10.1148/radiology.161.2.3763909}
+}
+
+@article{lebihan1988,
+  author  = {Le Bihan, Denis and Breton, E. and Lallemand, D. and Aubin, M. L. and Vignaud, J. and Laval-Jeantet, M.},
+  title   = {Separation of diffusion and perfusion in intravoxel incoherent motion MR imaging},
+  journal = {Radiology},
+  year    = {1988},
+  volume  = {168},
+  pages   = {497--505},
+  doi     = {10.1148/radiology.168.2.3393671}
+}
+
+@article{lebihan2019,
+  author  = {Le Bihan, Denis},
+  title   = {What can we see with IVIM MRI?},
+  journal = {NeuroImage},
+  year    = {2019},
+  volume  = {187},
+  pages   = {56--67},
+  doi     = {10.1016/j.neuroimage.2017.12.062}
+}
+
+@article{tofts1991,
+  author  = {Tofts, Paul S. and Kermode, A. G.},
+  title   = {Measurement of the blood-brain barrier permeability and leakage space using dynamic MR imaging. 1. Fundamental concepts},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {1991},
+  volume  = {17},
+  pages   = {357--367},
+  doi     = {10.1002/mrm.1910170208}
+}
+
+@article{tofts1999,
+  author  = {Tofts, Paul S. and Brix, G. and Buckley, D. L. and Evelhoch, J. L. and Henderson, E. and Knopp, M. V. and Larsson, H. B. and Lee, T. Y. and Mayr, N. A. and Parker, G. J. and Port, R. E. and Taylor, J. and Weisskoff, R. M.},
+  title   = {Estimating kinetic parameters from dynamic contrast-enhanced T1-weighted MRI of a diffusable tracer: standardized quantities and symbols},
+  journal = {Journal of Magnetic Resonance Imaging},
+  year    = {1999},
+  volume  = {10},
+  pages   = {223--232},
+  doi     = {10.1002/(SICI)1522-2586(199909)10:3<223::AID-JMRI2>3.0.CO;2-S}
+}
+
+@article{koh2007,
+  author  = {Koh, Dow-Mu and Collins, David J.},
+  title   = {Diffusion-weighted MRI in the body: applications and challenges in oncology},
+  journal = {American Journal of Roentgenology},
+  year    = {2007},
+  volume  = {188},
+  pages   = {1622--1635},
+  doi     = {10.2214/AJR.06.1403}
+}
+
+@article{padhani2009,
+  author  = {Padhani, Anwar R. and Liu, Guoying and Koh, Dow-Mu and Chenevert, Thomas L. and Thoeny, Harriet C. and Takahara, Taro and Dzik-Jurasz, Andrew and Ross, Brian D. and Van Cauteren, Marc and Collins, David and Hammoud, Dima A. and Rustin, Gordon J. S. and Taouli, Bachir and Choyke, Peter L.},
+  title   = {Diffusion-weighted magnetic resonance imaging as a cancer biomarker: consensus and recommendations},
+  journal = {Neoplasia},
+  year    = {2009},
+  volume  = {11},
+  pages   = {102--125},
+  doi     = {10.1593/neo.81328}
+}
+
+@article{miquel2016,
+  author  = {Jafar, Maysam M. and Parsai, Arman and Miquel, Marc E.},
+  title   = {Diffusion-weighted magnetic resonance imaging in cancer: reported apparent diffusion coefficients, in-vitro and in-vivo reproducibility},
+  journal = {World Journal of Radiology},
+  year    = {2016},
+  volume  = {8},
+  pages   = {21--49},
+  doi     = {10.4329/wjr.v8.i1.21}
+}
+
+@article{sun2017,
+  author  = {Sun, Hongliang and Xu, Yanyan and Xu, Qiaoyu and Shi, Kaining and Wang, Wu},
+  title   = {Rectal cancer: short-term reproducibility of intravoxel incoherent motion parameters in 3.0T magnetic resonance imaging},
+  journal = {Medicine (Baltimore)},
+  year    = {2017},
+  volume  = {96},
+  pages   = {e6866},
+  doi     = {10.1097/MD.0000000000006866}
+}
+
+@article{sun2019,
+  author  = {Sun, Hongliang and Xu, Yanyan and Xu, Qiaoyu and Duan, Jianghui and Zhang, Haibo and Liu, Tongxi and Li, Lu and Chan, Queenie and Xie, Sheng and Wang, Wu},
+  title   = {Correlation between intravoxel incoherent motion and dynamic contrast-enhanced magnetic resonance imaging parameters in rectal cancer},
+  journal = {Academic Radiology},
+  year    = {2019},
+  volume  = {26},
+  pages   = {e134--e140},
+  doi     = {10.1016/j.acra.2018.08.012}
+}
+
+@article{yang2019,
+  author  = {Yang, Xinyue and Xiao, Xiaojuan and Lu, Baolan and Chen, Yan and Wen, Ziqiang and Yu, Shenping},
+  title   = {Perfusion-sensitive parameters of intravoxel incoherent motion MRI in rectal cancer: evaluation of reproducibility and correlation with dynamic contrast-enhanced MRI},
+  journal = {Acta Radiologica},
+  year    = {2019},
+  volume  = {60},
+  pages   = {569--577},
+  doi     = {10.1177/0284185118791201}
+}
+
+@article{simchick2024,
+  author  = {Simchick, Gregory and Allen, Timothy J. and Hernando, Diego},
+  title   = {Reproducibility of intravoxel incoherent motion quantification in the liver across field strengths and gradient hardware},
+  journal = {Magnetic Resonance in Medicine},
+  year    = {2024},
+  volume  = {92},
+  pages   = {2652--2669},
+  doi     = {10.1002/mrm.30237}
+}
+
+% ====================================================================
+% D — Value of information: decision-theoretic use of trusted uncertainty
+% ====================================================================
+
+@article{vickers2006,
+  author  = {Vickers, Andrew J. and Elkin, Elena B.},
+  title   = {Decision curve analysis: a novel method for evaluating prediction models},
+  journal = {Medical Decision Making},
+  year    = {2006},
+  volume  = {26},
+  pages   = {565--574},
+  doi     = {10.1177/0272989X06295361}
+}
+
+@article{vickers2016,
+  author  = {Vickers, Andrew J. and Van Calster, Ben and Steyerberg, Ewout W.},
+  title   = {Net benefit approaches to the evaluation of prediction models, molecular markers, and diagnostic tests},
+  journal = {BMJ},
+  year    = {2016},
+  volume  = {352},
+  pages   = {i6},
+  doi     = {10.1136/bmj.i6}
+}
+
+@article{vickers2019,
+  author  = {Vickers, Andrew J. and van Calster, Ben and Steyerberg, Ewout W.},
+  title   = {A simple, step-by-step guide to interpreting decision curve analysis},
+  journal = {Diagnostic and Prognostic Research},
+  year    = {2019},
+  volume  = {3},
+  pages   = {18},
+  doi     = {10.1186/s41512-019-0064-7}
+}
+
+@article{steyerberg2010,
+  author  = {Steyerberg, Ewout W. and Vickers, Andrew J. and Cook, Nancy R. and Gerds, Thomas and Gonen, Mithat and Obuchowski, Nancy and Pencina, Michael J. and Kattan, Michael W.},
+  title   = {Assessing the performance of prediction models: a framework for traditional and novel measures},
+  journal = {Epidemiology},
+  year    = {2010},
+  volume  = {21},
+  pages   = {128--138},
+  doi     = {10.1097/EDE.0b013e3181c30fb2}
+}
+
+@article{baker2009,
+  author  = {Baker, Stuart G. and Cook, Nancy R. and Vickers, Andrew and Kramer, Barnett S.},
+  title   = {Using relative utility curves to evaluate risk prediction},
+  journal = {Journal of the Royal Statistical Society, Series A (Statistics in Society)},
+  year    = {2009},
+  volume  = {172},
+  pages   = {729--748},
+  doi     = {10.1111/j.1467-985X.2009.00592.x}
+}
+
+@inproceedings{zhao2021,
+  author        = {Zhao, Shengjia and Kim, Michael P. and Sahoo, Roshni and Ma, Tengyu and Ermon, Stefano},
+  title         = {Calibrating predictions to decisions: a novel approach to multi-class calibration},
+  booktitle     = {Advances in Neural Information Processing Systems 34 (NeurIPS)},
+  year          = {2021},
+  eprint        = {2107.05719},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{lacostejulien2011,
+  author    = {Lacoste-Julien, Simon and Husz{\'a}r, Ferenc and Ghahramani, Zoubin},
+  title     = {Approximate inference for the loss-calibrated bayesian},
+  booktitle = {Proceedings of the 14th International Conference on Artificial Intelligence and Statistics (AISTATS)},
+  year      = {2011},
+  volume    = {15},
+  pages     = {416--424},
+  url       = {https://proceedings.mlr.press/v15/lacoste_julien11a.html}
+}
+
+@inproceedings{vadera2021,
+  author        = {Vadera, Meet P. and Ghosh, Soumya and Ng, Kenney and Marlin, Benjamin M.},
+  title         = {Post-hoc loss-calibration for bayesian neural networks},
+  booktitle     = {Proceedings of the 37th Conference on Uncertainty in Artificial Intelligence (UAI)},
+  year          = {2021},
+  volume        = {161},
+  eprint        = {2106.06997},
+  archivePrefix = {arXiv}
+}
+
+@article{felli1998,
+  author  = {Felli, James C. and Hazen, Gordon B.},
+  title   = {Sensitivity analysis and the expected value of perfect information},
+  journal = {Medical Decision Making},
+  year    = {1998},
+  volume  = {18},
+  pages   = {95--109},
+  doi     = {10.1177/0272989X9801800117}
+}
+
+@article{claxton1999,
+  author  = {Claxton, Karl},
+  title   = {The irrelevance of inference: a decision-making approach to the stochastic evaluation of health care technologies},
+  journal = {Journal of Health Economics},
+  year    = {1999},
+  volume  = {18},
+  pages   = {341--364},
+  doi     = {10.1016/S0167-6296(98)00039-3}
+}
+
+% ====================================================================
+% E — MR-guided adaptive radiotherapy and biomarker-/uncertainty-driven dose
+% ====================================================================
+
+@article{lagendijk2008,
+  author  = {Lagendijk, Jan J. W. and Raaymakers, Bas W. and Raaijmakers, Alexander J. E. and Overweg, Johan and Brown, Kevin J. and Kerkhof, Ellen M. and van der Put, Richard W. and Hardemark, Bjorn and van Vulpen, Marco and van der Heide, Uulke A.},
+  title   = {MRI/linac integration},
+  journal = {Radiotherapy and Oncology},
+  year    = {2008},
+  volume  = {86},
+  pages   = {25--29},
+  doi     = {10.1016/j.radonc.2007.10.034}
+}
+
+@article{raaymakers2009,
+  author  = {Raaymakers, Bas W. and Lagendijk, Jan J. W. and Overweg, J. and Kok, J. G. M. and Raaijmakers, A. J. E. and Kerkhof, E. M. and van der Put, R. W. and Meijsing, I. and Crijns, S. P. M. and Benedosso, F. and van Vulpen, M. and de Graaff, C. H. W. and Allen, J. and Brown, K. J.},
+  title   = {Integrating a 1.5 T MRI scanner with a 6 MV accelerator: proof of concept},
+  journal = {Physics in Medicine and Biology},
+  year    = {2009},
+  volume  = {54},
+  pages   = {N229--N237},
+  doi     = {10.1088/0031-9155/54/12/N01}
+}
+
+@article{raaymakers2017,
+  author  = {Raaymakers, Bas W. and J{\"u}rgenliemk-Schulz, I. M. and Bol, G. H. and Glitzner, M. and Kotte, A. N. T. J. and van Asselen, B. and de Boer, J. C. J. and Bluemink, J. J. and Hackett, S. L. and Moerland, M. A. and Woodings, S. J. and Wolthaus, J. W. H. and van Zijp, H. M. and Philippens, M. E. P. and Tijssen, R. and Kok, J. G. M. and de Groot-van Breugel, E. N. and Kiekebosch, I. and Meijers, L. T. C. and Nomden, C. N. and Sikkes, G. G. and Doornaert, P. A. H. and Eppinga, W. S. C. and Kasperts, N. and Kerkmeijer, L. G. W. and Tersteeg, J. H. A. and Brown, K. J. and Pais, B. and Woodhead, P. and Lagendijk, J. J. W.},
+  title   = {First patients treated with a 1.5 T MRI-Linac: clinical proof of concept of a high-precision, high-field MRI guided radiotherapy treatment},
+  journal = {Physics in Medicine and Biology},
+  year    = {2017},
+  volume  = {62},
+  pages   = {L41--L50},
+  doi     = {10.1088/1361-6560/aa9517}
+}
+
+@article{lagendijk2014,
+  author  = {Lagendijk, Jan J. W. and Raaymakers, Bas W. and van Vulpen, Marco},
+  title   = {The magnetic resonance imaging--linac system},
+  journal = {Seminars in Radiation Oncology},
+  year    = {2014},
+  volume  = {24},
+  pages   = {207--209},
+  doi     = {10.1016/j.semradonc.2014.02.009}
+}
+
+@article{ling2000,
+  author  = {Ling, C. Clifton and Humm, John and Larson, Steven and Amols, Howard and Fuks, Zvi and Leibel, Steven and Koutcher, Jason A.},
+  title   = {Towards multidimensional radiotherapy (MD-CRT): biological imaging and biological conformality},
+  journal = {International Journal of Radiation Oncology, Biology, Physics},
+  year    = {2000},
+  volume  = {47},
+  pages   = {551--560},
+  doi     = {10.1016/S0360-3016(00)00467-3}
+}
+
+@article{bentzen2005,
+  author  = {Bentzen, S{\o}ren M.},
+  title   = {Theragnostic imaging for radiation oncology: dose-painting by numbers},
+  journal = {The Lancet Oncology},
+  year    = {2005},
+  volume  = {6},
+  pages   = {112--117},
+  doi     = {10.1016/S1470-2045(05)01737-7}
+}
+
+@article{bentzen2011,
+  author  = {Bentzen, S{\o}ren M. and Gregoire, Vincent},
+  title   = {Molecular imaging-based dose painting: a novel paradigm for radiation therapy prescription},
+  journal = {Seminars in Radiation Oncology},
+  year    = {2011},
+  volume  = {21},
+  pages   = {101--110},
+  doi     = {10.1016/j.semradonc.2010.10.001}
+}
+
+@article{unkelbach2018,
+  author  = {Unkelbach, Jan and Alber, Markus and Bangert, Mark and Bokrantz, Rasmus and Chan, Timothy C. Y. and Deasy, Joseph O. and Fredriksson, Albin and Gorissen, Bram L. and van Herk, Marcel and Liu, Wei and Mahmoudzadeh, Houra and Nohadani, Omid and Siebers, Jeffrey V. and Witte, Marnix and Xu, Huijun},
+  title   = {Robust radiotherapy planning},
+  journal = {Physics in Medicine and Biology},
+  year    = {2018},
+  volume  = {63},
+  pages   = {22TR02},
+  doi     = {10.1088/1361-6560/aae659}
+}
+
+@article{otazo2021,
+  author  = {Otazo, Ricardo and Lambin, Philippe and Pignol, Jean-Philippe and Ladd, Mark E. and Schlemmer, Heinz-Peter and Baumann, Michael and Hricak, Hedvig},
+  title   = {MRI-guided radiation therapy: an emerging paradigm in adaptive radiation oncology},
+  journal = {Radiology},
+  year    = {2021},
+  volume  = {298},
+  pages   = {248--260},
+  doi     = {10.1148/radiol.2020202747}
+}
+
+@article{vanhoudt2021,
+  author  = {van Houdt, Petra J. and Yang, Yingli and van der Heide, Uulke A.},
+  title   = {Quantitative magnetic resonance imaging for biological image-guided adaptive radiotherapy},
+  journal = {Frontiers in Oncology},
+  year    = {2021},
+  volume  = {10},
+  pages   = {615643},
+  doi     = {10.3389/fonc.2020.615643}
+}
+
+@article{vanhoudt2021qib,
+  author  = {van Houdt, Petra J. and Saeed, Hina and Thorwarth, Daniela and Fuller, Clifton D. and Hall, William A. and McDonald, Brigid A. and {MR-Linac Consortium Imaging Biomarker Working Group}},
+  title   = {Integration of quantitative imaging biomarkers in clinical trials for MR-guided radiotherapy: conceptual guidance for multicentre studies from the MR-Linac Consortium Imaging Biomarker Working Group},
+  journal = {European Journal of Cancer},
+  year    = {2021},
+  volume  = {153},
+  pages   = {64--71},
+  doi     = {10.1016/j.ejca.2021.04.041}
+}
+
+@article{leibfarth2018,
+  author  = {Leibfarth, Sara and Winter, Rene M. and Lyng, Heidi and Zips, Daniel and Thorwarth, Daniela},
+  title   = {Potentials and challenges of diffusion-weighted magnetic resonance imaging in radiotherapy},
+  journal = {Clinical and Translational Radiation Oncology},
+  year    = {2018},
+  volume  = {13},
+  pages   = {29--37},
+  doi     = {10.1016/j.ctro.2018.09.002}
+}
+
+@article{hall2022,
+  author  = {Hall, William A. and Paulson, Eric and Li, X. Allen and Erickson, Beth and Schultz, Christopher and Tree, Alison and Awan, Musaddiq and Low, Daniel A. and McDonald, Brigid A. and Salzillo, Travis and Glide-Hurst, Carri K. and Kishan, Amar U. and Fuller, Clifton D.},
+  title   = {Magnetic resonance linear accelerator technology and adaptive radiation therapy: an overview for clinicians},
+  journal = {CA: A Cancer Journal for Clinicians},
+  year    = {2022},
+  volume  = {72},
+  pages   = {34--56},
+  doi     = {10.3322/caac.21707}
+}

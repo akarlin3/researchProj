@@ -26,6 +26,7 @@ access, the Forge dose engine, or IRB approval never lands.
 | **CP2** — Fashion ruler + Minos trust/action gates | gates fire correctly; provisional flags in place | **PASS** (`verify_cp2.py`) |
 | **CP3** — Forge-shaped dose-replan stage | stage consumes the decision, returns a replan; Forge-drop-in-ready | **PASS** (`verify_cp3.py`) |
 | **CP4** — closed-loop run + honest scope | loop closes reproducibly; scope honest; no clinical claim | **PASS** (`verify_cp4.py`) |
+| **Ferry** — real-data substrate (real anatomy + dose; synthetic perfusion) | drop-in proven (`loop.py` byte-unchanged); loop **closes on real geometry**; honest ceiling | **PASS** (`verify_ferry_cp1.py`, `verify_ferry_cp2.py`) — see [`FERRY.md`](FERRY.md) |
 
 Headline (synthetic twin, seed `20260622`, 12×12 voxels, 6 iterations; 95% bootstrap CIs):
 
@@ -35,6 +36,27 @@ Headline (synthetic twin, seed `20260622`, 12×12 voxels, 6 iterations; 95% boot
   gated vs **0.42 [0.36, 0.49]** ungated, while trustworthy voxels stay free to act (**0.57 [0.54, 0.61]**).
 - **Closed loop converges:** trusted tumour perfusion drops **0.176 [0.167, 0.185]** under treatment
   (CI excludes 0) while untrusted tumour is **held** (0.000); treatment winds down (TREAT actions → 0).
+
+## Ferry — grounding on real anatomy + dose geometry
+
+[`FERRY.md`](FERRY.md) adds **Ferry**, a real-data substrate adapter that swaps the synthetic
+twin for **real anatomy + real dose geometry** from a public RT dataset
+(**TCIA Pancreatic-CT-CBCT-SEG**, DOI `10.7937/TCIA.ESHQ-4D90`, **CC BY 4.0**) — to pre-empt the
+"shown only on a pure synthetic twin" objection. It is an **interface-swap only**: a
+`GroundedTwin` drops into the existing `run_iteration` and **`loop.py` is byte-unchanged**.
+
+> **Honest ceiling.** Real anatomy + dose geometry; **perfusion/IVIM stays synthetic** (no
+> scanner). A grounded result means *"the loop closes on real geometry"* — **never** a real-IVIM
+> or clinical claim. The residual real-diffusion gap is closed only by scanner access.
+
+Grounded headline (real pancreatic slice, 32×32, matched-grid side-by-side; 95% bootstrap CIs):
+
+- **Loop closes on real geometry:** trust gate holds untrusted *action* rate at **0.00 [0.00, 0.00]**
+  (vs **0.39 [0.36, 0.41]** ungated); trusted tumour perfusion drops **0.169 [0.166, 0.171]**
+  (CI excludes 0); treatment winds down (TREAT → 0). (`verify_ferry_cp2.py`)
+- **Finding (real dose):** on real *delivered* dose, "holding" an untrusted voxel no longer protects
+  it — held perfusion still drops **0.148 [0.139, 0.156]** because the dose was already delivered.
+  Action-suppression ≠ outcome-protection on a real prescription (synthetic baseline: 0.000).
 
 ## The three consumed components (each stubbed behind a clean interface)
 
@@ -65,8 +87,16 @@ Matrix/
       ruler.py       Fashion-shaped   (calibrated error bars)
       gates.py       Minos-shaped     (trust gate + action gate)
       dose.py        Forge-shaped     (dose engine; placeholder only)
-  tests/             pytest suite
-  results/           seeded run printouts (RESULTS_CP4.md)
+    ferry/           REAL-data substrate adapter (real anatomy + dose geometry)
+      substrate.py   FerrySubstrate + GroundedTwin (IS-A Twin; synthetic perfusion)
+      dataset.py     by-script TCIA/NBIA loader (no blobs; license recorded)
+      loop_grounded.py  run_grounded_loop — reuses loop.run_iteration untouched
+      LICENSE_DATASET.md  the verified CC BY 4.0 record + citation
+  FERRY.md           Ferry honest-scope statement
+  verify_ferry_cp1.py  drop-in proof (loop.py byte-unchanged; contract; reproducible)
+  verify_ferry_cp2.py  grounded closed-loop run + side-by-side vs synthetic baseline
+  tests/             pytest suite (incl. tests/test_ferry.py)
+  results/           seeded run printouts (RESULTS_CP4.md, RESULTS_FERRY_CP2.md)
 ```
 
 ## Run it

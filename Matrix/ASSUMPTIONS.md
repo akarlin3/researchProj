@@ -11,7 +11,8 @@
 > Matrix becomes invalid (must be re-run) if it changes. The re-validation is one command:
 > point the interface at the real adapter, bump the pins below, run `bash Matrix/reproduce.sh`.
 
-Last audited: 2026-06-22, against the `researchProj` monorepo `main` @ `03470ad`.
+Last audited: 2026-06-22, against the `researchProj` monorepo `main` @ `03470ad`
+(Ferry substrate addendum, §6, audited against `origin/main` @ `c3155b2` / Matrix PR #56).
 
 ---
 
@@ -26,10 +27,13 @@ Last audited: 2026-06-22, against the `researchProj` monorepo `main` @ `03470ad`
 | **Trust gate + action gate** (CP2) | **Yes — Minos** | **PROVISIONAL** (placeholder) |
 | **Dose replan** (CP3) | **Yes — Forge** | **PROVISIONAL** (placeholder; engine NOT-BUILT) |
 | **Closed-loop result** (CP4) | Yes — all three | **PROVISIONAL** (caveated; synthetic-only) |
+| **Ferry grounded substrate** (§6) — real anatomy + dose geometry, synthetic perfusion | No — optional real-data swap behind the Twin contract | **SOLID** ("loop closes on real geometry"); **NOT a real-IVIM result** |
 
 **"The loop closes" is SOLID** — it is a property of the harness + twin, demonstrated on
-placeholders. **Every clinical-sounding reading is out of scope**: results mean only "the loop
-closes and behaves sensibly on a synthetic twin."
+placeholders. With **Ferry** (§6) it is additionally demonstrated on **real anatomy + real dose
+geometry** (still synthetic perfusion). **Every clinical-sounding reading is out of scope**:
+results mean only "the loop closes and behaves sensibly" — on a synthetic twin, or (Ferry) on
+real geometry with synthetic perfusion. Neither is a clinical or real-IVIM claim.
 
 ---
 
@@ -106,12 +110,19 @@ decision/gate behaviour are independent of the dose engine's internals.
 
 ---
 
-## 4. DATA SOURCE — clean (synthetic only); the IP gate
+## 4. DATA SOURCE — clean; the IP gate
 
-**No `pancData3`, no MSK, no clinical/real patient data is touched anywhere in the tree or history.**
-The twin defines its **own** synthetic IVIM priors (it does not import Fashion's pancreatic anchors),
-so the tree carries no clinical anchoring. Everything is seeded and reproducible from
-`MatrixConfig.seed`. **The IP gate passes by construction.**
+**Core twin (default):** **No `pancData3`, no MSK, no clinical/real patient data is touched
+anywhere in the tree or history.** The twin defines its **own** synthetic IVIM priors (it does
+not import Fashion's pancreatic anchors), so the tree carries no clinical anchoring. Everything
+is seeded and reproducible from `MatrixConfig.seed`. **The core IP gate passes by construction.**
+
+**Ferry grounded substrate (§6, optional):** grounds anatomy + dose geometry on a **public RT
+dataset with a verified open license** (TCIA Pancreatic-CT-CBCT-SEG, **CC BY 4.0**), loaded
+**by script** with the license recorded and **no data blobs committed** (the loader caches into
+a git-ignored directory; `*.dcm` / `*.npz` / `_cache/` are git-ignored). NO private/clinical
+(`pancData3` / MSK) data. **The Ferry IP gate passes by the public-CC-BY + no-blob + by-script
+construction** — see `matrix/ferry/LICENSE_DATASET.md`.
 
 ---
 
@@ -129,3 +140,35 @@ When Fashion / Minos / Forge land (or revise):
    fix the result, do not paper over it.
 
 Environment: the `proteus` conda env (numpy/scipy). See `README.md`.
+
+---
+
+## 6. FERRY — the real-data substrate (real anatomy + dose geometry; synthetic perfusion)
+
+**Status (PINNED):** **SOLID for what it claims** — the loop closes on real geometry
+(`verify_ferry_cp1.py`, `verify_ferry_cp2.py`). **NOT a real-IVIM result, NOT a clinical
+claim.** Ferry swaps the *substrate*, not the consumed components: Fashion/Minos/Forge remain
+PROVISIONAL placeholders under it. See `FERRY.md` for the full scope ceiling.
+
+| key | pinned value | source |
+|---|---|---|
+| `ferry.dataset` | TCIA **Pancreatic-CT-CBCT-SEG**, Version 2 (2022-08-23) | TCIA landing page |
+| `ferry.doi` | `10.7937/TCIA.ESHQ-4D90` | TCIA |
+| `ferry.license` | **CC BY 4.0** (verified; attribution only; no gate) | `matrix/ferry/LICENSE_DATASET.md` |
+| `ferry.host` | TCIA / NBIA REST API (`getSeries` + `getImage`) | `matrix/ferry/dataset.py` |
+| `ferry.patient` | `Pancreas-CT-CB_001` (default; any case with RTSTRUCT+RTDOSE works) | NBIA catalog |
+| `ferry.real` | anatomy (`labels` ← RTSTRUCT) + dose geometry (`dose` ← RTDOSE grid) | `matrix/ferry/substrate.py` |
+| `ferry.synthetic` | IVIM `(D,D*,f)`, scan, SNR map, high-D* — same seeded mechanism as `Twin.build` | `matrix/ferry/substrate.py` |
+| `ferry.blobs` | **none committed** (`*.dcm`/`*.npz`/`_cache/` git-ignored; by-script load) | `Matrix/.gitignore` |
+
+**Twin contract (unchanged):** Ferry's `GroundedTwin` IS-A `matrix.twin.Twin` and is consumed
+by the existing `loop.run_iteration(twin, …)` — the loop reads `twin.scan(rng)`,
+`twin.truth_snapshot()`, `twin.dose`, `twin.apply_plan(...)` and nothing else.
+**Drop-in:** `matrix/ferry/loop_grounded.py :: run_grounded_loop` builds a `GroundedTwin` and
+feeds it to the *imported* `run_iteration` — **`loop.py` is byte-unchanged** (git-blob
+`4a34806…`, asserted in `verify_ferry_cp1.py` check 1 and `tests/test_ferry.py`).
+**Invalidates if it changes:** which loop quantities are real (anatomy/dose) vs synthetic
+(perfusion). Ferry does **not** invalidate the synthetic-twin gates (CP1–CP4 still pass); it is
+an *additional, optional* demonstration that the harness closes on real geometry.
+**Residual gap (only a scanner closes it):** real diffusion/perfusion (IVIM) — Keystone's
+real-time/offline modes, out of scope here.

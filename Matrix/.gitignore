@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .DS_Store
+
+# Ferry: NEVER commit dataset blobs or derived grids (clean-IP gate).
+# The loader downloads by script and caches here; everything below is regenerable.
+matrix/ferry/_cache/
+*.dcm
+*.npz

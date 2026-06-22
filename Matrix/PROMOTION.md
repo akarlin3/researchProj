@@ -45,3 +45,23 @@ promote a stale number.
   remains a **synthetic-twin** harness. A clinical claim requires a real scanner + real data
   (Keystone's real-time/offline modes, or the Ferry grounding on a public RT dataset) — explicitly
   **out of scope** here.
+
+## Ferry — the substrate swap (BUILT; real anatomy + dose geometry)
+
+Ferry is the **fourth swap point** and the only one already grounded on real data. Unlike
+Fashion/Minos/Forge (which swap a *consumed component*), Ferry swaps the **substrate** — the
+anatomy/dose twin — behind the same one rule: the loop never references a concrete twin, so
+`run_iteration(twin, …)` takes a `GroundedTwin` and **`loop.py` is untouched** (proven
+byte-for-byte in `verify_ferry_cp1.py`).
+
+| swap | placeholder/default | adapter (built) | interface (unchanged) |
+|---|---|---|---|
+| **Ferry** substrate | synthetic `Twin.build(cfg)` | `GroundedTwin.from_substrate` ← TCIA RTSTRUCT+RTDOSE (`matrix/ferry/`) | the `Twin` contract consumed by `run_iteration` |
+
+**What Ferry promotes, and what it does NOT.** Ferry promotes the substrate from *synthetic
+geometry* to *real anatomy + real dose geometry* — clearing the "shown only on a pure synthetic
+twin" objection. It does **not** clear the perfusion/IVIM ceiling: perfusion stays synthetic
+(no scanner). So a Ferry-grounded result clears exactly one flag — *geometry is real* — and the
+**real-IVIM / clinical flag stays set** until a scanner study lands. Update `ASSUMPTIONS.md` §6
+pins (dataset/DOI/license/patient) if the grounding dataset changes; the synthetic-twin gates
+(CP1–CP4) are unaffected and must stay green.

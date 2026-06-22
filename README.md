@@ -21,6 +21,7 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Gnomon/` — Clean-room reproduce-or-refute of Fashion's ruler (software)](#gnomon--clean-room-reproduce-or-refute-of-fashions-ruler-software)
   - [`Lattice/` — A UQ-calibration reference object (DRO) for IVIM](#lattice--a-uq-calibration-reference-object-dro-for-ivim)
   - [`Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)](#lethe--constrained-validation-results-echo-portion-repeatability-scale-check)
+  - [`Matrix/` — Synthetic-twin closed loop (Keystone's no-scanner mode)](#matrix--synthetic-twin-closed-loop-keystones-no-scanner-mode)
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
   - [`Proteus/` — Structure-first mining of the dark proteome](#proteus--structure-first-mining-of-the-dark-proteome)
@@ -43,6 +44,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Gnomon/`](Gnomon/) | *(research software — no standalone paper by default)* Clean-room **reproduce-or-refute** rebuild of Fashion's calibration ruler (independent forward model + NLLS railing + Laplace/MCMC + MAF + ruler; targets pinned before running) | Research software — independent reproduction (the hedge to the Fashion retool) |
 | [`Lattice/`](Lattice/) | *(research software — no standalone paper)* IVIM UQ-calibration digital reference object (DRO) | Research software — synthetic ground-truth cohorts & alternative-model generators |
 | [`Lethe/`](Lethe/) | *(constrained-validation results; Echo portion — verdict: **Lethe**)* What test–retest repeatability validates about conformal interval **scale** in IVIM | IVIM diffusion-MRI — does the error bar have the right *size*? |
+| [`Matrix/`](Matrix/) | *(research software — no standalone paper)* Synthetic-twin **closed-loop** harness (scan→posterior→trust gate→action gate→dose replan→re-scan); Keystone's no-scanner mode, consuming Fashion/Minos/Forge behind stubbed interfaces | Adaptive quantitative-MRI dosing — a working closed loop on a synthetic twin (no scanner, no patient data) |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
@@ -290,6 +292,32 @@ under-covers it — region-level repeatability is non-thermal-dominated. See
 - `echo_repeat/` — `statistic.py` (test–retest coverage + standardized-residual scale check + numpy-only BCa bootstrap), `harness.py` (synthetic test–retest generator + SOLID method self-test, also the Reverb fallback), `invivo.py` (IVIM forward + segmented fit + Caliper-conformal deployer), `provenance.py`, `_paths.py` (read-only import chokepoint).
 - `scripts/` — `run_harness.py` (CP1 method self-test), `fetch_invivo.py` (CP2 download-on-demand, reuses Gauge's data template), `run_validation.py` (CP3 real-data gate → PASS / Lethe).
 - `paper/` — `lethe.tex` (`ebgaramond`+`microtype`) + `consistency.py` (numbers traced to seeded results). `ASSUMPTIONS.md`, `PROMOTION.md`, `VERIFICATION.md`, `LETHE.md`, `reproduce.sh` (one-command), `tests/`.
+
+### `Matrix/` — Synthetic-twin closed loop (Keystone's no-scanner mode)
+
+*Research software — no standalone paper.* **Matrix** is the capstone (**Keystone**) closed
+loop run as its **no-scanner mode**: `scan → posterior → trust gate → action gate → dose
+replan → re-scan`, on a purely **synthetic digital twin** with known ground-truth IVIM
+`(D, D*, f)` and a dose/response model — **no scanner, no real patient data** anywhere. It is
+built standalone and early to de-risk lab access, so the capstone exists even if real MR-Linac
+access, the Forge dose engine, or IRB approval never lands.
+
+Matrix consumes three components, **none final**, each stubbed behind a clean interface with a
+clearly-labelled placeholder; the real component drops in **without touching the loop**:
+**Fashion**'s calibration ruler (`interfaces/ruler.py`, in review @ *NMR in Biomedicine*),
+**Minos**'s trust + action gates (`interfaces/gates.py`, applied half provisional), and
+**Forge**'s dose engine (`interfaces/dose.py`, **deferred to 2027 — not built**). See
+[`Matrix/ASSUMPTIONS.md`](Matrix/ASSUMPTIONS.md) and [`Matrix/PROMOTION.md`](Matrix/PROMOTION.md).
+
+> **Scope:** a *working closed-loop harness on synthetic data*, **not** a validated clinical
+> loop. Every result means "the loop closes and behaves sensibly on a synthetic twin." All four
+> checkpoints pass ([`verify_cp1..4.py`](Matrix/); one-command [`reproduce.sh`](Matrix/reproduce.sh),
+> 26 tests): ruler ECE_f 0.007; trust-gate AUROC 1.00; action suppressed on untrustworthy voxels
+> (0.00 [0.00,0.00] gated vs 0.42 [0.36,0.49] ungated); trusted-tumour perfusion drops
+> 0.176 [0.167,0.185] under treatment while untrusted tumour is held (95% bootstrap CIs).
+
+- `matrix/` — `twin.py` (synthetic twin + dose/response), `forward.py` (IVIM scanner), `fit.py` (segmented posterior), `loop.py` (four-stage harness + `Interfaces`), `state.py`, `evaluate.py` (bootstrap CIs), `interfaces/{ruler,gates,dose}.py`.
+- `verify_cp1..4.py`, `reproduce.sh` (one-command), `tests/`, `results/RESULTS_CP4.md`, `ASSUMPTIONS.md`, `PROMOTION.md`.
 
 ### `Minos/` — The decision value of a calibrated error bar
 

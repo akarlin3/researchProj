@@ -1,0 +1,179 @@
+{
+  "F1_held_drop_real_dose": {
+    "ci_excludes_zero": true,
+    "synthetic_baseline_ci": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "value_ci": [
+      0.14799523902372722,
+      0.13947777827513946,
+      0.1564565845087819
+    ]
+  },
+  "config": {
+    "n_iter": 6,
+    "n_voxels": 1024,
+    "nx": 32,
+    "ny": 32,
+    "seed": 20260622
+  },
+  "grounded_anatomy": {
+    "drop_trusted": [
+      0.1709182203551451,
+      0.16903244092878636,
+      0.17288053205907192
+    ],
+    "held_untrusted": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "n_treat": [
+      231,
+      61,
+      8,
+      4,
+      0,
+      0
+    ],
+    "n_trusted": 303,
+    "n_tumor": 477,
+    "n_untrusted": 174,
+    "sup_gated": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sup_trust": [
+      0.6185022026431718,
+      0.6050605726872247,
+      0.6325991189427312
+    ],
+    "sup_ungated": [
+      0.47381546134663344,
+      0.45012468827930174,
+      0.4975062344139651
+    ],
+    "warranted": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "grounded_full": {
+    "drop_trusted": [
+      0.16870367503757439,
+      0.16631058306145038,
+      0.17110611282535054
+    ],
+    "held_untrusted": [
+      0.14799523902372722,
+      0.13947777827513946,
+      0.1564565845087819
+    ],
+    "n_treat": [
+      231,
+      33,
+      4,
+      1,
+      0,
+      0
+    ],
+    "n_trusted": 303,
+    "n_tumor": 477,
+    "n_untrusted": 174,
+    "sup_gated": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sup_trust": [
+      0.6065359477124183,
+      0.5919389978213507,
+      0.6204793028322441
+    ],
+    "sup_ungated": [
+      0.38545688545688545,
+      0.36036036036036034,
+      0.41055341055341055
+    ],
+    "warranted": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "loop_py_blob_sha1": "4a34806ac4fa55c0ce5453b9864d37c67abfda92",
+  "substrate": {
+    "collection": "Pancreatic-CT-CBCT-SEG",
+    "doi": "10.7937/TCIA.ESHQ-4D90",
+    "dose_gy_range": [
+      13.72,
+      73.5
+    ],
+    "license": "CC BY 4.0",
+    "oar_rois": [
+      "Bowel_sm_planCT",
+      "Stomach_duo_planCT"
+    ],
+    "patient": "Pancreas-CT-CB_001",
+    "slice_z_mm": 316.91,
+    "target_roi": [
+      "ROI"
+    ]
+  },
+  "synthetic": {
+    "drop_trusted": [
+      0.16953073809585317,
+      0.16588748908402834,
+      0.17305882540868375
+    ],
+    "held_untrusted": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "n_treat": [
+      116,
+      28,
+      5,
+      2,
+      1,
+      0
+    ],
+    "n_trusted": 152,
+    "n_tumor": 284,
+    "n_untrusted": 132,
+    "sup_gated": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sup_trust": [
+      0.5550218340611354,
+      0.5406058951965065,
+      0.5692139737991266
+    ],
+    "sup_ungated": [
+      0.42327365728900257,
+      0.3983375959079284,
+      0.4475703324808184
+    ],
+    "warranted": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true
+    ]
+  }
+}

@@ -17,6 +17,7 @@ All load-bearing numbers carry seeded bootstrap CIs. Run: <proteus python> Matri
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 
@@ -26,8 +27,10 @@ import numpy as np
 
 from matrix import MatrixConfig, Twin, LoopState, Interfaces, TREAT, ESCALATE
 from matrix.fit import fit_scan
-from matrix.evaluate import trust_gate_metrics, suppression_metrics
+from matrix.evaluate import trust_gate_metrics, suppression_metrics, bootstrap_ci
 from matrix.loop import stage_scan, stage_posterior, stage_gates
+
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _hr(t): print("\n" + "=" * 74 + f"\n{t}\n" + "=" * 74)
@@ -55,8 +58,13 @@ def main() -> int:
     _hr("CP2 check 1/4 — Fashion ruler calibrates the f error bar")
     cal = ifaces.ruler.calibrate(state.mu, state.raw_sigma, truth=state.truth)
     cov = cal["coverage"]["f"]; ece = cal["ece"]["f"]
+    # 95% coverage with a seeded bootstrap CI over voxels (the per-voxel hit indicator).
+    hit95 = (np.abs(np.asarray(state.mu["f"], float) - np.asarray(state.truth["f"], float))
+             <= 1.96 * np.asarray(cal["sigma"]["f"], float)).astype(float)
+    cov95_ci = bootstrap_ci(hit95)
     print(f"  ruler = {ifaces.ruler.label}")
     print(f"  empirical coverage of f: " + ", ".join(f"{lv:.0%}->{cov[lv]:.2f}" for lv in sorted(cov)))
+    print(f"  95% coverage of f = {cov95_ci[0]:.3f} [{cov95_ci[1]:.3f}, {cov95_ci[2]:.3f}]")
     print(f"  ECE_f = {ece:.3f}")
     assert cov[0.95] >= 0.85 and ece < 0.08, "ruler f-calibration off"
     print("  RULER: PASS")
@@ -95,8 +103,39 @@ def main() -> int:
         print(f"  {role:7s} provisional=True  label={obj.label!r}")
     print("  PROVISIONAL: PASS")
 
+    _write_json(cfg, ifaces, cov, ece, cov95_ci, tg, sup, n_treat, state)
     _hr("CP2 GATE: PASS")
     return 0
+
+
+def _write_json(cfg, ifaces, cov, ece, cov95_ci, tg, sup, n_treat, state):
+    """Emit the seeded CP2 anchors the manuscript consistency gate consumes."""
+    out = {
+        "config": dict(nx=cfg.nx, ny=cfg.ny, n_voxels=cfg.n_voxels, seed=cfg.seed,
+                       snr=cfg.snr, snr_low=cfg.snr_low),
+        "ruler": {"label": ifaces.ruler.label,
+                  "coverage_f": {f"{lv:.2f}": float(cov[lv]) for lv in sorted(cov)},
+                  "coverage_f_95": float(cov[0.95]),
+                  "coverage_f_95_ci": [float(x) for x in cov95_ci], "ece_f": float(ece)},
+        "trust_gate": {"label": ifaces.trust_gate.label,
+                       "auroc_sigmaf_vs_lowsnr": float(tg["auroc_untrust_vs_lowsnr"]),
+                       "fire_rate_lowsnr": [float(x) for x in tg["fire_rate_lowsnr"]],
+                       "fire_rate_goodsnr": [float(x) for x in tg["fire_rate_goodsnr"]]},
+        "action_gate": {"label": ifaces.action_gate.label,
+                        "n_treat": int(n_treat),
+                        "n_suppressed": int(sup["n_suppressed"]),
+                        "act_rate_untrust_ungated": [float(x) for x in sup["act_rate_untrust_ungated"]],
+                        "act_rate_untrust_gated": [float(x) for x in sup["act_rate_untrust_gated"]],
+                        "act_rate_trust_gated": [float(x) for x in sup["act_rate_trust_gated"]]},
+        "provisional": {"ruler": bool(ifaces.ruler.provisional),
+                        "trust_gate": bool(ifaces.trust_gate.provisional),
+                        "action_gate": bool(ifaces.action_gate.provisional)},
+    }
+    p = os.path.join(HERE, "results", "RESULTS_CP2.json")
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "w") as fh:
+        json.dump(out, fh, indent=2, sort_keys=True)
+    print(f"\n  wrote {os.path.relpath(p, HERE)}")
 
 
 if __name__ == "__main__":

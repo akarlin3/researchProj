@@ -32,7 +32,9 @@ Run: <proteus python> Matrix/verify_ferry_cp2.py
 """
 from __future__ import annotations
 
+import json
 import os
+import subprocess
 import sys
 from dataclasses import replace
 
@@ -167,11 +169,56 @@ def main() -> int:
           f"both trusted & untrusted populations non-empty -> qualitative behaviour preserved.")
 
     _write_results(cfg, sub, SYN, GA, GF, f1)
+    _write_json(cfg, sub, SYN, GA, GF, f1)
     _hr("Ferry CP2 GATE: PASS — the loop closes + behaves sensibly on REAL geometry")
     print("  SCOPE: REAL anatomy + REAL dose geometry; SYNTHETIC perfusion (no scanner, no real")
     print("  IVIM). Provisional on Fashion/Minos/Forge. NOT a validated clinical loop; NOT a")
     print("  real-IVIM result. See FERRY.md.")
     return 0
+
+
+def _loop_blob_sha1():
+    """git blob hash of matrix/loop.py — the byte-identity anchor (== PR #56 shipped)."""
+    loop_py = os.path.join(HERE, "matrix", "loop.py")
+    try:
+        return subprocess.check_output(["git", "hash-object", loop_py],
+                                       cwd=HERE).decode().strip()
+    except Exception:
+        return None
+
+
+def _write_json(cfg, sub, SYN, GA, GF, f1):
+    """Emit the seeded grounded anchors the manuscript consistency gate consumes."""
+    pr = sub.provenance
+
+    def run(M):
+        return {"n_tumor": M["n_tumor"], "n_trusted": M["n_trusted"],
+                "n_untrusted": M["n_untrusted"], "n_treat": [int(v) for v in M["n_treat"]],
+                "drop_trusted": [float(x) for x in M["drop"]],
+                "held_untrusted": [float(x) for x in M["held"]],
+                "sup_gated": [float(x) for x in M["sup_gated"]],
+                "sup_ungated": [float(x) for x in M["sup_ungated"]],
+                "sup_trust": [float(x) for x in M["sup_trust"]],
+                "warranted": [bool(v) for v in M["warranted"]]}
+
+    out = {
+        "substrate": {"collection": COLLECTION, "doi": DOI, "license": LICENSE,
+                      "patient": pr.get("patient"), "slice_z_mm": pr.get("slice_z_mm"),
+                      "dose_gy_range": pr.get("dose_gy_range"),
+                      "target_roi": pr.get("target_roi"), "oar_rois": pr.get("oar_rois")},
+        "config": dict(nx=cfg.nx, ny=cfg.ny, n_voxels=cfg.n_voxels, seed=cfg.seed,
+                       n_iter=cfg.n_iter),
+        "synthetic": run(SYN), "grounded_anatomy": run(GA), "grounded_full": run(GF),
+        "F1_held_drop_real_dose": {"value_ci": [float(x) for x in GF["held"]],
+                                   "ci_excludes_zero": bool(f1),
+                                   "synthetic_baseline_ci": [float(x) for x in SYN["held"]]},
+        "loop_py_blob_sha1": _loop_blob_sha1(),
+    }
+    p = os.path.join(HERE, "results", "RESULTS_FERRY_CP2.json")
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "w") as fh:
+        json.dump(out, fh, indent=2, sort_keys=True)
+    print(f"  wrote {os.path.relpath(p, HERE)}")
 
 
 def _write_results(cfg, sub, SYN, GA, GF, f1):

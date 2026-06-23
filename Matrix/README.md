@@ -58,6 +58,32 @@ Grounded headline (real pancreatic slice, 32×32, matched-grid side-by-side; 95%
   it — held perfusion still drops **0.148 [0.139, 0.156]** because the dose was already delivered.
   Action-suppression ≠ outcome-protection on a real prescription (synthetic baseline: 0.000).
 
+## Manuscript and submission status — **SUBMISSION-READY but HELD**
+
+The manuscript (`paper/matrix.tex`) is **complete and compiles** (`bash paper/build.sh` →
+`paper/matrix.pdf`), every load-bearing number traces to a seeded gate via
+`paper/consistency.py` (→ `numbers.tex`), and the harness **reproduces green on both
+substrates** (`bash reproduce.sh`: synthetic twin CP1–CP4 **and** the Ferry real-data
+substrate; `loop.py` byte-identity reconfirmed). The centerpiece is an **honest negative**
+(F1): on real delivered dose, action-suppression is *not* outcome-protection. Target venue:
+**PMB** (Physics in Medicine & Biology).
+
+**Submission is HELD.** A self-documenting release gate (`release_gate.py`, config in
+`release.json`) withholds submission until **both** `FASHION_PUBLISHED` and `MINOS_PUBLISHED`
+are true. **Forge is not a hold condition** (NOT-BUILT, deferred 2027; drop-in future work).
+While held, `release_gate.py submit` refuses with `HELD — awaiting Fashion + Minos
+publication` and the `SUBMISSION_HOLD` marker records the unmet conditions. Reproduction and
+release are deliberately decoupled (`reproduce.sh` is publication-agnostic; the HOLD lives
+only in the release gate). See `RELEASE.md`, `STUB_LEDGER.md`, and `paper/README.md`.
+
+```bash
+bash reproduce.sh                 # all gates green on BOTH substrates (held-agnostic)
+bash paper/build.sh               # consistency gate -> matrix.pdf
+python release_gate.py status     # HELD -- awaiting Fashion + Minos publication
+python release_gate.py submit     # refuses while HELD (exit 3)
+python verify_citations.py        # no fabricated DOIs; dataset DOI well-formed
+```
+
 ## The three consumed components (each stubbed behind a clean interface)
 
 None is final, so each sits behind a documented interface with a clearly-labelled placeholder; the
@@ -96,7 +122,16 @@ Matrix/
   verify_ferry_cp1.py  drop-in proof (loop.py byte-unchanged; contract; reproducible)
   verify_ferry_cp2.py  grounded closed-loop run + side-by-side vs synthetic baseline
   tests/             pytest suite (incl. tests/test_ferry.py)
-  results/           seeded run printouts (RESULTS_CP4.md, RESULTS_FERRY_CP2.md)
+  results/           seeded run printouts + machine-readable anchors
+                       RESULTS_CP2/CP4.md + .json, RESULTS_FERRY_CP2.md + .json
+  paper/             the manuscript (PMB target)
+    matrix.tex       methods+results paper; \PROV marks Fashion/Minos-dependent numbers
+    consistency.py   traceability gate: seeded JSON -> numbers.tex + load-bearing asserts
+    numbers.tex      AUTO-GENERATED (do not edit); build.sh; README.md; matrix.pdf
+  release_gate.py    the submission HOLD (FASHION_PUBLISHED & MINOS_PUBLISHED; Forge NOT a condition)
+  release.json       release flags/DOIs;  SUBMISSION_HOLD  the held marker the report reads
+  verify_citations.py  no-fabricated-DOI gate for the in-review forward-refs
+  RELEASE.md  STUB_LEDGER.md   the HOLD rationale + the placeholder->real drop-in ledger
 ```
 
 ## Run it

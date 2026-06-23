@@ -1,0 +1,64 @@
+{
+  "action_gate": {
+    "act_rate_trust_gated": [
+      0.6320754716981132,
+      0.5375,
+      0.7264150943396226
+    ],
+    "act_rate_untrust_gated": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "act_rate_untrust_ungated": [
+      0.47368421052631576,
+      0.3157894736842105,
+      0.631578947368421
+    ],
+    "label": "NOT-Minos (CP2 placeholder; provisional pending Minos applied half PR#49)",
+    "n_suppressed": 18,
+    "n_treat": 21
+  },
+  "config": {
+    "n_voxels": 144,
+    "nx": 12,
+    "ny": 12,
+    "seed": 20260622,
+    "snr": 30.0,
+    "snr_low": 7.0
+  },
+  "provisional": {
+    "action_gate": true,
+    "ruler": true,
+    "trust_gate": true
+  },
+  "ruler": {
+    "coverage_f": {
+      "0.50": 0.4861111111111111,
+      "0.80": 0.7986111111111112,
+      "0.95": 0.9444444444444444
+    },
+    "coverage_f_95": 0.9444444444444444,
+    "coverage_f_95_ci": [
+      0.9444444444444444,
+      0.9027777777777778,
+      0.9791666666666666
+    ],
+    "ece_f": 0.006944444444444438,
+    "label": "NOT-Fashion (CP2 transparent placeholder; provisional pending Fashion @ NMRB)"
+  },
+  "trust_gate": {
+    "auroc_sigmaf_vs_lowsnr": 1.0,
+    "fire_rate_goodsnr": [
+      0.018518518518518517,
+      0.0,
+      0.046296296296296294
+    ],
+    "fire_rate_lowsnr": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "label": "NOT-Minos (CP2 placeholder; provisional pending Minos applied half PR#49)"
+  }
+}

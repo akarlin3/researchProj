@@ -19,6 +19,7 @@ Run: <proteus python> Matrix/verify_cp4.py
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 
@@ -108,10 +109,37 @@ def main() -> int:
     print("  CONVERGES: PASS")
 
     _write_results(cfg, series, g, ung, tr, drop_ci, held_ci, delta_series)
+    _write_json(cfg, series, g, ung, tr, drop_ci, held_ci, delta_series)
     _hr("CP4 GATE: PASS  —  loop closes + behaves sensibly on the synthetic twin")
     print("  SCOPE: synthetic twin only; NO scanner, NO real patient data; provisional on")
     print("  Fashion (ruler) / Minos (gates) / Forge (dose). NOT a validated clinical loop.")
     return 0
+
+
+def _write_json(cfg, series, g, ung, tr, drop_ci, held_ci, delta_series):
+    """Emit the seeded CP4 anchors the manuscript consistency gate consumes."""
+    out = {
+        "config": dict(nx=cfg.nx, ny=cfg.ny, n_voxels=cfg.n_voxels, seed=cfg.seed,
+                       n_iter=cfg.n_iter, snr=cfg.snr, snr_low=cfg.snr_low,
+                       dose_min=cfg.dose_min, dose_max=cfg.dose_max),
+        "trajectory": {"mean_f_truth": [float(v) for v in series["mean_f_truth"]],
+                       "n_treat": [int(v) for v in series["n_treat"]],
+                       "n_escalate": [int(v) for v in series["n_escalate"]],
+                       "mean_dose": [float(v) for v in series["mean_dose"]],
+                       "mean_abs_dose_change": [float(v) for v in delta_series]},
+        "suppression": {"act_rate_untrust_gated": [float(x) for x in g],
+                        "act_rate_untrust_ungated": [float(x) for x in ung],
+                        "act_rate_trust_gated": [float(x) for x in tr]},
+        "convergence": {"drop_trusted_tumour": [float(x) for x in drop_ci],
+                        "drop_untrusted_tumour_held": [float(x) for x in held_ci],
+                        "drop_trusted_ci_excludes_zero": bool(drop_ci[1] > 0),
+                        "n_treat_final": int(series["n_treat"][-1])},
+    }
+    p = os.path.join(HERE, "results", "RESULTS_CP4.json")
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "w") as fh:
+        json.dump(out, fh, indent=2, sort_keys=True)
+    print(f"  wrote {os.path.relpath(p, HERE)}")
 
 
 def _write_results(cfg, series, g, ung, tr, drop_ci, held_ci, delta_series):

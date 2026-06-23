@@ -1,0 +1,16 @@
+SUBMISSION HOLD -- Matrix is submission-ready but HELD.
+
+HELD -- awaiting Fashion + Minos publication
+
+The manuscript is complete and reproduces green on both substrates (synthetic twin
+and the Ferry real-data substrate); submission is withheld until BOTH consumed
+components below publish. Forge is NOT a hold condition (NOT-BUILT, drop-in future work).
+
+Unmet release conditions:
+    [UNMET] FASHION_PUBLISHED: Fashion (calibration ruler) is published (in review at NMR in Biomedicine; no DOI)
+    [UNMET] MINOS_PUBLISHED: Minos (trust + action gates) is published (in review; applied half provisional (PR #49); no DOI)
+
+To release: when a paper publishes, set its flag `satisfied: true` and fill its `doi`
+in release.json, then run `python release_gate.py status`. RELEASE requires ALL of:
+    - FASHION_PUBLISHED (Fashion (calibration ruler) is published)
+    - MINOS_PUBLISHED (Minos (trust + action gates) is published)

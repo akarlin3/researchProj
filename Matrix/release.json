@@ -1,0 +1,28 @@
+{
+  "_comment": "Matrix submission release gate. Submission is HELD until BOTH conditions are true. Forge is NOT a condition (NOT-BUILT, deferred 2027; presented as drop-in future work). Flip a flag to true and fill its DOI ONLY when that paper actually publishes; then re-run `python release_gate.py status`.",
+  "conditions": {
+    "FASHION_PUBLISHED": {
+      "satisfied": false,
+      "doi": null,
+      "what": "Fashion (calibration ruler) is published",
+      "status_today": "in review at NMR in Biomedicine; no DOI",
+      "blocks_release": true
+    },
+    "MINOS_PUBLISHED": {
+      "satisfied": false,
+      "doi": null,
+      "what": "Minos (trust + action gates) is published",
+      "status_today": "in review; applied half provisional (PR #49); no DOI",
+      "blocks_release": true
+    }
+  },
+  "not_conditions": {
+    "FORGE_BUILT": {
+      "satisfied": false,
+      "what": "Forge (dose engine) is built",
+      "status_today": "NOT BUILT (deferred 2027); feasibility benchmark only",
+      "blocks_release": false,
+      "note": "Forge is drop-in future work, NOT a release condition. Its placeholder affects only the physical realism of the re-plan, never whether the loop closes or how the gates behave. Listed here explicitly so it is on record that it does NOT hold submission."
+    }
+  }
+}

@@ -13,6 +13,7 @@ what the project does, its headline result, and how it is laid out internally.
 - [Projects at a glance](#projects-at-a-glance)
 - [Project details](#project-details)
   - [`Anneal/` — Chimera collapse, aging, and finite-size scaling](#anneal--chimera-collapse-aging-and-finite-size-scaling)
+  - [`Augur/` — End-stage synthesis of the IVIM uncertainty program](#augur--end-stage-synthesis-of-the-ivim-uncertainty-program)
   - [`Caliper/` — IVIM calibration toolkit (software)](#caliper--ivim-calibration-toolkit-software)
   - [`Datum/` — IVIM calibration benchmark (software)](#datum--ivim-calibration-benchmark-software)
   - [`Fashion/` — Do IVIM fitting methods report honest uncertainty?](#fashion--do-ivim-fitting-methods-report-honest-uncertainty)
@@ -25,6 +26,7 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Matrix/` — Synthetic-twin closed loop (Keystone's no-scanner mode)](#matrix--synthetic-twin-closed-loop-keystones-no-scanner-mode)
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
+  - [`Procrustes/` — Misspecification-aliasing of a calibrated error bar](#procrustes--misspecification-aliasing-of-a-calibrated-error-bar)
   - [`Proteus/` — Structure-first mining of the dark proteome](#proteus--structure-first-mining-of-the-dark-proteome)
   - [`Sextant/` — Boundary-railing as the primary, assumption-free IVIM diagnostic](#sextant--boundary-railing-as-the-primary-assumption-free-ivim-diagnostic)
   - [`Vernier/` — Calibration-aware acquisition design (feasibility gate)](#vernier--calibration-aware-acquisition-design-feasibility-gate)
@@ -37,6 +39,7 @@ what the project does, its headline result, and how it is laid out internally.
 | Subfolder | Paper / subject | Field |
 |-----------|-----------------|-------|
 | [`Anneal/`](Anneal/) | *Chimera Collapse Ages: Topology-Dependent Finite-Size Scaling in Mean-Field and Ring Oscillator Systems* | Nonlinear dynamics — chimera-state collapse, survival & finite-size scaling |
+| [`Augur/`](Augur/) | *(perspective — **SUBMISSION-READY but HELD**)* End-stage synthesis of the IVIM uncertainty program (Fashion→Minos→Lethe→Gauge) along a **trust → value-of-information → action** arc, anchored by the cross-modally-orphaned D\* thread; makes no new measurement | Perspective / synthesis — held until Fashion + Minos publish |
 | [`Caliper/`](Caliper/) | *(research software — no standalone paper)* IVIM uncertainty-quantification calibration toolkit | Research software |
 | [`Datum/`](Datum/) | *(research software — no standalone paper)* IVIM uncertainty-calibration **benchmark** (fixed task + curated baselines + reference numbers, on Fashion's ruler) | Research software — benchmark |
 | [`Fashion/`](Fashion/) | *Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI* (retooled, boundary-railing-first; in review at *NMR in Biomedicine*) | IVIM diffusion-MRI — an assumption-free identifiability signature; calibration ruler demoted to scoped secondary |
@@ -49,6 +52,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Matrix/`](Matrix/) | *(research software — no standalone paper)* Synthetic-twin **closed-loop** harness (scan→posterior→trust gate→action gate→dose replan→re-scan); Keystone's no-scanner mode, consuming Fashion/Minos/Forge behind stubbed interfaces | Adaptive quantitative-MRI dosing — a working closed loop on a synthetic twin (no scanner, no patient data) |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
+| [`Procrustes/`](Procrustes/) | *(research software — clean-room scaffold, CP0)* Misspecification-aliasing of a calibrated error bar: a bi-exp fit on non-bi-exp truth keeps **marginal** coverage but breaks **conditional** coverage of the *well-identified* tissue-diffusion map D — distinct from Gauge's within-model wall | IVIM diffusion-MRI — model-misspecification coverage diagnostic |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
 | [`Sextant/`](Sextant/) | *(re-aim of Fashion)* Boundary-railing of conventional NLLS IVIM fits — an assumption-free optimizer fact promoted to the primary claim, replicated on open human-abdominal DWI; the calibration ruler demoted to scoped secondary | IVIM diffusion-MRI — answering the "overextended claims" critique |
 | [`Vernier/`](Vernier/) | *Vernier: calibration-aware acquisition design for IVIM diffusion MRI* (feasibility gate PASSED; manuscript built, `paper/vernier.pdf`) — at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
@@ -88,6 +92,39 @@ constrained open problem.
 - `tools/` — supporting campaigns: `absorption-recampaign/` (graze vs. absorption), `reduced-ode/` (reduced two-population flow), `breath-phase/`, `manifold-probe/`, `noise-test/` (ruled-out mechanisms), `paper-figures/`, and more.
 - `paper/` — Springer `sn-jnl` manuscript, critical-review supplement, cover letter.
 - `paper_figures/` + `*_results/` — rendered figures and segregated result caches per experiment.
+
+### `Augur/` — End-stage synthesis of the IVIM uncertainty program
+
+*Perspective paper (no new measurement) — **SUBMISSION-READY but HELD**; created in-repo
+(clean, argument-only history).* **Augur** ties the IVIM uncertainty-quantification program
+into one arc — **trust → value-of-information → action** — across **Fashion** (the ruler),
+**Minos** (the decision), **Lethe** (the limits), and **Gauge** (the identifiability wall),
+anchored by the "D\* cross-modally orphaned" thread. It argues a synthesis rather than
+measuring anything new.
+
+The argument: a deployed error bar must first be *trusted* (Fashion's ruler restores marginal
+coverage with a residual high-D\* hole); given trust, **Minos** prices its *value of
+information* — the decision–calibration gap G and the second-order VoI law V = ½|EU″|G²
+(the *Delphi* result, **Plumbline** Prop. 3) — and the label-free detectability floor; on
+*action*, two walls appear: the interval is the wrong *size* for real test–retest (**Lethe**)
+and the wrong *parameter* D\* is unidentifiable (**Gauge**'s CRLB wall). D\* is where all three
+terminate — unidentifiable from its own signal (CRLB grows ~6×, reproduced here), un-scalable
+to its own repeatability (r = −0.17, 95% bootstrap CI [−0.39, +0.05], spanning zero), and only
+weakly/inconsistently tied to DCE Ktrans. The defensible end-stage claim: *the value of a
+calibrated error bar is real exactly where the parameter is identifiable — and D\* marks the
+wall.*
+
+The manuscript (`paper/augur.pdf`, 6 pp) is complete and `reproduce.sh` is green against the
+in-repo provisional anchors, but **submission is held** behind an explicit release gate
+(`release_gate.py` / `submit.sh`) until **Fashion + Minos** publish — reproduction and release
+are deliberately decoupled. Every external claim cites a real, checked source
+([`Augur/CITATIONS.md`](Augur/CITATIONS.md)); every imported number is tracked in
+[`Augur/PROVISIONAL_LEDGER.md`](Augur/PROVISIONAL_LEDGER.md). The hold guards against the
+review's dominant failure mode (the phantom citation), which **Limbo** mechanises further.
+
+- `paper/` — `augur.tex`, `numbers.tex` (auto-generated; every number traces to an anchor), `consistency.py` (CP4 gate), `build.sh`, `augur.pdf`.
+- `anchors/` — `extract_anchors.py` + `anchors.json` (load-bearing values + provenance from committed Gauge results). `scripts/` — `crlb_wall.py`, `retest_ci.py`, `dstar_ktrans.py` (the three re-derivations).
+- `release_gate.py` / `release_config.json` / `submit.sh` / `SUBMISSION_HOLD` — the FASHION_PUBLISHED + MINOS_PUBLISHED hold. `synthesis.md`, `ASSUMPTIONS.md`, `PROVISIONAL_LEDGER.md`, `reproduce.sh`, `tests/`.
 
 ### `Caliper/` — IVIM calibration toolkit (software)
 
@@ -291,19 +328,32 @@ width *rank*-tracks repeatability (r=+0.60) but its *scale*, calibrated conventi
 under-covers it — region-level repeatability is non-thermal-dominated. See
 [`Lethe/LETHE.md`](Lethe/LETHE.md) and the manuscript [`Lethe/paper/lethe.pdf`](Lethe/paper/lethe.pdf).
 
-- `echo_repeat/` — `statistic.py` (test–retest coverage + standardized-residual scale check + numpy-only BCa bootstrap), `harness.py` (synthetic test–retest generator + SOLID method self-test, also the Reverb fallback), `invivo.py` (IVIM forward + segmented fit + Caliper-conformal deployer), `provenance.py`, `_paths.py` (read-only import chokepoint).
-- `scripts/` — `run_harness.py` (CP1 method self-test), `fetch_invivo.py` (CP2 download-on-demand, reuses Gauge's data template), `run_validation.py` (CP3 real-data gate → PASS / Lethe).
+**Reverb — the constructive counterexample (SOLID).** On real data "precision ≠ coverage" can only
+be *argued*; **Reverb** (`echo_repeat/reverb.py`) *shows* it on synthetic ground truth, built only
+on **Lattice** (cohorts) and **Caliper** (estimator + ruler) read-only — so it depends on no
+upstream paper and is **SOLID**, not provisional. Drawing a Lattice cohort, acquiring it twice from
+one truth, and deploying a bi-exp-calibrated conformal interval, it finds that under
+perfusion-model mismatch the perfusion fraction f at low D\* is *excellently repeatable yet badly
+under-covers the truth* (coverage ≈0.61 [BCa 0.57, 0.64] vs ≈0.80 for a matched correctly-specified
+control with **identical** repeatability) — precision blind to a structural bias, visible only
+because truth is known. Its scope is a synthetic possibility-and-mechanism proof; it quantifies no
+real-world miscalibration magnitude.
+
+- `echo_repeat/` — `statistic.py` (test–retest coverage + standardized-residual scale check + numpy-only BCa bootstrap), `harness.py` (synthetic test–retest generator + SOLID method self-test), `reverb.py` (the SOLID constructive precision-vs-coverage counterexample on Lattice), `invivo.py` (IVIM forward + segmented fit + Caliper-conformal deployer), `provenance.py`, `_paths.py` (read-only import chokepoint).
+- `scripts/` — `run_harness.py` (CP1 method self-test), `fetch_invivo.py` (CP2 download-on-demand, reuses Gauge's data template), `run_validation.py` (CP3 real-data gate → PASS / Lethe), `run_reverb.py` (the constructive counterexample).
 - `paper/` — `lethe.tex` (`ebgaramond`+`microtype`) + `consistency.py` (numbers traced to seeded results). `ASSUMPTIONS.md`, `PROMOTION.md`, `VERIFICATION.md`, `LETHE.md`, `reproduce.sh` (one-command), `tests/`.
 
 ### `Limbo/` — Field review of trustworthy UQ for body MRI in adaptive RT
 
-*Field review — PROVISIONAL, not publish-gated.* **Limbo** is a broad survey of *the
-literature's* work on trustworthy uncertainty quantification (UQ) for quantitative/diffusion body
-MRI (IVIM, DWI/ADC, DKI, DCE perfusion, relaxometry) and its decision-use in **MR-guided adaptive
-radiotherapy**. It organises the field along a **trust → value-of-information → action** axis (with a
-foundations layer and a gap map) and identifies where the field's UQ-trust questions remain open. Its
-value is **trigger-independent** — field command plus a citable paper for the *first* PhD
-application — and it **absorbs Buttress** (the portfolio-thickener; no separate repo).
+*Field review — PROVISIONAL, not publish-gated; submission-ready compiled manuscript (CP0–CP3
+complete), typeset for *Physics in Medicine & Biology* (Topical Review, IOP `iopjournal`).*
+**Limbo** is a broad survey of *the literature's* work on trustworthy uncertainty quantification
+(UQ) for quantitative/diffusion body MRI (IVIM, DWI/ADC, DKI, DCE perfusion, relaxometry) and its
+decision-use in **MR-guided adaptive radiotherapy**. It organises the field along a **trust →
+value-of-information → action** axis (with a foundations layer and a gap map) and identifies where
+the field's UQ-trust questions remain open. Its value is **trigger-independent** — field command
+plus a citable paper for the *first* PhD application — and it **absorbs Buttress** (the
+portfolio-thickener; no separate repo).
 
 It is deliberately **distinct from Augur**: Augur is a perspective on the *author's own* arc
 (Fashion/Minos/Lethe/Gauge), hard-blocked until those publish; Limbo is a field survey of *others'*
@@ -319,18 +369,18 @@ peer-cited entries (the CP0 distinctness gate; [`Limbo/ASSUMPTIONS.md`](Limbo/AS
 > identifiers against primary sources (offline **and** `--online`); the survey cites the full base
 > with zero phantoms (10 tests).
 
-- `limbo.bib`, `CITATIONS.md` (verified-claim ledger), `TAXONOMY.md` (the survey axis), `SURVEY.md`
-  (CP2 draft + gap map), `verify_citations.py` (the gate; `--online` resolvability), `ASSUMPTIONS.md`
-  (scope + distinctness + clean IP), `reproduce.sh` (one-command), `tests/`.
+- `limbo.tex` → `limbo.pdf` (the compiled IOP manuscript) ported from `SURVEY.md` (the CP2 draft + gap map), `TAXONOMY.md` (the survey axis), `build.sh` (gate → compile).
+- `limbo.bib` (59 verified entries), `CITATIONS.md` (per-citekey verified claim + resolvable id), `verify_citations.py` (the gate; `--online` resolvability, all 59 resolve live), `ASSUMPTIONS.md` (scope + distinctness + clean IP), `reproduce.sh` (one-command), `tests/`.
 
 ### `Matrix/` — Synthetic-twin closed loop (Keystone's no-scanner mode)
 
-*Research software — no standalone paper.* **Matrix** is the capstone (**Keystone**) closed
-loop run as its **no-scanner mode**: `scan → posterior → trust gate → action gate → dose
-replan → re-scan`, on a purely **synthetic digital twin** with known ground-truth IVIM
-`(D, D*, f)` and a dose/response model — **no scanner, no real patient data** anywhere. It is
-built standalone and early to de-risk lab access, so the capstone exists even if real MR-Linac
-access, the Forge dose engine, or IRB approval never lands.
+*Research software with a **SUBMISSION-READY but HELD** manuscript (target *Physics in
+Medicine & Biology*); created in-repo (clean synthetic-only history).* **Matrix** is the
+capstone (**Keystone**) closed loop run as its **no-scanner mode**: `scan → posterior →
+trust gate → action gate → dose replan → re-scan`, on a purely **synthetic digital twin** with
+known ground-truth IVIM `(D, D*, f)` and a dose/response model — **no scanner, no real patient
+data** anywhere. It is built standalone and early to de-risk lab access, so the capstone exists
+even if real MR-Linac access, the Forge dose engine, or IRB approval never lands.
 
 Matrix consumes three components, **none final**, each stubbed behind a clean interface with a
 clearly-labelled placeholder; the real component drops in **without touching the loop**:
@@ -346,8 +396,28 @@ clearly-labelled placeholder; the real component drops in **without touching the
 > (0.00 [0.00,0.00] gated vs 0.42 [0.36,0.49] ungated); trusted-tumour perfusion drops
 > 0.176 [0.167,0.185] under treatment while untrusted tumour is held (95% bootstrap CIs).
 
-- `matrix/` — `twin.py` (synthetic twin + dose/response), `forward.py` (IVIM scanner), `fit.py` (segmented posterior), `loop.py` (four-stage harness + `Interfaces`), `state.py`, `evaluate.py` (bootstrap CIs), `interfaces/{ruler,gates,dose}.py`.
-- `verify_cp1..4.py`, `reproduce.sh` (one-command), `tests/`, `results/RESULTS_CP4.md`, `ASSUMPTIONS.md`, `PROMOTION.md`.
+**Ferry — grounding on real anatomy + dose geometry.** [`Matrix/FERRY.md`](Matrix/FERRY.md) adds
+**Ferry**, a real-data substrate adapter that swaps the synthetic twin for **real anatomy + real
+dose geometry** from a public RT dataset (**TCIA Pancreatic-CT-CBCT-SEG**, DOI
+`10.7937/TCIA.ESHQ-4D90`, **CC BY 4.0**; no blobs committed) to pre-empt the "shown only on a
+pure synthetic twin" objection. It is an **interface-swap only** — a `GroundedTwin` drops into the
+existing engine and `loop.py` is **byte-unchanged**. Honest ceiling: anatomy + dose geometry are
+real, **perfusion/IVIM stays synthetic** (no scanner), so a grounded result means only *"the loop
+closes on real geometry."* The grounded run surfaced an honest negative the synthetic twin cannot
+show (**F1**): on a real *delivered* dose, "holding" an untrusted voxel does **not** protect it —
+its perfusion still drops 0.148 [0.139, 0.156] because the dose was already delivered, so
+action-suppression ≠ outcome-protection.
+
+**Manuscript — SUBMISSION-READY but HELD.** `paper/matrix.tex` compiles (→ `matrix.pdf`), every
+load-bearing number traces to a seeded gate (`paper/consistency.py`), and `reproduce.sh` is green
+on **both** substrates (synthetic CP1–CP4 **and** the Ferry real-data substrate; `loop.py`
+byte-identity reconfirmed). A self-documenting release gate (`release_gate.py`, config in
+`release.json`) withholds submission until **both** Fashion and Minos publish (Forge is **not** a
+hold condition — deferred to 2027); reproduction and release are decoupled.
+
+- `matrix/` — `twin.py` (synthetic twin + dose/response), `forward.py` (IVIM scanner), `fit.py` (segmented posterior), `loop.py` (four-stage harness + `Interfaces`), `state.py`, `evaluate.py` (bootstrap CIs), `interfaces/{ruler,gates,dose}.py`, and `ferry/` (real-data substrate: `substrate.py`, `dataset.py` TCIA/NBIA loader, `loop_grounded.py`).
+- `verify_cp1..4.py` + `verify_ferry_cp1..2.py`, `reproduce.sh` (one-command, both substrates), `tests/`, `results/RESULTS_CP4.md` + `RESULTS_FERRY_CP2.md`, `FERRY.md`.
+- `paper/` — `matrix.tex` + `consistency.py` (→ `numbers.tex`) + `matrix.pdf`. `release_gate.py` / `release.json` / `SUBMISSION_HOLD` (the Fashion+Minos hold), `verify_citations.py`, `STUB_LEDGER.md`, `RELEASE.md`, `ASSUMPTIONS.md`, `PROMOTION.md`.
 
 ### `Minos/` — The decision value of a calibrated error bar
 
@@ -397,6 +467,29 @@ stability on transient trajectories.
 - CNSNS revision checkpoints (`ouroboros_cp1_*`…`cp4_*`): realistic-rule sweeps, fair-λ Tikhonov, Van der Pol benchmark, noise-floor selection bias.
 - Stability/chaos: `ouroboros_stability.py`, `ouroboros_chaos.py`, `ouroboros_diagnostics_pack.py` (Benettin vs. Rosenstein).
 - `manuscript/` (elsarticle + built PDF), `data/` (committed JSON tables), `figures/`, `RESULTS_*.md`.
+
+### `Procrustes/` — Misspecification-aliasing of a calibrated error bar
+
+*Research software — clean-room scaffold (CP0); no standalone paper yet, venue TBC; created
+in-repo (clean synthetic-only history).* **Procrustes** asks what bi-exponential model
+*misspecification* does to a calibrated IVIM error bar. Fitting a bi-exponential model on
+non-bi-exponential truth keeps **marginal** coverage but breaks the **conditional** coverage of
+the *well-identified* tissue-diffusion map D — a failure on an axis **orthogonal** to
+**Gauge**'s within-model high-D\* identifiability wall, and on the *opposite* parameter (the one
+Gauge says to *trust*). Ground truth is the **Lattice** DRO (seed-generated, no data files).
+
+The original D\*-axis wedge was killed at the novelty gate (it reduces to Gauge §altmodel/
+§envelope); the surviving, repositioned wedge moves *off* the D\* axis. Because every Lattice
+non-bi-exp family leaves the tissue term `(1−f)·exp(−b·D)` intact, D is an exact, well-identified
+ground-truth parameter — so bi-exp misspecification breaks its conditional coverage along the
+*perfusion-departure* axis, **inside** the well-identified D\* regime. An 8-seed refute-first
+probe clears the heavy-tail (stretched-exponential) family with tight CIs — conditional gap
+0.126 [0.116, 0.136], well-ID-D\* gap 0.172 [0.162, 0.183], diagnostic AUC 0.67 (vs Gauge's
+0.501) — while tri-exp stays null and log-normal is a weak, diagnostically-hidden break, so the
+wedge is mechanism-specific (high-b aliasing), not generic.
+
+- `procrustes-core/` — the clean-room core (own `pyproject.toml`): CP0 separation, boundary gates, and the observable misspecification diagnostic (`procrustes/`, `experiments/`, `tests/`, `RESULTS.md`).
+- `procrustes-core/POSITIONING.md` — the durable novelty-gate record (vs Gauge, Lei et al. 2018, Barber et al. 2021, Wang–Tamir–Bush 2026, IVIM model selection, Casali et al. 2025) with pre-registered refute conditions (R1–R3 + boundary) enforced by the gate tests.
 
 ### `Proteus/` — Structure-first mining of the dark proteome
 
@@ -493,7 +586,7 @@ downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
 
 ## How the IVIM projects fit together
 
-Nine folders form one IVIM diffusion-MRI uncertainty program:
+Eleven folders form one IVIM diffusion-MRI uncertainty program:
 
 - **Fashion** (retooled, boundary-railing-first; in review at *NMR in Biomedicine*) leads with the assumption-free fact that conventional NLLS D\* fits *rail to a bound* on open in-vivo data, and demotes the calibration ruler to a scoped, ground-truth-only secondary whose honest-CRLB under-coverage of D\* is *conditional* (high-D\* tercile), not the dropped marginal 0.30/0.67.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
@@ -504,15 +597,20 @@ Nine folders form one IVIM diffusion-MRI uncertainty program:
 - **Minos** is the capstone: it prices the *decision* value of a calibrated error bar and supplies a label-free monitor for when calibration goes stale — its theory is done, its applied half awaits Fashion + Gauge publication.
 - **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. Feasibility gate **PASSED** and survives the retooled ruler (Δ\_sharp 0.328, Δ\_cond 0.059, CIs exclude 0; Δ\_cond is the high-D\* conditional metric the retool retains) — standalone path active, no fold into Minos.
 - **Sextant** re-aims **Fashion** to answer the "overextended claims" critique: it promotes the assumption-free fact that conventional NLLS D\* fits *rail to a bound* on open human-abdominal data to the primary claim, demotes the calibration ruler to a scoped secondary, and replicates the railing across the full OSIPI abdomen and an independent TCGA-LIHC liver cohort. It reuses Fashion's railing computation read-only and, by default, feeds the retooled Fashion spine rather than splitting off (no salami).
-- **Lethe** (the *Echo* portion; speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos.
+- **Lethe** (the *Echo* portion; speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos. Its **Reverb** addendum supplies the SOLID synthetic-ground-truth counterexample showing the same precision-vs-coverage divergence is *possible* and *why*.
+- **Procrustes** moves the question *off* the within-model identifiability axis: fitting a bi-exp model on non-bi-exp truth keeps marginal coverage but breaks the conditional coverage of the *well-identified* tissue-diffusion map D (the parameter Gauge says to trust) — an orthogonal, opposite-parameter failure to Gauge's wall, surviving the novelty gate only on the heavy-tail family (clean-room scaffold, CP0).
 
-Two further folders sit *over* the program rather than inside it. **Augur** is the inward-facing
-*perspective* that threads the author's own arc (Fashion → Minos → Lethe → Gauge) into one
-trust→value→action story — publish-gated until those papers land. **Limbo** is the outward-facing
-*field review* of the same trust→value-of-information→action spine, but surveying **the broader
-literature's** UQ-trust work in quantitative/diffusion body MRI and adaptive RT — deliberately
-distinct from Augur (others' work, not the author's; not publish-gated) and trigger-independent. Its
-hard gate is verified citations: 59 entries, each a resolvable DOI/arXiv/proceedings id, machine-checked.
+Three further folders sit *over* or *around* the program rather than inside it. **Augur** is the
+inward-facing *perspective* that threads the author's own arc (Fashion → Minos → Lethe → Gauge)
+into one trust→value→action story — submission-ready but publish-gated until those papers land.
+**Limbo** is the outward-facing *field review* of the same trust→value-of-information→action spine,
+but surveying **the broader literature's** UQ-trust work in quantitative/diffusion body MRI and
+adaptive RT — deliberately distinct from Augur (others' work, not the author's; not publish-gated)
+and trigger-independent; its hard gate is verified citations (59 entries, each a resolvable
+DOI/arXiv/proceedings id, machine-checked). **Matrix** is the downstream application: **Keystone**'s
+no-scanner closed loop (`scan → posterior → trust → action → dose replan → re-scan`) on a synthetic
+twin, consuming Fashion/Minos/Forge behind stubbed interfaces, with its **Ferry** adapter grounding
+the loop on real anatomy + dose geometry — submission-ready but HELD pending Fashion + Minos.
 
 **Retool propagation (merged 2026-06-21).** The retooled, NMRB-resubmitted Fashion —
 boundary-railing as the assumption-free primary, the calibration ruler scoped to a
@@ -542,8 +640,12 @@ Each project was imported into the monorepo with its own history preserved:
 | `Sextant/` | created in-repo (re-aim of Fashion; clean synthetic-analysis history, no patient data in tree or history) | n/a |
 | `Anneal/` | annealMusic (science subtree split) | full history |
 | `Caliper/` | **git submodule** → [`akarlin3/projCaliper`](https://github.com/akarlin3/projCaliper) (PRIVATE) | carved out of this monorepo via `git filter-repo` with full history (8 commits) preserved; now lives in its own repo |
+| `Augur/` | created in-repo (clean, argument-only history; no data in tree or history) | own history (`git log -- Augur/`) |
 | `Datum/` | created in-repo (clean synthetic-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |
 | `Gnomon/` | created in-repo (clean synthetic/open-only history) | own history — merged with `--allow-unrelated-histories`, mirroring the imported subrepos |
+| `Limbo/` | created in-repo (clean review-only history; verified citations, no data) | own history (`git log -- Limbo/`) |
+| `Matrix/` | created in-repo (clean synthetic-only history; no patient data in tree or history) | own history, incl. the Ferry real-data adapter (`git log -- Matrix/`) |
+| `Procrustes/` | created in-repo (clean synthetic-only history) | own history (`git log -- Procrustes/`) |
 | `Lattice/` | **git submodule** → [`akarlin3/projLattice`](https://github.com/akarlin3/projLattice) (PRIVATE) | carved out of this monorepo via `git filter-repo`; single-commit synthetic-only history (its only in-tree commit, PR #19); now lives in its own repo |
 | `Lethe/` | projEcho (new — synthetic/open); built as `Echo/`, renamed `Echo/`→`Lethe/` by verdict | full history (own clean history; `git log --follow -- Lethe/`) |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |

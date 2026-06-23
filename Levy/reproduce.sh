@@ -34,6 +34,7 @@ run_stage() {  # name  script  [args...]
 
 run_stage "CP0 identifiability object + kill test" "$HERE/verify_cp0.py" $FULLFLAG
 run_stage "CP1 joint (alpha,beta) degeneracy"      "$HERE/verify_cp1.py" $FULLFLAG
+run_stage "CP2 across-alpha wall robustness"       "$HERE/verify_cp2.py" $FULLFLAG
 run_stage "CP-paper manuscript consistency"        "$HERE/paper/consistency.py"
 
 echo

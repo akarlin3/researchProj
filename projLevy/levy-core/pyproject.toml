@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "levy-core"
+version = "0.1.0"
+description = "Identifiability of the fractional order under the diffusion-MRI signal-decay forward model: Fisher/CRLB + structural identifiability for the stretched-exponential alpha (and joint CTRW/fractional Bloch-Torrey), estimated jointly with D and S0 under finite b-value sampling + Rician noise. Fully synthetic."
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.23",
+    "scipy>=1.9",
+    "matplotlib>=3.6",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["levy*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

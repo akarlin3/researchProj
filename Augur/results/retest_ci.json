@@ -1,0 +1,49 @@
+{
+  "_about": "Reproduced D* (and companion D) test-retest correlation intervals; the carried load-bearing interval is the committed seeded BCa bootstrap CI.",
+  "anchor_source": "Gauge/results/invivo_real_provenance.json",
+  "dataset": "ACRIN-6698 same-day test-retest (TrT0/TrT1)",
+  "doi": "10.7937/tcia.kk02-6d95",
+  "license": "CC-BY-4.0",
+  "n_pairs": 76,
+  "seed": 20260613,
+  "ci_method": "BCa bootstrap (seeded) + Fisher-z; 95%",
+  "Dstar": {
+    "spearman_r": -0.1737,
+    "p": 0.1334,
+    "p_reproduced_t": 0.1334,
+    "ci95_bootstrap_BCa_carried": [
+      -0.3922,
+      0.0547
+    ],
+    "ci95_fisher_reproduced": [
+      -0.384,
+      0.054
+    ],
+    "ci95_fisher_committed": [
+      -0.384,
+      0.054
+    ],
+    "spans_zero": true,
+    "reading": "null: width does NOT track scan-rescan scatter for the under-identified D*; CI spans zero -- evidence for the identifiability wall, not a gap."
+  },
+  "D": {
+    "spearman_r": 0.6022,
+    "p_reproduced_t": 0.0,
+    "ci95_bootstrap_BCa": [
+      0.4206,
+      0.7246
+    ],
+    "ci95_fisher_reproduced": [
+      0.436,
+      0.729
+    ],
+    "reading": "well-identified D: width tracks ADC repeatability; CI strictly positive."
+  },
+  "crosscheck": {
+    "Dstar_fisher_pass": true,
+    "D_fisher_pass": true,
+    "Dstar_p_pass": true,
+    "Dstar_ci_spans_zero": true,
+    "caveat": "repeatability-tracking only (region-level whole-tumor ROI on unregistered same-day repeats); NOT validation/accuracy/calibration/coverage."
+  }
+}

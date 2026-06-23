@@ -1,0 +1,63 @@
+{
+  "_about": "Reproduced IVIM CRLB(D*) identifiability wall; cross-checked vs committed anchor.",
+  "regime": "segmented 4-b IVIM (b=[0,100,600,800] s/mm^2); CRLB at true params, S0 free",
+  "b_values": [
+    0.0,
+    10.0,
+    20.0,
+    30.0,
+    40.0,
+    50.0,
+    60.0,
+    70.0,
+    80.0,
+    90.0,
+    100.0,
+    120.0,
+    140.0,
+    160.0,
+    180.0,
+    200.0,
+    300.0,
+    400.0,
+    500.0,
+    600.0,
+    700.0,
+    800.0
+  ],
+  "snr_grid": [
+    10,
+    20,
+    30,
+    50,
+    100
+  ],
+  "D_fixed": 0.0015,
+  "f_fixed": 0.2,
+  "dstar_range": [
+    0.01,
+    0.1
+  ],
+  "reproduced": {
+    "crlb_growth_factor": 5.72,
+    "hi_tercile_crlb_over_width_band": [
+      0.36,
+      3.61
+    ],
+    "crlb_dstar_lo_hi_at_snr30": [
+      0.00741,
+      0.04238
+    ]
+  },
+  "anchor": {
+    "crlb_growth_factor": 6.0,
+    "crlb_over_tercile_width_hi": 1.12,
+    "conformal_width_crlb_r": 0.77,
+    "source": "Gauge/results/conditional_attack_report.txt"
+  },
+  "crosscheck": {
+    "growth_factor_pass": true,
+    "wall_present_pass": true,
+    "note": "reproduced growth ~5.7x matches anchor ~6x; CRLB(D*) reaches the high-D* tercile-width scale (ratio band 0.36-3.61), confirming the same identifiability wall. Cohort-realized 1.12x carried from anchor (SNR-draw dependent). Identifiability limit, not impossibility; scoped to segmented IVIM, SNR 10-100."
+  }
+}

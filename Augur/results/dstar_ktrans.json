@@ -1,0 +1,30 @@
+{
+  "_about": "External cross-modal D*-Ktrans evidence; literature only (no in-repo data). Corroborating strand of the D*-orphaned thread; spine is the in-repo anchors.",
+  "source_of_record": "Augur/CITATIONS.md (Tier A, verified this build)",
+  "rows": [
+    {
+      "study": "Sun et al. 2019",
+      "venue": "Academic Radiology",
+      "doi": "10.1016/j.acra.2018.08.012",
+      "cohort": "rectal cancer",
+      "Dstar_Ktrans_r": 0.389,
+      "p": "<0.001",
+      "significant": true,
+      "composite_fDstar_Ktrans_r": 0.533,
+      "quote": "relatively weak correlations between D* and Ktrans (r = 0.389; p < 0.001)"
+    },
+    {
+      "study": "Yang et al. 2019",
+      "venue": "Acta Radiologica",
+      "doi": "10.1177/0284185118791201",
+      "cohort": "rectal cancer",
+      "Dstar_Ktrans_r": null,
+      "p": "n.s.",
+      "significant": false,
+      "Dstar_reproducibility_ICC": 0.55,
+      "quote": "no significant correlation between ... D* and Ktrans"
+    }
+  ],
+  "framing": "weak and cohort-inconsistent (significant in Sun 2019; null in Yang 2019)",
+  "role": "corroborating (not load-bearing); the perfusion signal that does recover tracks the composite f*D* (and f), not D* alone."
+}

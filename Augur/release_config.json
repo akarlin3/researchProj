@@ -1,0 +1,9 @@
+{
+  "_about": "Augur release-gate configuration. Augur is COMPLETE and reproduces green, but its SUBMISSION is HELD until its two load-bearing anchors publish. Both must be PUBLISHED (published=true AND a real DOI) to lift the hold. This is the ONLY place the hold is keyed. Update per the finalization contract in PROVISIONAL_LEDGER.md / SUBMISSION_BLOCK.md -- never set published=true without a real DOI.",
+  "anchors": {
+    "FASHION": {"published": false, "doi": null, "load_bearing": true,  "role": "trust (the ruler)",                  "status": "in review, NMR in Biomedicine (retooled)"},
+    "MINOS":   {"published": false, "doi": null, "load_bearing": true,  "role": "value of information (the decision)", "status": "provisional; theory half machine-verified (SOLID)"},
+    "LETHE":   {"published": false, "doi": null, "load_bearing": false, "role": "action (wrong-size limit)",          "status": "verdict rendered; re-pointed to NMR in Biomedicine"},
+    "GAUGE":   {"published": false, "doi": null, "load_bearing": false, "role": "action (identifiability wall)",       "status": "manuscript assembled; target Magnetic Resonance in Medicine"}
+  }
+}

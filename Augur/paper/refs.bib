@@ -1,0 +1,112 @@
+% Augur bibliography. Discipline: no fabricated DOIs. External literature is verified
+% (CITATIONS.md Tier A, with verbatim quotes); in-program companion papers (Fashion, Minos,
+% Gauge, Lethe) are forward-cited honestly as in-review / in-preparation with their authoritative
+% status -- NO invented journal DOI is given for an unpublished anchor. Swap to the published DOI
+% on each at finalization (see PROVISIONAL_LEDGER.md / SUBMISSION_BLOCK.md).
+
+% ---------------------------------------------------------------------------------------------
+% Tier A -- external, verified this build (primary source checked + quoted in CITATIONS.md)
+% ---------------------------------------------------------------------------------------------
+@article{sun2019,
+  author  = {Sun, Hongliang and Xu, Yanqing and Xu, Qing and Duan, Jianghui and Zhang, Hua and
+             Liu, Ting and Li, Lufan and Chan, Queenie and Xie, Sheng and Wang, Wu},
+  title   = {Correlation Between Intravoxel Incoherent Motion and Dynamic Contrast-Enhanced
+             Magnetic Resonance Imaging Parameters in Rectal Cancer},
+  journal = {Academic Radiology},
+  year    = {2019}, volume = {26}, number = {7}, pages = {e134--e141},
+  doi     = {10.1016/j.acra.2018.08.012}, note = {PMID: 30268719}
+}
+
+@article{yang2019,
+  author  = {Yang, Xiaodan and Xiao, Xiao and Lu, Bei and Chen, Yan and Wen, Zhibo and Yu, Shenping},
+  title   = {Perfusion-sensitive parameters of intravoxel incoherent motion {MRI} in rectal
+             cancer: evaluation of reproducibility and correlation with dynamic contrast-enhanced
+             {MRI}},
+  journal = {Acta Radiologica},
+  year    = {2019}, volume = {60}, number = {5}, pages = {569--577},
+  doi     = {10.1177/0284185118791201}, note = {PMID: 30114928}
+}
+
+@article{barber2021limits,
+  author  = {Barber, Rina Foygel and Cand{\`e}s, Emmanuel J. and Ramdas, Aaditya and
+             Tibshirani, Ryan J.},
+  title   = {The limits of distribution-free conditional predictive inference},
+  journal = {Information and Inference},
+  year    = {2021}, volume = {10}, number = {2}, pages = {455--482},
+  doi     = {10.1093/imaiai/iaaa017}
+}
+
+@article{casali2026,
+  author  = {Casali, M. and others},
+  title   = {A Comprehensive Framework for Uncertainty Quantification of Voxel-wise Supervised
+             Models in {IVIM} {MRI}},
+  journal = {NMR in Biomedicine},
+  year    = {2026}, note = {arXiv:2508.04588}
+}
+
+% ---------------------------------------------------------------------------------------------
+% Tier B -- framing references inherited from Minos/Plumbline (re-verify at submission)
+% ---------------------------------------------------------------------------------------------
+@inproceedings{lacostejulien2011,
+  author    = {Lacoste-Julien, Simon and Husz{\'a}r, Ferenc and Ghahramani, Zoubin},
+  title     = {Approximate inference for the loss-calibrated {Bayesian}},
+  booktitle = {AISTATS}, year = {2011}
+}
+@inproceedings{vadera2021,
+  author    = {Vadera, Meet P. and Ghosh, Soumya and Ng, Kenney and Marlin, Benjamin M.},
+  title     = {Post-hoc loss-calibration for {Bayesian} neural networks},
+  booktitle = {UAI}, year = {2021}
+}
+@inproceedings{zhao2021,
+  author    = {Zhao, Shengjia and Kim, Michael P. and Sahoo, Roshni and Ma, Tengyu and Ermon, Stefano},
+  title     = {Calibrating predictions to decisions: A novel approach to multi-class calibration},
+  booktitle = {NeurIPS}, year = {2021}
+}
+@article{vickers2006,
+  author  = {Vickers, Andrew J. and Elkin, Elena B.},
+  title   = {Decision curve analysis: a novel method for evaluating prediction models},
+  journal = {Medical Decision Making}, year = {2006}, volume = {26}, number = {6}, pages = {565--574},
+  doi     = {10.1177/0272989X06295361}
+}
+@inproceedings{ovadia2019,
+  author    = {Ovadia, Yaniv and Fertig, Emily and Ren, Jie and Nado, Zachary and Sculley, D. and
+               Nowozin, Sebastian and Dillon, Joshua V. and Lakshminarayanan, Balaji and Snoek, Jasper},
+  title     = {Can you trust your model's uncertainty? Evaluating predictive uncertainty under
+               dataset shift},
+  booktitle = {NeurIPS}, year = {2019}
+}
+
+% ---------------------------------------------------------------------------------------------
+% Open dataset underpinning the in-repo D* test-retest anchor (ACRIN-6698 / I-SPY2, CC-BY-4.0)
+% ---------------------------------------------------------------------------------------------
+@misc{acrin6698,
+  author       = {Newitt, David C. and Partridge, Savannah C. and Zhang, Zheng and others},
+  title        = {{ACRIN} 6698/{I-SPY2} Breast {DWI} (Diffusion-Weighted {MRI})},
+  howpublished = {The Cancer Imaging Archive (TCIA)}, year = {2021},
+  doi          = {10.7937/tcia.kk02-6d95}, note = {CC-BY-4.0}
+}
+
+% ---------------------------------------------------------------------------------------------
+% In-program companion papers -- FORWARD-CITED (unpublished; no invented DOI). See ASSUMPTIONS.md.
+% ---------------------------------------------------------------------------------------------
+@unpublished{fashion,
+  author = {Karlin, Avery}, title = {Fashion: a boundary-railing calibration ruler for {IVIM}
+            uncertainty (the trust anchor)},
+  note   = {In review, NMR in Biomedicine (retooled). Code archive: Zenodo 10.5281/zenodo.20649669},
+  year   = {2026}
+}
+@unpublished{minos,
+  author = {Karlin, Avery}, title = {Minos: the value of information of decision-calibration in
+            {IVIM} (Plumbline theory: gap law, second-order {VoI}, label-free detectability floor)},
+  note   = {Provisional; theory half machine-verified and publication-independent}, year = {2026}
+}
+@unpublished{gauge,
+  author = {Karlin, Avery}, title = {Distribution-free conformal coverage for {IVIM} parameter
+            maps, and the identifiability wall in the pseudo-diffusion compartment},
+  note   = {Manuscript assembled; target Magnetic Resonance in Medicine}, year = {2026}
+}
+@unpublished{lethe,
+  author = {Karlin, Avery}, title = {Lethe: precision is not coverage -- the wrong-size limit of
+            conformal {IVIM} intervals on real test-retest data},
+  note   = {Constrained-validation verdict rendered; re-pointed to NMR in Biomedicine}, year = {2026}
+}

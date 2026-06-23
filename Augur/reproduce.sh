@@ -1,36 +1,50 @@
 #!/usr/bin/env bash
-# Augur one-command re-validation.
+# Augur one-command REPRODUCTION (green against the in-repository provisional anchors).
 #
-# Augur runs no data and computes no new numbers — it is a synthesis. "Re-validation" therefore
-# means: (1) confirm the submission block reflects the current anchor states, and (2) run the test
-# suite (block engaged + citations/anchors well-formed). When an anchor publishes, update
-# check_anchors.py + ASSUMPTIONS.md and re-run this; the block lifts only per ASSUMPTIONS.md §3.
-set -u
-
+# Augur makes no new measurement; "reproduce" therefore means: regenerate every in-repository
+# anchor deterministically, regenerate the manuscript's numbers.tex from them, and run the test
+# suite. This is intentionally SEPARATE from release: the submission HOLD lives in the release
+# gate (release_gate.py / submit.sh), NOT here. reproduce.sh is green whether or not the paper is
+# clear to submit.
+#
+# Pipeline:  extract anchors -> CRLB wall (+figure) -> D* retest CI -> D*-Ktrans -> consistency
+#            (numbers.tex) -> pytest.   Exit 0 = every anchor regenerated and self-consistent.
+#
+# Uses the proteus env (system python3 lacks numpy); override with PROT=... if needed.
+set -uo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PY="${PYTHON:-python3}"
+PROT="${PROT:-/opt/homebrew/Caskroom/miniforge/base/envs/proteus/bin/python}"
+if [ ! -x "$PROT" ]; then PROT="$(command -v python3)"; fi
 
-echo "### Augur re-validation ($(basename "$HERE"))"
+rc=0
+step() {  # label  script  [args...]
+  local label="$1"; shift
+  echo; echo "## ${label}"
+  if "$PROT" "$@"; then echo ">>> ${label}: OK"; else echo ">>> ${label}: FAIL"; rc=1; fi
+}
+
+echo "### Augur reproduction (green against in-repository anchors)"
+
+step "1. Extract in-repo anchors (Gauge results + CITATIONS -> anchors.json)" \
+     "$HERE/anchors/extract_anchors.py"
+step "2. CRLB identifiability wall (re-derived; figure + anchor cross-check)" \
+     "$HERE/scripts/crlb_wall.py"
+step "3. D* test-retest correlation interval (bootstrap CI carried + Fisher-z reproduced)" \
+     "$HERE/scripts/retest_ci.py"
+step "4. D*-Ktrans cross-modal evidence (external literature, verified)" \
+     "$HERE/scripts/dstar_ktrans.py"
+step "5. CP4 consistency gate (regenerate numbers.tex; macros + spine invariants)" \
+     "$HERE/paper/consistency.py"
+
+echo; echo "## 6. Tests (reproduction artifacts + spine invariants + hold engaged)"
+if "$PROT" -m pytest "$HERE/tests" -q; then echo ">>> tests: PASS"; else echo ">>> tests: FAIL"; rc=1; fi
+
 echo
-
-echo "## 1. Submission-block gate (check_anchors.py)"
-"$PY" "$HERE/check_anchors.py"
-BLOCK_RC=$?
-echo
-
-echo "## 2. Tests (block engaged + citations/anchors well-formed)"
-if "$PY" -m pytest "$HERE/tests" -q; then
-  echo "tests: PASS"
+if [ "$rc" -eq 0 ]; then
+  echo "================ reproduce.sh: GREEN -- every in-repo anchor regenerated ================"
+  echo ">>> Reproduction is independent of release. Submission status is reported separately by"
+  echo "    release_gate.py / submit.sh (currently HELD until Fashion + Minos publish)."
 else
-  echo "tests: FAIL"
-  exit 1
+  echo "================ reproduce.sh: a step FAILED (rc=$rc) ================"
 fi
-echo
-
-if [ "$BLOCK_RC" -ne 0 ]; then
-  echo ">>> Augur status: PROVISIONAL, SUBMISSION BLOCKED (expected until Fashion + Minos publish)."
-else
-  echo ">>> Augur status: anchors published — re-verify CITATIONS.md Tier B, then submit."
-fi
-# The script itself succeeds (the block being engaged is the correct state, not a failure).
-exit 0
+exit "$rc"

@@ -1,0 +1,4 @@
+SUBMISSION_HOLD: ACTIVE
+HELD -- awaiting Fashion + Minos publication.
+Unmet release conditions: FASHION_PUBLISHED, MINOS_PUBLISHED.
+The manuscript is COMPLETE and reproduces green (reproduce.sh); only SUBMISSION is held. Lift the hold only via release_config.json per PROVISIONAL_LEDGER.md.

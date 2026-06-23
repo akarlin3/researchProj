@@ -4,7 +4,8 @@
 > program *before any of its anchors have published*, under the explicit assumption that they
 > survive to publication as currently built. Every anchor is pinned below; every synthesized
 > claim that depends on an anchor is **PROVISIONAL**. The submission block (`SUBMISSION_BLOCK.md`,
-> enforced by `check_anchors.py`) stays engaged until the load-bearing anchors publish.
+> enforced by `release_gate.py`) stays engaged until the load-bearing anchors publish. The
+> manuscript itself is complete and reproduces green; only submission is held.
 
 Last audited: 2026-06-22, against the `researchProj` monorepo working tree (GitHub
 `akarlin3/ResearchProj`), `main` @ the CP5-retool state (latest merged PR #53).
@@ -49,15 +50,22 @@ or referenced. IP gate: **PASS** by construction.
 
 ---
 
-## 3. Re-validation contract (one command)
+## 3. Re-validation contract (reproduction and release are separate)
 
-When an anchor publishes (or revises):
+**Reproduction** is always green and is not gated on publication: `bash reproduce.sh` regenerates
+every in-repository anchor (CRLB wall, `D*` test–retest CI, `D*`–Ktrans evidence), rebuilds
+`paper/numbers.tex`, and runs the tests (exit 0).
 
-1. Update its row above with the published DOI / version.
-2. Set the matching `published=True` (with the DOI) in `check_anchors.py`'s `ANCHORS` table.
-3. Run `bash reproduce.sh`. It (a) re-checks each anchor's status, (b) re-runs the submission-block
-   gate, (c) prints what is now clearable. The paper unblocks **only** when Fashion **and** Minos are
-   both published (Lethe strongly recommended); until then `check_anchors.py` exits non-zero and the
-   block stands.
+**Release (the HOLD)** is keyed only in `release_config.json` and enforced by `release_gate.py` /
+`submit.sh`. When an anchor publishes (or revises):
 
-No PROVISIONAL flag may be cleared except through this contract.
+1. Update its row in §1 above with the published DOI / version.
+2. Set the matching `published=true` **with the real DOI** in `release_config.json`
+   (`release_gate.py` rejects `published=true` with no DOI — no fabricated DOIs).
+3. Swap the `@unpublished{...}` forward-cite in `paper/refs.bib` to the published reference, and
+   complete the rest of `PROVISIONAL_LEDGER.md §3`.
+4. Run `python3 release_gate.py`. The hold lifts **only** when Fashion **and** Minos are both
+   published (Lethe/Gauge recommended); until then it exits non-zero and `submit.sh` halts.
+
+No PROVISIONAL flag may be cleared except through this contract. The old `check_anchors.py` (whose
+block used to live inside `reproduce.sh`) is **superseded by `release_gate.py`**.

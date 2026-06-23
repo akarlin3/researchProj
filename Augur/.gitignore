@@ -1,3 +1,10 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+# LaTeX build intermediates (the compiled paper/augur.pdf IS committed)
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.out
+paper/*.log
+paper/*.toc

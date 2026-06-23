@@ -122,5 +122,6 @@ identifiability wall where trust, value, and action all terminate.**
   verbatim quote). The cross-modal `r≈0.39` is **real** (Sun 2019) — earlier program notes that
   glossed it as "often non-significant" are corrected here to "weak and cohort-inconsistent."
 - **Speculative discipline.** Every project-anchor is PROVISIONAL and version-pinned in
-  `ASSUMPTIONS.md`; the submission block (`SUBMISSION_BLOCK.md`, `check_anchors.py`) is engaged until
-  Fashion + Minos publish.
+  `ASSUMPTIONS.md`; the manuscript is complete and reproduces green, but the **release gate**
+  (`SUBMISSION_BLOCK.md`, `release_gate.py`, `submit.sh`) holds submission until Fashion + Minos
+  publish. Reproduction (`reproduce.sh`) and release are separate concerns.

@@ -71,6 +71,7 @@ When an anchor publishes, do **all** of:
       primary sources.
 - [ ] Run `python3 release_gate.py` — it lifts only when **Fashion AND Minos** are both published
       (with DOIs). Then `bash submit.sh` proceeds to the pre-submission checklist.
-- [ ] Confirm **author list + venue** (GATE G) and set the journal document class in `augur.tex`.
+- [x] **Author list + venue confirmed (GATE G, 2026-06-22): NMR in Biomedicine; Avery Karlin (solo).**
+- [ ] Set the **NMR in Biomedicine** journal document class in `augur.tex` (kept generic `article` while HELD).
 
 No PROVISIONAL flag may be cleared except through this checklist.

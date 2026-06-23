@@ -35,7 +35,7 @@ echo " RELEASE GATE CLEAR -- proceeding to pre-submission checklist."
 echo "=============================================================="
 echo "  [ ] Re-verify CITATIONS.md Tier B against primary sources."
 echo "  [ ] Swap forward-cites (Fashion, Minos) to published DOIs in paper/refs.bib."
-echo "  [ ] Confirm author list + venue (GATE G) and set the journal document class."
+echo "  [ ] Set the NMR in Biomedicine journal document class (author list + venue confirmed, GATE G)."
 echo "  [ ] Run: bash reproduce.sh && bash paper/build.sh   (final clean compile)."
 echo
 echo ">>> Augur is cleared for submission once the checklist above is complete."

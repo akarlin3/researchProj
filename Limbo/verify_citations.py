@@ -34,9 +34,10 @@ ROOT = pathlib.Path(__file__).resolve().parent
 BIB = ROOT / "limbo.bib"
 LEDGER = ROOT / "CITATIONS.md"
 # Prose sources whose \cite{} keys must all resolve to a bib entry (GATE 5).
-# Both the markdown survey draft and the compiled manuscript are checked so a
-# phantom citation cannot slip into the document of record (limbo.tex).
-PROSE_SOURCES = (ROOT / "SURVEY.md", ROOT / "limbo.tex")
+# The markdown survey draft and both compiled manuscripts are checked so a
+# phantom citation cannot slip into a document of record. limbo_phiro.tex is the
+# Elsevier/phiRO retarget of limbo.tex (the IOP/PMB version); both are scanned.
+PROSE_SOURCES = (ROOT / "SURVEY.md", ROOT / "limbo.tex", ROOT / "limbo_phiro.tex")
 
 DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
 ARXIV_RE = re.compile(r"^\d{4}\.\d{4,5}(v\d+)?$")

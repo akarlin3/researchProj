@@ -133,7 +133,7 @@ verbatim text and found faithful. These resolve the `% TODO-QUOTE-n` markers in 
   MRI scanner differs from traditional MRI scanners, technical validation is an important aspect
   of this roadmap. We propose to integrate technical validation with clinical trials by the
   addition of a quality assurance procedure at the start of a trial, the acquisition of in vivo
-  test–retest data to assess the repeatability, as well as a comparison between QIBs from MRIgRT
+  test-retest data to assess the repeatability, as well as a comparison between QIBs from MRIgRT
   systems and diagnostic MRI systems to assess the reproducibility."
 
 ## In-portfolio cross-references (NOT external citations; not part of the survey body)

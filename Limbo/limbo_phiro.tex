@@ -1,0 +1,350 @@
+% limbo_phiro.tex — the Limbo field review (compiled manuscript), phiRO target.
+%
+% Venue: Physics and Imaging in Radiation Oncology (phiRO), Elsevier — open access,
+%   submission via Editorial Manager. Review article.
+% Class : elsarticle.cls — Elsevier's official article class (LPPL 1.3+). It IS on CTAN
+%   and tectonic can fetch it, but it is vendored here (elsarticle.cls + the numbered
+%   Vancouver bibliography style elsarticle-num.bst) so the build is self-contained and
+%   the exact class/style version is pinned; see ELSEVIER_CLASS_PROVENANCE.md. This
+%   mirrors how the IOP class was vendored for the prior PMB target.
+%   Build: tectonic limbo_phiro.tex (gated on verify_citations.py; see build.sh /
+%   reproduce.sh).
+%
+% This file is a CONTENT-PRESERVING reformat of limbo.tex (the IOP/PMB version). The
+% science, every number, every citation, and the four verbatim quotes are byte-identical
+% to limbo.tex; only the markup and the phiRO-required section structure differ. The IOP
+% back-matter macros (\ack/\funding/\roles/\data) are split into the phiRO-required
+% declaration \section* blocks (Declaration of competing interest; Funding; Data
+% availability; CRediT; Declaration of Generative AI) with the sentences unchanged.
+%
+% This review reports NO new measurement and NO number of its own. Every empirical
+% statement is attributed to a verified external source in limbo.bib / CITATIONS.md;
+% verify_citations.py fails the build on any phantom \cite or unresolved identifier.
+\documentclass[review,number]{elsarticle}
+
+\usepackage{lmodern}        % scalable Latin Modern shapes (silences CM 5.5pt size substitutions)
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{url}            % catcode-safe \url for the JMLR/PMLR proceedings URLs (underscores);
+                           % elsarticle-num.bst emits \urlprefix\url{} but elsarticle loads no url pkg
+\emergencystretch=2em
+
+% elsarticle loads natbib itself (numbered scheme via the [number] class option); add
+% sort&compress to match the prior numbered rendering (ascending, range-compressed
+% multi-citations). \biboptions defers via the .spl file; tectonic reruns to converge.
+\biboptions{sort&compress}
+
+\newcommand{\Dstar}{D^{*}}
+\newcommand{\Ktrans}{K^{\mathrm{trans}}}
+
+\journal{Physics and Imaging in Radiation Oncology}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Trustworthy uncertainty quantification for quantitative and diffusion body MRI,
+and its decision-use in MR-guided adaptive radiotherapy: a field review}
+
+% Single (solo) author associated with all three affiliations. GATE D (HUMAN) confirmed:
+% institutional corresponding email (ak5232@columbia.edu); title and all three affiliations
+% as-is. ORCID is carried as an author footnote (elsarticle has no \orcid macro).
+\author[col,cub,asi]{Avery Karlin\corref{cor1}\fnref{orcid}}
+\ead{ak5232@columbia.edu}
+\cortext[cor1]{Corresponding author}
+\fntext[orcid]{ORCID:\ 0000-0003-3848-6782}
+
+\affiliation[col]{organization={Department of Applied Physics and Applied Mathematics, Columbia University, New York, NY, USA}}
+\affiliation[cub]{organization={Department of Computer Science, University of Colorado Boulder, Boulder, CO, USA}}
+\affiliation[asi]{organization={The Annealing Signet Institute}}
+
+\begin{abstract}
+Quantitative and diffusion body MRI increasingly delivers not an image but a
+\emph{number} --- a tissue parameter offered to a clinical decision --- and, in
+MR-guided adaptive radiotherapy, a number that can steer dose. This review asks whether
+the \emph{uncertainty} attached to that number is trustworthy enough to act on. We
+organise the field along the spine a clinician implicitly walks: \emph{trust} (is the
+error bar honest?), \emph{value of information} (does a trusted bar change the
+decision?), and \emph{action} (what happens when it is deployed to drive dose?), over a
+foundations layer (what is measured, and how) and beneath a gap map. Synthesising the
+literature across estimation, calibration, decision analysis, and MR-guided
+radiotherapy, we find that trust is conditional: broadly defensible for the diffusion
+coefficient $D$ and ADC, but fragile for the perfusion parameters $f$ and $\Dstar$,
+where measured test--retest reliability is poor and where deep-learning uncertainty
+quantification typically reports only marginal, aggregate calibration. The
+decision-analytic apparatus to price a calibrated interval --- net benefit, decision
+calibration, value of information --- is mature but rarely connected to
+quantitative-MRI uncertainty; and the propagation of \emph{biomarker} uncertainty into
+the adaptive dose decision remains the immature link. We close with four open problems
+sited at the seams between trust, value, and action. This review reports no new
+measurement; its contribution is synthesis, taxonomy, and gap identification.
+\end{abstract}
+
+\begin{keyword}
+quantitative MRI \sep intravoxel incoherent motion \sep uncertainty quantification \sep
+calibration \sep conformal prediction \sep value of information \sep MR-guided adaptive
+radiotherapy \sep dose painting
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Scope and framing}
+\label{sec:scope}
+
+Quantitative and diffusion body MRI --- intravoxel incoherent motion (IVIM),
+diffusion-weighted ADC/DKI, dynamic contrast-enhanced (DCE) perfusion, and relaxometry
+--- increasingly produces not just an image but a \emph{number}: a tissue parameter
+offered to a clinical decision. The question this review surveys is whether the
+\textbf{uncertainty} attached to that number is trustworthy enough to act on, and what
+happens when it is used to steer \textbf{MR-guided adaptive radiotherapy} (MR-Linac /
+MRgART).
+
+We organise the literature along the spine a clinician implicitly walks:
+
+\begin{enumerate}
+  \item \textbf{Trust} --- is the error bar honest (calibrated, covering)?
+  \item \textbf{Value of information} --- given a trusted bar, does it change the decision?
+  \item \textbf{Action} --- when deployed to drive dose, where does it hold and where does it break?
+\end{enumerate}
+
+\noindent with a \textbf{foundations} layer beneath (what is measured, and how) and a
+\textbf{gap map} above. The survey covers UQ for quantitative/diffusion body MRI and its
+decision-use in adaptive RT; it excludes non-quantitative MRI, neuro-only work, generic
+computer-vision UQ, and non-MR-guided RT (the scope boundary is recorded in the
+repository's \texttt{ASSUMPTIONS.md}). Table~\ref{tab:axis} lays out the survey axis and
+the thematic buckets it induces.
+
+\begin{table}
+\caption{The survey axis. The field is classified by the question each work answers
+about \emph{somebody's} uncertainty estimate; a cross-cutting gap map
+(Sec.~\ref{sec:gaps}) sits over the three axes at the seams between them.}
+\label{tab:axis}
+\centering
+\begin{tabular}{p{0.20\linewidth}p{0.68\linewidth}}
+\toprule
+axis & what the bucket asks \\
+\midrule
+Foundations & What is the estimand, and what estimator (with what uncertainty) produced it? (Sec.~\ref{sec:foundations}) \\
+Trust & Is the error bar honest --- calibrated and covering? (Sec.~\ref{sec:trust}) \\
+Value of information & Given a trusted bar, does it change an oncologic decision? (Sec.~\ref{sec:voi}) \\
+Action & When deployed to drive dose on an MR-linac, where does it hold and break? (Sec.~\ref{sec:action}) \\
+Gap map & Where, at the seams between the axes, do the field's UQ-trust questions remain open? (Sec.~\ref{sec:gaps}) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Foundations: estimands and estimators}
+\label{sec:foundations}
+
+Before honesty can be assessed, the estimand and estimator must be fixed. The IVIM model
+itself was introduced to separate molecular diffusion from capillary-network
+microcirculation within a voxel \cite{lebihan1986,lebihan1988}, treating randomly
+oriented capillary flow as a pseudo-diffusion process \cite{lebihan2019}; DCE-MRI
+quantification rests on the compartmental transfer-constant model \cite{tofts1991} and
+its standardised quantities $\Ktrans$, $v_e$, $k_{ep}$ \cite{tofts1999}.
+
+The estimator is not innocent. Cram\'er--Rao/Fisher analysis shows the achievable
+precision of IVIM $D$ and $f$ is strongly SNR-dependent \cite{zhang2013}, and the same
+bounds can be inverted to design SNR-efficient acquisitions \cite{jalnefjord2019}.
+Empirically, IVIM parameter estimates differ \emph{significantly} across fitting
+algorithms in the upper abdomen, with Bayesian fitting giving the lowest inter-reader
+and inter-subject variability \cite{barbieri2016}; simulation \cite{while2017} and
+pancreatic-cancer data \cite{gurneychampion2018} corroborate the Bayesian advantage for
+$D$ and $f$. A parallel line replaces hand-built fits with learned ones ---
+neural-network IVIM/kurtosis mapping \cite{bertleff2017}, supervised and unsupervised
+physics-informed deep fitting \cite{barbieri2020,kaandorp2021}, and self-supervised
+forward-model estimation \cite{vasylechko2021} --- with recent work decomposing
+predictive uncertainty into aleatoric and epistemic components \cite{casali2025}. DCE
+shares the trajectory, e.g.\ Bayesian spatial tracer-kinetic estimation
+\cite{schmid2006}. \textbf{Takeaway:} the uncertainty a method reports is inseparable
+from the estimator that produced it, so trust must be assessed per-estimator, not
+per-biomarker.
+
+\section{Trust: is the error bar honest?}
+\label{sec:trust}
+
+\subsection{The general machinery of trust}
+\label{sec:trust-machinery}
+
+The UQ community offers a toolkit for honest uncertainty that the imaging literature
+draws on. Distribution-free \textbf{conformal prediction} wraps any black-box predictor
+in a set/interval valid at a user-chosen error rate \cite{shafer2008,angelopoulos2021}.
+\textbf{Calibration} methods recalibrate regression intervals post-hoc
+\cite{kuleshov2018} and correct the systematic over-confidence of modern deep networks
+\cite{guo2017}. Practical deep UQ families --- deep ensembles
+\cite{lakshminarayanan2017}, MC-dropout as approximate Bayesian inference
+\cite{gal2016}, and single-pass evidential regression \cite{amini2020} --- give usable
+uncertainty, but their quality \textbf{degrades under dataset shift}, so trust must be
+tested against shift, not only in-distribution \cite{ovadia2019}.
+
+\subsection{The metrology of trust in quantitative imaging}
+\label{sec:trust-metrology}
+
+Imaging has its own standards for honest reliability. The QIBA framework anchors
+technical performance on three metrology areas --- linearity/bias, repeatability,
+reproducibility \cite{raunig2015} --- with companion guidance on comparing algorithms
+\cite{obuchowski2015} and on consistent terminology \cite{sullivan2015}. Reliability
+reporting leans on the intraclass correlation coefficient
+\cite{koo2016}% QUOTE-1 RESOLVED (koo2016) — verbatim re-pull, Koo & Li 2016, J Chiropr Med 15(2):155-163, Abstract/Conclusion (PMID 27330520): "This article provides a practical guideline for clinical researchers to choose the correct form of ICC and suggests the best practice of reporting ICC parameters in scientific publications." Paraphrase above is faithful; no number used. See CITATIONS.md.
+{} and on limits-of-agreement rather than correlation for method comparison
+\cite{blandaltman1986}.% QUOTE-2 RESOLVED (blandaltman1986) — verbatim re-pull, Bland & Altman 1986, Lancet 1(8476):307-310, Abstract (PMID 2868172): "Such investigations are often analysed inappropriately, notably by using correlation coefficients. The use of correlation is misleading. An alternative approach, based on graphical techniques and simple calculations, is described, together with the relation between this analysis and the assessment of repeatability." Paraphrase above is faithful; no number used. See CITATIONS.md.
+
+\subsection{Where trust is empirically tested in body MRI}
+\label{sec:trust-bodymri}
+
+When these standards are applied to body diffusion/perfusion MRI, the error bars are
+often \textbf{not} honest --- and the dishonesty is parameter- and cohort-dependent. ADC
+is a comparatively reliable biomarker but its in-vivo reproducibility is markedly worse
+than phantom reproducibility \cite{miquel2016}, and the body-DWI consensus already urged
+baseline reproducibility studies as part of study design \cite{koh2007,padhani2009}. The
+perfusion parameters are the weak point: short-term test--retest repeatability
+coefficients for IVIM $f$ and $\Dstar$ reach ${\sim}126\%$ and ${\sim}197\%$ in rectal
+cancer \cite{sun2017}, $\Dstar$ reproducibility is only moderate
+($\mathrm{ICC}\approx0.55$, $\mathrm{CV}\approx20\%$) \cite{yang2019}, and multi-scanner
+liver IVIM within-subject CVs run from ${\sim}5\%$ for $D$ up to ${\sim}14\%$ for
+perfusion-fraction components \cite{simchick2024}. Cross-modal anchoring does not rescue
+$\Dstar$: its correlation with DCE $\Ktrans$ is weak in one rectal cohort ($r=0.389$)
+\cite{sun2019} and non-significant in another \cite{yang2019}. \textbf{Takeaway:} trust
+in body-MRI UQ is conditional --- broadly defensible for $D$/ADC, fragile for
+$f$/$\Dstar$ --- yet most deep-learning UQ reports aggregate or marginal calibration
+\cite{casali2025}, leaving the conditional failure region under-characterised.
+
+\section{Value of information: does a trusted bar change the decision?}
+\label{sec:voi}
+
+A calibrated interval earns its cost only if it moves an action. The decision-analytic
+literature supplies the apparatus: \textbf{decision curve analysis / net benefit}
+evaluates a model by clinical net benefit across the decision threshold
+\cite{vickers2006,vickers2016,vickers2019}, where the threshold encodes the clinician's
+relative weighting of a missed disease against an unnecessary intervention; performance
+frameworks argue such decision-analytic measures should be reported whenever a model
+supports decisions \cite{steyerberg2010}, and relative-utility curves quantify how much
+achievable utility a predictor captures \cite{baker2009}. From the inference side,
+\textbf{decision/loss-calibrated} methods tie the posterior approximation to the
+downstream decision --- decision calibration \cite{zhao2021} and loss-calibrated
+Bayesian inference \cite{lacostejulien2011,vadera2021}. From health economics,
+\textbf{value-of-information} analysis (EVPI) prices a measurement by combining the
+probability it changes a decision with the benefit of that change \cite{felli1998},
+under the decision-theoretic stance that choices follow expected net benefit rather than
+statistical significance \cite{claxton1999}. \textbf{Takeaway:} the machinery to ask
+``does this body-MRI interval change an oncologic decision?'' exists and is mature ---
+but is rarely connected to quantitative-MRI uncertainty.
+
+\section{Action: deployment in MR-guided adaptive radiotherapy}
+\label{sec:action}
+
+The action setting where a quantitative-MRI biomarker most directly drives dose is the
+MR-Linac. Integrating diagnostic-quality MRI with a linear accelerator
+\cite{lagendijk2008,raaymakers2009} matured into a clinically feasible 1.5\,T MRI-guided
+system \cite{raaymakers2017,lagendijk2014} and an emerging paradigm for adaptive
+radiation oncology \cite{otazo2021,hall2022}. The biological premise is \textbf{dose
+painting} --- prescribing a non-uniform dose from a biological target volume derived from
+functional/molecular images
+\cite{ling2000,bentzen2005,bentzen2011}% QUOTE-3 RESOLVED (ling2000) — verbatim re-pull, Ling et al. 2000, IJROBP 47(3):551-560, Abstract/Results (PMID 10837935): "Incremental to the concept of gross, clinical, and planning target volumes (GTV, CTV, and PTV), we propose the concept of 'biological target volume' (BTV) and hypothesize that BTV can be derived from biological images and that their use may incrementally improve target delineation and dose delivery." Paraphrase above is faithful; no number used. See CITATIONS.md.
+{} --- with DWI/ADC a leading candidate response biomarker \cite{leibfarth2018} and
+quantitative MRI proposed to update the plan to observed tumour response
+\cite{vanhoudt2021,otazo2021}. Two cautions recur. First, \textbf{uncertainty must be
+carried into the optimisation}: robust/probabilistic planning incorporates motion and
+uncertainty directly rather than relying on PTV margins \cite{unkelbach2018}. Second,
+\textbf{technical validation gates clinical use}: imaging biomarkers on an MR-linac
+require repeatability/reproducibility validation before driving decisions, because the
+integrated scanner differs from a diagnostic system
+\cite{vanhoudt2021qib}.% QUOTE-4 RESOLVED (vanhoudt2021qib) — verbatim re-pull, van Houdt et al. 2021, Eur J Cancer 153:64-71, Abstract (PMID 34144436; open access PMC8340311): "As the integrated MRI scanner differs from traditional MRI scanners, technical validation is an important aspect of this roadmap. We propose to integrate technical validation with clinical trials by the addition of a quality assurance procedure at the start of a trial, the acquisition of in vivo test-retest data to assess the repeatability, as well as a comparison between QIBs from MRIgRT systems and diagnostic MRI systems to assess the reproducibility." Paraphrase above is faithful; no number used. See CITATIONS.md.
+{} \textbf{Takeaway:} the field is converging on biomarker-driven adaptive dose, but the
+propagation of \emph{biomarker uncertainty} into the dose decision is the immature link.
+
+\section{Gap map: open problems}
+\label{sec:gaps}
+
+The field's unresolved UQ-trust questions cluster at the \textbf{seams between the axes}
+--- which is also, stated as honest positioning rather than as this review's organising
+centre, where the author's own program sits.
+
+\begin{itemize}
+  \item \textbf{G1 --- conditional honesty (trust seam).} Repeatability evidence shows
+    $f$/$\Dstar$ are far less reliable than $D$/ADC
+    \cite{sun2017,yang2019,simchick2024}, yet deep-learning IVIM-UQ typically reports
+    marginal/aggregate calibration \cite{casali2025}. \emph{Open:} calibration
+    conditioned on the regime where it fails, and conformal/coverage guarantees that
+    respect it \cite{angelopoulos2021,ovadia2019}.
+  \item \textbf{G2 --- from calibration to decision (trust$\rightarrow$value seam).} The
+    decision-analytic toolkit \cite{vickers2006,zhao2021} is rarely applied to
+    quantitative-MRI uncertainty. \emph{Open:} when does a calibrated body-MRI interval
+    actually change an oncologic decision versus merely being reported?
+  \item \textbf{G3 --- uncertainty into dose (value$\rightarrow$action seam).}
+    Adaptive-RT reviews call for technically validated biomarkers to steer dose
+    \cite{otazo2021,vanhoudt2021qib}, and robust planning can ingest uncertainty
+    \cite{unkelbach2018}. \emph{Open:} end-to-end propagation of \emph{biomarker}
+    uncertainty (not just geometric/motion uncertainty) into the adaptive dose decision,
+    and the identifiability walls that cap it.
+  \item \textbf{G4 --- estimator-dependence of trust (cross-cutting).} Reported
+    uncertainty depends on the estimator \cite{barbieri2016,barbieri2020}. \emph{Open:}
+    standards that make UQ comparable across classical and learned estimators, extending
+    QIBA metrology \cite{raunig2015,sullivan2015} to the uncertainty itself, not only the
+    point estimate.
+\end{itemize}
+
+\section{Honest scope and discussion}
+\label{sec:scope-honest}
+
+This review's contribution is the \textbf{synthesis, taxonomy, and gap map} above --- not
+new data. It asserts no experimental result; every empirical statement is attributed to a
+verified external source. Where the author's own program is relevant it is named only as
+positioning within G1--G4, never as the organising thread.
+
+As a portfolio artifact the review is deliberately \emph{trigger-independent}: it
+strengthens a first research application by demonstrating field command and supplying a
+citable synthesis, and it depends on none of the author's own results publishing. In this
+role it \textbf{absorbs} what an earlier plan called a separate portfolio-thickening
+``Buttress'' note: rather than a stand-alone companion, the field command and the
+open-problem map are folded here, and the gap map (Sec.~\ref{sec:gaps}) doubles as the
+positioning of the author's program within the field's open seams --- honest positioning,
+not the survey's organising centre. The four gaps are stated as the \emph{field's} open
+problems; the author's contributions, where they exist, sit inside G1--G4 on equal
+footing with external work and are not asserted here as published results.
+
+The dominant failure mode for a review of this kind is the phantom or mis-quoted citation.
+The repository makes that mechanical: every entry in the citation base carries a resolvable
+identifier (DOI, arXiv eprint, or stable proceedings URL) and a one-line verified claim,
+and a citation gate fails the build on any unresolved identifier, any orphan between the
+bibliography and the verified-claim ledger, or any \verb|\cite| in this manuscript with no
+backing entry. Four reliability/oncology foundations are flagged at thesis level: their
+central claim is title/abstract-evident, but any load-bearing \emph{number} from them is
+re-pulled verbatim from the source before use rather than approximated.
+
+% --- phiRO declarations (unnumbered \section* blocks; before References) ---
+% These carry the SAME sentences as the IOP back-matter macros (\ack/\funding/\roles/
+% \data) in limbo.tex, regrouped under the phiRO/Elsevier-required declaration headings.
+% Wording is unchanged; only the section structure differs, as phiRO requires.
+
+\section*{CRediT authorship contribution statement}
+Avery Karlin (sole author): Conceptualization; Methodology; Software (citation gate
+and build); Formal analysis; Investigation; Data curation; Writing --- original draft;
+Writing --- review and editing. Terms follow the NISO CRediT taxonomy.
+
+\section*{Declaration of competing interest}
+The author declares no competing interests.
+
+\section*{Funding}
+This research received no specific grant from any funding agency in the public,
+commercial, or not-for-profit sectors; it was conducted independently by the author.
+
+\section*{Data availability}
+This review reports no new experimental data. The verified citation base
+(\texttt{limbo.bib}), the per-citation verified-claim ledger (\texttt{CITATIONS.md}), and
+the citation gate (\texttt{verify\_citations.py}) that enforces resolvable identifiers and
+zero phantom citations are openly available in the project repository; one command
+(\texttt{./reproduce.sh}) re-runs the gate, the test-suite, and the manuscript build.
+
+\section*{Declaration of Generative AI and AI-assisted technologies in the writing process}
+\emph{Generative AI use disclosure:} during the preparation of this work the author used
+Claude (Anthropic), including Claude Code, for code scaffolding (the citation gate and
+build), manuscript drafting assistance, and copy-editing. After using these tools the
+author reviewed and edited the content as needed and takes full responsibility for the
+content of the publication.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{limbo}
+
+\end{document}

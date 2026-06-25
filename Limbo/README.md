@@ -2,6 +2,18 @@
 
 **Status: PROVISIONAL · submission-ready compiled manuscript (CP0–CP3 complete) · not publish-gated.**
 
+> **phiRO retarget (CP4 complete; GATE D confirmed).** The manuscript has been reformatted from the
+> IOP `iopjournal` class (the old *Phys. Med. Biol.* target) to **Elsevier `elsarticle`** for
+> submission to **Physics and Imaging in Radiation Oncology (phiRO)** — open access, via Editorial
+> Manager. The phiRO manuscript is [`limbo_phiro.tex`](limbo_phiro.tex) → `limbo_phiro.pdf`; the
+> original [`limbo.tex`](limbo.tex) (IOP) is retained as the **content-identity reference**. The
+> reformat changed **zero content**: body prose, all 59 references, and the four verbatim quotes are
+> byte-identical (proven by diff; enforced by `tests/test_phiro_format.py`). GATE D (HUMAN)
+> confirmed: institutional corresponding email `ak5232@columbia.edu`; title and the three
+> affiliations as-is; competing-interest + funding statements as-is; and the pre-existing
+> `vanhoudt2021qib` ledger en-dash ("test–retest") corrected to the source-faithful hyphen
+> ("test-retest"). Submission is via Editorial Manager; the cover letter is a separate upload.
+
 The manuscript [`limbo.tex`](limbo.tex) → [`limbo.pdf`](limbo.pdf) is typeset for **Physics in
 Medicine & Biology** (Topical Review) with IOP's `iopjournal` class; it compiles clean with
 `tectonic` (gated on the citation gate), the survey cites all 59 verified entries with zero phantom
@@ -18,7 +30,10 @@ Its value is **trigger-independent**: it strengthens the *first* PhD application
 citable paper), and it **absorbs Buttress** (the portfolio-thickener) — there is no separate
 Buttress; this review *is* the thickener.
 
-Target venue (CP0 input): **Physics in Medicine & Biology** (Topical Review).
+Target venue: **Physics and Imaging in Radiation Oncology (phiRO)** — Elsevier, open access, review
+article, via Editorial Manager (retargeted from the CP0 input of *Physics in Medicine & Biology*,
+Topical Review; see the phiRO-retarget note above). Submission is via Editorial Manager; the cover
+letter is a separate upload; an APC applies (open access).
 
 ## What this is — and is not
 
@@ -51,25 +66,28 @@ non-existent "Sun et al."; Augur's mis-quoted "r≈0.39"). Limbo makes that mech
 ```
 python3 verify_citations.py           # offline gate: 59 entries, zero unverifiable -> exit 0
 python3 verify_citations.py --online  # also confirm each DOI/arXiv resolves (network)
-./build.sh                            # citation gate -> compile limbo.tex (tectonic) -> limbo.pdf
-./reproduce.sh                        # gate + tests + manuscript compile (green == submission-ready)
+./build.sh                            # citation gate -> compile limbo_phiro.tex (tectonic) -> limbo_phiro.pdf
+./build.sh --iop                      # build the retained IOP version (limbo.tex -> limbo.pdf)
+./reproduce.sh                        # gate + tests + phiRO compile (green == submission-ready)
 ```
 
 ## Layout
 
 | file | purpose |
 |---|---|
-| `limbo.tex` / `limbo.pdf` | the compiled manuscript (IOP `iopjournal`; target *Phys. Med. Biol.*) |
+| `limbo_phiro.tex` / `limbo_phiro.pdf` | **the phiRO submission manuscript** (Elsevier `elsarticle`; target *Phys. Imaging Radiat. Oncol.*) |
+| `limbo.tex` / `limbo.pdf` | the IOP `iopjournal` version (old *Phys. Med. Biol.* target) — retained as the **content-identity reference** |
 | `TAXONOMY.md` | the trust → VoI → action survey axis (+ foundations + gap-map seams) |
 | `SURVEY.md` | the markdown survey draft the manuscript prose was ported from |
 | `limbo.bib` | the verified citation base (59 entries) |
 | `CITATIONS.md` | per-citekey verified claim + resolvable identifier (+ the 4 verbatim re-pulls) |
-| `verify_citations.py` | the citation gate (offline; `--online` for resolvability; scans `limbo.tex`) |
+| `verify_citations.py` | the citation gate (offline; `--online` for resolvability; scans both `.tex` manuscripts) |
 | `ASSUMPTIONS.md` | scope boundary, distinctness-from-Augur, clean-IP, status pins |
-| `build.sh` | gate → compile the manuscript with tectonic |
-| `reproduce.sh` | one-command re-validation (gate + pytest + compile) |
+| `build.sh` | gate → compile the manuscript with tectonic (`--iop` to build the IOP version) |
+| `reproduce.sh` | one-command re-validation (gate + pytest + phiRO compile) |
+| `elsarticle.cls`, `elsarticle-num.bst` | vendored Elsevier class + numbered-Vancouver bib style (LPPL; see `ELSEVIER_CLASS_PROVENANCE.md`) |
 | `iopjournal.cls`, `orcid.pdf` | vendored IOP class + asset (LPPL; see `IOP_CLASS_PROVENANCE.md`) |
-| `tests/` | gate assertions (zero-unverifiable, bucket coverage, distinctness documented) |
+| `tests/` | gate assertions + phiRO reformat checks (quote-identity, cite-set == IOP, content-identity) |
 
 ## Checkpoints
 
@@ -84,3 +102,13 @@ python3 verify_citations.py --online  # also confirm each DOI/arXiv resolves (ne
   (all 59 resolve live), no-drift pass, honest-scope section; **`limbo.tex` typeset for PMB
   (`iopjournal`) and compiled to `limbo.pdf`**; the four thesis-level entries re-pulled verbatim
   from source; Buttress absorbed into the discussion/gap map. Staged for review (no auto-merge).
+- **CP4 — phiRO retarget (content-preserving reformat).** IOP `iopjournal` → Elsevier `elsarticle`
+  for **Physics and Imaging in Radiation Oncology**; numbered-Vancouver references
+  (`elsarticle-num`); IOP back-matter macros split into the phiRO declaration `\section*` blocks
+  (CRediT · competing interest · funding · data availability · generative-AI). **Content changed by
+  zero** — body prose, all 59 refs, and the 4 quotes byte-identical to `limbo.tex` (proven by diff;
+  enforced by `tests/test_phiro_format.py`). GATE D (HUMAN) confirmed: institutional corresponding
+  email `ak5232@columbia.edu`; the `vanhoudt2021qib` ledger en-dash corrected to a source-faithful
+  hyphen. `limbo_phiro.pdf` builds clean (0 unresolved, 59 refs); gate exit 0 (offline + `--online`);
+  `reproduce.sh` green. Submission via Editorial Manager (cover letter = separate upload; APC applies).
+  Staged for review (no auto-merge).

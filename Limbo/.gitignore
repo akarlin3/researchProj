@@ -3,11 +3,14 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 
-# LaTeX build intermediates (the committed artifact is limbo.pdf; orcid.pdf is a vendored asset)
+# LaTeX build intermediates (committed artifacts: limbo.pdf, limbo_phiro.pdf; orcid.pdf
+# and elsarticle.cls / elsarticle-num.bst are vendored assets)
 *.aux
 *.bbl
 *.blg
 *.log
 *.out
 *.toc
+*.spl
 limbo.txt
+limbo_phiro.txt

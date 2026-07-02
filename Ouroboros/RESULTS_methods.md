@@ -36,7 +36,7 @@ To establish the mathematical validity of the fractional-SINDy pipeline, we pres
 * **Methodological Finding (Pointwise GL)**:
   Scoring order recovery against the clean ground-truth derivative completely resolves the non-monotonicity defect (test $R^2$ now drops monotonically as noise grows). Naive pointwise GL SINDy fails under moderate noise ($\le 40$ dB or $60$ dB), railing downward towards the candidate sweep floor ($\hat{\alpha}_t \to 0.2$). This occurs because the Grünwald-Letnikov derivative acts as a history-dependent sum that amplifies high-frequency noise.
 
-* **Plot Citation**: ![Sensitivity vs Noise Plot](file:///Users/averykarlin/projOuroboros/figures/fractional_sindy_sensitivity.png)
+* **Plot Citation**: ![Sensitivity vs Noise Plot](figures/fractional_sindy_sensitivity.png)
 
 ### 1.3 Noise-Mitigation Arm (Mechanism + Remedy)
 To address the noise-fragility of pointwise GL, we implemented and compared three mitigation methods across the same SNR grid:
@@ -60,7 +60,7 @@ We evaluate the lowest SNR (down to 10 dB) at which each method successfully rec
 - **Ensemble-SINDy** provides no benefit over naive pointwise GL because bootstrapping over pointwise derivatives still inherits pointwise noise amplification.
 - This results pack changes the manuscript's spine from a purely negative cautionary tale to a constructive **Mechanism + Remedy** paper.
 
-* **Plot Citation**: ![Mitigation Comparison Plot](file:///Users/averykarlin/projOuroboros/figures/mitigation_comparison.png)
+* **Plot Citation**: ![Mitigation Comparison Plot](figures/mitigation_comparison.png)
 
 ---
 
@@ -81,7 +81,7 @@ This section highlights the cautionary case study of using data-driven chaos est
     2. *Stationary Noise Artifact*: Once the transient decays, the trajectory is flat down to solver tolerance ($10^{-8}$) or noise floor. In this flat region, nearest neighbors are selected at distances close to machine precision (e.g. $10^{-8}$). Minor numerical fluctuations cause these distances to grow slightly (e.g. to $10^{-7}$), which the algorithm interprets as exponential divergence (LLE $> 0$).
   * *Immunity of Benettin Method*: Tangent-space methods track the growth of linearized perturbations ($v_{new} = v_{old} + dt \cdot J \cdot v_{old}$). Because they are defined analytically rather than through state-space distance, they can contract indefinitely, correctly yielding a negative Lyapunov exponent ($-0.073$) without saturation.
 
-* **Plot Citation**: ![Rosenstein vs Benettin Plot](file:///Users/averykarlin/projOuroboros/figures/diagnostics_caution.png)
+* **Plot Citation**: ![Rosenstein vs Benettin Plot](figures/diagnostics_caution.png)
 
 ---
 
@@ -115,7 +115,7 @@ We varied the oxygen coupling rate ($\gamma_c$) and oxygen source ($S_c$) to che
   * $\gamma_c = 0.05, S_c = 0.1 \implies \text{Re}(\lambda) = -0.000495$ (Stable)
   * $\gamma_c = 0.50, S_c = 0.6 \implies \text{Re}(\lambda) = -0.003904$ (Stable)
 
-* **Plot Citation**: ![Stability Map](file:///Users/averykarlin/projOuroboros/figures/stability_map.png)
+* **Plot Citation**: ![Stability Map](figures/stability_map.png)
 
 ---
 

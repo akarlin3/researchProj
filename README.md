@@ -22,12 +22,14 @@ what the project does, its headline result, and how it is laid out internally.
   - [`Gnomon/` — Clean-room reproduce-or-refute of Fashion's ruler (software)](#gnomon--clean-room-reproduce-or-refute-of-fashions-ruler-software)
   - [`Lattice/` — A UQ-calibration reference object (DRO) for IVIM](#lattice--a-uq-calibration-reference-object-dro-for-ivim)
   - [`Lethe/` — Constrained-validation results (Echo portion: repeatability scale check)](#lethe--constrained-validation-results-echo-portion-repeatability-scale-check)
+  - [`Levy/` — Identifiability of the fractional order in diffusion-MRI](#levy--identifiability-of-the-fractional-order-in-diffusion-mri)
   - [`Limbo/` — Field review of trustworthy UQ for body MRI in adaptive RT](#limbo--field-review-of-trustworthy-uq-for-body-mri-in-adaptive-rt)
   - [`Matrix/` — Synthetic-twin closed loop (Keystone's no-scanner mode)](#matrix--synthetic-twin-closed-loop-keystones-no-scanner-mode)
   - [`Minos/` — The decision value of a calibrated error bar](#minos--the-decision-value-of-a-calibrated-error-bar)
   - [`Ouroboros/` — Identifiability limits of fractional SINDy](#ouroboros--identifiability-limits-of-fractional-sindy)
   - [`Procrustes/` — Misspecification-aliasing of a calibrated error bar](#procrustes--misspecification-aliasing-of-a-calibrated-error-bar)
   - [`Proteus/` — Structure-first mining of the dark proteome](#proteus--structure-first-mining-of-the-dark-proteome)
+  - [`Sentinel/` — Regret-stop vs coverage-stop separation gate](#sentinel--regret-stop-vs-coverage-stop-separation-gate)
   - [`Sextant/` — Boundary-railing as the primary, assumption-free IVIM diagnostic](#sextant--boundary-railing-as-the-primary-assumption-free-ivim-diagnostic)
   - [`Vernier/` — Calibration-aware acquisition design (feasibility gate)](#vernier--calibration-aware-acquisition-design-feasibility-gate)
 - [How the IVIM projects fit together](#how-the-ivim-projects-fit-together)
@@ -48,12 +50,14 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Gnomon/`](Gnomon/) | *(research software — no standalone paper by default)* Clean-room **reproduce-or-refute** rebuild of Fashion's calibration ruler (independent forward model + NLLS railing + Laplace/MCMC + MAF + ruler; targets pinned before running) | Research software — independent reproduction (the hedge to the Fashion retool) |
 | [`Lattice/`](Lattice/) | *(research software — no standalone paper)* IVIM UQ-calibration digital reference object (DRO) | Research software — synthetic ground-truth cohorts & alternative-model generators |
 | [`Lethe/`](Lethe/) | *(constrained-validation results; Echo portion — verdict: **Lethe**)* What test–retest repeatability validates about conformal interval **scale** in IVIM | IVIM diffusion-MRI — does the error bar have the right *size*? |
+| [`Levy/`](Levy/) | *(clean-room subrepo — manuscript drafted, pre-submission; target *Nonlinear Dynamics*)* Identifiability of the fractional order α (and the joint CTRW time/space pair α, β) in diffusion-MRI signal decay under finite-b, Rician noise | Diffusion-MRI — fractional-order identifiability, a recovery-collapse wall |
 | [`Limbo/`](Limbo/) | *(field review — PROVISIONAL, not publish-gated)* Trustworthy uncertainty quantification for quantitative/diffusion body MRI and its decision-use in MR-guided adaptive radiotherapy; a **trust → value-of-information → action** survey + gap map over 59 verified references | Field review — synthesis, taxonomy, gap-identification (target: *Physics in Medicine & Biology*) |
 | [`Matrix/`](Matrix/) | *(research software — no standalone paper)* Synthetic-twin **closed-loop** harness (scan→posterior→trust gate→action gate→dose replan→re-scan); Keystone's no-scanner mode, consuming Fashion/Minos/Forge behind stubbed interfaces | Adaptive quantitative-MRI dosing — a working closed loop on a synthetic twin (no scanner, no patient data) |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
 | [`Procrustes/`](Procrustes/) | *(research software — clean-room scaffold, CP0)* Misspecification-aliasing of a calibrated error bar: a bi-exp fit on non-bi-exp truth keeps **marginal** coverage but breaks **conditional** coverage of the *well-identified* tissue-diffusion map D — distinct from Gauge's within-model wall | IVIM diffusion-MRI — model-misspecification coverage diagnostic |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
+| [`Sentinel/`](Sentinel/) | *(pre-registered separation gate — verdict: 🔴 RED, no paper)* Does regret-targeted decision-stopping halt earlier than coverage-targeted (ACI/WATCH) stopping over a fractionated RT course, on the Matrix substrate? | Adaptive quantitative-MRI dosing — sequential stopping-rule separation test (negative result) |
 | [`Sextant/`](Sextant/) | *(re-aim of Fashion)* Boundary-railing of conventional NLLS IVIM fits — an assumption-free optimizer fact promoted to the primary claim, replicated on open human-abdominal DWI; the calibration ruler demoted to scoped secondary | IVIM diffusion-MRI — answering the "overextended claims" critique |
 | [`Vernier/`](Vernier/) | *Vernier: calibration-aware acquisition design for IVIM diffusion MRI* (feasibility gate PASSED; manuscript built, `paper/vernier.pdf`) — at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
 
@@ -343,6 +347,34 @@ real-world miscalibration magnitude.
 - `scripts/` — `run_harness.py` (CP1 method self-test), `fetch_invivo.py` (CP2 download-on-demand, reuses Gauge's data template), `run_validation.py` (CP3 real-data gate → PASS / Lethe), `run_reverb.py` (the constructive counterexample).
 - `paper/` — `lethe.tex` (`ebgaramond`+`microtype`) + `consistency.py` (numbers traced to seeded results). `ASSUMPTIONS.md`, `PROMOTION.md`, `VERIFICATION.md`, `LETHE.md`, `reproduce.sh` (one-command), `tests/`.
 
+### `Levy/` — Identifiability of the fractional order in diffusion-MRI
+
+*Clean-room subrepo; manuscript drafted (`paper/levy.tex` → `levy.pdf`), pre-submission —
+target *Nonlinear Dynamics* (house template: Minos). Reuses Ouroboros's
+Grünwald–Letnikov tooling read-only.* Levy asks whether the fractional order of
+anomalous diffusion — the stretched-exponential α in
+`S(b; S₀, D, α) = S₀·exp(−(bD)^α)`, and its joint-model extension to the CTRW /
+fractional Bloch–Torrey pair (α, β) — can be recovered **jointly with D and
+S₀** from a finite-b-value, Rician-noise magnitude MRI signal. It is not a
+fitting method; every CRLB is an **identifiability/information** statement,
+never an impossibility claim.
+
+**CP0 (single order).** Under a realistic clinical few-b acquisition
+(n_b ≈ 4–6), α is information-limited within the realistic SNR band [20, 60] —
+the recovery-collapse wall sits at SNR\* ≈ 28 (CRLB) / 30 (empirical, 95% CI
+[28, 31]) at the headline cell (α=0.85, n_b=4, b_max=2000), receding below the
+band only with dense multi-b research acquisition (n_b ≥ 8). **CP1 (joint
+α,β).** The time- and space-fractional orders are nearly non-identifiable
+together (median |ρ_αβ| = 0.984 over the physiological grid). **CP2.** The
+single-order wall is robust across the physiological α range (wall SNR\*
+27.5–32.9 for α ∈ [0.60, 0.98], always inside the clinical band). The
+manuscript compiles offline with 0 unresolved references; the Springer
+venue-class swap and citation finalization are open pre-submission items
+([`Levy/paper/FINALIZATION_CHECKLIST.md`](Levy/paper/FINALIZATION_CHECKLIST.md)).
+
+- `levy-core/` — the net-new package: `forward.py` (signal + Jacobian), `noise.py` (Rician sampling + Fisher factor), `fisher.py` (CRLB + degeneracy diagnostics), `identifiability.py` (Rician MLE, profile-likelihood CI, bootstrap), `wall.py` (the SNR×b-range sweep + verdict), `glreuse.py` (Ouroboros GL operators, read-only). 28 tests.
+- `results/RESULTS_CP{0,1,2}.md` (the wall, the degeneracy, the robustness sweep), `paper/` (`levy.tex`/`levy.pdf`, `consistency.py`, `verify_citations.py`), `ASSUMPTIONS.md`, `VERIFICATION.md`, `reproduce.sh`.
+
 ### `Limbo/` — Field review of trustworthy UQ for body MRI in adaptive RT
 
 *Field review — PROVISIONAL, not publish-gated; submission-ready compiled manuscript (CP0–CP3
@@ -521,6 +553,28 @@ The Zenodo badge above archives Proteus's code and intermediate-data snapshots
 - `analysis/` — powered-floor, TOST/non-superiority, bits-gradient, and pLDDT-confound scripts. `gce/` — the CPU ESMFold burst scaffold.
 - `tests/`, `envlog/`, `proteus_manuscript_gigascience.tex` (legacy filename; current target PLOS), `REVISION_NOTES.md`.
 
+### `Sentinel/` — Regret-stop vs coverage-stop separation gate
+
+*Pre-registered separation gate; created in-repo (clean, synthetic-twin-only history); no
+paper — the verdict was negative.* Sentinel tests one pre-registered wedge: does
+**regret-targeted decision-stopping** halt at a different time than
+**coverage-targeted stopping** (ACI/conformal-PID; a WATCH-style
+coverage-changepoint alarm) over a fractionated radiotherapy course, on the
+**Matrix** synthetic twin (imported read-only, byte-identity enforced)?
+
+**Verdict: 🔴 RED.** With both rules made sequential and calibrated to the same
+anytime false-alarm budget, the regret-stop does not robustly halt earlier than
+WATCH — even an idealized instrument-control case yields a gap whose 95% CI
+touches 0 — so the separation the paper would have needed is not there, and
+none is written. What the run leaves behind: the fractionated-session enabler
+(Matrix-twin import, byte-identity enforced), faithful ACI/PID + WATCH
+baselines, and the separation harness with voxel-bootstrap CIs, plus a
+disclosed and fixed earlier false positive (a per-session-vs-sequential
+confound).
+
+- `sentinel-core/` — package (own `pyproject.toml`): the enabler, baselines, and separation harness (`sentinel/`), `tests/` (incl. `test_enabler.py`, the Matrix byte-identity check), `experiments/run_cp0.py`.
+- `sentinel-core/RESULTS.md` (the verdict evidence, multi-patient + sweep), `sentinel-core/POSITIONING.md` (novelty record + kill mechanism), `reproduce.sh`.
+
 ### `Sextant/` — Boundary-railing as the primary, assumption-free IVIM diagnostic
 
 *Status: a **re-aim of Fashion**, not a new dataset. CP0–CP4 complete; the
@@ -646,6 +700,8 @@ Each project was imported into the monorepo with its own history preserved:
 | `Limbo/` | created in-repo (clean review-only history; verified citations, no data) | own history (`git log -- Limbo/`) |
 | `Matrix/` | created in-repo (clean synthetic-only history; no patient data in tree or history) | own history, incl. the Ferry real-data adapter (`git log -- Matrix/`) |
 | `Procrustes/` | created in-repo (clean synthetic-only history) | own history (`git log -- Procrustes/`) |
+| `Levy/` | created in-repo (clean-room synthetic-only history; Ouroboros GL tooling reused read-only) | own history (`git log -- Levy/`) |
+| `Sentinel/` | created in-repo (clean, synthetic-twin-only history; Matrix imported read-only) | own history (`git log -- Sentinel/`) |
 | `Lattice/` | **git submodule** → [`akarlin3/projLattice`](https://github.com/akarlin3/projLattice) (PRIVATE) | carved out of this monorepo via `git filter-repo`; single-commit synthetic-only history (its only in-tree commit, PR #19); now lives in its own repo |
 | `Lethe/` | projEcho (new — synthetic/open); built as `Echo/`, renamed `Echo/`→`Lethe/` by verdict | full history (own clean history; `git log --follow -- Lethe/`) |
 | `Fashion/` | projFashion | fork — **only my own 21 commits**; upstream (`OSIPI/TF2.4_IVIM-MRI_CodeCollection`) history re-rooted to a single fork-point snapshot |

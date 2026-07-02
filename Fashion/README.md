@@ -45,51 +45,66 @@ layer is [`uq/ivim_fit.py`](uq/ivim_fit.py); the campaign runners are
 
 ## Headline result
 
-**Gaussian uncertainties under-cover D\*; the MCMC quantile interval fixes it.**
+**Retooled (railing-first): a conventional bounded NLLS D\* fit rails to a
+parameter bound on a large fraction of voxels — an assumption-free
+identifiability diagnostic that needs no ground truth.** This project went
+through a retool (see the root [`README.md`](../README.md#fashion--do-ivim-fitting-methods-report-honest-uncertainty)
+and [`paper_retool/manuscript.tex`](paper_retool/manuscript.tex)) that answers a
+reviewer critique that the original calibration-ruler claim was *overextended*:
+any coverage statement is only as trustworthy as the noise/forward model behind
+its reference truth. Boundary-railing sidesteps that entirely — it is read
+directly off the optimizer's output, on real open in-vivo data, with no
+ground-truth or noise-model assumption.
 
-D\* (pseudo-diffusion) has a skewed, bound-pinned posterior, so a symmetric
-Gaussian error bar — whether from the Laplace approximation or the SD of the
-MCMC chain — is the wrong shape and systematically too tight. The skew-aware
-2.5/97.5 quantile credible interval from the *same* MCMC chain recovers nominal
-coverage. This is exactly the prediction stated in `uq/bayesian.py`
-("Expected to under-cover D\* … the quantile-interval coverage is the paper
-point").
+On the OSIPI open human-abdominal acquisition's curated homogeneous ROI,
+**54.7%** of high-SNR voxels rail D\* — independently reproduced at **54.2%** by
+a clean-room rebuild (**Gnomon**) and replicated across cohorts by **Sextant**:
+**47.8%** on the full abdomen ROI, **43.7%** on an independent liver cohort
+(TCGA-LIHC, clean 4-b scheme), and **73.4%** on the same liver cohort at a
+sparser 3-b scheme. Railing survives generous bounds and every SNR stratum, and
+is dominated by the upper D\* bound — the same high-D\* identifiability wall
+found elsewhere in this research program (see **Gauge**).
 
-Across the headline 9-cell set (3 pancreas truths × SNR {10, 20, 40},
-clinical-sparse b-scheme, N = 200 noise realizations), **D\* coverage at nominal
-0.95** (mean over cells, from the committed run):
-
-| D\* uncertainty estimator | empirical coverage @ 0.95 | verdict |
-|---|---|---|
-| Laplace Gaussian posterior SD | **0.30** | severely overconfident |
-| MCMC Gaussian posterior SD | **0.67** | overconfident |
-| **MCMC 2.5/97.5 quantile interval** | **0.94** | ≈ nominal ✅ |
-
-For the same MCMC run, D and f — whose posteriors are near-symmetric — are
-already well covered by the quantile interval (D ≈ 0.94, f ≈ 0.94). The failure
-is specific to D\*, and specific to forcing a Gaussian onto a skewed posterior.
-
-*(Numbers are read from the committed figure data in
-[`figures/`](figures/); the source table `calib_w3.csv` is a gitignored,
-reproducible artifact — see Reproduce.)*
+**Secondary, scoped to ground-truth-only synthetic data: the calibration
+ruler.** Because coverage/calibration can only be evaluated where truth is
+known, that result is demoted from headline to a scoped secondary diagnostic.
+Under an honest Cramér–Rao (CRLB) convention, the symmetric Gaussian interval
+under-covers D\* *conditionally*, concentrated in the high-D\* tercile
+(**0.63** [0.60, 0.67]) — not as a uniform marginal collapse. The MCMC
+2.5/97.5 quantile interval restores near-nominal *marginal* D\* coverage
+(**≈0.90**), though a residual conditional gap remains in the high-D\* tercile.
+An earlier, more dramatic marginal under-coverage figure is dropped as an
+artifact of an overconfident "floored" CRLB SD convention rather than a
+Gaussian-vs-quantile shape effect (see **Gnomon**'s verdict).
 
 ## Figures
 
-![Reliability diagrams](figures/fig_reliability.png)
+![Railing across cohorts](figures/manuscript/fig1_railing_cohorts.png)
 
-*Reliability diagrams (predicted vs empirical coverage), one panel per paradigm.
-D\* (bold red) sags below the diagonal for the Gaussian estimators; the MCMC
-2.5/97.5 quantile interval lands on it.*
+*Boundary-railing of the NLLS D\* reproduces across independent in-vivo
+cohorts: railing rate (95% CI) on the OSIPI abdomen (homogeneous ROI and full
+ROI) and on TCGA-LIHC liver (4-b clean and 3-b sparse schemes), against the
+prior 54.7% report and the 30% pre-registered replication floor.*
 
-![Calibration heatmap](figures/fig_calibration_heatmap.png)
+![Conditional coverage by D* tercile](figures/manuscript/fig2_conditional_coverage.png)
 
-*Per-(method × cell) coverage gap at nominal 0.95 (red = under-covers, blue =
-over-covers, white = calibrated). The Laplace/MCMC-SD rows for D\* run deep red;
-the `mcmc_quantile` row is near white.*
+*The Gaussian under-coverage failure is conditional, not marginal: central-95%
+D\* coverage by true-D\*-tercile (Laplace SD, MCMC SD, MCMC quantile, all under
+the honest CRLB, plus the floored-convention overlay) concentrates its shortfall
+in the high-D\* tercile.*
 
-Interactive, self-contained React/SVG versions of both views are committed
-alongside the PNGs ([`figures/reliability_diagrams.jsx`](figures/reliability_diagrams.jsx),
-[`figures/calibration_heatmap.jsx`](figures/calibration_heatmap.jsx)).
+![Resolution: interval shape and amortized posterior](figures/manuscript/fig3_resolution.png)
+
+*Two-panel resolution: (A) the MCMC quantile interval's shape, not a wider SD,
+restores marginal D\* coverage toward nominal; (B) an amortized neural posterior
+(NPE) out-calibrates and out-sharpens the railed-NLLS Gaussian baseline on
+coverage, ECE, and sharpness.*
+
+*(These are the retooled manuscript's headline figures, generated by
+[`make_railing_figures.py`](make_railing_figures.py) from frozen Gnomon/Sextant
+run artifacts; matching `.pdf` versions are committed alongside the `.png`s.
+The pre-retool reliability-diagram and calibration-heatmap figures/JSX views no
+longer exist — they were superseded by the railing-first redraft.)*
 
 ## Reproduce
 

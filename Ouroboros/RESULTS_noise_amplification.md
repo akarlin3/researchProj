@@ -38,7 +38,7 @@ The noise-amplification factor is defined as $A(\alpha) = h^{-2\alpha} \|w(\alph
 >
 > Thus, the failure to recover $\alpha=0.5$ is NOT driven by absolute noise amplification (which is lower for $\alpha=0.5$). Instead, it is driven by the fact that the **signal strength** of the fractional derivative decays much faster for low $\alpha$, or that the SINDy regression cannot distinguish the low-order fractional derivative from a constant/linear state term when corrupted by noise, or because the noise-free derivative itself has lower amplitude, making the signal-to-noise ratio of the target derivative itself unfavorable. We must restate this honestly in the manuscript.
 
-* **Plot Citation**: ![Noise Amplification Plot](file:///Users/averykarlin/projOuroboros/figures/noise_amplification.png)
+* **Plot Citation**: ![Noise Amplification Plot](figures/noise_amplification.png)
 ## 4. Target-Derivative Signal Amplitude $R(\alpha)$ vs. $A(\alpha)$ (Checkpoint 2)
 
 Quantifies the SIGNAL side of the noise-amplification story. `RESULTS_Aalpha_threshold_reconcile.md` found the NOISE amplification $A(\alpha)$ rises $\approx 8.76$ dB per $0.2$ step in $\alpha$ while the observed pointwise recovery threshold rises only $\approx 5$ dB/step (a $\approx 3.76$ dB/step shortfall), and conjectured the rising target-derivative amplitude offsets it. Here we compute that amplitude directly on the clean primary-system trajectory.

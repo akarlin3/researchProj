@@ -27,7 +27,7 @@ Since the simulator's governing law is strictly of integer-order ($\alpha_t = 1.
 
 The scatter plot below compares the true derivative value against the SINDy prediction for each of the three coupled variables on the held-out test split:
 
-![LHS Validation Plot](file:///Users/averykarlin/projOuroboros/figures/lhs_validation.png)
+![LHS Validation Plot](figures/lhs_validation.png)
 
 ## Discovered Equations for Selected Model ($\alpha_t$ = 1.0)
 

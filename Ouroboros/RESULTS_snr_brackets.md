@@ -106,4 +106,4 @@ A recovery trial is declared **successful** if the estimated order $\hat{\alpha}
 - SNR = 25 dB: Success Rate = 1.000, Error = 0.0000 ± 0.0000
 - SNR = 30 dB: Success Rate = 1.000, Error = 0.0000 ± 0.0000
 
-* **Plot Citation**: ![Mitigation Comparison Plot](file:///Users/averykarlin/projOuroboros/figures/mitigation_comparison.png)
+* **Plot Citation**: ![Mitigation Comparison Plot](figures/mitigation_comparison.png)

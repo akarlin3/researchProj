@@ -159,11 +159,11 @@ turns **Fashion's calibration ruler** into a *benchmark*: a fixed, versioned tas
 (predict per-voxel quantiles for IVIM `(D, D*, f)`), a curated panel of baseline
 methods, reference numbers scored on that ruler, and a submission interface for
 scoring a new method. It **reuses, never reinvents** — the ruler/metrics come from
-**Caliper** (read-only `caliper.metrics`) and the data substrate from **Gauge**
-(read-only `gauge.cohort`); the dependency is one-way (nothing imports Datum). The
-intended **Lattice** substrate is not built yet, so Datum sits on Gauge's synthetic
-cohort now, with an OSIPI digital reference object wired for external validation. It
-also serves as the concrete artifact behind Fashion's "ruler-as-standard"
+**Caliper** (read-only `caliper.metrics`); the data substrate is now the **Lattice**
+IVIM DRO (v2 swapped it in as primary for the original Gauge-cohort substrate,
+which is kept only for bootstrap continuity), with an OSIPI digital reference
+object wired for external validation; the dependency is one-way (nothing imports
+Datum). It also serves as the concrete artifact behind Fashion's "ruler-as-standard"
 differentiation from Casali. Distinct from Caliper (the ruler + an explicitly
 non-citable demo sweep), Lattice (a substrate), and OSIPI (scored on point
 accuracy, not calibration).
@@ -497,22 +497,32 @@ stability on transient trajectories.
 
 ### `Procrustes/` — Misspecification-aliasing of a calibrated error bar
 
-*Research software — clean-room scaffold (CP0); no standalone paper yet, venue TBC; created
-in-repo (clean synthetic-only history).* **Procrustes** asks what bi-exponential model
-*misspecification* does to a calibrated IVIM error bar. Fitting a bi-exponential model on
-non-bi-exponential truth keeps **marginal** coverage but breaks the **conditional** coverage of
-the *well-identified* tissue-diffusion map D — a failure on an axis **orthogonal** to
-**Gauge**'s within-model high-D\* identifiability wall, and on the *opposite* parameter (the one
-Gauge says to *trust*). Ground truth is the **Lattice** DRO (seed-generated, no data files).
+*Research software — submission-ready but HELD (GATE B/C/D all PASS; manuscript compiles,
+`procrustes-core/paper/procrustes.pdf`); venue TBC; created in-repo (clean synthetic-only
+history).* **Procrustes** asks what bi-exponential model *misspecification* does to a
+calibrated IVIM error bar. Fitting a bi-exponential model on non-bi-exponential truth keeps
+**marginal** coverage but breaks the **conditional** coverage of the *well-identified*
+tissue-diffusion map D — a failure on an axis **orthogonal** to **Gauge**'s within-model
+high-D\* identifiability wall, and on the *opposite* parameter (the one Gauge says to
+*trust*). Ground truth is the **Lattice** DRO (seed-generated, no data files). Submission is
+withheld behind `procrustes-core/release_gate.py` pending **Gauge**'s publication.
 
 The original D\*-axis wedge was killed at the novelty gate (it reduces to Gauge §altmodel/
 §envelope); the surviving, repositioned wedge moves *off* the D\* axis. Because every Lattice
 non-bi-exp family leaves the tissue term `(1−f)·exp(−b·D)` intact, D is an exact, well-identified
 ground-truth parameter — so bi-exp misspecification breaks its conditional coverage along the
-*perfusion-departure* axis, **inside** the well-identified D\* regime. An 8-seed refute-first
-probe clears the heavy-tail (stretched-exponential) family with tight CIs — conditional gap
-0.126 [0.116, 0.136], well-ID-D\* gap 0.172 [0.162, 0.183], diagnostic AUC 0.67 (vs Gauge's
-0.501) — while tri-exp stays null and log-normal is a weak, diagnostically-hidden break, so the
+*perfusion-departure* axis, **inside** the well-identified D\* regime. The hardened 16-seed
+headline (GATE B, Gauge's exact D\*-tercile partition) clears the heavy-tail
+(stretched-exponential) family — conditional gap of D +0.105 [+0.093, +0.117] overall,
+**+0.148 [+0.131, +0.164]** inside the well-identified region (deepest at +0.196 in the
+strict bottom tercile) versus a near-zero +0.014 in Gauge's own high-D\* wall — an opposite
+gradient from Gauge's, with marginal coverage held at 0.909 (confirms Lei 2018, not the
+contribution) and a 7.7× growth in signed D-bias from placebo to worst departure. The
+diagnostic reach (GATE C) detects the heavy-tail channel (AUC 0.684 vs a naive monitor's
+0.550) but not pure dispersion (AUC 0.578, below the pre-registered 0.60 floor); robustness
+(GATE D) survives 11/12 swept conditions, with one honest boundary at SNR 25 where Rician-floor
+noise dominates the bias. Tri-exp stays null and log-normal is a weak, diagnostically-hidden
+break, so the
 wedge is mechanism-specific (high-b aliasing), not generic.
 
 - `procrustes-core/` — the clean-room core (own `pyproject.toml`): CP0 separation, boundary gates, and the observable misspecification diagnostic (`procrustes/`, `experiments/`, `tests/`, `RESULTS.md`).

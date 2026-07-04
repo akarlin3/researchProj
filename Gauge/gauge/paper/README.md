@@ -4,22 +4,23 @@ The Gauge 05 deliverable: the assembled paper for the **reframed** contribution
 established across Gauge 01–04.
 
 ## Contents
-- `gauge.tex` — the manuscript (LaTeX, `article` class).
+- `gauge_v3_revised.tex` — the manuscript (LaTeX, `article` class).
 - `refs.bib` — bibliography.
 - `figures/` — the vector-PDF figures, copied from `gauge/figures/` (regenerable
   from seed `20260613` via the Gauge 02–04 modules).
 - `consistency.py` — **GATE 3** check: re-reads the committed, seeded checkpoint
   printouts (`results/*.txt`, `POSITIONING.md`, `gauge/results*.md`) and asserts
-  every headline number in `gauge.tex` appears verbatim in its source. Prints a
-  one-paragraph pass/fail summary; exit 0 iff all trace.
-- `build.sh` — runs the consistency check, then compiles with `tectonic`.
+  every headline number in `gauge_v3_revised.tex` appears verbatim in its source.
+  Prints a one-paragraph pass/fail summary; exit 0 iff all trace.
+- `build.sh` — runs the consistency check, then compiles with `tectonic` to
+  `gauge_v3_revised_R2.pdf` (the canonical committed artifact keeps this name).
 
 ## Build
 ```bash
-bash gauge/paper/build.sh        # consistency check + tectonic -> gauge.pdf
+bash gauge/paper/build.sh        # consistency check + tectonic -> gauge_v3_revised_R2.pdf
 # or individually:
 python gauge/paper/consistency.py
-( cd gauge/paper && tectonic gauge.tex )
+( cd gauge/paper && tectonic gauge_v3_revised.tex )
 ```
 Requires `tectonic` (self-contained LaTeX; fetches its package bundle and BibTeX
 style on first run). Compiles to an 11-page PDF; only cosmetic overfull-hbox

@@ -200,5 +200,5 @@ and asserts every manuscript number traces verbatim — **34/34 trace**; the bui
 compiles with `tectonic` to an 11-page PDF.
 
 ```bash
-bash gauge/paper/build.sh      # GATE 3 consistency check + tectonic -> gauge/paper/gauge.pdf
+bash gauge/paper/build.sh      # GATE 3 consistency check + tectonic -> gauge/paper/gauge_v3_revised_R2.pdf
 ```

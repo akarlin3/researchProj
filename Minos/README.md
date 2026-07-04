@@ -1,53 +1,60 @@
-# projSybil — Sibyl
+# Minos — the decision value of a calibrated error bar
 
-Out-of-distribution detection and trustworthiness flagging for quantitative
-diffusion-MRI microstructure estimation (IVIM via µGUIDE).
+*Paper:* **"Minos: the decision value of a calibrated uncertainty — A
+decision–calibration gap and a label-free validity floor for quantitative MRI"**
+(theory complete; applied half provisional; target *MRM*).
 
-The core idea: a per-input OOD flag should track *when the estimator's output stops
-being trustworthy*. Two detector families are studied — **Family 1** (summary-space:
-Mahalanobis/MMD on the µGUIDE embedding) and **Family 2** (signal-space: prediction
-residual / density-ratio / conformal).
-
-## Tiers
-
-- **Tier 1** (`sibyl/experiments/tier1.py`) — fully synthetic. Inject controlled
-  shifts (noise model, SNR, corruption) on a dense 10-b scheme and show the OOD score
-  couples to calibration failure of the µGUIDE posterior.
-- **Tier 2** (`sibyl/experiments/tier2.py`) — in-vivo breast DWI at the ACRIN-6698
-  4-b scheme. Show the detector flags the real synthetic→in-vivo shift and that the
-  flag tracks loss of **ADC test-retest** trustworthiness. See
-  [`docs/tier2.md`](docs/tier2.md) and the pre-coding [`VERIFICATION.md`](VERIFICATION.md).
-  *(D\*/f are not validated in vivo here — that waits for the liver data.)*
-- **Tier 3** (`sibyl/experiments/tier3.py`) — glioma / liver cohort (stub).
+Minos prices *the error bar itself* — not the point estimate, not a population
+parameter — on a treat/spare/escalate clinical decision. It defines the **Value of
+Calibration** (utility lost when the error bar is mis-scaled) and the **Value of the
+Trust-Gate** (utility recovered by detecting when uncertainty is untrustworthy under
+shift). Its v2 result is a **decision–calibration gap** `G = tau* - tau_stat`: the
+scale that achieves nominal coverage and the scale that maximizes expected utility
+*diverge* under skew and cost asymmetry. Its v3 result is a label-free
+deployment-validity monitor, honest about what it can detect (observable-driven
+shift, AUC ≫ 0.5) versus cannot (hidden truth-shift, AUC ≈ 0.5). The theory core is
+100% synthetic, deterministic, and gate-checked; the applied half is speculative by
+construction (it assumes Fashion and Gauge survive to publication as submitted).
 
 ## Layout
 
-```
-sibyl/
-  forward_model/ivim.py     IVIM biexponential, ACRIN scheme, mono-exp ADC fit
-  data/
-    synthetic.py            breast IVIM priors + dense ID dataset
-    shift.py                Rician/Gaussian noise, corruption, Tier-1 shift axes
-    acrin_reference.py      synthetic 4-b ID reference + b0 normalization (Arm 1)
-    imputation.py           segmented IVIM fit → dense-grid imputation (Arm 2)
-    units.py                UnitTable intermediate + synthetic test/retest generators
-    acrin_ingest.py         real ACRIN DWI → UnitTable (NIfTI runnable; DICOM documented)
-  detectors/
-    family1.py              Mahalanobis on embedding
-    family2.py              residual conformal (dense)
-    signal_space.py         estimator-free kNN density-ratio / conformal (Arm 1)
-  estimator/wrapper.py      µGUIDE train/inference + torch-2.x compat shims
-  metrics/eval.py           detection AUROC, ADC repeatability, coupling, controls
-  experiments/              tier1 / tier2 / tier3
-tests/                      pytest suite (pure-numeric, estimator-free, µGUIDE integ.)
-```
+- [`minos-core/`](minos-core/) — the validated, data-independent theory core: `VoC`/`VoTG`,
+  the v2 decision–calibration gap, the v3 label-free validity monitor
+  (`utility.py`, `decision.py`, `voi.py`, `calibration.py`, `correction.py`,
+  `monitor.py`), 33 gate-as-assertion tests. See
+  [`minos-core/README.md`](minos-core/README.md) and
+  [`minos-core/POSITIONING.md`](minos-core/POSITIONING.md).
+- [`theory/`](theory/) — **Plumbline**: analytic hardening of the minos-core findings
+  — the gap-scaling law (Theorem 1), the detectability bound and hidden-channel
+  impossibility proof (Theorem 2), the second-order value-of-information law
+  (**Delphi**, Proposition 3) — all machine-checked against the v2/v3 simulation.
+  See [`theory/README.md`](theory/README.md).
+- [`future/`](future/) — the complete, applied Minos paper, built now under the
+  assumption that **Fashion** and **Gauge** publish as submitted: wires the
+  validated theory (read-only) to a decision/monitor layer that consumes
+  Fashion's calibrated IVIM posteriors, contextualized by Gauge's coverage and
+  high-D\* identifiability wall. CP1–CP4 all done, manuscript compiles
+  (`future/paper/minos.tex`), every number traces to a seeded result — but
+  **speculative by construction** and flagged PROVISIONAL throughout. See
+  [`future/README.md`](future/README.md) and
+  [`future/ASSUMPTIONS.md`](future/ASSUMPTIONS.md) for the SOLID-vs-PROVISIONAL
+  split.
+- [`paper/`](paper/) — standalone theory-only manuscript sections
+  (`theory_standalone.tex`) independent of the Fashion/Gauge assumption.
+- [`sibyl/`](sibyl/) — **Sibyl**: a related but distinct subproject reusing this
+  house's tooling — out-of-distribution detection and trustworthiness flagging
+  for quantitative diffusion-MRI microstructure estimation (IVIM via µGUIDE),
+  validated against public ACRIN-6698 repeat-acquisition data (Tier 1 synthetic,
+  Tier 2 in-vivo breast DWI done; Tier 3 glioma/liver is a stub). See
+  [`sibyl/README.md`](sibyl/README.md).
 
-## Setup
+## Reproduce
 
 ```bash
-# µGUIDE is vendored under uGUIDE/ and imported via a user-site .pth (or `pip install ./uGUIDE`).
-pip install pyro-ppl SimpleITK            # runtime deps not in the base env
-export PYTHONPATH=$(pwd)
-python3 -m pytest tests/ -q
-python3 -m sibyl.experiments.tier2        # synthetic validation harness
+cd minos-core && python -m pytest              # theory-core gate suite (33 tests)
+bash future/reproduce.sh                       # one-command CP1-CP4 re-validation (applied half)
 ```
+
+`theory/`'s per-theorem gate scripts (`gap_scaling.py`, `detectability.py`,
+`impossibility_check.py`, `confirm.py`, `voi_value.py`) are run individually — see
+[`theory/README.md`](theory/README.md) for the exact commands.

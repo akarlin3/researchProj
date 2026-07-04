@@ -123,7 +123,7 @@ Matrix/
   verify_ferry_cp2.py  grounded closed-loop run + side-by-side vs synthetic baseline
   tests/             pytest suite (incl. tests/test_ferry.py)
   results/           seeded run printouts + machine-readable anchors
-                       RESULTS_CP2/CP4.md + .json, RESULTS_FERRY_CP2.md + .json
+                       RESULTS_CP2.json, RESULTS_CP4.md + .json, RESULTS_FERRY_CP2.md + .json
   paper/             the manuscript (PMB target)
     matrix.tex       methods+results paper; \PROV marks Fashion/Minos-dependent numbers
     consistency.py   traceability gate: seeded JSON -> numbers.tex + load-bearing asserts

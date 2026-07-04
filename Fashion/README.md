@@ -1,13 +1,18 @@
-# Do IVIM fitting methods report *honest* uncertainty?
+# Boundary-railing of NLLS fits as an assumption-free IVIM identifiability diagnostic
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20649669.svg)](https://doi.org/10.5281/zenodo.20649669)
 
+*Retooled, boundary-railing-first (in review at NMR in Biomedicine); see
+[`paper_retool/`](paper_retool/) for the current manuscript.*
+
 An uncertainty-quantification & **calibration** study for intravoxel incoherent
-motion (IVIM) diffusion-MRI fitting. The question is not "how accurate is the
-point estimate?" but the harder one a clinician actually relies on: **when a
-method reports an error bar, can you believe it?** A method can be precise and
-still badly *overconfident* — tight intervals that miss the truth far more often
-than their nominal level promises.
+motion (IVIM) diffusion-MRI fitting, now led by an assumption-free finding: on
+open in-vivo abdominal data, conventional box-constrained NLLS fits of the
+pseudo-diffusion coefficient D\* **rail to a parameter bound** for a large
+fraction of voxels — a fact about the optimizer and the data that needs no
+ground truth. The calibration question — "when a method reports an error bar,
+can you believe it?" — is kept as a **scoped secondary** result, reported only
+where ground truth exists (the synthetic substrate).
 
 This is my analysis layer (the [`uq/`](uq/) package) built on top of the OSIPI
 TF2.4 IVIM code collection. The upstream fitting engines under `src/` are
@@ -45,66 +50,66 @@ layer is [`uq/ivim_fit.py`](uq/ivim_fit.py); the campaign runners are
 
 ## Headline result
 
-**Retooled (railing-first): a conventional bounded NLLS D\* fit rails to a
-parameter bound on a large fraction of voxels — an assumption-free
-identifiability diagnostic that needs no ground truth.** This project went
-through a retool (see the root [`README.md`](../README.md#fashion--do-ivim-fitting-methods-report-honest-uncertainty)
-and [`paper_retool/manuscript.tex`](paper_retool/manuscript.tex)) that answers a
-reviewer critique that the original calibration-ruler claim was *overextended*:
-any coverage statement is only as trustworthy as the noise/forward model behind
-its reference truth. Boundary-railing sidesteps that entirely — it is read
-directly off the optimizer's output, on real open in-vivo data, with no
-ground-truth or noise-model assumption.
+**NLLS D\* boundary-railing: 54.2% of open-abdomen voxels hit a fit bound — an
+assumption-free identifiability signature that needs no ground truth.**
 
-On the OSIPI open human-abdominal acquisition's curated homogeneous ROI,
-**54.7%** of high-SNR voxels rail D\* — independently reproduced at **54.2%** by
-a clean-room rebuild (**Gnomon**) and replicated across cohorts by **Sextant**:
-**47.8%** on the full abdomen ROI, **43.7%** on an independent liver cohort
-(TCGA-LIHC, clean 4-b scheme), and **73.4%** on the same liver cohort at a
-sparser 3-b scheme. Railing survives generous bounds and every SNR stratum, and
-is dominated by the upper D\* bound — the same high-D\* identifiability wall
-found elsewhere in this research program (see **Gauge**).
+On the OSIPI TF2.4 open human-abdominal IVIM acquisition (homogeneous-ROI mask,
+n = 1932), a box-constrained NLLS fit of the pseudo-diffusion coefficient D\*
+rails to a parameter bound in **54.2% [52.0, 56.4]** of voxels — independently
+reproduced clean-room at **54.2%** by [Gnomon](../Gnomon/) and replicated at
+**47.8%** (full abdomen, n = 19,652) / **43.7%** (TCGA-LIHC liver, 4-b) /
+**73.4%** (TCGA-LIHC liver, sparse 3-b) by [Sextant](../Sextant/). Railing is
+dominated by the *upper* D\* bound — the high-D\* identifiability wall also
+found by [Gauge](../Gauge/) — and survives deliberately generous bounds, so it
+is not a tight-box artefact.
 
-**Secondary, scoped to ground-truth-only synthetic data: the calibration
-ruler.** Because coverage/calibration can only be evaluated where truth is
-known, that result is demoted from headline to a scoped secondary diagnostic.
-Under an honest Cramér–Rao (CRLB) convention, the symmetric Gaussian interval
-under-covers D\* *conditionally*, concentrated in the high-D\* tercile
-(**0.63** [0.60, 0.67]) — not as a uniform marginal collapse. The MCMC
-2.5/97.5 quantile interval restores near-nominal *marginal* D\* coverage
-(**≈0.90**), though a residual conditional gap remains in the high-D\* tercile.
-An earlier, more dramatic marginal under-coverage figure is dropped as an
-artifact of an overconfident "floored" CRLB SD convention rather than a
-Gaussian-vs-quantile shape effect (see **Gnomon**'s verdict).
+The calibration ruler is kept as a **scoped secondary** result, reported only
+on synthetic ground truth (undefined on the real scan, which has no known
+truth). Under the honest CRLB, central-95% D\* coverage is near-nominal in the
+low-D\* tercile but falls in the **high-D\*** tercile:
+
+| Estimator (honest CRLB) | low D\* | mid D\* | **high D\*** | pooled |
+|---|---|---|---|---|
+| Laplace SD | 0.91 [0.89, 0.94] | 0.86 [0.83, 0.89] | **0.63 [0.60, 0.67]** | 0.80 [0.78, 0.82] |
+| MCMC SD | 0.95 [0.93, 0.97] | 0.95 [0.94, 0.97] | **0.81 [0.78, 0.84]** | 0.90 [0.89, 0.92] |
+| MCMC quantile | 0.93 [0.90, 0.95] | 0.97 [0.95, 0.98] | **0.81 [0.78, 0.84]** | 0.90 [0.89, 0.91] |
+
+Reading the MCMC posterior's 2.5/97.5 quantile interval rather than a symmetric
+SD restores near-nominal *marginal* D\* coverage (0.90), and an amortized
+neural posterior beats the railed-NLLS baseline on both calibration (coverage
+0.98 vs 0.76) and sharpness (0.11 vs 0.18) — but the residual high-D\* gap
+(0.81) survives every fix: it is the identifiability wall itself, not an
+interval-shape artefact. The earlier dramatic *marginal* severity (0.30
+Laplace / 0.67 MCMC) is **retired**: it was an artefact of flooring the SD of
+railed/unidentified voxels rather than reporting the honest (wider) CRLB — see
+[`Gnomon/VERDICT.md`](../Gnomon/VERDICT.md) and [`NUMBERS_FROZEN.txt`](NUMBERS_FROZEN.txt)
+for the full reconciliation.
+
+*(Every number above traces to a frozen, reproducible run — see
+[`NUMBERS_FROZEN.txt`](NUMBERS_FROZEN.txt) and `paper_retool/consistency.py`.)*
 
 ## Figures
 
-![Railing across cohorts](figures/manuscript/fig1_railing_cohorts.png)
+![Boundary-railing across cohorts](figures/manuscript/fig1_railing_cohorts.png)
 
-*Boundary-railing of the NLLS D\* reproduces across independent in-vivo
-cohorts: railing rate (95% CI) on the OSIPI abdomen (homogeneous ROI and full
-ROI) and on TCGA-LIHC liver (4-b clean and 3-b sparse schemes), against the
-prior 54.7% report and the 30% pre-registered replication floor.*
+*D\* boundary-railing rate by cohort with 95% bootstrap CIs — OSIPI homogeneous
+ROI, OSIPI full abdomen, and the independent TCGA-LIHC liver replication (4-b
+and sparse 3-b schemes).*
 
-![Conditional coverage by D* tercile](figures/manuscript/fig2_conditional_coverage.png)
+![Conditional coverage](figures/manuscript/fig2_conditional_coverage.png)
 
-*The Gaussian under-coverage failure is conditional, not marginal: central-95%
-D\* coverage by true-D\*-tercile (Laplace SD, MCMC SD, MCMC quantile, all under
-the honest CRLB, plus the floored-convention overlay) concentrates its shortfall
-in the high-D\* tercile.*
+*Per-true-D\*-tercile central-95% coverage under the honest CRLB, with the
+retired floored-SD convention overlaid for comparison — the under-coverage is
+conditional on the high-D\* regime, not a uniform marginal collapse.*
 
-![Resolution: interval shape and amortized posterior](figures/manuscript/fig3_resolution.png)
+![Resolution](figures/manuscript/fig3_resolution.png)
 
-*Two-panel resolution: (A) the MCMC quantile interval's shape, not a wider SD,
-restores marginal D\* coverage toward nominal; (B) an amortized neural posterior
-(NPE) out-calibrates and out-sharpens the railed-NLLS Gaussian baseline on
-coverage, ECE, and sharpness.*
+*The quantile-interval fix to marginal D\* coverage (K2) and the amortized-flow
+vs. railed-NLLS calibration/sharpness comparison (K3).*
 
-*(These are the retooled manuscript's headline figures, generated by
-[`make_railing_figures.py`](make_railing_figures.py) from frozen Gnomon/Sextant
-run artifacts; matching `.pdf` versions are committed alongside the `.png`s.
-The pre-retool reliability-diagram and calibration-heatmap figures/JSX views no
-longer exist — they were superseded by the railing-first redraft.)*
+Figures are regenerated from frozen run outputs by
+[`make_railing_figures.py`](make_railing_figures.py); the manuscript PDF is
+[`paper_retool/manuscript.pdf`](paper_retool/manuscript.pdf).
 
 ## Reproduce
 

@@ -36,8 +36,9 @@ scan — which is itself the argument for leading with railing.
 | **bootstrap CIs, SNR/rail-direction characterisation, full-ROI generalisation, replication harness** | — | **new empirical content** |
 
 Sextant reimplements none of the railing computation; it re-centres the narrative
-and adds the human-abdominal generalisation + (pending sign-off) an independent
-liver-DWI replication.
+and adds the human-abdominal generalisation, an independent liver-DWI replication
+(TCGA-LIHC, signed off — see Results below), and a follow-up characterization of
+railing as a per-voxel actionable flag (see "Railing as an actionable flag" below).
 
 ## Results (seed 20260613, 5000-bootstrap; see `results/railing_results.json`)
 
@@ -62,6 +63,20 @@ bound — the high-D\* identifiability wall, where the perfusion compartment is 
 weakly constrained the optimiser is pushed to the ceiling. Under generous wide
 bounds the rate falls but stays a substantial minority, so it is **not** an
 artefact of tight bounds.
+
+## Railing as an actionable flag (HC7, see `ADVERSE_RESULTS.md`)
+
+On synthetic ground truth (`results/phantom_recovery.json`), a railed voxel's D\*
+is specifically enriched for large recovery error: at SNR 20, precision
+`P(unreliable | railed) ≈ 0.68` [0.65, 0.71] against a base rate of 0.54 (a
+1.27× lift), and excluding railed voxels measurably lowers the retained map's
+pooled D\* error (bootstrap CI excludes 0), recurring at SNR 10 and 40. It is
+**not** a sensitive detector — recall is only ≈ 0.39 [0.37, 0.42], and as a
+binary classifier of "large error" the flag sits only modestly above chance
+(AUC ≈ 0.56–0.59) — so a *positive* rail is a high-precision, actionable signal
+that a voxel's D\* is untrustworthy, while the *absence* of railing is not a
+clean bill of health. This tempers, rather than overturns, the "diagnostic"
+claim: railing is a **specific, not sensitive**, per-voxel flag.
 
 ## Differentiation from Casali et al. 2026 (scoped to the data)
 

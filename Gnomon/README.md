@@ -58,26 +58,39 @@ All read from Fashion's **prose** (`*.md`), never its source:
 gnomon/
   manifest.py    frozen reproduction targets + tolerances + completeness checklist
   _paths.py      read-only sibling bootstrap — LATTICE ONLY (caliper forbidden)
-  forward.py     [CP2] clean-room IVIM bi-exponential forward model + Jacobian/CRLB
-  cohort.py      [CP2] Lattice-backed synthetic cohorts (read-only adapter)
-  nlls.py        [CP2] box-constrained NLLS + D* boundary-railing diagnostic
-  bayes.py       [CP2] Laplace + per-voxel MCMC (SD vs quantile intervals)
-  flow.py        [CP2] MAF amortized posterior (NPE)            [optional: flow extra]
-  metrics.py     [CP2] coverage / ECE / sharpness, re-derived independently
-  bootstrap.py   [CP2] seeded bootstrap CIs for load-bearing numbers
-  osipi.py       [CP2] OSIPI abdomen download-on-demand + provenance [data extra]
-  reproduce.py   [CP3] run rebuild, compare to manifest, emit the verdict
+  forward.py     clean-room IVIM bi-exponential forward model + Jacobian/CRLB
+  cohort.py      Lattice-backed synthetic cohorts (read-only adapter)
+  nlls.py        box-constrained NLLS + D* boundary-railing diagnostic
+  bayes.py       Laplace + per-voxel MCMC (SD vs quantile intervals)
+  flow.py        MAF amortized posterior (NPE)                  [optional: flow extra]
+  metrics.py     coverage / ECE / sharpness, re-derived independently
+  bootstrap.py   seeded bootstrap CIs for load-bearing numbers
+  osipi.py       OSIPI abdomen download-on-demand + provenance  [data extra]
+  reproduce.py   run rebuild, compare to manifest, emit the CP3 verdict
+  reframe.py     CP4 reframe: per-D*-tercile conditional-coverage table (both SD conventions)
 docs/METHODS.md  the complete methods write-up (closes Fashion's completeness gaps)
-tests/           CP1 scaffold gates (import, manifest, clean-room boundary, clean IP)
+scripts/build_handoff.py  regenerates the CP4 retool hand-off package
+handoff/         CLAIMS_LEDGER.md, conditional_coverage.json — the retool hand-off inputs
+tests/           CP1-CP4 gates (import, manifest, clean-room boundary, clean IP, reframe)
 ```
 
 ## Status
 
-**CP1 — scaffold + targets manifest (this commit).** Structure mirrors the sibling
-subrepos (Minos/Lattice/Datum/Vernier); the manifest is frozen; the clean-room
-boundary is enforced and tested. The numerical rebuild (CP2) and the reproduction
-verdict (CP3) are next. Everything here is **PROVISIONAL** until CP3 renders the
-verdict — see [`ASSUMPTIONS.md`](ASSUMPTIONS.md) and [`VERIFICATION.md`](VERIFICATION.md).
+**CP1–CP4 complete. Verdict (CP3): PARTIAL.** 4 of 6 frozen targets reproduce on the
+clean-room rebuild — including the single most load-bearing one, the 54.7% D\*
+boundary-railing rate on the real open OSIPI abdomen data (rebuilt: **54.2%** [52.0,
+56.4]) — while the two *severe Gaussian-overconfidence marginal* numbers (T3a 0.30,
+T3b 0.67) diverge (rebuilt: 0.80, 0.90) for a documented, substantive reason: an
+under-documented railed-voxel SD convention in the original, not fabrication. Full
+scorecard and reasoning in [`VERDICT.md`](VERDICT.md).
+
+**CP4 — spine-agnostic retool hand-off assembled.** [`RETOOL_HANDOFF.md`](RETOOL_HANDOFF.md)
+packages the clean reference implementation, a claims ledger (keep/reframe/drop), and
+the reframed per-D\*-tercile conditional-coverage table (both SD conventions, with CIs)
+for the Fashion retool — usable for either a ruler-first or a boundary-railing-first
+paper. Fashion has since retooled boundary-railing-first (in review at *NMR in
+Biomedicine*), consuming this hand-off. See [`ASSUMPTIONS.md`](ASSUMPTIONS.md) and
+[`VERIFICATION.md`](VERIFICATION.md) for the underlying gates.
 
 ## Setup
 

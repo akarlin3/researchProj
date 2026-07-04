@@ -197,7 +197,7 @@ def main():
         f.write(">\n")
         f.write("> Thus, the failure to recover $\\alpha=0.5$ is NOT driven by absolute noise amplification (which is lower for $\\alpha=0.5$). Instead, it is driven by the fact that the **signal strength** of the fractional derivative decays much faster for low $\\alpha$, or that the SINDy regression cannot distinguish the low-order fractional derivative from a constant/linear state term when corrupted by noise, or because the noise-free derivative itself has lower amplitude, making the signal-to-noise ratio of the target derivative itself unfavorable. We must restate this honestly in the manuscript.\n")
         f.write("\n")
-        f.write("* **Plot Citation**: ![Noise Amplification Plot](file:///Users/averykarlin/projOuroboros/figures/noise_amplification.png)\n")
+        f.write("* **Plot Citation**: ![Noise Amplification Plot](figures/noise_amplification.png)\n")
         
     print("Saved RESULTS_noise_amplification.md")
 

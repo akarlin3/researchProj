@@ -532,7 +532,7 @@ def main():
                 f.write(f"- SNR = {snr} dB: Success Rate = {rate:.3f}, Error = {err:.4f} ± {std:.4f}\n")
             f.write("\n")
             
-        f.write("* **Plot Citation**: ![Mitigation Comparison Plot](file:///Users/averykarlin/projOuroboros/figures/mitigation_comparison.png)\n")
+        f.write("* **Plot Citation**: ![Mitigation Comparison Plot](figures/mitigation_comparison.png)\n")
         
     print("Saved RESULTS_snr_brackets.md")
 

@@ -1,12 +1,20 @@
 # Revision notes — Proteus (PLOS Computational Biology)
 
+> **Status update:** the target venue subsequently moved to *GigaScience*, and the
+> manuscript source is now committed in-repo as `proteus_manuscript_gigascience.tex`
+> (with the compiled PDF at `Proteus/proteus_manuscript.pdf`). The drop-in blocks
+> below have been incorporated into that manuscript (the 50.2% enlarged-floor
+> number, the non-superiority framing, and the pLDDT-confound results all appear
+> in `proteus_manuscript_gigascience.tex`). This file is retained as the record of
+> the original PLOS-review revision pass.
+
 Two highest-leverage fixes from the publication-odds assessment, executed end to end.
-The manuscript source (`proteus.tex`) is **not** in the repo — only the compiled PDF
-(`~/Downloads/proteus_manuscript.pdf`). All revised prose is therefore delivered as
-**drop-in LaTeX blocks** keyed to section in `revision/manuscript_revisions.tex`
-(token template) and `revision/manuscript_revisions.filled.tex` (numbers filled from
-the committed analysis JSON by `revision/fill_tokens.py`; syntax-checked with
-`tectonic`, builds clean).
+At the time this was written, the manuscript source (`proteus.tex`) was **not** in the
+repo — only the compiled PDF (`~/Downloads/proteus_manuscript.pdf`). All revised prose
+was therefore delivered as **drop-in LaTeX blocks** keyed to section in
+`revision/manuscript_revisions.tex` (token template) and
+`revision/manuscript_revisions.filled.tex` (numbers filled from the committed analysis
+JSON by `revision/fill_tokens.py`; syntax-checked with `tectonic`, builds clean).
 
 **Pinned throughout:** decision line **−1.1587**; size-invariant percentile anchor;
 original floor seed **1729**. New random draws use a new explicit seed **20260614**
@@ -78,7 +86,7 @@ summaries are snapshotted under `data/processed/inputs_snapshot/`.
 ## Still open / `[NEEDS DATA]`
 - **None of the new numbers are `[NEEDS DATA]`** — every statistic traces to a
   committed script run on available data.
-- **Author action (not data):** update Fig 2's dashed floor line 42.9 → 50.2 % (bars
-  unchanged); paste the drop-in blocks into `proteus.tex`; complete the Gen-AI
-  disclosure specifics; replace remaining `[VERIFY]` reference placeholders (the three
-  prior-art citations added here are Crossref-verified and ready).
+- **Author action (done, see status update above):** Fig 2's dashed floor line
+  42.9 → 50.2 % is updated, the drop-in blocks are incorporated into
+  `proteus_manuscript_gigascience.tex`, the Gen-AI disclosure is complete, and no
+  `[VERIFY]` reference placeholders remain in the manuscript.

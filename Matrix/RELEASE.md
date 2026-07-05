@@ -45,4 +45,4 @@ python release_gate.py check    # exit 0 iff RELEASE, else 3 (for scripts/CI)
 
 The central honest negative (F1: action-suppression ≠ outcome-protection) does **not** depend
 on Fashion/Minos being correct, so it survives the drop-in (see the stub ledger in
-`PROMOTION.md` / `ASSUMPTIONS.md`).
+`STUB_LEDGER.md`).

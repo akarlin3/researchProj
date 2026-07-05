@@ -612,7 +612,7 @@ Fashion (`fashion_reuse` via AST extraction); the new empirical content is the
 bootstrap CIs, the SNR/rail-direction characterisation, the full-abdomen
 generalisation, and the independent liver-DWI replication.
 
-- `sextant-core/` — package (flat layout, own `pyproject.toml`): `fashion_reuse.py` (read-only Fashion railing/ruler loaders), `railing.py` (primary diagnostic + SNR strata), `bootstrap.py` (voxel CIs), `ruler.py` (scoped secondary), `cohorts.py`, `seeding.py`; `tests/` (16 cases).
+- `sextant-core/` — package (flat layout, own `pyproject.toml`): `fashion_reuse.py` (read-only Fashion railing/ruler loaders), `railing.py` (primary diagnostic + SNR strata), `bootstrap.py` (voxel CIs), `ruler.py` (scoped secondary), `cohorts.py`, `seeding.py`, `dicom_io.py`, `truthsim.py`; `tests/` (27 passed, 1 skipped).
 - `scripts/` — `fetch_osipi.py` (download-on-demand OSIPI human-abdominal data, CC-BY-4.0, MD5-verified, provenance manifest committed), `run_railing.py` (seeded driver). `results/` — provenance + `railing_results.json` + `RESULTS_CP2/3.md`.
 - `paper/` — `sextant.tex` (`ebgaramond`+`microtype`) + `consistency.py`. `VERIFICATION.md`, `ASSUMPTIONS.md`, `_paths.py`, `reproduce.sh` (one-command).
 
@@ -643,7 +643,7 @@ the calibrated-ruler framing (Fashion), and the wall citation (Gauge) enter only
 downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
 
 - `vernier/` — `_paths.py` (read-only Caliper wiring), `schemes.py` (b-scheme registry + scan-time model + segmented-fit validation), `crlb.py` (self-contained IVIM Fisher-matrix CRLB).
-- `tests/` — package sanity (17 cases). `ASSUMPTIONS.md` (SOLID Caliper-only gate vs PROVISIONAL Fashion/Gauge/Minos), `PROMOTION.md` (PASS → paper / FAIL → fold-into-Minos paths).
+- `tests/` — package sanity (24 cases). `ASSUMPTIONS.md` (SOLID Caliper-only gate vs PROVISIONAL Fashion/Gauge/Minos), `PROMOTION.md` (PASS → paper / FAIL → fold-into-Minos paths).
 
 ## How the IVIM projects fit together
 

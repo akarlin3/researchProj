@@ -3,6 +3,33 @@
 All notable changes to Datum are recorded here. Datum follows the monorepo's
 provisional-until-the-ruler-locks discipline; see `ASSUMPTIONS.md`.
 
+## [0.1.0] — 2026-06-21 — CP2 retool: re-pin ruler to NMRB scoped-secondary
+
+Fashion's calibration ruler was retooled and resubmitted from *MRM* to *NMR in
+Biomedicine* (boundary-railing-first). Re-ran the reference numbers against the
+retooled (honest-CRLB) ruler via the updated Caliper and re-pinned the manifest.
+
+### Changed
+- `datum/manifest.py` RULER: `manuscript_status` MRM → "in review at NMR in
+  Biomedicine (retooled, boundary-railing-first)"; added `scope` ("scoped
+  secondary — ground-truth/synthetic only") and `convention` ("honest CRLB
+  (default; floored rejected)") pins. Ruler `version`/`commit` unchanged (the
+  recipe `calib.py` is untouched by the retool; only its framing/scope/venue
+  moved).
+- `README.md` + `ASSUMPTIONS.md`: status → NMRB; the load-bearing assumption
+  re-framed to the retooled position — the ruler is a scoped secondary reported
+  under the honest CRLB; the dramatic marginal 0.30/0.67 finding is dropped and
+  the milder honest *conditional* high-D\* under-coverage is kept.
+- `datum/run.py`: `REFERENCE.md` PROVISIONAL banner generator → NMRB
+  scoped-secondary.
+
+### Verified
+- `python revalidate.py --full` regenerated all 144 reference rows (84 Lattice +
+  60 OSIPI DRO) via the updated Caliper; `results/reference_numbers.csv` is
+  byte-identical to the committed values — the honest-CRLB ruler reproduces
+  every number with zero drift. Only `REFERENCE.md`'s ruler-status/banner lines
+  change. 28 passed, 1 skipped.
+
 ## [0.1.0] — 2026-06-19 — Substrate swap: Lattice is now primary (task v2)
 
 Lattice (the intended substrate) was merged into the monorepo, so Datum honors its

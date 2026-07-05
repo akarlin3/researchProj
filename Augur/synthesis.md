@@ -1,10 +1,11 @@
 # Augur — the synthesis perspective: trust → value-of-information → action
 
-> **Status: PROVISIONAL, speculative, SUBMISSION-BLOCKED.** Augur is the end-stage *synthesis*
+> **Status: SUBMISSION-READY but HELD.** Augur is the end-stage *synthesis*
 > of the IVIM-UQ program. It makes no new measurement: it argues a single arc across four
 > already-built projects, all of which are **unpublished**. Every project-anchor is marked
 > PROVISIONAL and pinned in [`ASSUMPTIONS.md`](ASSUMPTIONS.md); every external claim cites a
-> **real, checked** source in [`CITATIONS.md`](CITATIONS.md). The paper is **not submittable**
+> **real, checked** source in [`CITATIONS.md`](CITATIONS.md). The manuscript is complete and
+> reproduces green, but submission is **held**
 > until its load-bearing anchors (Fashion + Minos, ideally Lethe) publish — see
 > [`SUBMISSION_BLOCK.md`](SUBMISSION_BLOCK.md).
 

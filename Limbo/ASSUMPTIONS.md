@@ -10,7 +10,7 @@ quantitative-MRI-methods half and the MR-guided-RT half of the spine).
 
 | item | value |
 |---|---|
-| Stage | CP1 complete (taxonomy + verified citation base + gate). CP2/CP3 pending. |
+| Stage | CP0–CP3 complete (taxonomy + verified citation base + gate; survey + gap map; honest-scope + final citation gate + compiled manuscript). Submission-ready, staged for review (no auto-merge). |
 | Standalone value | **Trigger-independent.** Strengthens the *first* PhD application (field command + a citable review); does **not** depend on the author's papers publishing. |
 | Submission gating | **NOT publish-gated.** Unlike Augur, Limbo can be submitted on its own scientific merit. |
 | Embedding | Embedded subrepo (`Limbo/`) for now; carve out to `projLimbo` later **iff** it grades portfolio-worthy (the Caliper/Lattice precedent, PR #59). |

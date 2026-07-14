@@ -12,8 +12,9 @@ manuscript: manuscript.tex
 supplement: supplement.tex
 	$(TECTONIC) supplement.tex
 
-cover: cover_letter.tex
-	$(TECTONIC) cover_letter.tex
+cover: cover_letter_phenomenon.tex cover_letter_reproducibility.tex
+	$(TECTONIC) cover_letter_phenomenon.tex
+	$(TECTONIC) cover_letter_reproducibility.tex
 
 clean:
-	rm -f manuscript.pdf supplement.pdf cover_letter.pdf *.aux *.log *.out
+	rm -f manuscript.pdf supplement.pdf cover_letter_phenomenon.pdf cover_letter_reproducibility.pdf *.aux *.log *.out

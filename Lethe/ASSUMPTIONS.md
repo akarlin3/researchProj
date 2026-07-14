@@ -14,7 +14,7 @@ pins every such input and states what becomes invalid if it changes.
 | Constructive counterexample (`reverb.py`, `run_reverb.py`) | No — Lattice + Caliper only, both in-tree | **SOLID** |
 | Conformal deployer (`invivo.py`, via Caliper) | Caliper only (MIT, in-tree, stable) | **SOLID** (ruler) |
 | Real-data validation (`run_validation.py`, CP3) | Yes — Caliper ruler on real signals; Gauge fetch/baseline | **PROVISIONAL** |
-| Manuscript (`paper/echo.tex`, CP4) | Yes | **PROVISIONAL** (caveated inline) |
+| Manuscript (`paper/lethe.tex`, CP4) | Yes | **PROVISIONAL** (caveated inline) |
 
 ## 1. CALIPER (SOLID — the ruler)
 

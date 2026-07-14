@@ -1,6 +1,6 @@
 # Echo — gates and locked thresholds
 
-Pre-coding verification, in the spirit of `Minos/VERIFICATION.md`. Thresholds are **locked
+Pre-coding verification, in the spirit of `Minos/sibyl/VERIFICATION.md`. Thresholds are **locked
 before any run** (set at CP0) and are **not tuned** afterwards. Each gate is a hard halt;
 reaching a named fallback (Lethe / Reverb) is a valid verdict, not a failure.
 

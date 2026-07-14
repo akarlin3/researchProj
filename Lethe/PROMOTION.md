@@ -10,7 +10,7 @@ against those versions.
 - Re-run `scripts/run_validation.py` against the final Fashion/Minos/Gauge.
 - Clear every **PROVISIONAL** marker in `numbers.tex`, the manuscript, and results md.
 - Replace "in review" language + pinned commits with published DOIs in `ASSUMPTIONS.md` and
-  the manuscript references; remove the speculative-build banner from `paper/echo.tex`.
+  the manuscript references; remove the speculative-build banner from `paper/lethe.tex`.
 - Echo's clean history is already standalone-extractable: `git filter-repo` the `Echo/`
   subtree back out to a public `projEcho`.
 - Update the research-repo README status to **validation holds**.

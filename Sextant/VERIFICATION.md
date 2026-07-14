@@ -1,7 +1,7 @@
 # VERIFICATION — pre-coding gate (CP0) and registered thresholds
 
 This file records the human-reviewable facts established **before** any analysis
-code ran, mirroring `Minos/VERIFICATION.md`.
+code ran, mirroring `Minos/sibyl/VERIFICATION.md`.
 
 ## CP0.1 — Data source is open and clean-IP
 

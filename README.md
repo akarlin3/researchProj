@@ -50,19 +50,19 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Gnomon/`](Gnomon/) | *(research software — no standalone paper by default)* Clean-room **reproduce-or-refute** rebuild of Fashion's calibration ruler (independent forward model + NLLS railing + Laplace/MCMC + MAF + ruler; targets pinned before running) | Research software — independent reproduction (the hedge to the Fashion retool) |
 | [`Lattice/`](Lattice/) | *(research software — no standalone paper)* IVIM UQ-calibration digital reference object (DRO) | Research software — synthetic ground-truth cohorts & alternative-model generators |
 | [`Lethe/`](Lethe/) | *(constrained-validation results; Echo portion — verdict: **Lethe**)* What test–retest repeatability validates about conformal interval **scale** in IVIM | IVIM diffusion-MRI — does the error bar have the right *size*? |
-| [`Levy/`](Levy/) | *(clean-room subrepo — CP0; target *Nonlinear Dynamics*; verdict: WALL STANDS, scoped)* Can the fractional order α of anomalous diffusion be recovered jointly with D, S₀ from finite-b, Rician-noise MRI signal? | Diffusion-MRI — identifiability/CRLB wall for a fractional-order stretched-exponential model |
+| [`Levy/`](Levy/) | *(clean-room subrepo — CP0–CP2 complete, manuscript drafted, pre-submission; target *Nonlinear Dynamics*; verdict: WALL STANDS, scoped)* Can the fractional order α of anomalous diffusion be recovered jointly with D, S₀ from finite-b, Rician-noise MRI signal? | Diffusion-MRI — identifiability/CRLB wall for a fractional-order stretched-exponential model |
 | [`Limbo/`](Limbo/) | *(field review — PROVISIONAL, not publish-gated)* Trustworthy uncertainty quantification for quantitative/diffusion body MRI and its decision-use in MR-guided adaptive radiotherapy; a **trust → value-of-information → action** survey + gap map over 59 verified references | Field review — synthesis, taxonomy, gap-identification (target: *Physics in Medicine & Biology*) |
 | [`Matrix/`](Matrix/) | *(research software — no standalone paper)* Synthetic-twin **closed-loop** harness (scan→posterior→trust gate→action gate→dose replan→re-scan); Keystone's no-scanner mode, consuming Fashion/Minos/Forge behind stubbed interfaces | Adaptive quantitative-MRI dosing — a working closed loop on a synthetic twin (no scanner, no patient data) |
 | [`Minos/`](Minos/) | *Minos: the decision value of a calibrated uncertainty — A decision–calibration gap and a label-free validity floor for quantitative MRI* | Quantitative MRI — when does a calibrated error bar change a decision? |
 | [`Ouroboros/`](Ouroboros/) | *Identifiability, noise fragility, and weak-form mitigation of fractional sparse regression in a vascular–stromal reaction–diffusion model, with cautions on data-driven Lyapunov estimation* | Data-driven dynamics — fractional-order SINDy identifiability under noise |
-| [`Procrustes/`](Procrustes/) | *(research software — clean-room scaffold, CP0)* Misspecification-aliasing of a calibrated error bar: a bi-exp fit on non-bi-exp truth keeps **marginal** coverage but breaks **conditional** coverage of the *well-identified* tissue-diffusion map D — distinct from Gauge's within-model wall | IVIM diffusion-MRI — model-misspecification coverage diagnostic |
+| [`Procrustes/`](Procrustes/) | *(research software — submission-ready but HELD pending Gauge; clean-room scaffold)* Misspecification-aliasing of a calibrated error bar: a bi-exp fit on non-bi-exp truth keeps **marginal** coverage but breaks **conditional** coverage of the *well-identified* tissue-diffusion map D — distinct from Gauge's within-model wall | IVIM diffusion-MRI — model-misspecification coverage diagnostic |
 | [`Proteus/`](Proteus/) | *Structure-first mining of the metagenomic dark proteome finds serine hydrolases but does not extend PET-hydrolase discovery beyond sequence homology* | Computational biology — structure-based enzyme discovery (a negative result) |
 | [`Sentinel/`](Sentinel/) | *(created in-repo, CP0 — no paper; pre-registered separation gate)* Does regret-targeted decision-stopping halt earlier than coverage-targeted stopping (ACI/conformal-PID, WATCH) over a fractionated RT course, on the mandated Matrix substrate? | Adaptive quantitative-MRI dosing — sequential stopping-rule separation (verdict: 🔴 RED, refuted) |
 | [`Sextant/`](Sextant/) | *(re-aim of Fashion)* Boundary-railing of conventional NLLS IVIM fits — an assumption-free optimizer fact promoted to the primary claim, replicated on open human-abdominal DWI; the calibration ruler demoted to scoped secondary | IVIM diffusion-MRI — answering the "overextended claims" critique |
 | [`Vernier/`](Vernier/) | *Vernier: calibration-aware acquisition design for IVIM diffusion MRI* (feasibility gate PASSED; manuscript built, `paper/vernier.pdf`) — at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
 
-Each subdirectory's own `README.md` and `CITATION.cff` are authoritative for
-submission status.
+Each subdirectory's own `README.md` is authoritative for submission status (as is
+`CITATION.cff` where one exists — currently only `Fashion/CITATION.cff`).
 
 ## Project details
 
@@ -349,17 +349,17 @@ real-world miscalibration magnitude.
 
 ### `Levy/` — Identifiability of the fractional order in diffusion-MRI
 
-*Clean-room subrepo (CP0); no standalone paper yet, target *Nonlinear Dynamics*, house
-template **Minos**; reuses **Ouroboros** tooling read-only.* **Levy** asks a single
-question: can the fractional order α of anomalous diffusion — the stretched-exponential
-lead lane of a joint CTRW / fractional Bloch–Torrey model, `S(b; S₀, D, α) =
-S₀·exp(−(bD)^α)` — be recovered **jointly with D and S₀** from a finite-b-value,
+*Clean-room subrepo (CP0–CP2 complete, manuscript drafted, pre-submission); target
+*Nonlinear Dynamics*, house template **Minos**; reuses **Ouroboros** tooling read-only.*
+**Levy** asks a single question: can the fractional order α of anomalous diffusion — the
+stretched-exponential lead lane of a joint CTRW / fractional Bloch–Torrey model, `S(b; S₀,
+D, α) = S₀·exp(−(bD)^α)` — be recovered **jointly with D and S₀** from a finite-b-value,
 Rician-noise magnitude MRI signal? The deliverable is the **recovery-collapse wall**:
 *where* α becomes unrecoverable as a function of SNR and b-design, with confidence
 intervals, scoped to its regime. A CRLB here is an identifiability/information
 statement, never an impossibility claim.
 
-**Status — CP0: WALL STANDS (scoped), refute survived.** Under a realistic clinical
+**CP0 — WALL STANDS (scoped), refute survived.** Under a realistic clinical
 few-b acquisition (n_b ≈ 4–6), α is information-limited within the realistic SNR band
 [20, 60]: the wall sits at **SNR\* ≈ 27.8 (analytic CRLB) / 29.9 (empirical bootstrap,
 95% CI [28.3, 31.1])** at the headline cell (α = 0.85, n_b = 4, b_max = 2000). The wall
@@ -367,8 +367,25 @@ recedes below the band only with dense multi-b research acquisition (n_b ≥ 8),
 α–D degeneracy reaches ρ ≈ −0.87 when b_max is pushed with few b-values. See
 [`Levy/results/RESULTS_CP0.md`](Levy/results/RESULTS_CP0.md).
 
-- `levy-core/` — flat-layout package (own `pyproject.toml`): `levy/forward.py` (forward model + closed-form Jacobian), `levy/noise.py` (Rician sampling + Fisher-info factor), `levy/fisher.py` (Fisher matrix + CRLB + α–D degeneracy), `levy/identifiability.py` (Rician MLE, profile-likelihood CI, parametric bootstrap). `POSITIONING.md`, `DESIGN_CP0.md`.
-- `_paths.py` (read-only Ouroboros wiring, cross-check only), `ASSUMPTIONS.md` (pinned versions, regime scoping, clean-IP gate — fully synthetic), `VERIFICATION.md`, `verify_cp0.py`, `reproduce.sh` (FAST default; `FULL=1` for full-N bootstrap), `results/RESULTS_CP0.md`.
+**CP1 — joint CTRW (α, β) degeneracy.** At a single clinical diffusion time, the joint
+time-fractional order α and space-fractional order β are structurally degenerate (median
+|ρ_αβ| = 0.984 over the physiological grid, FIM condition ~2×10⁸) and cannot be separately
+recovered; unlike the CP0 wall this is not relieved by adding b-values — only a second
+diffusion time separates them (|ρ_αβ| 0.943 → 0.182). See
+[`Levy/results/RESULTS_CP1.md`](Levy/results/RESULTS_CP1.md).
+
+**CP2 — across-α robustness.** The CP0 single-order wall holds across the physiological α
+range (wall SNR\* 27.5–32.9 for α ∈ [0.60, 0.98]), so CP0 is not an artifact of the headline
+α=0.85 cell. See [`Levy/results/RESULTS_CP2.md`](Levy/results/RESULTS_CP2.md).
+
+**Manuscript.** `paper/levy.tex` → `paper/levy.pdf` compiles offline with 0 unresolved
+references, every load-bearing number traced to a seeded result (`paper/consistency.py`).
+Pre-submission only: the Springer *Nonlinear Dynamics* class swap, title/author confirmation,
+and the Ouroboros forward-citation posture are open items tracked in
+`paper/FINALIZATION_CHECKLIST.md`.
+
+- `levy-core/` — flat-layout package (own `pyproject.toml`): `levy/forward.py` (forward model + closed-form Jacobian), `levy/noise.py` (Rician sampling + Fisher-info factor), `levy/fisher.py` (Fisher matrix + CRLB + α–D degeneracy), `levy/identifiability.py` (Rician MLE, profile-likelihood CI, parametric bootstrap), `levy/mittag_leffler.py` + `levy/fisher_joint.py` + `levy/identifiability_joint.py` + `levy/degeneracy.py` (CP1 joint model), `levy/robustness.py` (CP2 sweep). `POSITIONING.md`, `DESIGN_CP0.md`.
+- `_paths.py` (read-only Ouroboros wiring, cross-check only), `ASSUMPTIONS.md` (pinned versions, regime scoping, clean-IP gate — fully synthetic), `VERIFICATION.md`, `verify_cp0.py`, `reproduce.sh` (FAST default; `FULL=1` for full-N bootstrap), `results/RESULTS_CP{0,1,2}.md`, `paper/` (manuscript + `FINALIZATION_CHECKLIST.md`).
 
 ### `Limbo/` — Field review of trustworthy UQ for body MRI in adaptive RT
 
@@ -659,7 +676,7 @@ Eleven folders form one IVIM diffusion-MRI uncertainty program:
 - **Vernier** asks whether *acquisition design* can still move calibration and decision value once the estimator and conformal correction are fixed — taking Gauge's acquisition-robust wall as given. Feasibility gate **PASSED** and survives the retooled ruler (Δ\_sharp 0.328, Δ\_cond 0.059, CIs exclude 0; Δ\_cond is the high-D\* conditional metric the retool retains) — standalone path active, no fold into Minos.
 - **Sextant** re-aims **Fashion** to answer the "overextended claims" critique: it promotes the assumption-free fact that conventional NLLS D\* fits *rail to a bound* on open human-abdominal data to the primary claim, demotes the calibration ruler to a scoped secondary, and replicates the railing across the full OSIPI abdomen and an independent TCGA-LIHC liver cohort. It reuses Fashion's railing computation read-only and, by default, feeds the retooled Fashion spine rather than splitting off (no salami).
 - **Lethe** (the *Echo* portion; speculative, gated) asks the ground-truth-free question of whether a deployed interval is the right *size* — validating *precision* against test–retest repeatability, explicitly distinct from Gauge's width-rank check and provably blind to accuracy. Verdict: **Lethe** — on real data the interval is ~4× too narrow for repeatability, so width rank-tracks repeatability (Gauge) but its scale under-covers it (Echo). Result PROVISIONAL on Fashion/Gauge/Minos. Its **Reverb** addendum supplies the SOLID synthetic-ground-truth counterexample showing the same precision-vs-coverage divergence is *possible* and *why*.
-- **Procrustes** moves the question *off* the within-model identifiability axis: fitting a bi-exp model on non-bi-exp truth keeps marginal coverage but breaks the conditional coverage of the *well-identified* tissue-diffusion map D (the parameter Gauge says to trust) — an orthogonal, opposite-parameter failure to Gauge's wall, surviving the novelty gate only on the heavy-tail family (clean-room scaffold, CP0).
+- **Procrustes** moves the question *off* the within-model identifiability axis: fitting a bi-exp model on non-bi-exp truth keeps marginal coverage but breaks the conditional coverage of the *well-identified* tissue-diffusion map D (the parameter Gauge says to trust) — an orthogonal, opposite-parameter failure to Gauge's wall, surviving the novelty gate only on the heavy-tail family. Submission-ready but HELD (GATE B/C/D all PASS) pending Gauge's publication.
 
 Three further folders sit *over* or *around* the program rather than inside it. **Augur** is the
 inward-facing *perspective* that threads the author's own arc (Fashion → Minos → Lethe → Gauge)

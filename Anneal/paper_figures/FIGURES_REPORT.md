@@ -58,6 +58,8 @@ Two publication figures composed from existing merged work (the absorption re-ca
 
 ## Reproduce
 
+Run from the `Anneal/` project root (not from `paper_figures/`):
+
 ```
 python3 tools/paper-figures/run_all.py
 ```

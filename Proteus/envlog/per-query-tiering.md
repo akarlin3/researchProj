@@ -15,7 +15,7 @@ PETase top-300 above-line|triad = 32.65% vs floor 42.86% — FLAT overall, but a
 |---|---|
 | `screen`/S4/S5/`calibrate` intact | ✅ reused untouched; imports + run clean in the `proteus` env (numpy/scipy/biotite; fpocket on PATH). A known enriched hit re-screens to its documented triad exactly (MGYP000470279205 → 497/489/411). |
 | Pinned line | **-1.1587** (enriched `funnel.json` threshold). Local re-derivation jitters (fpocket); pinned so all arms judge at one line. |
-| Floor (baseline arm) | ✅ /Users/averykarlin/projProteus/.claude/worktrees/per-query-tiering/data/processed/floor.json: 1500 screened → 28 triad+ → 12 above-line; conditional 12/28 = 42.86%. Reused, not re-screened. |
+| Floor (baseline arm) | ✅ `data/processed/floor.json`: 1500 screened → 28 triad+ → 12 above-line; conditional 12/28 = 42.86%. Reused, not re-screened. |
 | `result.m8` | ✅ 1,081,416 alignment rows; 217,833 unique Atlas targets; 3 anchor classes mapped. |
 | Fetch path | ✅ `fetchPredictedStructure/{acc}.pdb` live (structurally identical to the GCE foldcomp models). |
 

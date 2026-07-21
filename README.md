@@ -61,8 +61,10 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Sextant/`](Sextant/) | *(re-aim of Fashion)* Boundary-railing of conventional NLLS IVIM fits — an assumption-free optimizer fact promoted to the primary claim, replicated on open human-abdominal DWI; the calibration ruler demoted to scoped secondary | IVIM diffusion-MRI — answering the "overextended claims" critique |
 | [`Vernier/`](Vernier/) | *Vernier: calibration-aware acquisition design for IVIM diffusion MRI* (feasibility gate PASSED; manuscript built, `paper/vernier.pdf`) — at matched scan-time and matched CRLB precision, b-schemes diverge in post-conformal UQ calibration (Δ\_sharp = 0.33, Δ\_cond = 0.06, bootstrap CIs exclude 0) | IVIM diffusion-MRI — acquisition design for calibration, not just precision |
 
-Each subdirectory's own `README.md` and `CITATION.cff` are authoritative for
-submission status.
+Each subdirectory's own `README.md` is authoritative for submission status
+(only `Fashion/` currently ships a machine-readable `CITATION.cff`; `Augur/`
+and `Limbo/` have a `CITATIONS.md` reference ledger instead, which is a
+different kind of file).
 
 ## Project details
 

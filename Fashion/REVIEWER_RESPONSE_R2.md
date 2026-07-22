@@ -25,9 +25,10 @@ demote to supplementary. This is the highest-value remaining lift."*
 **Resolution: demoted to supplementary (Supplementary Figure S4).** The "add 1–2
 more abdominal cases" path is blocked by data, not code — the repository ships
 exactly one in-vivo abdominal acquisition (`download/Data/abdomen.*`) and none is
-available from the open OSIPI data we draw on (`fig5_batch.py` is already written
-to auto-ingest any `abdomen_case*.nii.gz`, so cases can be added later with no code
-change). The case has therefore been demoted from the main text to the supplement,
+available from the open OSIPI data we draw on (a batch-ingest script,
+`fig5_batch.py`, is specified but not yet committed — it would auto-ingest any
+`abdomen_case*.nii.gz`, so cases can be added later with no design change). The
+case has therefore been demoted from the main text to the supplement,
 which removes a single-subject anecdote without weakening any quantitative claim:
 every load-bearing result (the CRLB efficiency audit, the held-out-b
 miscalibration, the OOD gate) rests on the simulation study and the gray-matter
@@ -67,8 +68,8 @@ high-SNR ROI voxels); it is not used for inference."*
 
 New committed artifacts: `npe/run_s4_figure.py`,
 `figures/manuscript/figS4_invivo_illustration.{png,pdf,csv}`. The multi-case batch
-pipeline (`fig5_batch.py`) remains available should further abdominal acquisitions
-be supplied later.
+pipeline (`fig5_batch.py`, specified above but not yet committed) can be written
+with no design change should further abdominal acquisitions be supplied later.
 
 ---
 
@@ -147,7 +148,7 @@ methods again. Implementation parity is enforced by construction:
 
 **Two findings worth flagging.**
 
-1. **The committed ad-hoc `benchmark_inference.py` had a warm-up bug**: it timed
+1. **An ad-hoc (uncommitted) `benchmark_inference.py` had a warm-up bug**: it timed
    the *cold* first NPE call (model load + lazy build), inflating NPE latency
    3–6×. With a warm-up draw the steady-state NPE time on an idle Apple M4 is
    **≈ 410 ms / 1,000 voxels — matching the manuscript's quoted 418 ms.** The fix
@@ -251,5 +252,6 @@ Existing artifacts: `npe/run_e_efficiency.py` (CRLB grid + SNR sweep),
 All four items are now addressed from the repository side. Figure 5 has been
 demoted to **Supplementary Figure S4** (committed generator + figure); the only
 remaining manuscript actions are the drop-in text insertions above. Should further
-in-vivo abdominal acquisitions become available, `fig5_batch.py` regenerates a
-multi-case version with no code change.
+in-vivo abdominal acquisitions become available, a batch-ingest script
+(`fig5_batch.py`, specified but not yet committed) can generate a multi-case
+version with no design change.

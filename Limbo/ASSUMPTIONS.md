@@ -40,7 +40,7 @@ else separates cleanly, and the following guardrails keep Limbo from collapsing 
 | object surveyed | the author's **own** four papers (Fashion/Minos/Lethe/Gauge) | the **external field** (other groups' literature) |
 | document type | perspective / synthesis of one's own arc | field **review** / literature survey |
 | spine role | narrative arc; the "D\* cross-modally orphaned" thread | neutral taxonomy any paper maps onto |
-| publish-gating | **hard-blocked** until Fashion + Minos publish (`Augur/check_anchors.py`) | **not gated**; standalone now |
+| publish-gating | **hard-blocked** until Fashion + Minos publish (`Augur/release_gate.py`) | **not gated**; standalone now |
 | dependency on own arc | total (it *is* the arc) | none (own work = a minority of entries, peer-cited) |
 | citation base | 2 external (Tier A) + inherited (Tier B) | a large verified **external** base is the bulk |
 | value timing | end-stage (post-publication) | first-application value **now** |

@@ -2,7 +2,8 @@
 
 Datum is usable internally now, under the provisional flags. A **citable** release
 is intentionally *not* executed yet — it is gated on the same condition as Caliper:
-**Fashion's calibration ruler locking** (MRM acceptance + DOIs). This mirrors the
+**Fashion's calibration ruler locking** (*NMR in Biomedicine* acceptance + DOIs;
+retooled, boundary-railing-first, resubmitted from MRM). This mirrors the
 monorepo discipline (cf. Caliper's deliberately un-gated, non-citable status and
 Minos `future/`'s provisional build).
 

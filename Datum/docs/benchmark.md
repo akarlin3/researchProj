@@ -6,7 +6,8 @@ is judged by whether those intervals actually cover the truth at their nominal
 level -- and how wide they have to be to do so.
 
 > **PROVISIONAL.** Every Datum number is scored on **Fashion's calibration ruler**,
-> which is *in review at MRM*. Numbers are not final until the ruler locks (see
+> which is *in review at NMR in Biomedicine* (retooled, boundary-railing-first,
+> resubmitted from MRM). Numbers are not final until the ruler locks (see
 > [`../ASSUMPTIONS.md`](../ASSUMPTIONS.md)). Regenerate with `python -m datum.run`.
 
 ## The fixed task (`datum/task.py::TASK_V1`)

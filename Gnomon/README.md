@@ -8,9 +8,11 @@
 
 *No standalone paper by default — Gnomon is a **verdict** that feeds the Fashion
 retool.* Fashion (*"Calibration and Efficiency of Uncertainty Estimates in IVIM …"*,
-in review at *MRM*) was returned at review on **methods**: internal inconsistencies,
-incompleteness (under-specified dataset IDs, training/fitting detail, the CRLB
-assumption), and overextended claims. Gnomon is the clean-slate hedge — a ruler that
+originally submitted to *MRM*) was returned at review on **methods**: internal
+inconsistencies, incompleteness (under-specified dataset IDs, training/fitting detail,
+the CRLB assumption), and overextended claims. Fashion has since retooled
+boundary-railing-first and is now in review at *NMR in Biomedicine* (see below).
+Gnomon is the clean-slate hedge — a ruler that
 **cannot inherit** those inconsistencies because it shares no code with Fashion, and
 is documented completely from line one.
 

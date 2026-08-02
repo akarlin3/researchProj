@@ -35,10 +35,10 @@ Last audited: 2026-06-22, against the `researchProj` monorepo working tree (GitH
 | **Gauge** | Action — the identifiability wall | **target *MRM*, manuscript assembled** (internal consistency gate PASS, 34/34 numbers trace). No DOI. | The high-`D*` identifiability wall is a real CRLB limit; `D*` test–retest `r=−0.17` (CI [−0.39,0.05]) is reproducible. |
 | **Lethe** | Action — the wrong-size limit | **verdict rendered** (constrained-validation; Echo portion; real ACRIN-6698 n≈76). Re-pointed to NMRB. No DOI. | The conformal `D` interval is ~4× too narrow for real test–retest (coverage 0.263 vs 0.755 target) — survives review. |
 
-**Stale-metadata finding (logged, not fixed here):** `Fashion/CITATION.cff` still reads *"in
-submission to MRM"* with the pre-retool title; the authoritative status (root `README.md`,
-`Minos/future/ASSUMPTIONS.md`) is the retooled NMR-in-Biomedicine submission. Augur pins the
-authoritative status. (Fix belongs in a Fashion PR, not Augur.)
+**Stale-metadata finding (resolved):** `Fashion/CITATION.cff` previously read *"in submission
+to MRM"* with the pre-retool title; it has since been updated to the retooled title and the
+NMR-in-Biomedicine submission status, matching the authoritative status (root `README.md`,
+`Minos/future/ASSUMPTIONS.md`). Augur's pin above already reflects this.
 
 ---
 

@@ -24,11 +24,14 @@ RULER = {
     "symbols": ["coverage", "ece", "sharpness_rel"],
     "nominal_levels": [0.50, 0.68, 0.80, 0.90, 0.95, 0.99],  # frozen LEVELS in calib.py
     "version": "0.1.0",                 # Fashion/pyproject.toml
-    "commit": "f078802",               # git log -1 -- Fashion/uq/calib.py (recipe unchanged by the retool)
+    # commit: git log -1 -- Fashion/uq/calib.py (recipe unchanged by the retool)
+    "commit": "f078802",
     "code_zenodo": "10.5281/zenodo.20649669",  # Fashion code+figures archive
     "scope": "scoped secondary -- ground-truth/synthetic only (cannot touch a real scan)",
     "convention": "honest CRLB (default; floored convention rejected as manufacturing severity)",
-    "manuscript_status": "in review at NMR in Biomedicine (retooled, boundary-railing-first) -- NOT finalized",
+    "manuscript_status": (
+        "in review at NMR in Biomedicine (retooled, boundary-railing-first) -- NOT finalized"
+    ),
     "manuscript_doi": None,            # None => PROVISIONAL is in force
 }
 

@@ -44,7 +44,7 @@ the 40 000-fit cap, so a seeded random subsample was analysed (logged, not silen
 **Reading:** the phenomenon replicates on independent liver data. The clean 4-b
 scheme (with b=0) rails at 43.7%, squarely in the original's "strong" band and
 again split across both bounds. The sparse 3-b scheme (no b=0, normalised by b=50)
-rails far more (73.5%) and almost entirely to the lower bound — exactly the
+rails far more (73.4%) and almost entirely to the lower bound — exactly the
 expected direction: fewer perfusion-sensitive b-values → worse D\* identifiability
 → more railing. Honest caveats: (i) the SNR floor here uses a background-noise
 estimate (vs OSIPI's replicate-variance SNR), and (ii) the 3-b scheme lacks b=0.
@@ -55,7 +55,7 @@ NLLS D\* fits rail on independent human-abdominal data.
 
 **REPLICATES.** Boundary-railing of conventional NLLS D\* is a robust, assumption-
 free property across: the original OSIPI ROI (54.7%), the full OSIPI abdomen
-(47.8%), and an independent TCGA-LIHC liver cohort (43.7% clean 4-b; 73.5% sparse
+(47.8%), and an independent TCGA-LIHC liver cohort (43.7% clean 4-b; 73.4% sparse
 3-b across 3 subjects). All cohorts clear the pre-registered thresholds. The
 primary claim is established; merge-back into the retooled Fashion spine is the
 default (no salami).

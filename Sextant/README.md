@@ -54,7 +54,7 @@ railing as a per-voxel actionable flag (see "Railing as an actionable flag" belo
 *Independent replication.* The phenomenon recurs on TCGA-LIHC liver DWI (different
 site, scanner — Siemens 1.5T, organ). The clean 4-b liver scheme rails at 43.7%
 (in the original's strong band, both bounds); the sparse 3-b scheme (no b=0) rails
-far more (73.5%, consistent across 3 subjects) and to the lower bound — fewer
+far more (73.4%, consistent across 3 subjects) and to the lower bound — fewer
 perfusion-sensitive b-values → worse D\* identifiability → more railing.
 
 *When/why it rails.* Railing persists across every SNR stratum (it is not a

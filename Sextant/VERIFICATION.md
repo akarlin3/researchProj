@@ -19,10 +19,11 @@ code ran, mirroring `Minos/VERIFICATION.md`.
   patient data) and (b) exclusion notes / synthetic "pancreatic-anchor" priors in
   Minos. No `.nii/.nii.gz/.dcm` is committed anywhere. Sextant is born inside the
   monorepo and never adds pancData3 — clean by construction.
-* **Independent replication (pending sign-off):** TCGA-LIHC liver DWI (TCIA, DOI
-  10.7937/K9/TCIA.2016.IMMQW8UQ, **CC BY 3.0**), a DICOM-verified 4-b-value liver
-  series (0/50/500/800) — human-abdominal, non-pancreatic, non-MSK, downloadable
-  via the NBIA REST API. Requires a license/posture sign-off before download.
+* **Independent replication (signed off — see CP0.3 below):** TCGA-LIHC liver DWI
+  (TCIA, DOI 10.7937/K9/TCIA.2016.IMMQW8UQ, **CC BY 3.0**), a DICOM-verified
+  4-b-value liver series (0/50/500/800) — human-abdominal, non-pancreatic,
+  non-MSK, downloaded via the NBIA REST API. License/posture sign-off cleared
+  (CC BY 3.0); results are reported in `README.md` and CP0.3 below.
 
 ## CP0.2 — Reuse is read-only
 

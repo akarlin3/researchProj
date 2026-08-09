@@ -323,4 +323,4 @@ Their processing container should be added in
 
 - [Kaapana Documentation](https://kaapana.readthedocs.io/)
 - [IVIM Fitting Documentation](https://github.com/OSIPI/TF2.4_IVIM-MRI_CodeCollection)
-- [Workflow Development Guide](https://kaapana.readthedocs.io/en/stable/development_guide/workflow_dev_guide.html)
+- [Workflow Development Guide](https://kaapana.readthedocs.io/en/stable/development_guide/preview/workflow_development.html)

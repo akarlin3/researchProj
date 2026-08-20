@@ -3,14 +3,15 @@
 **Limbo is a broad _field review_** of trustworthy uncertainty quantification (UQ) for
 quantitative/diffusion body MRI and its decision-use in MR-guided adaptive radiotherapy. Its
 contribution is **synthesis, taxonomy, and gap-identification** — not new measurements. Target
-venue (author input, CP0): **Physics in Medicine & Biology** (Topical Review; spans both the
-quantitative-MRI-methods half and the MR-guided-RT half of the spine).
+venue (v2): **Physics and Imaging in Radiation Oncology** (phiRO; Elsevier / ESTRO), as a
+**Review article**. The review is re-anchored *radiation-oncology-first*: the MR-Linac dose
+decision is the spine, and quantitative-MRI UQ enters as the input that decision consumes.
 
 ## Status
 
 | item | value |
 |---|---|
-| Stage | CP1 complete (taxonomy + verified citation base + gate). CP2/CP3 pending. |
+| Stage | v2 complete: RT-first re-anchor, §7 de-leaked/de-positioned, reference base rebalanced to 66 (gate green offline+online), reformatted IOP→phiRO (elsarticle, Review article). Awaiting human submission gate. |
 | Standalone value | **Trigger-independent.** Strengthens the *first* PhD application (field command + a citable review); does **not** depend on the author's papers publishing. |
 | Submission gating | **NOT publish-gated.** Unlike Augur, Limbo can be submitted on its own scientific merit. |
 | Embedding | Embedded subrepo (`Limbo/`) for now; carve out to `projLimbo` later **iff** it grades portfolio-worthy (the Caliper/Lattice precedent, PR #59). |

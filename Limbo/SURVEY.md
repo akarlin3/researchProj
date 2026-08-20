@@ -58,8 +58,8 @@ Distribution-free **conformal prediction** wraps any black-box predictor in a se
 a user-chosen error rate \cite{shafer2008,angelopoulos2021}. **Calibration** methods recalibrate
 regression intervals post-hoc \cite{kuleshov2018} and correct the systematic over-confidence of
 modern deep networks \cite{guo2017}. Practical deep UQ families — deep ensembles
-\cite{lakshminarayanan2017}, MC-dropout as approximate Bayesian inference \cite{gal2016}, and
-single-pass evidential regression \cite{amini2020} — give usable uncertainty, but their quality
+\cite{lakshminarayanan2017} and MC-dropout as approximate Bayesian inference \cite{gal2016}
+— give usable uncertainty, but their quality
 **degrades under dataset shift**, so trust must be tested against shift, not only in-distribution
 \cite{ovadia2019}.
 
@@ -96,10 +96,9 @@ supplies the apparatus: **decision curve analysis / net benefit** evaluates a mo
 benefit across the decision threshold \cite{vickers2006,vickers2016,vickers2019}, where the threshold
 encodes the clinician's relative weighting of a missed disease against an unnecessary intervention;
 performance frameworks argue such decision-analytic measures should be reported whenever a model
-supports decisions \cite{steyerberg2010}, and relative-utility curves quantify how much achievable
-utility a predictor captures \cite{baker2009}. From the inference side, **decision/loss-calibrated**
+supports decisions \cite{steyerberg2010}. From the inference side, **decision/loss-calibrated**
 methods tie the posterior approximation to the downstream decision — decision calibration
-\cite{zhao2021} and loss-calibrated Bayesian inference \cite{lacostejulien2011,vadera2021}. From
+\cite{zhao2021} and loss-calibrated Bayesian inference \cite{vadera2021}. From
 health economics, **value-of-information** analysis (EVPI) prices a measurement by combining the
 probability it changes a decision with the benefit of that change \cite{felli1998}, under the
 decision-theoretic stance that choices follow expected net benefit rather than statistical

@@ -8,17 +8,12 @@
 > `verify_citations.py` enforces the bib ↔ ledger correspondence and fails the build on any orphan
 > on either side. The script re-runs (with `--online` DOI/arXiv HEAD checks) at CP3.
 >
-> **Quote status.** Most rows carry a verbatim abstract sentence (held in the per-bucket subagent
-> verification logs). Four rows are marked **[thesis-level]**: the claim is the paper's central,
-> title/abstract-evident thesis. These four were flagged at CP1 because a load-bearing *number*
-> from them was not quoted and the abstract had not been pulled verbatim — `koo2016`,
-> `blandaltman1986`, `ling2000`, `vanhoudt2021qib`.
->
-> **Resolved at CP3 (2026-06-22).** All four were re-pulled **verbatim** from the published
-> abstract via NCBI PubMed/Europe PMC and are recorded with locators in the *Verbatim re-pulls*
-> section below. The survey uses each only as a paraphrased thesis-level claim (no load-bearing
-> number), and each paraphrase was confirmed faithful to the verbatim source. No approximation was
-> used; no source was unreachable.
+> **Quote status.** Every row carries a verified one-line claim. **No row remains flagged at
+> title/abstract level.** Four foundations (`koo2016`, `blandaltman1986`, `ling2000`,
+> `vanhoudt2021qib`) were re-pulled **verbatim** from their published abstracts via NCBI
+> PubMed / Europe PMC and are recorded with locators in the *Verbatim re-pulls* section below;
+> the survey uses each only as a faithful paraphrase with no load-bearing number, so the prior
+> "[thesis-level]" flag has been retired. No approximation was used; no source was unreachable.
 
 ## A — Parameter estimation for quantitative/diffusion body MRI and its uncertainty
 
@@ -46,13 +41,12 @@
 | `guo2017` | url:proceedings.mlr.press/v70/guo17a | Modern deep neural networks are poorly calibrated, and temperature scaling is a simple, effective post-hoc remedy. |
 | `lakshminarayanan2017` | arXiv:1612.01474 | Deep ensembles are a simple, scalable, non-Bayesian method that yields high-quality predictive uncertainty estimates. |
 | `gal2016` | arXiv:1506.02142 | Dropout training can be cast as approximate Bayesian inference, enabling model-uncertainty estimates from standard dropout networks. |
-| `amini2020` | arXiv:1910.02600 | Deep evidential regression learns aleatoric and epistemic uncertainty in a single forward pass without sampling or out-of-distribution training data. |
 | `ovadia2019` | arXiv:1906.02530 | Predictive uncertainty quality degrades under dataset shift, so trustworthy uncertainty must be evaluated against distribution shift, not just in-distribution. |
 | `raunig2015` | doi:10.1177/0962280214537344 | QIBA technical-performance assessment of imaging biomarkers rests on three metrology areas: linearity/bias, repeatability, and reproducibility. |
 | `obuchowski2015` | doi:10.1177/0962280214537392 | Bias, precision, and agreement are the appropriate statistical targets for assessing and comparing quantitative imaging biomarker algorithms. |
 | `sullivan2015` | doi:10.1148/radiol.2015142202 | Consistent metrology terminology and standards are needed to define and assess the technical performance of quantitative imaging biomarkers. |
-| `koo2016` | doi:10.1016/j.jcm.2016.02.012 | **[thesis-level]** Provides the standard guideline for selecting, reporting, and interpreting intraclass correlation coefficients (ICCs) in reliability research. |
-| `blandaltman1986` | doi:10.1016/S0140-6736(86)90837-8 | **[thesis-level]** The limits-of-agreement method, not correlation, is the appropriate way to assess agreement between two clinical measurement methods. |
+| `koo2016` | doi:10.1016/j.jcm.2016.02.012 | Provides the standard guideline for selecting, reporting, and interpreting intraclass correlation coefficients (ICCs) in reliability research. |
+| `blandaltman1986` | doi:10.1016/S0140-6736(86)90837-8 | The limits-of-agreement method, not correlation, is the appropriate way to assess agreement between two clinical measurement methods. |
 
 ## C — Diffusion/perfusion body-MRI biomarkers and their measured reliability
 
@@ -79,9 +73,7 @@
 | `vickers2016` | doi:10.1136/bmj.i6 | Net benefit places harms and benefits on a common scale via an exchange rate to judge whether a model, marker, or test does more good than harm. |
 | `vickers2019` | doi:10.1186/s41512-019-0064-7 | In decision curve analysis the chosen threshold probability encodes the clinician's relative weighting of a missed disease against an unnecessary intervention. |
 | `steyerberg2010` | doi:10.1097/EDE.0b013e3181c30fb2 | Decision-analytic measures such as net benefit should be reported when a prediction model is intended to support clinical decisions, beyond discrimination and calibration. |
-| `baker2009` | doi:10.1111/j.1467-985X.2009.00592.x | Relative utility curves quantify how much of the achievable clinical utility a risk-prediction model captures relative to perfect prediction. |
 | `zhao2021` | arXiv:2107.05719 | Decision calibration requires a model's predicted distribution to be indistinguishable from the true distribution to a set of downstream decision-makers. |
-| `lacostejulien2011` | url:proceedings.mlr.press/v15/lacoste_julien11a | Standard approximate inference ignores the decision task and its losses, motivating loss-calibrated approximations tailored to the decision at hand. |
 | `vadera2021` | arXiv:2106.06997 | Post-hoc loss-calibration learns posterior approximations that favour high-utility decisions under the relevant loss. |
 | `felli1998` | doi:10.1177/0272989X9801800117 | Expected value of perfect information is a superior sensitivity measure because it combines the probability a decision changes with the marginal benefit of that change. |
 | `claxton1999` | doi:10.1016/S0167-6296(98)00039-3 | Clinical/economic decisions should be made on expected (mean) net benefit; conventional rules of statistical inference are irrelevant to the choice. |
@@ -94,17 +86,36 @@
 | `raaymakers2009` | doi:10.1088/0031-9155/54/12/N01 | A prototype integrating a 1.5 T MRI scanner with a 6 MV accelerator demonstrated simultaneous, unhampered MR imaging during irradiation. |
 | `raaymakers2017` | doi:10.1088/1361-6560/aa9517 | First-patient treatments on a 1.5 T MRI-Linac established that high-precision, high-field MRI-guided radiotherapy is clinically feasible. |
 | `lagendijk2014` | doi:10.1016/j.semradonc.2014.02.009 | The MRI-linac integrates a fully functional 1.5 T diagnostic-quality MRI with a 6 MV linear accelerator in one system. |
-| `ling2000` | doi:10.1016/S0360-3016(00)00467-3 | **[thesis-level]** Multidimensional radiotherapy proposes deriving a biological target volume from functional/biological images to enable dose painting and biological conformality. |
+| `ling2000` | doi:10.1016/S0360-3016(00)00467-3 | Multidimensional radiotherapy proposes deriving a biological target volume from functional/biological images to enable dose painting and biological conformality. |
 | `bentzen2005` | doi:10.1016/S1470-2045(05)01737-7 | Theragnostic imaging uses molecular/functional imaging to prescribe radiation dose in four dimensions — the basis of dose-painting by numbers. |
 | `bentzen2011` | doi:10.1016/j.semradonc.2010.10.001 | Dose painting prescribes a non-uniform dose to the target based on functional or molecular images indicating local risk of relapse. |
 | `unkelbach2018` | doi:10.1088/1361-6560/aae659 | Robust and probabilistic optimisation methods directly incorporate motion and uncertainty into RT plan optimisation, rather than relying on PTV margins. |
 | `otazo2021` | doi:10.1148/radiol.2020202747 | Several quantitative MRI-derived biomarkers reflect radiotherapy response earlier than anatomic imaging, supporting MRI-guided adaptive radiation oncology. |
 | `vanhoudt2021` | doi:10.3389/fonc.2020.615643 | Frequent quantitative MRI monitoring of volume, shape, and biological characteristics lets the treatment plan be updated to accommodate observed tumour response. |
-| `vanhoudt2021qib` | doi:10.1016/j.ejca.2021.04.041 | **[thesis-level]** Quantitative imaging biomarkers on MR-linacs require technical validation (repeatability/reproducibility) before they can drive clinical decisions, because the integrated scanner differs from conventional diagnostic MRI. |
+| `vanhoudt2021qib` | doi:10.1016/j.ejca.2021.04.041 | Quantitative imaging biomarkers on MR-linacs require technical validation (repeatability/reproducibility) before they can drive clinical decisions, because the integrated scanner differs from conventional diagnostic MRI. |
 | `leibfarth2018` | doi:10.1016/j.ctro.2018.09.002 | Diffusion-weighted MRI shows promise as a radiotherapy biomarker for outcome prediction, response assessment, and tumour delineation, but faces geometric-accuracy and quantification challenges. |
 | `hall2022` | doi:10.3322/caac.21707 | MR guidance presents a strong opportunity to bring adaptive radiation therapy into routine radiation-oncology clinical practice. |
 
-## Verbatim re-pulls of the four thesis-level entries (CP3, 2026-06-22)
+## F — RT-first deepening (v2): MR-Linac validation, dose-painting trials, on-device repeatability, recent qMRI UQ
+
+> Added 2026-06-26. Every identifier below was resolved against the Crossref REST API
+> (title + first author + year + DOI matched) and each claim checked against the
+> published abstract before citing. No source is flagged at title/abstract level.
+
+| key | identifier | verified claim |
+|---|---|---|
+| `kerkmeijer2021` | doi:10.1200/JCO.20.02873 | The FLAME phase III randomised trial showed that adding an MRI-defined intraprostatic focal boost to whole-prostate external-beam radiotherapy improved biochemical disease-free survival (HR 0.45) without a significant increase in late toxicity. |
+| `berwouts2013` | doi:10.1016/j.radonc.2013.04.002 | A phase I trial showed three-phase adaptive 18F-FDG-PET-guided dose-painting-by-numbers for head-and-neck cancer is feasible with current tools and was delivered without treatment breaks or acute grade ≥4 toxicity. |
+| `deleeuw2024` | doi:10.1016/j.radonc.2024.110281 | The ARTFORCE phase III randomised trial found that adaptive 18F-FDG-PET-guided dose-redistribution did not significantly improve overall tumour control or survival in locally advanced head-and-neck squamous cell carcinoma. |
+| `kooreman2019` | doi:10.1016/j.radonc.2019.01.011 | Quantitative T1/T2/ADC mapping on a 1.5 T MR-linac is feasible and accurate across four consortium systems, with ADC accuracy ~1.9–2.7% and short-term repeatability ~1.3–2.2%, comparable to diagnostic scanners. |
+| `kooreman2020` | doi:10.1016/j.radonc.2020.09.046 | An Elekta Unity MR-linac consortium recommendation for accurate ADC measurement: limit b_high to 500 s/mm^2, scan targets within ~7 cm of iso-center, and ADC can be measured during treatment delivery. |
+| `demolvanotterloo2020` | doi:10.3389/fonc.2020.01328 | MOMENTUM is a multi-institutional international MR-linac registry collecting clinical and technical patient data to enable evidence-based introduction of MR-guided adaptive radiotherapy. |
+| `habrich2022` | doi:10.1016/j.radonc.2022.07.020 | Test–retest DW-MRI on a 1.5 T MR-linac in head-and-neck cancer gives ADC repeatability coefficients of ~13% (parotids) up to ~31% (primary tumours), quantifying how large an on-device ADC change must be to exceed measurement variability. |
+| `eijkelenkamp2025` | doi:10.1016/j.phro.2025.100720 | Rectal-cancer ADC measured on a 1.5 T MR-linac has a relative repeatability coefficient of 17.0%, providing a threshold to distinguish measurement variability from true treatment response. |
+| `bisgaard2024` | doi:10.3389/fonc.2024.1401464 | Longitudinal per-fraction DW-MRI during MR-linac pancreatic radiotherapy supports baseline and time-trend ADC as candidate prognostic biomarkers for overall survival in locally advanced pancreatic cancer. |
+| `jallais2024` | doi:10.7554/eLife.101069 | μGUIDE is a deep-learning (simulation-based-inference) framework that returns full posterior distributions for quantitative-MRI microstructure parameters, quantifying per-estimate uncertainty and exposing model degeneracy. |
+
+## Verbatim re-pulls of the four foundation entries (CP3, 2026-06-22)
 
 Each sentence below is reproduced **verbatim** from the published abstract of the named source
 (retrieved via NCBI PubMed / Europe PMC), with its locator. The survey paraphrases each at thesis

@@ -1,24 +1,25 @@
 # Limbo — a field review of trustworthy UQ for quantitative body MRI and its use in adaptive RT
 
-**Status: PROVISIONAL · submission-ready compiled manuscript (CP0–CP3 complete) · not publish-gated.**
+**Status: PROVISIONAL · submission-ready compiled manuscript (v2, RT-first, phiRO) · not publish-gated.**
 
-The manuscript [`limbo.tex`](limbo.tex) → [`limbo.pdf`](limbo.pdf) is typeset for **Physics in
-Medicine & Biology** (Topical Review) with IOP's `iopjournal` class; it compiles clean with
-`tectonic` (gated on the citation gate), the survey cites all 59 verified entries with zero phantom
-prose-cites, and the four thesis-level entries have been re-pulled **verbatim** from source (see
-[`CITATIONS.md`](CITATIONS.md), *Verbatim re-pulls*).
+The manuscript [`limbo.tex`](limbo.tex) → [`limbo.pdf`](limbo.pdf) is typeset for **Physics and
+Imaging in Radiation Oncology** (phiRO; Elsevier / ESTRO) as a **Review article**, using Elsevier's
+`elsarticle` class; it compiles clean with `tectonic` (gated on the citation gate), the survey cites
+all 66 verified entries with zero phantom prose-cites, and every reference carries a resolvable
+DOI/arXiv identifier with a one-line verified claim (see [`CITATIONS.md`](CITATIONS.md); the four
+foundation entries are re-pulled **verbatim** from source in *Verbatim re-pulls*).
 
 Limbo is a **broad field review** — a survey of *the literature's* work on trustworthy uncertainty
 quantification (UQ) for **quantitative/diffusion body MRI** (IVIM, DWI/ADC, DKI, DCE perfusion,
-relaxometry) and its **decision-use in MR-guided adaptive radiotherapy** (MR-Linac / MRgART). It
-organises the field along a **trust → value-of-information → action** axis and maps where the
-field's UQ-trust questions remain open.
+relaxometry) and its **decision-use in MR-guided adaptive radiotherapy** (MR-Linac / MRgART). It is
+re-anchored *radiation-oncology-first* — the **MR-Linac dose decision** is the spine, and
+quantitative-MRI UQ enters as the input that decision consumes, read along a **trust → value →
+action** axis — and it maps where the field's UQ-trust questions remain open for adaptive RT.
 
-Its value is **trigger-independent**: it strengthens the *first* PhD application (field command + a
-citable paper), and it **absorbs Buttress** (the portfolio-thickener) — there is no separate
-Buttress; this review *is* the thickener.
+Its value is **trigger-independent**: it stands on its own scientific merit and does not depend on
+the author's own results publishing.
 
-Target venue (CP0 input): **Physics in Medicine & Biology** (Topical Review).
+Target venue: **Physics and Imaging in Radiation Oncology** (phiRO; Elsevier / ESTRO), Review article.
 
 ## What this is — and is not
 
@@ -59,16 +60,16 @@ python3 verify_citations.py --online  # also confirm each DOI/arXiv resolves (ne
 
 | file | purpose |
 |---|---|
-| `limbo.tex` / `limbo.pdf` | the compiled manuscript (IOP `iopjournal`; target *Phys. Med. Biol.*) |
+| `limbo.tex` / `limbo.pdf` | the compiled manuscript (Elsevier `elsarticle`; target *Phys Imaging Radiat Oncol*) |
 | `TAXONOMY.md` | the trust → VoI → action survey axis (+ foundations + gap-map seams) |
 | `SURVEY.md` | the markdown survey draft the manuscript prose was ported from |
-| `limbo.bib` | the verified citation base (59 entries) |
+| `limbo.bib` | the verified citation base (66 entries) |
 | `CITATIONS.md` | per-citekey verified claim + resolvable identifier (+ the 4 verbatim re-pulls) |
 | `verify_citations.py` | the citation gate (offline; `--online` for resolvability; scans `limbo.tex`) |
 | `ASSUMPTIONS.md` | scope boundary, distinctness-from-Augur, clean-IP, status pins |
 | `build.sh` | gate → compile the manuscript with tectonic |
 | `reproduce.sh` | one-command re-validation (gate + pytest + compile) |
-| `iopjournal.cls`, `orcid.pdf` | vendored IOP class + asset (LPPL; see `IOP_CLASS_PROVENANCE.md`) |
+| `elsarticle.cls`, `elsarticle-num.bst` | vendored Elsevier class + numbered-Vancouver bib style (LPPL; see `ELSEVIER_CLASS_PROVENANCE.md`) |
 | `tests/` | gate assertions (zero-unverifiable, bucket coverage, distinctness documented) |
 
 ## Checkpoints
@@ -81,6 +82,13 @@ python3 verify_citations.py --online  # also confirm each DOI/arXiv resolves (ne
 - **CP2 — survey + gap map.** Survey drafted by axis with the open-problems map (G1–G4); every claim
   cites a verified entry.
 - **CP3 — honest-scope + final citation gate + compiled manuscript.** `--online` re-verification
-  (all 59 resolve live), no-drift pass, honest-scope section; **`limbo.tex` typeset for PMB
-  (`iopjournal`) and compiled to `limbo.pdf`**; the four thesis-level entries re-pulled verbatim
-  from source; Buttress absorbed into the discussion/gap map. Staged for review (no auto-merge).
+  (all entries resolve live), no-drift pass; the four foundation entries re-pulled verbatim
+  from source. (Original PMB/`iopjournal` build; superseded by v2 below.)
+- **v2 — RT-first re-anchor + phiRO.** Re-anchored radiation-oncology-first (the MR-Linac dose
+  decision as the spine); §7 rewritten as a plain Discussion/Limitations with all
+  portfolio/strategy/positioning prose removed; reference base rebalanced to **66** (added the
+  MR-Linac validation / dose-painting-trial / on-device-repeatability literature, demoted the
+  over-weight general-ML-UQ and decision-theory tail); journal names abbreviated to ISO/LTWA;
+  reformatted IOP→phiRO (`elsarticle`, *Review article*, numbered Vancouver); identity unified to
+  `ak5232@columbia.edu`. Gate green offline + online. Staged for the human submission gate (no
+  auto-merge).

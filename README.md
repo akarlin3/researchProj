@@ -550,8 +550,11 @@ phenotype even after controlling for fold confidence (pLDDT). Structure and
 sequence fail together in the dark tail; homology-based search already reaches
 whatever signal exists.
 
-The Zenodo badge above archives Proteus's code and intermediate-data snapshots
-([10.5281/zenodo.20758580](https://doi.org/10.5281/zenodo.20758580)).
+The Zenodo badge above is a citable, frozen snapshot of the whole monorepo
+(`researchProj: v2`, cut when Proteus went into PLOS Computational Biology
+revision) — not a Proteus-only archive; the top-of-README badge
+([10.5281/zenodo.20758581](https://doi.org/10.5281/zenodo.20758581)) is the
+same repository's `v1` snapshot.
 
 - `src/proteus/` — pipeline stages S0–S5 (`s0_dereplicate.py` … `s5_cleft_filter.py`), orchestration (`pipeline.py`, `screen.py`, `launch.py`, `atlas_screen.py`), and a `docking/` submodule.
 - `controls/` — locked positive PETases and negative serine hydrolases with a sha256 manifest; `config/proteus.yaml` pins thresholds and seed 1729.

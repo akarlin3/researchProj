@@ -5,7 +5,7 @@ A command-line tool for generating a 4D IVIM (Intravoxel Incoherent Motion) phan
 ## Usage
 
 ```sh
-python sim_vim_sig.py  [-h] [-b BVALUE [BVALUE ...] | -f FILE] [-n NOISE] [-m] [-i]
+python sim_ivim_sig.py  [-h] [-b BVALUE [BVALUE ...] | -f FILE] [-n NOISE] [-m] [-i]
 ```
 
 ## Arguments

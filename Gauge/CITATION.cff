@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: >-
+  If you use this code, please cite the archived software via its Zenodo DOI
+  below. If you use the results or methods, please also cite the manuscript
+  once it is out of review (see README.md for current status).
+title: "Gauge: Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment"
+version: 0.1.0
+license: AGPL-3.0-only
+doi: 10.5281/zenodo.20686273
+authors:
+  - family-names: Karlin
+    given-names: Avery
+    affiliation: "Columbia University, Department of Applied Physics and Applied Mathematics; University of Colorado Boulder, Department of Computer Science"
+    email: ak5232@columbia.edu
+preferred-citation:
+  type: article
+  title: "Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment"
+  authors:
+    - family-names: Karlin
+      given-names: Avery
+      affiliation: "Columbia University, Department of Applied Physics and Applied Mathematics; University of Colorado Boulder, Department of Computer Science"
+      email: ak5232@columbia.edu
+  status: submitted
+  notes: >-
+    Manuscript in review at MRM (Magnetic Resonance in Medicine).
+    Unpublished — no journal DOI assigned yet. This entry will be updated with
+    the volume, year, and DOI on acceptance.

@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: >-
+  This repository is a monorepo of independent research projects; please cite
+  the archived repository DOI below for the monorepo as a whole. For a
+  specific project's paper or software, prefer that subdirectory's own
+  README.md / CITATION.cff (where present) — see the "Projects at a glance"
+  table in README.md for the full list.
+title: "ResearchProj: consolidated monorepo of research projects"
+version: 0.1.0
+license: AGPL-3.0-only
+doi: 10.5281/zenodo.20758581
+authors:
+  - family-names: Karlin
+    given-names: Avery
+    affiliation: "Columbia University, Department of Applied Physics and Applied Mathematics; University of Colorado Boulder, Department of Computer Science"
+    email: ak5232@columbia.edu

@@ -50,13 +50,13 @@ layer is [`uq/ivim_fit.py`](uq/ivim_fit.py); the campaign runners are
 
 ## Headline result
 
-**NLLS D\* boundary-railing: 54.2% of open-abdomen voxels hit a fit bound — an
+**NLLS D\* boundary-railing: 54.7% of open-abdomen voxels hit a fit bound — an
 assumption-free identifiability signature that needs no ground truth.**
 
 On the OSIPI TF2.4 open human-abdominal IVIM acquisition (homogeneous-ROI mask,
-n = 1932), a box-constrained NLLS fit of the pseudo-diffusion coefficient D\*
-rails to a parameter bound in **54.2% [52.0, 56.4]** of voxels — independently
-reproduced clean-room at **54.2%** by [Gnomon](../Gnomon/) and replicated at
+n = 1,618), a box-constrained NLLS fit of the pseudo-diffusion coefficient D\*
+rails to a parameter bound in **54.7% [52.2, 57.1]** of voxels — independently
+reproduced clean-room at **54.2% [52.0, 56.4]** by [Gnomon](../Gnomon/) and replicated at
 **47.8%** (full abdomen, n = 19,652) / **43.7%** (TCGA-LIHC liver, 4-b) /
 **73.4%** (TCGA-LIHC liver, sparse 3-b) by [Sextant](../Sextant/). Railing is
 dominated by the *upper* D\* bound — the high-D\* identifiability wall also

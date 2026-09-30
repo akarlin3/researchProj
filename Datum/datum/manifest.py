@@ -1,7 +1,7 @@
 """Assumptions manifest -- machine-readable pins for Datum's load-bearing inputs.
 
-Datum is built **on Fashion's calibration ruler**, which is *in review* (retooled,
-now resubmitted to **NMR in Biomedicine**). Until that ruler locks (NMRB
+Datum is built **on Fashion's calibration ruler**, which is *not yet submitted*
+(retooled, targeting **NMR in Biomedicine**). Until that ruler locks (NMRB
 acceptance + DOI), every reference number Datum produces by scoring through the
 ruler is **PROVISIONAL**. The retooled Fashion demotes the ruler to a **scoped
 secondary** (ground-truth/synthetic only) and reports under the **honest CRLB**
@@ -24,11 +24,12 @@ RULER = {
     "symbols": ["coverage", "ece", "sharpness_rel"],
     "nominal_levels": [0.50, 0.68, 0.80, 0.90, 0.95, 0.99],  # frozen LEVELS in calib.py
     "version": "0.1.0",                 # Fashion/pyproject.toml
-    "commit": "f078802",               # git log -1 -- Fashion/uq/calib.py (recipe unchanged by the retool)
+    "commit": "f078802",  # git log -1 -- Fashion/uq/calib.py (retool didn't change it)
     "code_zenodo": "10.5281/zenodo.20649669",  # Fashion code+figures archive
     "scope": "scoped secondary -- ground-truth/synthetic only (cannot touch a real scan)",
     "convention": "honest CRLB (default; floored convention rejected as manufacturing severity)",
-    "manuscript_status": "in review at NMR in Biomedicine (retooled, boundary-railing-first) -- NOT finalized",
+    "manuscript_status": "not yet submitted, target NMR in Biomedicine (retooled, "
+    "boundary-railing-first) -- NOT finalized",
     "manuscript_doi": None,            # None => PROVISIONAL is in force
 }
 
@@ -75,7 +76,7 @@ MONOREPO = {"repo": "akarlin3/ResearchProj", "base_commit": "0be9323"}
 
 PROVISIONAL_POLICY = (
     "Every Datum reference number is produced by scoring a method through Fashion's "
-    "calibration ruler (RULER above). Fashion is in review, so the ruler's exact "
+    "calibration ruler (RULER above). Fashion is not yet submitted, so the ruler's exact "
     "definition (its nominal levels, its coverage/ECE/sharpness recipe, its headline) "
     "may shift in revision. Therefore EVERY ruler-derived reference number is flagged "
     "PROVISIONAL and must never be presented as a final reference value until the "

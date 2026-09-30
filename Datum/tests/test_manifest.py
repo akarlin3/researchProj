@@ -15,11 +15,11 @@ def test_ruler_is_pinned():
     assert r["version"] == "0.1.0"
     assert r["commit"]                      # non-empty pin
     assert r["definition_artifact"] == "Fashion/uq/calib.py"
-    assert "review" in r["manuscript_status"].lower()
+    assert "not yet submitted" in r["manuscript_status"].lower()
 
 
 def test_provisional_in_force_until_doi():
-    # Fashion ruler is in review -> no DOI -> everything provisional.
+    # Fashion ruler is not yet submitted -> no DOI -> everything provisional.
     assert manifest.RULER["manuscript_doi"] is None
     assert manifest.is_provisional() is True
 

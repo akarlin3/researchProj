@@ -206,5 +206,5 @@ def score_submission(name: str, q_test, task=CURRENT_TASK, substrate_name=None,
         name=name, provisional=is_provisional(), alpha=alpha,
         per_param=per_param, ci=ci, by_tercile=by_tercile, vs_reference=vs_reference,
         ruler=f"{RULER['name']} v{RULER['version']} @ {RULER['commit']}",
-        notes=["scored on Fashion's in-review ruler -- PROVISIONAL"],
+        notes=["scored on Fashion's not-yet-submitted ruler -- PROVISIONAL"],
     )

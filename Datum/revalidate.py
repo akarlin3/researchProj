@@ -2,7 +2,7 @@
 """One-command re-validation for Datum.
 
 Datum's reference numbers are PROVISIONAL: they are scored on Fashion's
-calibration ruler, which is in review. This script is the single command to run
+calibration ruler, which is not yet submitted. This script is the single command to run
 when the ruler (or substrate) changes -- it re-checks the pinned assumptions,
 proves the substrate -> ruler pipeline still resolves, and (from CP2 onward)
 regenerates every reference number under the bumped pins.

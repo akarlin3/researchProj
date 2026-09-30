@@ -91,7 +91,7 @@ real component drops in **without touching `loop.py`** (see [`PROMOTION.md`](PRO
 
 | role | component | interface | placeholder | real component status |
 |---|---|---|---|---|
-| calibrated error bars | **Fashion** | `interfaces/ruler.py :: Ruler` | `PlaceholderRuler` (NOT-Fashion) | in review @ *NMR in Biomedicine* |
+| calibrated error bars | **Fashion** | `interfaces/ruler.py :: Ruler` | `PlaceholderRuler` (NOT-Fashion) | not yet submitted, target *NMR in Biomedicine* |
 | trust + action gates | **Minos** | `interfaces/gates.py :: TrustGate`, `ActionGate` | `Placeholder{Trust,Action}Gate` (NOT-Minos) | applied half provisional (PR #49) |
 | dose engine | **Forge** | `interfaces/dose.py :: DoseEngine` | `PlaceholderDoseEngine` (NOT-Forge) | **deferred to 2027 — not built** |
 

@@ -44,7 +44,7 @@ what the project does, its headline result, and how it is laid out internally.
 | [`Augur/`](Augur/) | *(perspective — **SUBMISSION-READY but HELD**)* End-stage synthesis of the IVIM uncertainty program (Fashion→Minos→Lethe→Gauge) along a **trust → value-of-information → action** arc, anchored by the cross-modally-orphaned D\* thread; makes no new measurement | Perspective / synthesis — held until Fashion + Minos publish |
 | [`Caliper/`](Caliper/) | *(research software — no standalone paper)* IVIM uncertainty-quantification calibration toolkit | Research software |
 | [`Datum/`](Datum/) | *(research software — no standalone paper)* IVIM uncertainty-calibration **benchmark** (fixed task + curated baselines + reference numbers, on Fashion's ruler) | Research software — benchmark |
-| [`Fashion/`](Fashion/) | *Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI* (retooled, boundary-railing-first; in review at *NMR in Biomedicine*) | IVIM diffusion-MRI — an assumption-free identifiability signature; calibration ruler demoted to scoped secondary |
+| [`Fashion/`](Fashion/) | *Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI* (retooled, boundary-railing-first; provisional, not yet submitted, target *NMR in Biomedicine*) | IVIM diffusion-MRI — an assumption-free identifiability signature; calibration ruler demoted to scoped secondary |
 | [`Forge/`](Forge/) | *(no manuscript — feasibility benchmark)* Monte Carlo dose-simulation timing & Electron Return Effect validation | Medical physics — MR-Linac simulation infrastructure |
 | [`Gauge/`](Gauge/) | *Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the Identifiability Wall in the Pseudo-Diffusion Compartment* | IVIM diffusion-MRI — conformal coverage & the D\* identifiability limit |
 | [`Gnomon/`](Gnomon/) | *(research software — no standalone paper by default)* Clean-room **reproduce-or-refute** rebuild of Fashion's calibration ruler (independent forward model + NLLS railing + Laplace/MCMC + MAF + ruler; targets pinned before running) | Research software — independent reproduction (the hedge to the Fashion retool) |
@@ -168,7 +168,7 @@ differentiation from Casali. Distinct from Caliper (the ruler + an explicitly
 non-citable demo sweep), Lattice (a substrate), and OSIPI (scored on point
 accuracy, not calibration).
 
-Datum is **built on a ruler that is in review**, so it carries a finalization risk:
+Datum is **built on a ruler that is not yet submitted**, so it carries a finalization risk:
 the ruler version is pinned in [`Datum/ASSUMPTIONS.md`](Datum/ASSUMPTIONS.md) /
 `datum/manifest.py`, **every ruler-dependent reference number is flagged
 PROVISIONAL**, and `python Datum/revalidate.py` re-validates everything in one
@@ -183,7 +183,7 @@ deliverable and are PROVISIONAL by construction.
 
 *Paper:* **"Boundary-railing of conventional NLLS fits as an assumption-free
 pseudo-diffusion identifiability diagnostic in IVIM MRI"** (retooled,
-boundary-railing-first; in review at *NMR in Biomedicine*).
+boundary-railing-first; provisional, not yet submitted, target *NMR in Biomedicine*).
 
 Fashion is an uncertainty-quantification and calibration study built on the OSIPI
 TF2.4 IVIM code collection. The question is not how accurate the point estimate is,
@@ -230,7 +230,8 @@ corrected photon timing and ERE gate are pending a run on the TOPAS host.
 ### `Gauge/` — Distribution-free conformal coverage for IVIM
 
 *Paper:* **"Distribution-Free Conformal Coverage for IVIM Parameter Maps, and the
-Identifiability Wall in the Pseudo-Diffusion Compartment"** (in review at *MRM*).
+Identifiability Wall in the Pseudo-Diffusion Compartment"** (pre-submission, target
+*MRM*).
 
 Gauge brings finite-sample, distribution-free **conformal prediction** (split-
 conformal and conformalized quantile regression, CQR) to IVIM parameter maps and
@@ -349,23 +350,32 @@ real-world miscalibration magnitude.
 
 ### `Levy/` — Identifiability of the fractional order in diffusion-MRI
 
-*Clean-room subrepo (CP0); no standalone paper yet, target *Nonlinear Dynamics*, house
-template **Minos**; reuses **Ouroboros** tooling read-only.* **Levy** asks a single
-question: can the fractional order α of anomalous diffusion — the stretched-exponential
-lead lane of a joint CTRW / fractional Bloch–Torrey model, `S(b; S₀, D, α) =
-S₀·exp(−(bD)^α)` — be recovered **jointly with D and S₀** from a finite-b-value,
-Rician-noise magnitude MRI signal? The deliverable is the **recovery-collapse wall**:
-*where* α becomes unrecoverable as a function of SNR and b-design, with confidence
-intervals, scoped to its regime. A CRLB here is an identifiability/information
-statement, never an impossibility claim.
+*Clean-room subrepo (CP0–CP2 complete, manuscript drafted, pre-submission), target
+*Nonlinear Dynamics*, house template **Minos**; reuses **Ouroboros** tooling read-only.*
+**Levy** asks a single question: can the fractional order α of anomalous diffusion — the
+stretched-exponential lead lane of a joint CTRW / fractional Bloch–Torrey model, `S(b;
+S₀, D, α) = S₀·exp(−(bD)^α)` — be recovered **jointly with D and S₀** from a
+finite-b-value, Rician-noise magnitude MRI signal? The deliverable is the
+**recovery-collapse wall**: *where* α becomes unrecoverable as a function of SNR and
+b-design, with confidence intervals, scoped to its regime. A CRLB here is an
+identifiability/information statement, never an impossibility claim.
 
-**Status — CP0: WALL STANDS (scoped), refute survived.** Under a realistic clinical
-few-b acquisition (n_b ≈ 4–6), α is information-limited within the realistic SNR band
-[20, 60]: the wall sits at **SNR\* ≈ 27.8 (analytic CRLB) / 29.9 (empirical bootstrap,
-95% CI [28.3, 31.1])** at the headline cell (α = 0.85, n_b = 4, b_max = 2000). The wall
-recedes below the band only with dense multi-b research acquisition (n_b ≥ 8), and the
-α–D degeneracy reaches ρ ≈ −0.87 when b_max is pushed with few b-values. See
-[`Levy/results/RESULTS_CP0.md`](Levy/results/RESULTS_CP0.md).
+**Status — CP0–CP2 complete, manuscript drafted (pre-submission).** CP0 — **WALL
+STANDS (scoped), refute survived**: under a realistic clinical few-b acquisition (n_b ≈
+4–6), α is information-limited within the realistic SNR band [20, 60]: the wall sits at
+**SNR\* ≈ 27.8 (analytic CRLB) / 29.9 (empirical bootstrap, 95% CI [28.3, 31.1])** at the
+headline cell (α = 0.85, n_b = 4, b_max = 2000). The wall recedes below the band only
+with dense multi-b research acquisition (n_b ≥ 8), and the α–D degeneracy reaches ρ ≈
+−0.87 when b_max is pushed with few b-values. See
+[`Levy/results/RESULTS_CP0.md`](Levy/results/RESULTS_CP0.md). CP1 — the joint
+time-fractional α and space-fractional β are **structurally degenerate** at a single
+diffusion time (median |ρ_αβ| = 0.984), relieved only by a second diffusion time (see
+[`Levy/results/RESULTS_CP1.md`](Levy/results/RESULTS_CP1.md)). CP2 — the CP0 wall holds
+across the physiological α range (SNR\* 27.5–32.9 for α ∈ [0.60, 0.98]), so CP0 is not an
+artifact of the headline cell (see
+[`Levy/results/RESULTS_CP2.md`](Levy/results/RESULTS_CP2.md)). The manuscript compiles
+offline (`Levy/paper/levy.tex` → `levy.pdf`); pre-submission items are tracked in
+`Levy/paper/FINALIZATION_CHECKLIST.md`.
 
 - `levy-core/` — flat-layout package (own `pyproject.toml`): `levy/forward.py` (forward model + closed-form Jacobian), `levy/noise.py` (Rician sampling + Fisher-info factor), `levy/fisher.py` (Fisher matrix + CRLB + α–D degeneracy), `levy/identifiability.py` (Rician MLE, profile-likelihood CI, parametric bootstrap). `POSITIONING.md`, `DESIGN_CP0.md`.
 - `_paths.py` (read-only Ouroboros wiring, cross-check only), `ASSUMPTIONS.md` (pinned versions, regime scoping, clean-IP gate — fully synthetic), `VERIFICATION.md`, `verify_cp0.py`, `reproduce.sh` (FAST default; `FULL=1` for full-N bootstrap), `results/RESULTS_CP0.md`.
@@ -411,7 +421,7 @@ even if real MR-Linac access, the Forge dose engine, or IRB approval never lands
 
 Matrix consumes three components, **none final**, each stubbed behind a clean interface with a
 clearly-labelled placeholder; the real component drops in **without touching the loop**:
-**Fashion**'s calibration ruler (`interfaces/ruler.py`, in review @ *NMR in Biomedicine*),
+**Fashion**'s calibration ruler (`interfaces/ruler.py`, not yet submitted, target *NMR in Biomedicine*),
 **Minos**'s trust + action gates (`interfaces/gates.py`, applied half provisional), and
 **Forge**'s dose engine (`interfaces/dose.py`, **deferred to 2027 — not built**). See
 [`Matrix/ASSUMPTIONS.md`](Matrix/ASSUMPTIONS.md) and [`Matrix/PROMOTION.md`](Matrix/PROMOTION.md).
@@ -472,7 +482,8 @@ construction (it assumes Fashion and Gauge survive to publication as submitted).
 
 *Paper:* **"Identifiability, noise fragility, and weak-form mitigation of
 fractional sparse regression in a vascular–stromal reaction–diffusion model, with
-cautions on data-driven Lyapunov estimation"** (in review at *CNSNS*).
+cautions on data-driven Lyapunov estimation"** (in preparation for submission to
+*CNSNS*).
 
 Ouroboros is a *cautionary characterization* — not a solution — of whether sparse
 regression (SINDy) can reliably tell integer-order from fractional-order temporal
@@ -649,7 +660,7 @@ downstream and are flagged **PROVISIONAL** (see `Vernier/ASSUMPTIONS.md`).
 
 Eleven folders form one IVIM diffusion-MRI uncertainty program:
 
-- **Fashion** (retooled, boundary-railing-first; in review at *NMR in Biomedicine*) leads with the assumption-free fact that conventional NLLS D\* fits *rail to a bound* on open in-vivo data, and demotes the calibration ruler to a scoped, ground-truth-only secondary whose honest-CRLB under-coverage of D\* is *conditional* (high-D\* tercile), not the dropped marginal 0.30/0.67.
+- **Fashion** (retooled, boundary-railing-first; provisional, not yet submitted, target *NMR in Biomedicine*) leads with the assumption-free fact that conventional NLLS D\* fits *rail to a bound* on open in-vivo data, and demotes the calibration ruler to a scoped, ground-truth-only secondary whose honest-CRLB under-coverage of D\* is *conditional* (high-D\* tercile), not the dropped marginal 0.30/0.67.
 - **Gauge** approaches the same problem from distribution-free conformal prediction and reveals the high-D\* under-coverage as an irreducible identifiability wall.
 - **Caliper** is the reusable toolkit that packages the calibration ruler and wraps both papers' methods under one contract (deliberately un-gated pending Minos).
 - **Gnomon** is the independent control on that ruler: a clean-room, from-scratch rebuild (sharing no code with Fashion or Caliper) whose only job is to *reproduce-or-refute* Fashion's load-bearing numbers and emit the complete methods Fashion was rejected for lacking — the hedge to the Fashion retool. Verdict pending (CP3 hard halt either way).
@@ -673,7 +684,8 @@ no-scanner closed loop (`scan → posterior → trust → action → dose replan
 twin, consuming Fashion/Minos/Forge behind stubbed interfaces, with its **Ferry** adapter grounding
 the loop on real anatomy + dose geometry — submission-ready but HELD pending Fashion + Minos.
 
-**Retool propagation (merged 2026-06-21).** The retooled, NMRB-resubmitted Fashion —
+**Retool propagation (merged 2026-06-21).** The retooled Fashion — provisional, not yet
+submitted, target *NMR in Biomedicine* —
 boundary-railing as the assumption-free primary, the calibration ruler scoped to a
 ground-truth-only secondary, and honest-CRLB *conditional* high-D\* coverage replacing
 the dropped marginal 0.30/0.67 — has been propagated into all five downstream consumers
@@ -685,7 +697,7 @@ and merged to `main`:
 - **Vernier** (#50, hard halt) — the cross-scheme feasibility divergence **SURVIVES** byte-identically (Δ\_sharp 0.328, Δ\_cond 0.059); Δ\_cond is exactly the high-D\* conditional metric the retool retains.
 - **Lethe** (#51) — the retool's openly-owned bounded conditional limit is folded in as *reinforcing* the constrained-validation thesis, on a disjoint axis (synthetic conditional coverage vs real-data repeatability precision); no overclaim.
 
-All five remain **PROVISIONAL** (Fashion in review at NMRB; publication gates OFF until acceptance), each with one-command re-validation. The clean-room control (**Gnomon**) and the replication (**Sextant**) underwrite the railing primary.
+All five remain **PROVISIONAL** (Fashion not yet submitted, target NMRB; publication gates OFF until acceptance), each with one-command re-validation. The clean-room control (**Gnomon**) and the replication (**Sextant**) underwrite the railing primary.
 
 ## Provenance
 

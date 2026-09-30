@@ -102,8 +102,8 @@ result changes, **Vernier's honest-scope claim must be re-checked.**
 
 ## 4. FASHION — pinned inputs (the calibrated-ruler narrative) — PROVISIONAL
 
-**Paper status (PINNED):** in review at **NMR in Biomedicine** (retooled,
-boundary-railing-first; resubmitted from MRM); no DOI. Source:
+**Paper status (PINNED):** not yet submitted, target **NMR in Biomedicine** (retooled,
+boundary-railing-first; retargeted from MRM); no DOI. Source:
 `Fashion/paper_retool/`, `Gnomon/handoff/CLAIMS_LEDGER.md`.
 
 | key | pinned value | source (file) | role for Vernier |

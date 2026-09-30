@@ -69,7 +69,7 @@ algorithm registry accurate while still being fully reproducible.
 - [ ] `code_contributions_record.csv` row — intentionally omitted (N/A; not a fit
       algorithm).
 - [ ] `OsipiBase` wrapper — intentionally omitted (N/A; no new fit algorithm).
-- [ ] Publication DOI — pending; manuscript in review at NMR in Biomedicine (Wiley) (placeholder in `release/README.md` only, to update on acceptance).
+- [ ] Publication DOI — pending; manuscript not yet submitted, target NMR in Biomedicine (Wiley) (placeholder in `release/README.md` only, to update on submission and acceptance).
 
 ## Links
 

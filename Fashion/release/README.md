@@ -130,13 +130,13 @@ Collection. This module is additive and released under the same license.
 
 ## Citation
 
-The related publication is **in review at *NMR in Biomedicine* (Wiley)**; there is no preprint. The block below is a placeholder to be updated on acceptance.
+The related manuscript is **not yet submitted** (provisional, target *NMR in Biomedicine* (Wiley)); there is no preprint. The block below is a placeholder to be updated on submission and again on acceptance.
 
 ```bibtex
-@article{karlin_ivim_railing_INREVIEW,
+@article{karlin_ivim_railing_INPREP,
   author  = {Karlin, Avery},
   title   = {{Boundary-railing of conventional NLLS fits as an assumption-free pseudo-diffusion identifiability diagnostic in IVIM MRI: a bound-pinned D* failure mode re-centred from a calibration ruler and replicated across open human-abdominal diffusion MRI}},
-  journal = {in review at NMR in Biomedicine},
+  journal = {in preparation, target NMR in Biomedicine},
   year    = {2026}
 }
 ```

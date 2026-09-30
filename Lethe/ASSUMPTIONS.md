@@ -62,8 +62,8 @@ be re-stated. The *data* itself (ACRIN-6698) is public and stable regardless.
 
 ## 3. FASHION (PROVISIONAL — the posterior/ruler the widths derive from)
 
-**Paper status (PINNED):** in review at **NMR in Biomedicine** (retooled,
-boundary-railing-first; resubmitted from MRM); no DOI. Source: `Fashion/paper_retool/`,
+**Paper status (PINNED):** not yet submitted, target **NMR in Biomedicine** (retooled,
+boundary-railing-first; retargeted from MRM); no DOI. Source: `Fashion/paper_retool/`,
 `Gnomon/handoff/CLAIMS_LEDGER.md`.
 
 | key | pinned value | source | role for Echo |

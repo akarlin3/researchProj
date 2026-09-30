@@ -292,7 +292,7 @@ def write_report(rows, meta, path=None):
     lines = []
     lines.append("# Datum reference numbers (PROVISIONAL)\n")
     lines.append("> **PROVISIONAL.** These numbers are scored on Fashion's calibration "
-                 "ruler, which is *in review at NMR in Biomedicine* (retooled, "
+                 "ruler, which is *not yet submitted, target NMR in Biomedicine* (retooled, "
                  "boundary-railing-first; a scoped, ground-truth-only secondary reported "
                  "under the honest CRLB). They are **not** final reference values and must "
                  "not be cited as such until the ruler locks. Regenerate with "

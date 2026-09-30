@@ -1,7 +1,7 @@
 """PROVISIONAL stamping for ruler-dependent reference numbers.
 
 The cardinal rule of Datum: **never present a ruler-dependent reference number as
-final.** Any value produced by scoring through Fashion's (in-review) ruler is
+final.** Any value produced by scoring through Fashion's (not-yet-submitted) ruler is
 wrapped/stamped PROVISIONAL so it cannot be silently mistaken for a locked number.
 """
 from __future__ import annotations
@@ -14,7 +14,7 @@ from datum.manifest import RULER, is_provisional
 PROVISIONAL_BANNER = (
     "+-----------------------------------------------------------------------+\n"
     "|  PROVISIONAL -- numbers below are scored on Fashion's calibration      |\n"
-    "|  ruler, which is IN REVIEW. They are NOT final reference values.       |\n"
+    "|  ruler, which is NOT SUBMITTED. They are NOT final reference values.  |\n"
     "|  Re-run `python revalidate.py` when the ruler locks (DOI assigned).    |\n"
     "+-----------------------------------------------------------------------+"
 )
@@ -25,7 +25,7 @@ class Provisional:
     """A reference number that is provisional until the ruler locks."""
     value: Any
     metric: str
-    reason: str = field(default="ruler-dependent: Fashion ruler in review")
+    reason: str = field(default="ruler-dependent: Fashion ruler not yet submitted")
 
     @property
     def provisional(self) -> bool:

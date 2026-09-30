@@ -20,8 +20,9 @@ preferred-citation:
       given-names: Avery
       affiliation: "Columbia University, Department of Applied Physics and Applied Mathematics; University of Colorado Boulder, Department of Computer Science"
       email: ak5232@columbia.edu
-  status: submitted
+  status: in-preparation
   notes: >-
-    Manuscript submitted to NMR in Biomedicine (Wiley) in 2026; currently in
-    review. Unpublished — no DOI assigned yet. This entry will be updated with the
-    volume, year, and DOI on acceptance.
+    Manuscript retooled for NMR in Biomedicine (Wiley); provisional, not yet
+    submitted (see paper_retool/README.md — pending author sign-off on the
+    graphical abstract). Unpublished — no DOI assigned yet. This entry will be
+    updated on submission and again on acceptance.

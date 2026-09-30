@@ -2,8 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20649669.svg)](https://doi.org/10.5281/zenodo.20649669)
 
-*Retooled, boundary-railing-first (in review at NMR in Biomedicine); see
-[`paper_retool/`](paper_retool/) for the current manuscript.*
+*Retooled, boundary-railing-first (provisional, not yet submitted, target NMR in
+Biomedicine); see [`paper_retool/`](paper_retool/) for the current manuscript.*
 
 An uncertainty-quantification & **calibration** study for intravoxel incoherent
 motion (IVIM) diffusion-MRI fitting, now led by an assumption-free finding: on

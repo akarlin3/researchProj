@@ -39,7 +39,7 @@ real geometry with synthetic perfusion. Neither is a clinical or real-IVIM claim
 
 ## 1. FASHION — the calibration ruler (calibrated error bars)
 
-**Paper status (PINNED):** *in review at NMR in Biomedicine* (retooled, boundary-railing-first).
+**Paper status (PINNED):** *not yet submitted, target NMR in Biomedicine* (retooled, boundary-railing-first).
 Pre-publication, **no DOI** assigned to the manuscript.
 
 | key | pinned value | source |

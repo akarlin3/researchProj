@@ -4,7 +4,7 @@ Datum does not own a ruler; it scores methods on **Fashion's calibration ruler a
 packaged by Caliper** (``caliper.metrics``). This module is the single chokepoint
 through which all scoring flows, so that (a) the ruler version is the one pinned in
 ``datum.manifest``, and (b) every number that comes out is marked PROVISIONAL while
-the ruler is in review.
+the ruler is not yet submitted.
 """
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ def score(y_true, q_pred, q_levels, alpha: float = 0.10,
                      (Datum uses D* for the identifiability-wall terciles).
 
     Returns a ``Scorecard`` in which every metric is a ``Provisional`` -- the
-    ruler is in review, so these are never final reference numbers.
+    ruler is not yet submitted, so these are never final reference numbers.
     """
     y_true = np.asarray(y_true, dtype=float)
     q_pred = np.asarray(q_pred, dtype=float)

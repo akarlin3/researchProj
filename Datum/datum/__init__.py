@@ -6,7 +6,7 @@ uncertainty method's calibration. It is built **on Fashion's calibration ruler**
 (packaged read-only by Caliper) and runs on a synthetic data substrate (Gauge's
 cohort now; Lattice when it is built).
 
-Because Fashion's ruler is *in review*, every reference number Datum produces is
+Because Fashion's ruler is *not yet submitted*, every reference number Datum produces is
 **PROVISIONAL** until the ruler locks. See ``datum.manifest`` (the pins),
 ``datum.provisional`` (the stamping), and ``ASSUMPTIONS.md`` (the SOLID vs
 assumption-dependent split).

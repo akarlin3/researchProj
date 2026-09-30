@@ -19,7 +19,7 @@ Last audited: 2026-06-22, against the `researchProj` monorepo working tree (GitH
 | **Minos theory half** — Plumbline Thm 1–2 + Prop. 3 (`Minos/theory`, `Minos/minos-core`) | No — self-contained, machine-verified | **SOLID** |
 | The **arc** as a logical argument (trust→VoI→action) | No — it is an argument, not a measurement | SOLID (as argument) |
 | External cross-modal `D*`–`Ktrans` citations (Sun 2019; Yang 2019) | No — published, verified | **SOLID** (see `CITATIONS.md`) |
-| **§1 Trust** claims (Fashion calibration behaviour) | **Yes** — Fashion in review | **PROVISIONAL** |
+| **§1 Trust** claims (Fashion calibration behaviour) | **Yes** — Fashion not yet submitted | **PROVISIONAL** |
 | **§2 VoI** applied claims (Minos applied half) | **Yes** — consumes Fashion + Gauge | **PROVISIONAL** (theory half SOLID) |
 | **§3 Action** claims (Lethe scale verdict; Gauge wall/monitor) | **Yes** — Lethe + Gauge unpublished | **PROVISIONAL** |
 | **Whole-paper submission** | **Yes** | **BLOCKED** until Fashion + Minos publish |
@@ -30,7 +30,7 @@ Last audited: 2026-06-22, against the `researchProj` monorepo working tree (GitH
 
 | anchor | role in the arc | pinned status (no manuscript DOI) | the assumption Augur relies on |
 |---|---|---|---|
-| **Fashion** | Trust — the ruler | **in review, *NMR in Biomedicine*** (retooled, boundary-railing-first; resubmitted from MRM). Code archive Zenodo `10.5281/zenodo.20649669`. | The skew-aware posterior restores *marginal* coverage with a residual **high-`D*` conditional** gap (honest CRLB) — survives review. |
+| **Fashion** | Trust — the ruler | **not yet submitted, target *NMR in Biomedicine*** (retooled, boundary-railing-first; retargeted from MRM). Code archive Zenodo `10.5281/zenodo.20649669`. | The skew-aware posterior restores *marginal* coverage with a residual **high-`D*` conditional** gap (honest CRLB). |
 | **Minos** | VoI — the decision | **PROVISIONAL.** Theory half (Plumbline Thm 1–2 + Prop. 3) machine-verified & SOLID; applied half consumes Fashion + Gauge. No DOI. | The decision–calibration gap, the `O(γ²)` VoI law, and the label-free floor hold (theory: independent of publication). |
 | **Gauge** | Action — the identifiability wall | **target *MRM*, manuscript assembled** (internal consistency gate PASS, 34/34 numbers trace). No DOI. | The high-`D*` identifiability wall is a real CRLB limit; `D*` test–retest `r=−0.17` (CI [−0.39,0.05]) is reproducible. |
 | **Lethe** | Action — the wrong-size limit | **verdict rendered** (constrained-validation; Echo portion; real ACRIN-6698 n≈76). Re-pointed to NMRB. No DOI. | The conformal `D` interval is ~4× too narrow for real test–retest (coverage 0.263 vs 0.755 target) — survives review. |

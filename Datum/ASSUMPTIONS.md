@@ -3,8 +3,8 @@
 > **Datum is a benchmark built on a ruler that is still in review.** It packages a
 > fixed IVIM uncertainty-calibration task, a curated baseline panel, and reference
 > numbers — **under the explicit assumption that Fashion's calibration ruler
-> survives to publication as submitted.** Fashion is in review at *NMR in
-> Biomedicine* (retooled, boundary-railing-first; resubmitted from MRM). The retool
+> survives to publication once submitted.** Fashion is not yet submitted, target
+> *NMR in Biomedicine* (retooled, boundary-railing-first; retargeted from MRM). The retool
 > demotes the ruler to a **scoped secondary** (ground-truth/synthetic only) reported
 > under the **honest CRLB** convention — Datum's substrate is synthetic, so the
 > scope holds. Therefore the ruler version is pinned here, and **every reference
@@ -42,8 +42,8 @@ never edits Caliper or Gauge. The dependency is one-way: **nothing imports Datum
 
 ## 1. FASHION — pinned inputs (the calibration ruler Datum is built on)
 
-**Status (PINNED):** *in review at NMR in Biomedicine* (retooled,
-boundary-railing-first; resubmitted from MRM) — **NOT finalized**, no manuscript
+**Status (PINNED):** *not yet submitted, target NMR in Biomedicine* (retooled,
+boundary-railing-first; retargeted from MRM) — **NOT finalized**, no manuscript
 DOI assigned. Source: `Fashion/paper_retool/` (NMR in Biomedicine, Wiley NJD-v2),
 `Gnomon/handoff/CLAIMS_LEDGER.md`.
 

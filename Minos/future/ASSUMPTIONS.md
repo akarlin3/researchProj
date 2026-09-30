@@ -31,8 +31,8 @@ The theory half is imported read-only (`future/_paths.py`); it is never edited b
 
 ## 1. FASHION — pinned inputs (the calibration ruler / posteriors)
 
-**Paper status (PINNED):** *in review at NMR in Biomedicine* (retooled,
-boundary-railing-first; resubmitted from MRM), 2026. Pre-publication, **no DOI
+**Paper status (PINNED):** *not yet submitted, target NMR in Biomedicine* (retooled,
+boundary-railing-first; retargeted from MRM), 2026. Pre-publication, **no DOI
 assigned** to the manuscript. Source: `Fashion/paper_retool/` (NMR in Biomedicine,
 Wiley NJD-v2), `Gnomon/handoff/CLAIMS_LEDGER.md`.
 

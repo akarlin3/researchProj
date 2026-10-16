@@ -127,8 +127,9 @@ When Caliper, Fashion, Gauge, or Minos publishes (or revises):
 
 1. Update the `*.version` / `*.commit` / `*.zenodo` / DOI rows above to the
    published artifact.
-2. Run `bash reproduce.sh` (added at CP2) — one command, re-runs the gate and the
-   PROVISIONAL Experiment B against the current sibling code.
+2. Re-run the gate and the PROVISIONAL Experiment B against the current sibling
+   code: `python experiments/feasibility_gate.py && python experiments/efficiency_frontier.py`
+   (there is no `reproduce.sh` wrapper; these are the two scripts, run in order).
 3. If every gate is green, the PROVISIONAL flags on the paper side may be cleared
    (see `PROMOTION.md`). If a gate fails, the dependent result is genuinely
    invalidated by the revision — do not paper over it.

@@ -35,15 +35,15 @@ def _wiring_smoke() -> bool:
     substrate and ruler adapters resolve end to end.
     """
     from datum import ruler
-    from datum.substrate import gauge_cohort
-    from datum.task import TASK_V1
+    from datum.substrate import SUBSTRATES
+    from datum.task import CURRENT_TASK
 
-    sub = gauge_cohort(n_train=4, n_cal=4, n_test=32)
+    sub = SUBSTRATES[CURRENT_TASK.substrate](n_train=4, n_cal=4, n_test=32)
     y = sub.params["test"]                       # (n, 3) truth (D, D*, f)
-    ql = np.asarray(TASK_V1.quantile_levels)
+    ql = np.asarray(CURRENT_TASK.quantile_levels)
     # Dummy quantiles: truth broadcast to every level (degenerate; wiring only).
     q_pred = np.repeat(y[:, :, None], ql.size, axis=2)
-    card = ruler.score(y, q_pred, ql, alpha=TASK_V1.alpha,
+    card = ruler.score(y, q_pred, ql, alpha=CURRENT_TASK.alpha,
                        conditioning=y[:, 1])     # condition on D* (wall axis)
     # Confirm every emitted number is PROVISIONAL-stamped.
     ok = all(v.provisional for p in card.per_param.values() for v in p.values())

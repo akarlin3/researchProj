@@ -9,7 +9,7 @@ level -- and how wide they have to be to do so.
 > which is *in review at MRM*. Numbers are not final until the ruler locks (see
 > [`../ASSUMPTIONS.md`](../ASSUMPTIONS.md)). Regenerate with `python -m datum.run`.
 
-## The fixed task (`datum/task.py::TASK_V1`)
+## The fixed task (`datum/task.py::CURRENT_TASK`, v2)
 
 | field | value |
 |---|---|

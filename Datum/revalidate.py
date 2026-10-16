@@ -22,7 +22,6 @@ import argparse
 import sys
 
 import numpy as np
-
 from datum import manifest
 from datum.provisional import PROVISIONAL_BANNER
 

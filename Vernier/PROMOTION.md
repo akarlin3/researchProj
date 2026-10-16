@@ -22,7 +22,8 @@ CRLB precision. Then:
    honest-scope citation (Gauge) stay flagged **PROVISIONAL** until those papers
    land as submitted. When they do:
    - update the pinned rows in `ASSUMPTIONS.md`;
-   - run `bash reproduce.sh`;
+   - run `python experiments/feasibility_gate.py && python experiments/efficiency_frontier.py`
+     (no `reproduce.sh` wrapper exists; these are the two scripts, run in order);
    - if green, drop the inline PROVISIONAL caveats.
 3. **Public extraction.** Vernier's own history is synthetic + open, so the
    subproject is already publicly extractable from the monorepo

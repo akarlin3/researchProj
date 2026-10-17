@@ -263,5 +263,5 @@ Validate algorithm parameters and check compatibility with input data.
 
 ## References and Resources
 
-- **OSIPI Task Force 2.4**: [IVIM Standardization](https://osipi.ismrm.org/task-forces/task-force-2-4/)
+- **OSIPI Task Force 2.4**: [IVIM Standardization](https://osipi.github.io/taskforces/)
 - **Kaapana Documentation**: [Kaapana Framework](https://kaapana.readthedocs.io/)
